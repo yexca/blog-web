@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="第十二章 管理磁盘和文件系统 12.1 了解磁盘存储器 在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令\n">
+<title>Linux 学习 第十二章 管理磁盘和文件系统</title>
+
+<link rel='canonical' href='https://blog.yexca.net/archives/85/'>
+
+<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="Linux 学习 第十二章 管理磁盘和文件系统">
+<meta property='og:description' content="第十二章 管理磁盘和文件系统 12.1 了解磁盘存储器 在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令\n">
+<meta property='og:url' content='https://blog.yexca.net/archives/85/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='读书笔记' /><meta property='article:published_time' content='2023-01-03T13:37:48&#43;08:00'/><meta property='article:modified_time' content='2023-01-03T13:37:48&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Linux 学习 第十二章 管理磁盘和文件系统">
+<meta name="twitter:description" content="第十二章 管理磁盘和文件系统 12.1 了解磁盘存储器 在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='index.xml'
+                        target="_blank"
+                        title="3RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#第十二章-管理磁盘和文件系统">第十二章 管理磁盘和文件系统</a>
+      <ul>
+        <li><a href="#121-了解磁盘存储器">12.1 了解磁盘存储器</a></li>
+        <li><a href="#122-对硬盘进行分区">12.2 对硬盘进行分区</a></li>
+        <li><a href="#123-使用逻辑卷管理分区">12.3 使用逻辑卷管理分区</a></li>
+        <li><a href="#124-挂载文件系统">12.4 挂载文件系统</a></li>
+        <li><a href="#125-使用-cockpit-管理存储">12.5 使用 Cockpit 管理存储</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/linux/" >
+                Linux
+            </a>
+        
+            <a href="/categories/linuxstudy/" >
+                LinuxStudy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/archives/85/">Linux 学习 第十二章 管理磁盘和文件系统</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2023-01-03 13:37 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="第十二章-管理磁盘和文件系统">第十二章 管理磁盘和文件系统
+</h2><h3 id="121-了解磁盘存储器">12.1 了解磁盘存储器
+</h3><p>在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令</p>
+<p>相对于从硬盘中访问数据，CPU 可以更快地从 RAM 中访问数据。但因为 RAM 造价过高，且断电即清除数据，磁盘容量是远大于 RAM 的</p>
+<p>当运行太多进程或运行了一个带有内存泄漏的进程而将 RAM 填满时，如果系统没有提供一种拓展系统内存的方法，则会导致新进程失败，于是便有了交换空间。采用一些算法将一些数据从 RAM 中换到磁盘中，在需要时再换回去</p>
+<blockquote>
+<p>当需要在不同类型的操作系统之间交换文件时，通常采用 VFAT 文件系统</p>
+</blockquote>
+<h3 id="122-对硬盘进行分区">12.2 对硬盘进行分区
+</h3><p>更改分区可能导致系统无法启动，建议先拿空硬盘熟练掌握后再实际应用</p>
+<h4 id="1221-理解分区表">12.2.1 理解分区表
+</h4><p>从传统上将，PC 体系结构的计算机使用 MBR (Master Root Record) 分区表来存储关于硬盘分区大小和布局信息。然而，近年来，一种被称为 GUID (Global Unique Identifier) 分区表的新标准在部分 UEFI 计算机体系结构的计算机上得到了应用，从而取代了较老的 BIOS 系统启动方法</p>
+<p>MBR 规范所固有的局限性带来了对 GUID 分区的需求。MBR 分区的大小被限制在 2TB，而 GUID 分区可以创建最大 9.4ZB 的分区</p>
+<p><code>fdisk</code> 命令不支持 gpt 分区，可以使用 <code>parted</code> 命令</p>
+<h4 id="1222-查看磁盘分区">12.2.2 查看磁盘分区
+</h4><p><code>fdisk -l /dev/sda</code> 或 <code>parted -l /dev/sdb</code></p>
+<ul>
+<li>
+<p>由 sd? 设备 (如 sda 、sdb 等) 所表示的 SCSI 或者 USB 存储设备最多可以有 16 个次要设备 (比如主 /dev/sdc 设备以及 /dev/sdc1 到 /dev/sdc15) ，所以共有 15 个分区</p>
+</li>
+<li>
+<p>由 nvme 设备 (如 nvme0 、nvme1 等) 所表示的 NVMe SSD 存储设备可以划分一个或多个名称空间 (大多数设备只使用第一个) 和分区，例如 /dev/nvme0n1p1 表示第一个 nvme 设备上第一个名称空间的第一个分区</p>
+</li>
+<li>
+<p>对于 x86 计算机，磁盘最多可以有 4 个主分区。所以如果想要 4 个以上的分区，至少有一个分区时扩展分区。四个主分区外的任何分区都是逻辑分区，使用了来自拓展分区的空间</p>
+</li>
+</ul>
+<h4 id="1223-创建单分区硬盘">12.2.3 创建单分区硬盘
+</h4><p>一般添加一个存储介质的过程：</p>
+<ol>
+<li>
+<p>安装新的硬盘或插入新的 USB 闪存驱动器</p>
+</li>
+<li>
+<p>对新硬盘进行分区</p>
+</li>
+<li>
+<p>在新硬盘上创建文件系统</p>
+</li>
+<li>
+<p>挂载文件系统</p>
+</li>
+</ol>
+<blockquote>
+<p>如果使用 <code>parted</code> 命令进行修改，请谨慎执行每一步，因为 <code>parted</code> 命令的更改是立即生效的
+而 <code>fdisk</code> 命令是可撤销的，只有在确定应用更改时才会实际更改</p>
+<p>数据无价，谨慎操作</p>
+</blockquote>
+<ol>
+<li>确定新增加的设备的名称</li>
+</ol>
+<p>方法有许多，例如查看系统日志</p>
+<p><code>journalctl -f</code></p>
+<p>例如分配的名称为 /dev/sdb</p>
+<ol start="2">
+<li>如果设备自动挂载需要先卸载</li>
+</ol>
+<p>查看是否挂载 /dec/sdb：<code>mount | grep sdb</code></p>
+<p>卸载分区：<code>umount /dev/sdb1</code></p>
+<ol start="3">
+<li>使用 <code>parted</code> 命令创建分区</li>
+</ol>
+<p><code>parted /dev/sdb</code></p>
+<p>执行后将处于 parted 命令模式，可以使用 parted 单字母命令设置来使用分区</p>
+<ol start="4">
+<li>删除分区</li>
+</ol>
+<p>单命令 <code>p</code> 列出所有分区</p>
+<p>使用 <code>rm</code> 命令，回车后输入相应 <code>Number</code> 即可删除某分区</p>
+<ol start="5">
+<li>创建 gpt 分区表</li>
+</ol>
+<p>使用命令 <code>mklabel gpt</code></p>
+<ol start="6">
+<li>创建新分区</li>
+</ol>
+<p>输入 <code>mkpart</code> 命令，系统会提示输入分区名称，文件系统类型，然后是分区的开始和结束</p>
+<p>例如命名 <em>yexca-UDisk</em> ，文件类型为 <em>xfs</em> ，分区从 1MB 开始，到 123GB 结束：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart
+</span></span><span style="display:flex;"><span>Partition name? <span style="color:#f92672">[]</span>? yexca-UDisk
+</span></span><span style="display:flex;"><span>File system type? <span style="color:#f92672">[</span>ext2<span style="color:#f92672">]</span>? xfs
+</span></span><span style="display:flex;"><span>Start? <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>End? 123GB
+</span></span></code></pre></div><ol start="7">
+<li>检查分区是否正确创建</li>
+</ol>
+<p>单命令 <code>p</code> 列出所有分区</p>
+<ol start="8">
+<li>分区创建完成后需要在分区上创建文件系统</li>
+</ol>
+<p>例如创建 xfs 文件系统：<code>mkfs -t xfs /dev/sdb1</code></p>
+<p>若没有 <code>-t</code> 选项，默认创建 ext2 文件系统</p>
+<ol start="9">
+<li>挂载文件系统</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
+</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载 /dev/sdb1 到 /mnt/tmp</span>
+</span></span><span style="display:flex;"><span>mount /dev/sdb1 /mnt/tmp
+</span></span></code></pre></div><ol start="10">
+<li>卸载文件系统</li>
+</ol>
+<p>使用命令 <code>umount /dev/sdb1</code></p>
+<blockquote>
+<p>默认情况下一般插入 USB 设备会自动挂载</p>
+</blockquote>
+<p>如果需要手动挂载，可在 /etc/fstab 添加一行</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/dev/sdb1    /mnt/tmp    xfs    defaults    <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>共六段</p>
+<ol>
+<li>
+<p>分区</p>
+</li>
+<li>
+<p>挂载的文件夹</p>
+</li>
+<li>
+<p>文件系统</p>
+</li>
+<li>
+<p>分区启动时挂载</p>
+</li>
+<li>
+<p>是否使用 <code>dump</code> 命令备份分区文件 (0 为不备份)</p>
+</li>
+<li>
+<p>在一定的挂载数量之后对分区进行错误检查</p>
+</li>
+</ol>
+<h4 id="1224-创建一个多分区磁盘">12.2.4 创建一个多分区磁盘
+</h4><p>使用 <code>fdisk</code> 命令介绍</p>
+<ol>
+<li>进入 fdisk 命令模式</li>
+</ol>
+<p><code>fdisk /dev/sdb</code></p>
+<ol start="2">
+<li>创建分区</li>
+</ol>
+<p>单命令 <code>n</code> ，然后选择主分区 <code>p</code> 或拓展分区 <code>e</code> ，选择分区位置 (默认即可)</p>
+<p>然后是分配的空间，起始空间可以默认，回车后输入结尾空间：例如分配 5 GB 空间则输入 <code>+5G</code> ，若直接输数字则会被认为是扇区</p>
+<p>第四个分区，即拓展分区，分配空间可以两次都是默认</p>
+<ol start="3">
+<li>检查分区</li>
+</ol>
+<p>单命令 <code>p</code></p>
+<ol start="4">
+<li>默认的分区类型是 Linux ，如果想要转换分区类型</li>
+</ol>
+<p>使用命令 <code>t</code> ，选择分区数，然后输入 <code>L</code> 查看分区类型列表，找到十六进制码，然后输入以更改</p>
+<ol start="5">
+<li>检查更改并保存更改</li>
+</ol>
+<p>单命令 <code>p</code> 以检查，单命令 <code>w</code> 以保存更改</p>
+<ol start="6">
+<li>更改完毕后，检查内核是否知道对分区表的更改</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep sdb /proc/partitions
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果没有输出预料的结果，执行以下命令</span>
+</span></span><span style="display:flex;"><span>partprobe /dev/sdb
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 再次检查</span>
+</span></span><span style="display:flex;"><span>grep sdb /proc/partitions
+</span></span></code></pre></div><ol start="7">
+<li>创建文件系统</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext4 文件系统</span>
+</span></span><span style="display:flex;"><span>mkfs -t ext4 /dev/sdb1
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建交换区</span>
+</span></span><span style="display:flex;"><span>mkswap /dev/sdb2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext2 文件系统 (默认值)</span>
+</span></span><span style="display:flex;"><span>mkfs /dev/sdb3
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 VFAT 文件系统</span>
+</span></span><span style="display:flex;"><span>mkfs -t vfat /dev/sdb4
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使该分区称为 LVM 物理卷</span>
+</span></span><span style="display:flex;"><span>pvcreate /dev/sdb5
+</span></span></code></pre></div><h3 id="123-使用逻辑卷管理分区">12.3 使用逻辑卷管理分区
+</h3><p>如果磁盘空间不足，恐怕只能将数据复制到另一个更大的磁盘中，但该过程需要停机且效率低下</p>
+<p>LVM (Logical Volume Management ，逻辑卷管理) 可采用灵活且高效的方式处理更改存储器的需求。通过使用 LVM ，可将物理磁盘分区添加到被称为 <em>卷组</em> 的空间池。逻辑卷根据需要从卷组分配空间</p>
+<h4 id="1231-检查现有的-lvm">12.3.1 检查现有的 LVM
+</h4><p>使用命令 <code>fdisk -l /dev/sda</code> 查看是否存在 Linux LVM 分区，假设 /dev/sda2 为 LVM 分区</p>
+<p>查看该 LVM 分区是否在 LVM 组中使用</p>
+<p><code>pvdisplay /dev/sda2</code></p>
+<p>假设卷组 (VG Name) 是 vg_abc ，查看卷组的信息</p>
+<p><code>vgdisplay vg_abc</code></p>
+<p>可以从物理卷使用的最小存储单位是 PE (Physical Extent) Size</p>
+<p>查看卷组的 PE 分配的位置</p>
+<p><code>lvdisplay vg_abc</code></p>
+<p>输出将展示多个逻辑卷名称，这些逻辑卷可以和物理卷一样直接使用名字进行挂载</p>
+<p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2022/09-Linux%e5%ad%a6%e4%b9%a0/image.1cbhc31lxfvk.webp"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h4 id="1232-创建-lvm-逻辑卷">12.3.2 创建 LVM 逻辑卷
+</h4><p>LVM 逻辑卷的使用是自上而下进行的，而创建 LVM 逻辑卷的过程则是从下而上进行。首先创建一个或多个物理卷 (pv) ，然后使用物理卷创建卷组 (vg) ，最后从卷组创建逻辑卷 (lv)</p>
+<ol>
+<li>准备一个有 LVM 分区的存储设备</li>
+</ol>
+<p>创建过程 12.2.4 有提及</p>
+<ol start="2">
+<li>将该物理卷加入卷组</li>
+</ol>
+<p><code>vgcreate myvg0 /dev/sdb5</code></p>
+<ol start="3">
+<li>查看卷组</li>
+</ol>
+<p><code>vgdisplay myvg0</code></p>
+<ol start="4">
+<li>若分区为 400M ，可以使用 396M 空间 (以 4M 为单位)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 从卷组部分空间创建一个逻辑卷，例如创建 1G 逻辑卷</span>
+</span></span><span style="display:flex;"><span>lvcreate -n name -L 1G myvg0
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看该逻辑卷是否存在</span>
+</span></span><span style="display:flex;"><span>ls /dev/mapper/myvg0*
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输出以下则创建成功</span>
+</span></span><span style="display:flex;"><span>/dev/mapper/myvg0-name
+</span></span></code></pre></div><ol start="5">
+<li>放入文件系统并挂载</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext4 文件系统</span>
+</span></span><span style="display:flex;"><span>mkfs -t ext4 /dev/mapper/myvg0-name
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
+</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载</span>
+</span></span><span style="display:flex;"><span>mount /dev/mapper/myvg0-name /mnt/tmp
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查是否挂载成功</span>
+</span></span><span style="display:flex;"><span>df -h /mnt/tmp
+</span></span></code></pre></div><ol start="6">
+<li>或者也可以写入 /etc/fstab 以自动挂载</li>
+</ol>
+<h4 id="1233-扩大-lvm-逻辑卷">12.3.3 扩大 LVM 逻辑卷
+</h4><p>如果用完了逻辑卷的空间，可添加空间而不必卸载该逻辑卷。为此，卷组中必须有可用的空间，然后扩大逻辑卷</p>
+<ol>
+<li>检查剩余空间</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 检查卷组可用空间</span>
+</span></span><span style="display:flex;"><span>vgdisplay myvg0
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查逻辑卷可用空间</span>
+</span></span><span style="display:flex;"><span>df -h /mnt/tmp
+</span></span></code></pre></div><ol start="2">
+<li>拓展逻辑卷</li>
+</ol>
+<p><code>lvextend -L +1G /dev/mapper/myvg0-name</code></p>
+<ol start="3">
+<li>调整文件系统大小</li>
+</ol>
+<p><code>resize2fs -p /dev/mapper/myvg0-name</code></p>
+<ol start="4">
+<li>检查是否调整成功</li>
+</ol>
+<p><code>df -h /mnt/tmp</code></p>
+<h3 id="124-挂载文件系统">12.4 挂载文件系统
+</h3><p>事实上在上两节中已经涉及了挂载文件系统命令 <code>mount</code> 已经自动挂载配置 (文件 /etc/fstab)</p>
+<h4 id="1241-被支持的文件系统">12.4.1 被支持的文件系统
+</h4><p>输入命令 <code>cat /proc/filesystems</code> 以查看支持的文件系统类型，以下仅部分</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>文件系统</th>
+          <th>描述</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>ext4</td>
+          <td>流行的 ext3 文件系统的继承者。支持最大 1EB 的卷以及最大 16 TB 的文件</td>
+      </tr>
+      <tr>
+          <td>iso9660</td>
+          <td>从 High Sierra 文件系统 (CD-ROM 的原始标准) 演变而来。数据 CD-ROM 通常使用该文件系统</td>
+      </tr>
+      <tr>
+          <td>Minix</td>
+          <td>最初用于 UNIX 的 Minix 版本。支持最多只有 30 个字符的文件名</td>
+      </tr>
+      <tr>
+          <td>msdos</td>
+          <td>MS-DOS 文件系统类型，可用于挂载来自 Windows 操作系统的软盘</td>
+      </tr>
+      <tr>
+          <td>vfat</td>
+          <td>Microsoft 扩展的 FAT 文件类型</td>
+      </tr>
+      <tr>
+          <td>exfat</td>
+          <td>为 SD 卡、USB 驱动器和其他闪存优化的扩展 FAT 文件系统</td>
+      </tr>
+      <tr>
+          <td>proc</td>
+          <td>不是真正的文件系统。是一个 Linux 内核的文件系统接口。/proc 的挂载点应该是一个 proc 文件系统。许多实用工具依赖 /proc 才能访问 Linux 内核信息</td>
+      </tr>
+      <tr>
+          <td>ReiserFS</td>
+          <td>日志文件系统。曾经的多个 Linux 发行版本默认文件系统类型，但如今是 ext 和 xfs</td>
+      </tr>
+      <tr>
+          <td>swap</td>
+          <td>用于交换分区</td>
+      </tr>
+      <tr>
+          <td>squashfs</td>
+          <td>压缩且只读的文件系统类型</td>
+      </tr>
+      <tr>
+          <td>NFS</td>
+          <td>Network Filesystem，用于在其他 Linux 或 UNIX 计算机上挂载文件系统</td>
+      </tr>
+      <tr>
+          <td>ntfs</td>
+          <td>Windows NT 文件系统</td>
+      </tr>
+      <tr>
+          <td>xfs</td>
+          <td>最早由 Silicon Graphics 开发的高性能文件系统，可很好地使用大文件</td>
+      </tr>
+      <tr>
+          <td>gfs2</td>
+          <td>一种共享磁盘文件系统，运行多台计算机使用相沟通的共享磁盘，而不必通过网络文件系统层，如 CIFS 、NFS 等</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>输入 <code>man fs</code> 了解更多 Linux 文件系统相关信息</p>
+<h4 id="1242-启动交换区">12.4.2 启动交换区
+</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看交换分区数量</span>
+</span></span><span style="display:flex;"><span>free -m
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建交换分区</span>
+</span></span><span style="display:flex;"><span>mkswap /var/opt/myswap
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 启用交换分区</span>
+</span></span><span style="display:flex;"><span>swapon /var/opt/myswap
+</span></span></code></pre></div><p>如果在 /etc/fstab 添加了交换分区相关条目，如：</p>
+<p><code>/var/opt/myswap swap swap defaults 0 0</code></p>
+<p>可以使用 <code>swapon -a</code> 启用</p>
+<h4 id="1243-禁用交换区">12.4.3 禁用交换区
+</h4><p><code>swapoff /var/opt/myswap</code></p>
+<h4 id="1244-使用-fstab-文件定义可挂载的文件系统">12.4.4 使用 fstab 文件定义可挂载的文件系统
+</h4><p>12.2.3 已介绍，不过字段二可以使用 UUID 而非设备名，因为设备名是可变的</p>
+<p>查看 UUID：<code>blkid</code></p>
+<h4 id="1245-使用-mount-命令挂载文件系统">12.4.5 使用 mount 命令挂载文件系统
+</h4><p>同样在 12.2.3 已介绍</p>
+<h4 id="1246-以环回方式挂载磁盘镜像">12.4.6 以环回方式挂载磁盘镜像
+</h4><p>也就是将 ISO 镜像文件挂载</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
+</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载</span>
+</span></span><span style="display:flex;"><span>mount -o loop name.iso /mnt/tmp
+</span></span></code></pre></div><h4 id="1247-使用-umount-命令">12.4.7 使用 umount 命令
+</h4><p>可以输入设备分区名或目录名</p>
+<p>设备分区名：<code>umount /dev/sdb1</code></p>
+<p>目录名：<code>umount /mnt/tmp</code></p>
+<p>通常，最好使用目录名</p>
+<p>如果一个目录正繁忙无法被卸载，可以：</p>
+<ul>
+<li>
+<p>延迟卸载：<code>umount -l</code></p>
+</li>
+<li>
+<p>强制卸载：<code>umount -f</code></p>
+</li>
+</ul>
+<h3 id="125-使用-cockpit-管理存储">12.5 使用 Cockpit 管理存储
+</h3><p>GUI ，开启参考第八章</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/archives/84/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 学习 第十一章 获取用户账户</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/83/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 学习 第十章 获取和管理软件</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/82/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 学习 第八、九章 学习系统管理与安装 Linux</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/81/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 学习 第七章 编写简单的 shell 脚本</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/80/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">欧姆社漫画数字电路读后</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 <a href="https://lit.link/yexca" target="_blank" style="color: #FBA1BB;"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <span>|</span>
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+    </body>
+</html>

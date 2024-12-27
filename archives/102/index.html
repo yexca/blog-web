@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="从想法产生到彻底实现，一共耗时三个月 (主要是太懒了)\n安装 Docker 使用了 APT 进行安装\n添加 HTTPS 传输的软件包以及 CA 证书 # 先更新一下 sudo apt-get update # 然后安装 sudo apt-get install \\ apt-transport-https \\ ca-certificates \\ curl \\ gnupg \\ lsb-release 为了确认所下载软件包的合法性，需要添加软件源的 GPG 密钥 # 国内源 curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg # 官方源 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg 向 sources.list 中添加 Docker 软件源 首先需要确定 Debian 的版本号，然后替换下面命令的 $(lsb_release -cs)\n">
+<title>服务器用 Docker 部署记录</title>
+
+<link rel='canonical' href='https://blog.yexca.net/archives/102/'>
+
+<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="服务器用 Docker 部署记录">
+<meta property='og:description' content="从想法产生到彻底实现，一共耗时三个月 (主要是太懒了)\n安装 Docker 使用了 APT 进行安装\n添加 HTTPS 传输的软件包以及 CA 证书 # 先更新一下 sudo apt-get update # 然后安装 sudo apt-get install \\ apt-transport-https \\ ca-certificates \\ curl \\ gnupg \\ lsb-release 为了确认所下载软件包的合法性，需要添加软件源的 GPG 密钥 # 国内源 curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg # 官方源 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg 向 sources.list 中添加 Docker 软件源 首先需要确定 Debian 的版本号，然后替换下面命令的 $(lsb_release -cs)\n">
+<meta property='og:url' content='https://blog.yexca.net/archives/102/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Docker' /><meta property='article:published_time' content='2023-04-04T22:31:45&#43;08:00'/><meta property='article:modified_time' content='2023-04-04T22:31:45&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="服务器用 Docker 部署记录">
+<meta name="twitter:description" content="从想法产生到彻底实现，一共耗时三个月 (主要是太懒了)\n安装 Docker 使用了 APT 进行安装\n添加 HTTPS 传输的软件包以及 CA 证书 # 先更新一下 sudo apt-get update # 然后安装 sudo apt-get install \\ apt-transport-https \\ ca-certificates \\ curl \\ gnupg \\ lsb-release 为了确认所下载软件包的合法性，需要添加软件源的 GPG 密钥 # 国内源 curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg # 官方源 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg 向 sources.list 中添加 Docker 软件源 首先需要确定 Debian 的版本号，然后替换下面命令的 $(lsb_release -cs)\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='index.xml'
+                        target="_blank"
+                        title="3RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装-docker">安装 Docker</a></li>
+    <li><a href="#启动-docker">启动 Docker</a></li>
+    <li><a href="#blog1-wordpress">Blog1: WordPress</a></li>
+    <li><a href="#docker-容器运行相关">docker 容器运行相关</a></li>
+    <li><a href="#blog2-typecho">Blog2: Typecho</a></li>
+    <li><a href="#网盘网站">网盘网站</a></li>
+    <li><a href="#nginx-与-ssl-证书">nginx 与 SSL 证书</a></li>
+    <li><a href="#进入容器内部">进入容器内部</a></li>
+    <li><a href="#以下仅记录">以下仅记录</a>
+      <ul>
+        <li><a href="#ssl-证书">SSL 证书</a></li>
+        <li><a href="#nginx">Nginx</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考文章">参考文章</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%97%A5%E5%B8%B8/" >
+                日常
+            </a>
+        
+            <a href="/categories/%E6%8A%98%E8%85%BE%E8%AE%B0%E5%BD%95/" >
+                折腾记录
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/archives/102/">服务器用 Docker 部署记录</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2023-04-04 22:31 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>从想法产生到彻底实现，一共耗时三个月 <del>(主要是太懒了)</del></p>
+<h2 id="安装-docker">安装 Docker
+</h2><p>使用了 APT 进行安装</p>
+<ol>
+<li>添加 HTTPS 传输的软件包以及 CA 证书</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 先更新一下</span>
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 然后安装</span>
+</span></span><span style="display:flex;"><span>sudo apt-get install <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     apt-transport-https <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     ca-certificates <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     curl <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     gnupg <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>     lsb-release
+</span></span></code></pre></div><ol start="2">
+<li>为了确认所下载软件包的合法性，需要添加软件源的 GPG 密钥</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 国内源</span>
+</span></span><span style="display:flex;"><span>curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 官方源</span>
+</span></span><span style="display:flex;"><span>curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</span></span></code></pre></div><ol start="3">
+<li>向 <em>sources.list</em> 中添加 Docker 软件源</li>
+</ol>
+<blockquote>
+<p>首先需要确定 Debian 的版本号，然后替换下面命令的 <code>$(lsb_release -cs)</code></p>
+<p>版本号需要在 <a class="link" href="https://mirrors.aliyun.com/docker-ce/linux/debian/dists/"  target="_blank" rel="noopener"
+    >https://mirrors.aliyun.com/docker-ce/linux/debian/dists/</a> 中</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 国内源</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  </span><span style="color:#66d9ef">$(</span>lsb_release -cs<span style="color:#66d9ef">)</span><span style="color:#e6db74"> stable&#34;</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 官方源</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   <span style="color:#e6db74">&#34;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   </span><span style="color:#66d9ef">$(</span>lsb_release -cs<span style="color:#66d9ef">)</span><span style="color:#e6db74"> stable&#34;</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span></code></pre></div><p>如 Debian10 的是 <code>buster</code> ，Debian11 的为 <code>bullseye</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 此为 Debian11 的</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  bullseye stable&#34;</span> | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span></code></pre></div><blockquote>
+<p>以上命令会添加稳定版本的 Docker APT 源，如果需要测试版本的 Docker 请将 <code>stable</code> 改为 <code>test</code></p>
+</blockquote>
+<ol start="4">
+<li>然后安装</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 更新缓存</span>
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装 docker</span>
+</span></span><span style="display:flex;"><span>sudo apt-get install docker-ce docker-ce-cli containerd.io
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装 docker-compose</span>
+</span></span><span style="display:flex;"><span>sudo apt-get install docker-compose
+</span></span></code></pre></div><hr>
+<p>或者可以试试一键安装脚本</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 测试版</span>
+</span></span><span style="display:flex;"><span>curl -fsSL test.docker.com -o get-docker.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以下为稳定版</span>
+</span></span><span style="display:flex;"><span>curl -fsSL get.docker.com -o get-docker.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 阿里云源</span>
+</span></span><span style="display:flex;"><span>sudo sh get-docker.sh --mirror Aliyun
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 微软 AzureChina 源</span>
+</span></span><span style="display:flex;"><span>sudo sh get-docker.sh --mirror AzureChinaCloud
+</span></span></code></pre></div><h2 id="启动-docker">启动 Docker
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl enable docker
+</span></span><span style="display:flex;"><span>sudo systemctl start docker
+</span></span></code></pre></div><p>使用命令以下测试是否成功启动</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run --rm hello-world
+</span></span></code></pre></div><p>出现下述类似输出即安装启动成功</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Unable to find image <span style="color:#e6db74">&#39;hello-world:latest&#39;</span> locally
+</span></span><span style="display:flex;"><span>latest: Pulling from library/hello-world
+</span></span><span style="display:flex;"><span>2db29710123e: Pull complete
+</span></span><span style="display:flex;"><span>Digest: sha256:c77be1d3a47d0caf71a82dd893ee61ce01f32fc758031a6ec4cf1389248bb833
+</span></span><span style="display:flex;"><span>Status: Downloaded newer image <span style="color:#66d9ef">for</span> hello-world:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Hello from Docker!
+</span></span><span style="display:flex;"><span>This message shows that your installation appears to be working correctly.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>To generate this message, Docker took the following steps:
+</span></span><span style="display:flex;"><span> 1. The Docker client contacted the Docker daemon.
+</span></span><span style="display:flex;"><span> 2. The Docker daemon pulled the <span style="color:#e6db74">&#34;hello-world&#34;</span> image from the Docker Hub.
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>amd64<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> 3. The Docker daemon created a new container from that image which runs the
+</span></span><span style="display:flex;"><span>    executable that produces the output you are currently reading.
+</span></span><span style="display:flex;"><span> 4. The Docker daemon streamed that output to the Docker client, which sent it
+</span></span><span style="display:flex;"><span>    to your terminal.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>To try something more ambitious, you can run an Ubuntu container with:
+</span></span><span style="display:flex;"><span> $ docker run -it ubuntu bash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Share images, automate workflows, and more with a free Docker ID:
+</span></span><span style="display:flex;"><span> https://hub.docker.com/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>For more examples and ideas, visit:
+</span></span><span style="display:flex;"><span> https://docs.docker.com/get-started/
+</span></span></code></pre></div><h2 id="blog1-wordpress">Blog1: WordPress
+</h2><p>创建相应文件夹 (例如 /root/wordpress)，然后创建 <code>docker-compose.yml</code> 文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.3&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">db</span>:
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mysql:5.7</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#ae81ff">db_data:/var/lib/mysql</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">MYSQL_ROOT_PASSWORD</span>: <span style="color:#ae81ff">somewordpress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">MYSQL_DATABASE</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">MYSQL_USER</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">MYSQL_PASSWORD</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">wordpress</span>:
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">depends_on</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#ae81ff">db</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">image</span>: <span style="color:#ae81ff">wordpress:latest</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#ae81ff">/root/wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>       - <span style="color:#ae81ff">8000</span>:<span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">WORDPRESS_DB_HOST</span>: <span style="color:#ae81ff">db:3306</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">WORDPRESS_DB_USER</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">WORDPRESS_DB_PASSWORD</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">WORDPRESS_DB_NAME</span>: <span style="color:#ae81ff">wordpress</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">db_data</span>: {}
+</span></span></code></pre></div><p>创建 <code>uploads.ini</code> 文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#a6e22e">file_uploads</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">On</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">memory_limit</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">256M</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">upload_max_filesize</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">10M</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">post_max_size</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">10M</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">max_execution_time</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">600</span>
+</span></span></code></pre></div><h2 id="docker-容器运行相关">docker 容器运行相关
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 后台运行</span>
+</span></span><span style="display:flex;"><span>docker-compose up -d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 停止</span>
+</span></span><span style="display:flex;"><span>docker-compose stop
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 停止并删除</span>
+</span></span><span style="display:flex;"><span>docker-compose down
+</span></span></code></pre></div><h2 id="blog2-typecho">Blog2: Typecho
+</h2><p>使用镜像：<a class="link" href="https://hub.docker.com/r/80x86/typecho"  target="_blank" rel="noopener"
+    >80x86/typecho</a></p>
+<p>创建文件夹与相应文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.0&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">typecho</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">image</span>: <span style="color:#ae81ff">80x86/typecho:latest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">Typecho_Blog</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>            - <span style="color:#ae81ff">/root/typecho/data:/data</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>            - <span style="color:#ae81ff">8001</span>:<span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">PHP_TZ</span>: <span style="color:#ae81ff">Asia/Shanghai</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">PHP_MAX_EXECUTION_TIME</span>: <span style="color:#ae81ff">600</span>
+</span></span></code></pre></div><h2 id="网盘网站">网盘网站
+</h2><p>使用项目：<a class="link" href="https://github.com/px-org/PanIndex"  target="_blank" rel="noopener"
+    >https://github.com/px-org/PanIndex</a></p>
+<p>官方教程：<a class="link" href="https://docs.noki.icu/"  target="_blank" rel="noopener"
+    >https://docs.noki.icu/</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">PanIndex</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">iicm/pan-index:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">VRC_Pan</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/pan/data:/app/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">8002</span>:<span style="color:#ae81ff">5238</span>
+</span></span></code></pre></div><h2 id="nginx-与-ssl-证书">nginx 与 SSL 证书
+</h2><p>使用项目：<a class="link" href="https://github.com/0xJacky/nginx-ui"  target="_blank" rel="noopener"
+    >https://github.com/0xJacky/nginx-ui</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.1&#39;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>: 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nginx-ui</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">uozi/nginx-ui:latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nginx_UI</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/nginx/nginx:/etc/nginx</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/nginx/nginx-ui:/etc/nginx-ui</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/nginx/www:/www</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">80</span>:<span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">443</span>:<span style="color:#ae81ff">443</span>
+</span></span></code></pre></div><p>在配置时代理宿主机的话，可以将宿主机 IP 视为 <code>172.17.0.1</code></p>
+<p>具体可通过一些命令查询</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ip addr show docker0
+</span></span></code></pre></div><p>GUI 没什么好说的</p>
+<h2 id="进入容器内部">进入容器内部
+</h2><ol>
+<li>获取容器 ID</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker container ls
+</span></span></code></pre></div><ol start="2">
+<li>进入</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker exec -i <span style="color:#f92672">[</span>ID<span style="color:#f92672">]</span> bash
+</span></span></code></pre></div><p>然后使用 bash 命令即可 (没有 bash 提示符)</p>
+<h2 id="以下仅记录">以下仅记录
+</h2><p>耗时最长的就是调 nginx 和 ssl 配置了，最后一直不成功，便使用 GUI</p>
+<h3 id="ssl-证书">SSL 证书
+</h3><p>使用了 <a class="link" href="https://hub.docker.com/r/neilpang/acme.sh"  target="_blank" rel="noopener"
+    >neilpang/acme.sh</a> ，使用了 DNS 验证，其他方式请参考 <a class="link" href="https://github.com/acmesh-official/acme.sh/wiki/Run-acme.sh-in-docker"  target="_blank" rel="noopener"
+    >Run acme.sh in docker · acmesh-official/acme.sh Wiki (github.com)</a></p>
+<p>创建相应文件夹与文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.1&#39;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>: 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">acme.sh</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">neilpang/acme.sh</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">acme.sh    </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">command</span>: <span style="color:#ae81ff">daemon</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/acme/acme.sh:/acme.sh</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/acme/conf:/.acme.sh</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">CF_Key=&#34;这是CF的API&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">CF_Email=&#34;这是CF的邮箱&#34;</span>
+</span></span></code></pre></div><p>对于其他 DNS 服务商，请参考：<a class="link" href="https://github.com/acmesh-official/acme.sh/wiki/dnsapi"  target="_blank" rel="noopener"
+    >https://github.com/acmesh-official/acme.sh/wiki/dnsapi</a></p>
+<p>注册账号：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker exec acme.sh --register-account -m mail@server.com
+</span></span></code></pre></div><p>获取证书 (此处为 CF)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker exec acme.sh --issue --dns dns_cf -d example.com -d www.example.com
+</span></span></code></pre></div><p>获取后的证书和存储目录会打印出来，将此目录映射到 nginx 容器</p>
+<p>可以设置 cron 定时任务以自动更新证书，参考：<a class="link" href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html"  target="_blank" rel="noopener"
+    >Linux Crontab 定时任务 - 菜鸟教程</a></p>
+<hr>
+<p>参考资料</p>
+<p><a class="link" href="https://cloud.tencent.com/developer/article/1769236"  target="_blank" rel="noopener"
+    >docker获取Let&rsquo;s Encrypt永久免费SSL证书 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+<p><a class="link" href="https://github.com/acmesh-official/acme.sh/wiki/ZeroSSL.com-CA"  target="_blank" rel="noopener"
+    >ZeroSSL.com CA · acmesh-official/acme.sh Wiki (github.com)</a></p>
+<hr>
+<h3 id="nginx">Nginx
+</h3><p>创建相应文件夹 (例如 /root/nginx)，然后创建 <code>docker-compose.yml</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;3.1&#39;</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>: 
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">nginx</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">nginx</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">80</span>:<span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/docker/nginx/conf.d:/etc/nginx/conf.d</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/docker/nginx/www:/user/share/nfinx/html</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/docker/nginx/log:/var/log/nginx</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">/root/acme/acme.sh:/ssl</span>
+</span></span></code></pre></div><p>然后运行，启动后当前目录有 <code>conf.d</code> 文件夹，在该文件夹新建以 .conf 为后缀的文件，例如 <code>default.conf</code></p>
+<pre tabindex="0"><code class="language-conf" data-lang="conf">server {
+    listen          80;
+    listen          [::]:80;
+
+    server_name     &lt;your_server_name&gt;;
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    &#39;&#39;      close;
+}
+
+server {
+    listen  443       ssl http2;
+    listen  [::]:443  ssl http2;
+
+    server_name         &lt;your_server_name&gt;;
+
+	# ssl 证书位置
+    ssl_certificate     /path/to/ssl_cert;
+    # ssl 密钥位置
+    ssl_certificate_key /path/to/ssl_cert_key;
+
+    location / {
+        proxy_set_header    Host                $host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          $connection_upgrade;
+        proxy_pass          http://172.17.0.1:9000/;
+    }
+}
+</code></pre><hr>
+<p>参考资料</p>
+<p><a class="link" href="https://blog.csdn.net/Blueeyedboy521/article/details/124848929"  target="_blank" rel="noopener"
+    >docker安装nginx并配置ssl证书，代理宿主机服务_Blueeyedboy521的博客-CSDN博客_bitwarden docker ssl</a></p>
+<p><a class="link" href="https://developer.aliyun.com/article/761236"  target="_blank" rel="noopener"
+    >Nginx 安装 SSL 配置 HTTPS 超详细完整全过程-阿里云开发者社区 (aliyun.com)</a></p>
+<p><a class="link" href="https://blog.csdn.net/usdnfo/article/details/111509661"  target="_blank" rel="noopener"
+    >快速部署 Docker 同时发布多个网站或服务_天道酬勤~的博客-CSDN博客_docker部署 一台服务器多个系统</a></p>
+<p><a class="link" href="https://diamondfsd.com/lets-encrytp-hand-https/"  target="_blank" rel="noopener"
+    >Let&rsquo;s Encrypt 使用教程，免费的SSL证书，让你的网站拥抱 HTTPS - Diamond-Blog (diamondfsd.com)</a></p>
+<p><a class="link" href="https://www.jianshu.com/p/2e0fe505766b"  target="_blank" rel="noopener"
+    >Nginx反向代理的一次使用总结 - 简书 (jianshu.com)</a></p>
+<p><a class="link" href="https://www.cnblogs.com/cnxkey/articles/11180979.html"  target="_blank" rel="noopener"
+    >Nginx配置反向代理隐藏服务端口 - &amp;大飞 - 博客园 (cnblogs.com)</a></p>
+<hr>
+<h2 id="参考文章">参考文章
+</h2><p><a class="link" href="https://yeasy.gitbook.io/docker_practice/install/debian"  target="_blank" rel="noopener"
+    >Debian - Docker — 从入门到实践 (gitbook.io)</a></p>
+<p><a class="link" href="https://cloud.tencent.com/developer/article/1592741"  target="_blank" rel="noopener"
+    >Docker 安装 Wordpress 博客 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+<p><a class="link" href="https://devpress.csdn.net/cms/62f4ee7a7e6682346618948a.html"  target="_blank" rel="noopener"
+    >Docker部署WordPress解决“上传的文件尺寸超过php.ini中定义的upload_max_filesize值”问题_neiro-DevPress官方社区 (csdn.net)</a></p>
+<p><a class="link" href="https://www.liaosam.com/problem-binding-to-port-80.html"  target="_blank" rel="noopener"
+    >let’s Encrypt 证书之安装故障 Could not bind to IPv4 or IPv6. - 料网 (liaosam.com)</a></p>
+<p><a class="link" href="https://www.cnblogs.com/FLY_DREAM/p/14221136.html"  target="_blank" rel="noopener"
+    >基于Let&rsquo;s Encrypt生成免费证书-支持多域名泛域名证书 - DevOps在路上 - 博客园 (cnblogs.com)</a></p>
+<p><a class="link" href="https://www.runoob.com/docker/docker-compose.html"  target="_blank" rel="noopener"
+    >Docker Compose-菜鸟教程 (runoob.com)</a></p>
+<p><a class="link" href="https://www.cnblogs.com/54chensongxia/p/12938929.html"  target="_blank" rel="noopener"
+    >Nginx配置文件详解 - 程序员自由之路 - 博客园 (cnblogs.com)</a></p>
+<p><a class="link" href="https://www.moeelf.com/archives/281.html"  target="_blank" rel="noopener"
+    >Docker使用acme.sh申请ssl证书 – 萌精灵 (moeelf.com)</a></p>
+<p><a class="link" href="https://blog.csdn.net/Blueeyedboy521/article/details/124848929"  target="_blank" rel="noopener"
+    >docker安装nginx并配置ssl证书，代理宿主机服务</a></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/docker/">Docker</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/archives/73/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">个人内网折腾</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/71/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Fedora 安装 Komga 折腾记录</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/47/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">原神自动签到 (Linux 服务器 Docker)</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 <a href="https://lit.link/yexca" target="_blank" style="color: #FBA1BB;"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <span>|</span>
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+    </body>
+</html>

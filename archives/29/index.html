@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="最近花了一些时间读完了《图解HTTP》，于是决定写一篇读书笔记以记录书本的大体内容，也正好当作一次复习">
+<title>《图解HTTP》读后总结及浅谈</title>
+
+<link rel='canonical' href='https://blog.yexca.net/archives/29/'>
+
+<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="《图解HTTP》读后总结及浅谈">
+<meta property='og:description' content="最近花了一些时间读完了《图解HTTP》，于是决定写一篇读书笔记以记录书本的大体内容，也正好当作一次复习">
+<meta property='og:url' content='https://blog.yexca.net/archives/29/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='HTTP' /><meta property='article:tag' content='读书笔记' /><meta property='article:published_time' content='2022-03-16T23:56:48&#43;08:00'/><meta property='article:modified_time' content='2022-03-16T23:56:48&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="《图解HTTP》读后总结及浅谈">
+<meta name="twitter:description" content="最近花了一些时间读完了《图解HTTP》，于是决定写一篇读书笔记以记录书本的大体内容，也正好当作一次复习">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='index.xml'
+                        target="_blank"
+                        title="3RSS"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#第一章了解web及网络基础">第一章：了解Web及网络基础</a>
+      <ul>
+        <li><a href="#11简介">1.1简介</a></li>
+        <li><a href="#12-iptcp和dns">1.2 IP、TCP和DNS</a></li>
+        <li><a href="#13-url和uri">1.3 URL和URI</a></li>
+      </ul>
+    </li>
+    <li><a href="#第二章简单的http协议">第二章：简单的HTTP协议</a>
+      <ul>
+        <li><a href="#21-http简介">2.1 HTTP简介</a></li>
+        <li><a href="#22-常用的http方法">2.2 常用的HTTP方法</a></li>
+        <li><a href="#23-http的持久连接三次握手四次挥手">2.3 HTTP的持久连接（三次握手四次挥手）</a></li>
+        <li><a href="#24-使用cookie的状态管理">2.4 使用cookie的状态管理</a></li>
+      </ul>
+    </li>
+    <li><a href="#第三章-http报文信息">第三章 HTTP报文信息</a>
+      <ul>
+        <li><a href="#31-http的请求和响应报文结构">3.1 HTTP的请求和响应报文结构</a></li>
+        <li><a href="#32-编码传输及分块传输">3.2 编码传输及分块传输</a></li>
+      </ul>
+    </li>
+    <li><a href="#第四章-返回结果的http状态码">第四章 返回结果的HTTP状态码</a>
+      <ul>
+        <li><a href="#41-状态码的类别">4.1 状态码的类别</a></li>
+        <li><a href="#42-2xx-成功">4.2 2XX 成功</a></li>
+        <li><a href="#43-3xx-重定向">4.3 3XX 重定向</a></li>
+        <li><a href="#44-4xx-客户端错误">4.4 4XX 客户端错误</a></li>
+        <li><a href="#441-404-not-found">4.4.1 404 Not Found</a></li>
+        <li><a href="#45-5xx-服务器端错误">4.5 5XX 服务器端错误</a></li>
+      </ul>
+    </li>
+    <li><a href="#第五章-web服务器">第五章 Web服务器</a>
+      <ul>
+        <li><a href="#51-通信数据转发程序代理网关隧道">5.1 通信数据转发程序：代理、网关、隧道</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" >
+                编程基础
+            </a>
+        
+            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" >
+                计算机网络
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/archives/29/">《图解HTTP》读后总结及浅谈</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            最近花了一些时间读完了《图解HTTP》，于是决定写一篇读书笔记以记录书本的大体内容，也正好当作一次复习
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2022-03-16 23:56 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 9 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>该文章由 <a class="link" href="https://blog.hiyoung.xyz/"  target="_blank" rel="noopener"
+    >Hiyoung</a> 编写</p>
+</blockquote>
+<h2 id="第一章了解web及网络基础">第一章：了解Web及网络基础
+</h2><h3 id="11简介">1.1简介
+</h3><p>为理解HTTP应事先了解一下TCP/IP协议族，我们通常使用的网络（包括互联网）是在TCP/IP协议族的基础上运作，而HTTP属于它内部的一个子集。在互联网上的设备需要相互通信双方就必须要遵从相同的规则，我们把这些规则称为协议。（TCP/IP是对互联网相关的各类协议族的一个总称包括但不限于：PPPoE、HTTP、TCP、IP、UDP、IEEE 802.3…）</p>
+<p>在TCP/IP协议族中按照层次从上到下分为：应用层、传输层、网络层、数据链路层</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_1.64jnt15m6zw0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+>
+<a class="link" href="https://zh.wikipedia.org/wiki/TCP/IP%E5%8D%8F%E8%AE%AE%E6%97%8F"  target="_blank" rel="noopener"
+    >互联网协议套件-维基百科</a></p>
+<p>在使用TCP/IP协议族进行通信时，客户端会从应用层往下走，服务端会从链路层往上走。客户端在层与层之间传输数据时，每经过一层时会为其加上该层的段首信息。相反，服务端会一层一层的消去首部。这种把数据信息包装起来的办法叫做封装。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_2.2mtrha99r9y0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="12-iptcp和dns">1.2 IP、TCP和DNS
+</h3><h4 id="121-ip协议">1.2.1 IP协议
+</h4><p>IP协议处于网络层，TCP/IP中的IP指的是IP协议，与IP地址并不是一回事。IP协议的作用是把<strong>各种</strong>数据包发送给对方。各种IP地址可以和MAC地址进行配对。IP地址可变换，但MAC地址基本上不会更改。IP 地址指明了节点被分配到的地址，MAC地址是指网卡所属的固定地址。</p>
+<h4 id="122-mac地址">1.2.2 MAC地址
+</h4><p>IP之间的通信依赖MAC地址。通常会使用<a class="link" href="https://zh.wikipedia.org/wiki/%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"  target="_blank" rel="noopener"
+    >ARP协议</a>来根据通信方的IP地址反查出对应的MAC地址</p>
+<h4 id="123-tcp协议">1.2.3 TCP协议
+</h4><p>按层次分，TCP 位于传输层，提供字节流服务（Byte Stream Service）——为了方便传输，将大块数据分割成以报文段（segment）为单位的数据包进行管理。一言以蔽之， TCP 协议为了更容易传送大数据才把数据分割，而且 TCP 协议能够确认数据最终是否送达到对方。</p>
+<p>为了确认数据是否送达到了对方，TCP采用了三次握手策略。握手过程中使用了TCP的标志（flag）——SYN（synchronize）和 ACK（acknowledgement）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_3.760m94av9r00.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h4 id="124-负责域名解析的dns服务">1.2.4 负责域名解析的DNS服务
+</h4><p>计算机既可以被赋予IP地址，也可以被赋予主机名和域名。DNS协议提供通过域名查找IP地址，或逆向从IP地址反查域名的服务。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_4.1timfhv6ysrk.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="13-url和uri">1.3 URL和URI
+</h3><h4 id="131-区别与关系">1.3.1 区别与关系
+</h4><p>与URI（统一资源标识符）相比，我们更熟悉URL（Uniform Resource Locator，统一资源定位符）。URL正是使用Web 浏览器等访问Web 页面时需要输入的网页地址。比如<a class="link" href="https://www.bilibili.com/"  target="_blank" rel="noopener"
+    >https://www.bilibili.com/</a>就是URL。URI 用字符串标识某一互联网资源，而 URL 表示资源的地点（互联网上所处的位置）。可见URL是URI的子集。URI可被视为定位符（URL），名称（URN）或两者兼备。<a class="link" href="https://zh.wikipedia.org/wiki/%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%90%8D"  target="_blank" rel="noopener"
+    >统一资源名</a>（URN）如同一个人的名称，而<a class="link" href="https://zh.wikipedia.org/wiki/%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E7%AC%A6"  target="_blank" rel="noopener"
+    >统一资源定位符</a>（URL）代表一个人的住址。换言之，URN定义某事物的身份，而URL提供查找该事物的方法。</p>
+<h4 id="132-uri-格式">1.3.2 URI 格式
+</h4><p>表示指定的URI，要使用涵盖全部必要信息的绝对URI、绝对URL以及相对URL。</p>
+<p>相对URL，是指从浏览器中基本URI处指定的URL，形如 /image/logo.gif。</p>
+<p>绝对URI的格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_6.49673xdqkoo0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>登录信息（认证）：指定用户名和密码作为从服务器端获取资源时必要的登录信息（身份认证）。此项是可选项。</p>
+<p>服务器地址：使用绝对 URI 必须指定待访问的服务器地址。地址可以是类似 hackr.jp 这种 DNS 可解析的名称，或是192.168.1.1 这类 IPv4 地址 名，还可以是 [0:0:0:0:0:0:0:1] 这样用方括号括起来的 IPv6 地址名。</p>
+<p>服务器端口号 ：指定服务器连接的网络端口号。此项也是可选项，若用户省略则自动使用默认端口号。</p>
+<p>带层次的文件路径 ：指定服务器上的文件路径来定位特指的资源。这与 UNIX 系统的文件目录结构相似。</p>
+<p>查询字符串 ：针对已指定的文件路径内的资源，可以使用查询字符串传入任意参数。此项可选。</p>
+<p>片段标识符：使用片段标识符通常可标记出已获取资源中的子资源（文档内的某个位置）。但在<a class="link" href="https://zh.wikipedia.org/wiki/RFC"  target="_blank" rel="noopener"
+    > RFC </a>中并没有明确规定其使用方法。该项也为可选项。</p>
+<h2 id="第二章简单的http协议">第二章：简单的HTTP协议
+</h2><h3 id="21-http简介">2.1 HTTP简介
+</h3><p>HTTP是一种不保存状态的协议，所谓不保存状态是指HTTP协议自身并不会对每次的请求和响应之间的通信状态进行保存。所以引入了cookie技术来保存通信状态。（注：HTTP这本书出版较早，现在使用保存状态的技术是由<a class="link" href="https://blog.csdn.net/zmh458/article/details/94599135"  target="_blank" rel="noopener"
+    >cookie、session和token</a>共同实现的）</p>
+<h3 id="22-常用的http方法">2.2 常用的HTTP方法
+</h3><p>GET：获取资源</p>
+<p>GET方法是用来请求URL指定的资源。指定资源经服务器端解析后返回响应内容</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_7.3mitewk9ex40.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>POST：传输实体主体</p>
+<p>POST用于向服务器传输数据，和获取的数据过大时也会使用POST方法。</p>
+<p><strong>GET和POST的区别：</strong></p>
+<p>先下结论，<strong>GET 和 POST 方法没有实质区别</strong>，只是报文格式不同。</p>
+<p><strong>请求参数长度限制</strong>：GET请求长度最多1024kb，POST对请求数据没有限制</p>
+<p><strong>请求参数</strong>：GET请求参数是通过URL传递的，多个参数以&amp;连接，POST请求放在request body中。<br>
+<strong>请求缓存</strong>：GET请求会被缓存，而POST请求不会，除非手动设置。<br>
+<strong>安全性</strong>：POST比GET安全，GET请求在浏览器回退时是无害的，而POST会再次请求。<br>
+<strong>历史记录</strong>：GET请求参数会被完整保留在浏览历史记录里，而POST中的参数不会被保留。<br>
+<strong>编码方式</strong>：GET请求只能进行url编码，而POST支持多种编码方式。<br>
+<strong>对参数的数据类型</strong>：GET只接受ASCII字符，而POST没有限制。</p>
+<p>此外，<a class="link" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE#%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"  target="_blank" rel="noopener"
+    >HTTP还有PUT、HEAD、DELETE等方法</a>在此不细细展开。</p>
+<h3 id="23-http的持久连接三次握手四次挥手">2.3 HTTP的持久连接（三次握手四次挥手）
+</h3><p>持久连接的特点是，只要任意一端没 有明确提出断开连接，则保持 TCP 连接状态。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_8.40nog0t3cto0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>三次握手：建立TCP连接 四次挥手：断开TCP连接</p>
+<p>在持久连接中使用管线化技术可以不用等待响应即可直接发送下一个请求。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_9.38eg3u00ie60.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="24-使用cookie的状态管理">2.4 使用cookie的状态管理
+</h3><p>Cookie 会根据从服务器端发送的响应报文内的一个叫做 Set-Cookie 的首部字段信息，通知客户端保存 Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入 Cookie 值后发送出去。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_10.77kck0emegg0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>Cookie信息是在服务端产生发送给客户端进行保存的</p>
+<h2 id="第三章-http报文信息">第三章 HTTP报文信息
+</h2><h3 id="31-http的请求和响应报文结构">3.1 HTTP的请求和响应报文结构
+</h3><p>用于HTTP协议交互的信息被称为HTTP报文。请求端（客户端）的HTTP报文叫做请求报文，响应端（服务器端）的叫做响应报文。由8位字节流组成，通过HTTP通信传输。</p>
+<p>请求行：包含用于请求的方法，请求 URI 和 HTTP 版本。</p>
+<p>状态行：包含表明响应结果的状态码，原因短语和 HTTP 版本。</p>
+<p>首部字段：包含表示请求和响应的各种条件和属性的各类首部。一般有4种首部，分别是：通用首部、请求首部、响应首部和实体首部。</p>
+<p>其他：可能包含 HTTP 的 RFC 里未定义的首部（Cookie 等）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_11.1dyr8qh0ntc0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="32-编码传输及分块传输">3.2 编码传输及分块传输
+</h3><p>HTTP在传输数据过程中通过编码提升传输速率。</p>
+<h4 id="321-报文主体和实体主体的差异">3.2.1 报文主体和实体主体的差异
+</h4><p>实体：作为请求或响应的有效载荷数据（补充项）被传输，其内容由实体首部和实体主体组成。</p>
+<p>HTTP 报文的主体用于传输请求或响应的实体主体。 **通常，报文主体等于实体主体。**只有当传输中进行编码操作时，实体主体的内容发生变化，才导致它和报文主体产生差异。</p>
+<h4 id="322-分割发送实体主体">3.2.2 分割发送实体主体
+</h4><p>在HTTP通信过程中传输大容量数据时，通过把数据分割成多块能让浏览器逐步显示页面。把实体主体分块的功能称为分块传输编码。分块传输编码会将实体主体分成多个块。每一块都会用 十六进制来标记块的大小，而实体主体的最后一块会使用“0(CR+LF)”来标记。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_12.25ytx96fe89s.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>所谓的块也就是常称的包</p>
+<h2 id="第四章-返回结果的http状态码">第四章 返回结果的HTTP状态码
+</h2><h3 id="41-状态码的类别">4.1 状态码的类别
+</h3><p>借助状态码用户可以知道服务器是否正常处理了请求，状态码种类繁多但常用的大概只要14种。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_13.4yset3e11bc0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="42-2xx-成功">4.2 2XX 成功
+</h3><h4 id="421-200-ok">4.2.1 200 OK
+</h4><p>表示从客户端发来的请求在服务器端被正常处理了。在响应报文内，随状态码一起返回的信息会因方法的不同而发生改变。</p>
+<h4 id="422-204-no-content">4.2.2 204 No Content
+</h4><p>该状态码代表服务器接收的请求已成功处理，但在返回的响应报文中不含实体的主体部分。</p>
+<h3 id="43-3xx-重定向">4.3 3XX 重定向
+</h3><p>重点介绍一下301重定向和302重定向，还有其他状态码可自行查看</p>
+<h4 id="431-301-moved-permanently">4.3.1 301 Moved Permanently
+</h4><p>301重定向是永久性的重定向。该状态码表示请求的资源已被分配了新的URI，以后应使用资源现在所指的 URI。例如像下方给出的请求URI，当指定资源路径的最后忘记添加斜杠 “/”，就会产生 301 状态码。</p>
+<p><a class="link" href="http://excample.com/sample"  target="_blank" rel="noopener"
+    >http://excample.com/sample</a></p>
+<h4 id="432-302-found">4.3.2 302 Found
+</h4><p>302重定向是临时性的重定向。该状态码表示请求的资源已被分配了新的URI，希望用户（本次）能使用新的 URI 访问。和 301 Moved Permanently 状态码相似，但 302 状态码代表的资源不是被永久移动，只是临时性质的。</p>
+<h3 id="44-4xx-客户端错误">4.4 4XX 客户端错误
+</h3><p>有400 Bad Request、401 Unauthorized、403 Forbidden、404 Not Found。 重点介绍一下404 Not Found</p>
+<h3 id="441-404-not-found">4.4.1 404 Not Found
+</h3><p>该状态码表明服务器上无法找到请求的资源。除此之外，也可以在服务器端拒绝请求且不想说明理由时使用。</p>
+<h3 id="45-5xx-服务器端错误">4.5 5XX 服务器端错误
+</h3><p>5XX 的响应结果表明服务器本身发生错误。</p>
+<h2 id="第五章-web服务器">第五章 Web服务器
+</h2><h3 id="51-通信数据转发程序代理网关隧道">5.1 通信数据转发程序：代理、网关、隧道
+</h3><h4 id="511-代理">5.1.1 代理
+</h4><p>代理服务器的基本行为就是接收客户端发送的请求后转发给其他服务器。代理不改变请求URI，会直接发送给前方持有资源的目标服务器。值得一提的是代理是指对客户端的代理（也称为前向代理），而反向代理是指对服务器的代理。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_14.2enjwjr8huhw.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>使用代理服务器可以利用缓存技术减少网络宽带的流量，有时也会为了信息安全而使用代理。</p>
+<ul>
+<li>缓存代理</li>
+</ul>
+<p>代理转发响应时，缓存代理（Caching Proxy）会预先将资源的副本（缓存）保存在代理服务器上。当代理再次接收到对相同资源的请求时，就可以不从源服务器那里获取资源，而是将之前缓存的资源作为响应返回。</p>
+<ul>
+<li>反向代理</li>
+</ul>
+<p>反向代理的优点有很多：</p>
+<blockquote>
+<p>对客户端隐藏服务器（集群）的IP地址</p>
+<p>安全：作为<a class="link" href="https://zh.wikipedia.org/wiki/%E6%87%89%E7%94%A8%E5%B1%A4%E9%98%B2%E7%81%AB%E7%89%86"  target="_blank" rel="noopener"
+    >应用层防火墙</a>，为网站提供对基于Web的攻击行为（例如<a class="link" href="https://zh.wikipedia.org/wiki/DoS"  target="_blank" rel="noopener"
+    >DoS</a>/<a class="link" href="https://zh.wikipedia.org/wiki/DDoS"  target="_blank" rel="noopener"
+    >DDoS</a>）的防护，更容易排查<a class="link" href="https://zh.wikipedia.org/wiki/%E6%83%A1%E6%84%8F%E8%BB%9F%E9%AB%94"  target="_blank" rel="noopener"
+    >恶意软件</a>等</p>
+<p>为后端服务器（集群）统一提供加密和<a class="link" href="https://zh.wikipedia.org/wiki/SSL"  target="_blank" rel="noopener"
+    >SSL</a>加速（如SSL终端代理）</p>
+<p><a class="link" href="https://zh.wikipedia.org/wiki/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"  target="_blank" rel="noopener"
+    >负载均衡</a>，若服务器集群中有负荷较高者，反向代理通过<a class="link" href="https://zh.wikipedia.org/wiki/URL%E9%87%8D%E5%AF%AB"  target="_blank" rel="noopener"
+    >URL重写</a>，根据连线请求从负荷较低者获取与所需相同的资源或备援</p>
+<p>对于静态内容及短时间内有大量访问请求的动态内容提供<a class="link" href="https://zh.wikipedia.org/wiki/Web%E7%BC%93%E5%AD%98"  target="_blank" rel="noopener"
+    >缓存服务</a></p>
+<p>对一些内容进行<a class="link" href="https://zh.wikipedia.org/wiki/%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE"  target="_blank" rel="noopener"
+    >压缩</a>，以节约<a class="link" href="https://zh.wikipedia.org/wiki/%E9%A0%BB%E5%AF%AC"  target="_blank" rel="noopener"
+    >带宽</a>或为网络带宽不佳的网络提供服务</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_15.3oly0u68nhk0.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h4 id="512-网关">5.1.2 网关
+</h4><p><img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/%e5%9b%be%e8%a7%a3http_16.7cakmt682go.jpg"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>网关的工作机制和代理十分相似。而网关能使通信线路上的服务器 提供非HTTP协议服务。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/http/">HTTP</a>
+        
+            <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 <a href="https://lit.link/yexca" target="_blank" style="color: #FBA1BB;"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <span>|</span>
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+    </body>
+</html>
