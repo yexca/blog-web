@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>SpringCloud on yexca&#39;Blog</title>
+        <link>https://blog.yexca.net/tags/springcloud/</link>
+        <description>Recent content in SpringCloud on yexca&#39;Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>yexca</copyright>
+        <lastBuildDate>Sun, 05 May 2024 00:54:52 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/tags/springcloud/feed.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Gateway 服务网关</title>
+        <link>https://blog.yexca.net/archives/171/</link>
+        <pubDate>Sun, 05 May 2024 00:54:52 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/171/</guid>
+        <description>&lt;p&gt;Gateway  是所有微服务的统一入口，有以下功能&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;身份认证和权限检验：网关作为微服务入口，需要校验用户是是否有请求资格，如果没有则进行拦截&lt;/li&gt;
+&lt;li&gt;请求路由、负载均衡：一切请求都必须先经过gateway，但网关不处理业务，而是根据某种规则，把请求转发到某个微服务，这个过程叫做路由。当然路由的目标服务有多个时，还需要做负载均衡&lt;/li&gt;
+&lt;li&gt;请求限流：当请求流量过高时，在网关中按照下流的微服务能够接受的速度来放行请求，避免服务压力过大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SpringCloud 的网关实现有两种&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Feign 远程调用</title>
+        <link>https://blog.yexca.net/archives/170/</link>
+        <pubDate>Fri, 03 May 2024 23:11:52 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/170/</guid>
+        <description>&lt;p&gt;Feign是一个声明式的 Http 客户端，Github：&lt;a class=&#34;link&#34; href=&#34;https://github.com/OpenFeign/feign&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/OpenFeign/feign&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;简单使用&#34;&gt;简单使用
+&lt;/h2&gt;&lt;p&gt;引入依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.cloud&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-cloud-starter-openfeign&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在启动类添加注解开启 Feign 的功能&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@EnableFeignClients&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@SpringBootApplication&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;编写 Feign 客户端&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@FeignClient&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;userService&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;UserClient&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GetMapping&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/user/{id}&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    User &lt;span style=&#34;color:#a6e22e&#34;&gt;findById&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;@PathVariable&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;) Long id);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;替换 RestTemplate&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Service&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;OrderService&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Autowired&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; OrderMapper orderMapper;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// @Autowired&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// private RestTemplate restTemplate;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Autowired&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; UserClient userClient;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Order &lt;span style=&#34;color:#a6e22e&#34;&gt;queryOrderById&lt;/span&gt;(Long orderId) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 1.查询订单&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Order order &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; orderMapper.&lt;span style=&#34;color:#a6e22e&#34;&gt;findById&lt;/span&gt;(orderId);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 2.查询用户&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// String url = &amp;#34;http://localhost:8081/user/&amp;#34; + order.getUserId();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//        String url = &amp;#34;http://userService/user/&amp;#34; + order.getUserId();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//        User user = restTemplate.getForObject(url, User.class);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// Feign&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        User user &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; userClient.&lt;span style=&#34;color:#a6e22e&#34;&gt;findById&lt;/span&gt;(order.&lt;span style=&#34;color:#a6e22e&#34;&gt;getUserId&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 3.封装用户信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        order.&lt;span style=&#34;color:#a6e22e&#34;&gt;setUser&lt;/span&gt;(user);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// 4.返回&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; order;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;自定义配置&#34;&gt;自定义配置
+&lt;/h2&gt;&lt;p&gt;Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Nacos 注册中心</title>
+        <link>https://blog.yexca.net/archives/169/</link>
+        <pubDate>Thu, 02 May 2024 22:36:17 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/169/</guid>
+        <description>&lt;p&gt;需先安装软件，官网：&lt;a class=&#34;link&#34; href=&#34;https://nacos.io/zh-cn/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://nacos.io/zh-cn/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;在 &lt;code&gt;conf/application.properties&lt;/code&gt; 文件中可以更改端口，默认为 8848&lt;/p&gt;
+&lt;h2 id=&#34;注册服务&#34;&gt;注册服务
+&lt;/h2&gt;&lt;p&gt;父工程中添加管理依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.alibaba.cloud&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-cloud-alibaba-dependencies&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.2.6.RELEASE&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;type&amp;gt;&lt;/span&gt;pom&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/type&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;import&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注释掉 Eureka 的依赖，并添加 Nacos 客户端的依赖&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.alibaba.cloud&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;修改 application.yml，添加 Nacos 地址，注释 Eureka 地址&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Ribbon 负载均衡</title>
+        <link>https://blog.yexca.net/archives/168/</link>
+        <pubDate>Sun, 28 Apr 2024 15:50:15 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/168/</guid>
+        <description>&lt;p&gt;消费者发起请求会被 Ribbon 拦截，Ribbon 从 Eureka 拉取提供者列表，Eureka 返回提供者列表，Ribbon 根据 IRule 选择服务器发起请求&lt;/p&gt;
+&lt;p&gt;详细拦截：请求-&amp;gt;DynamicServerListLoadBalancer (获取url中的服务id,userService)-&amp;gt;DynamicServerListLoadBalancer-&amp;gt;Eureka-&amp;gt;DynamicServerListLoadBalancer-&amp;gt;IRule-&amp;gt;DynamicServerListLoadBalancer -&amp;gt;发起请求&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>注册中心 - Eureka</title>
+        <link>https://blog.yexca.net/archives/161/</link>
+        <pubDate>Thu, 29 Feb 2024 16:53:15 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/161/</guid>
+        <description>&lt;p&gt;引入注册中心之前先引入提供者与消费者概念&lt;/p&gt;
+&lt;h2 id=&#34;提供者与消费者&#34;&gt;提供者与消费者
+&lt;/h2&gt;&lt;p&gt;服务提供者：一次业务中，被其它微服务调用的服务。（提供接口给其它微服务）&lt;/p&gt;
+&lt;p&gt;服务消费者：一次业务中，调用其它微服务的服务。（调用其它微服务提供的接口）&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Hi SpringCloud</title>
+        <link>https://blog.yexca.net/archives/158/</link>
+        <pubDate>Sun, 25 Feb 2024 17:56:54 +0800</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/158/</guid>
+        <description>&lt;h2 id=&#34;服务架构&#34;&gt;服务架构
+&lt;/h2&gt;&lt;h3 id=&#34;单体架构&#34;&gt;单体架构
+&lt;/h3&gt;&lt;p&gt;将业务的所有功能集中在一个项目中开发，打包一个包部署&lt;/p&gt;
+&lt;p&gt;优点：架构简单、扩展性差、部署成本低，适合小型项目&lt;/p&gt;
+&lt;p&gt;缺点：耦合度高&lt;/p&gt;
+&lt;h3 id=&#34;分布式架构&#34;&gt;分布式架构
+&lt;/h3&gt;&lt;p&gt;根据业务功能对系统进行拆分，每个业务模块作为独立项目开发，称为一个服务&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
