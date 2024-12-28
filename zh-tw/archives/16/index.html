@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-tw" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 該文章使用 Google 翻譯處理。\n程式碼 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; // malloc()、exit() #define Size 5 // 對 Size 進行巨集定義，表示順序表申請空間的大小 typedef struct Table { int * head; // 宣告了一個名為head的長度不確定的數組，也叫“動態數組” int length; // 記錄當前順序表的長度 int size; // 記錄順序表分配的儲存容量 }table; // 初始化函數 table initTable() { table t; t.head = (int*)malloc(Size * sizeof(int)); // 建構一個空的順序表，動態申請儲存空間 if (!t.head) // 若申請失敗，作出提示並直接退出程序 { printf(&#34;初始化失敗&#34;); exit(0); } t.length = 0; // 空表的長度初始化為 0 t.size = Size; // 空表的初始儲存空間為 Size return t; } // 插入函數，其中，elem 為插入的元素，add 為插入到順序表的位置 table addTable(table t, int elem, int add) { int i; // 判斷插入本身是否有問題（如果插入元素位置比整張表的長度 +1 還大 (如果相等，是尾隨的情況)，或者插入的位置本身不存在，程序作為提示並自動退出) if (add &gt; t.length + 1 || add &lt; 1) { printf(&#34;插入位置有問題&#34;); return t; } // 做插入操作時，首先需要看順序表是否有多餘的儲存空間提供給插入的元素，如果沒有，則需要申請 if (t.length == t.size) { t.head = (int *)realloc(t.head, (t.size + 1) * sizeof(int)); if (!t.head) { printf(&#34;儲存分配失敗&#34;); return t; } t.size += 1; } // 插入操作，需要將從插入位置開始的後續元素，逐個後移 for (i = t.length - 1; i &gt;= add - 1; i--) { t.head[i + 1] = t.head[i]; } // 後移完成後，直接將所需插入元素，新增至順序表的相應位置 t.head[add - 1] = elem; // 由於添加了元素，所以長度 +1 t.length++; return t; } // 刪除函數 table delTable(table t, int add) { int i; if (add &gt; t.length || add &lt; 1) { printf(&#34;被刪除元素的位置有誤&#34;); exit(0); } for (i = add; i &lt; t.length; i++) { t.head[i - 1] = t.head[i]; } t.length--; return t; } // 尋找函數，其中，elem 表示要尋找的資料元素的值 int selectTable(table t, int elem) { int i; for (i = 0; i &lt; t.length; i++) { if (t.head[i] == elem) { return i + 1; } } return -1; } // 更改函數，其中，elem 為要更改的元素，newElem 為新的資料元素 table amendTable(table t, int elem, int newElem) { int add = selectTable(t, elem); t.head[add - 1] = newElem; return t; } // 輸出順序表中元素的函數 void displayTable(table t) { int i; for (i = 0; i &lt; t.length; i++) { printf(&#34;%d &#34;, t.head[i]); } printf(&#34;\\n&#34;); } int main() { int i, add; table t1 = initTable(); // 在順序表中新增元素 for (i = 1; i &lt;= Size; i++) { t1.head[i - 1] = i; t1.length++; } printf(&#34;原順序表：\\n&#34;); displayTable(t1); printf(&#34;刪除元素 1:\\n&#34;); t1 = delTable(t1, 1); displayTable(t1); printf(&#34;在第 2 的位置插入元素 5:\\n&#34;); t1 = addTable(t1, 5, 2); displayTable(t1); printf(&#34;尋找元素 3 的位置:\\n&#34;); add = selectTable(t1, 3); printf(&#34;%d\\n&#34;, add); printf(&#34;將元素 3 改為 6:\\n&#34;); t1 = amendTable(t1, 3, 6); displayTable(t1); return 0; } 結果 程式運行結果為：\n">
+<title>資料結構 順序表程式碼</title>
+
+<link rel='canonical' href='https://blog.yexca.net/zh-tw/archives/16/'>
+
+<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="資料結構 順序表程式碼">
+<meta property='og:description' content=" 該文章使用 Google 翻譯處理。\n程式碼 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; // malloc()、exit() #define Size 5 // 對 Size 進行巨集定義，表示順序表申請空間的大小 typedef struct Table { int * head; // 宣告了一個名為head的長度不確定的數組，也叫“動態數組” int length; // 記錄當前順序表的長度 int size; // 記錄順序表分配的儲存容量 }table; // 初始化函數 table initTable() { table t; t.head = (int*)malloc(Size * sizeof(int)); // 建構一個空的順序表，動態申請儲存空間 if (!t.head) // 若申請失敗，作出提示並直接退出程序 { printf(&#34;初始化失敗&#34;); exit(0); } t.length = 0; // 空表的長度初始化為 0 t.size = Size; // 空表的初始儲存空間為 Size return t; } // 插入函數，其中，elem 為插入的元素，add 為插入到順序表的位置 table addTable(table t, int elem, int add) { int i; // 判斷插入本身是否有問題（如果插入元素位置比整張表的長度 +1 還大 (如果相等，是尾隨的情況)，或者插入的位置本身不存在，程序作為提示並自動退出) if (add &gt; t.length + 1 || add &lt; 1) { printf(&#34;插入位置有問題&#34;); return t; } // 做插入操作時，首先需要看順序表是否有多餘的儲存空間提供給插入的元素，如果沒有，則需要申請 if (t.length == t.size) { t.head = (int *)realloc(t.head, (t.size + 1) * sizeof(int)); if (!t.head) { printf(&#34;儲存分配失敗&#34;); return t; } t.size += 1; } // 插入操作，需要將從插入位置開始的後續元素，逐個後移 for (i = t.length - 1; i &gt;= add - 1; i--) { t.head[i + 1] = t.head[i]; } // 後移完成後，直接將所需插入元素，新增至順序表的相應位置 t.head[add - 1] = elem; // 由於添加了元素，所以長度 +1 t.length++; return t; } // 刪除函數 table delTable(table t, int add) { int i; if (add &gt; t.length || add &lt; 1) { printf(&#34;被刪除元素的位置有誤&#34;); exit(0); } for (i = add; i &lt; t.length; i++) { t.head[i - 1] = t.head[i]; } t.length--; return t; } // 尋找函數，其中，elem 表示要尋找的資料元素的值 int selectTable(table t, int elem) { int i; for (i = 0; i &lt; t.length; i++) { if (t.head[i] == elem) { return i + 1; } } return -1; } // 更改函數，其中，elem 為要更改的元素，newElem 為新的資料元素 table amendTable(table t, int elem, int newElem) { int add = selectTable(t, elem); t.head[add - 1] = newElem; return t; } // 輸出順序表中元素的函數 void displayTable(table t) { int i; for (i = 0; i &lt; t.length; i++) { printf(&#34;%d &#34;, t.head[i]); } printf(&#34;\\n&#34;); } int main() { int i, add; table t1 = initTable(); // 在順序表中新增元素 for (i = 1; i &lt;= Size; i++) { t1.head[i - 1] = i; t1.length++; } printf(&#34;原順序表：\\n&#34;); displayTable(t1); printf(&#34;刪除元素 1:\\n&#34;); t1 = delTable(t1, 1); displayTable(t1); printf(&#34;在第 2 的位置插入元素 5:\\n&#34;); t1 = addTable(t1, 5, 2); displayTable(t1); printf(&#34;尋找元素 3 的位置:\\n&#34;); add = selectTable(t1, 3); printf(&#34;%d\\n&#34;, add); printf(&#34;將元素 3 改為 6:\\n&#34;); t1 = amendTable(t1, 3, 6); displayTable(t1); return 0; } 結果 程式運行結果為：\n">
+<meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/16/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='c/c&#43;&#43;' /><meta property='article:published_time' content='2021-11-20T23:01:47&#43;08:00'/><meta property='article:modified_time' content='2021-11-20T23:01:47&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="資料結構 順序表程式碼">
+<meta name="twitter:description" content=" 該文章使用 Google 翻譯處理。\n程式碼 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; // malloc()、exit() #define Size 5 // 對 Size 進行巨集定義，表示順序表申請空間的大小 typedef struct Table { int * head; // 宣告了一個名為head的長度不確定的數組，也叫“動態數組” int length; // 記錄當前順序表的長度 int size; // 記錄順序表分配的儲存容量 }table; // 初始化函數 table initTable() { table t; t.head = (int*)malloc(Size * sizeof(int)); // 建構一個空的順序表，動態申請儲存空間 if (!t.head) // 若申請失敗，作出提示並直接退出程序 { printf(&#34;初始化失敗&#34;); exit(0); } t.length = 0; // 空表的長度初始化為 0 t.size = Size; // 空表的初始儲存空間為 Size return t; } // 插入函數，其中，elem 為插入的元素，add 為插入到順序表的位置 table addTable(table t, int elem, int add) { int i; // 判斷插入本身是否有問題（如果插入元素位置比整張表的長度 +1 還大 (如果相等，是尾隨的情況)，或者插入的位置本身不存在，程序作為提示並自動退出) if (add &gt; t.length + 1 || add &lt; 1) { printf(&#34;插入位置有問題&#34;); return t; } // 做插入操作時，首先需要看順序表是否有多餘的儲存空間提供給插入的元素，如果沒有，則需要申請 if (t.length == t.size) { t.head = (int *)realloc(t.head, (t.size + 1) * sizeof(int)); if (!t.head) { printf(&#34;儲存分配失敗&#34;); return t; } t.size += 1; } // 插入操作，需要將從插入位置開始的後續元素，逐個後移 for (i = t.length - 1; i &gt;= add - 1; i--) { t.head[i + 1] = t.head[i]; } // 後移完成後，直接將所需插入元素，新增至順序表的相應位置 t.head[add - 1] = elem; // 由於添加了元素，所以長度 +1 t.length++; return t; } // 刪除函數 table delTable(table t, int add) { int i; if (add &gt; t.length || add &lt; 1) { printf(&#34;被刪除元素的位置有誤&#34;); exit(0); } for (i = add; i &lt; t.length; i++) { t.head[i - 1] = t.head[i]; } t.length--; return t; } // 尋找函數，其中，elem 表示要尋找的資料元素的值 int selectTable(table t, int elem) { int i; for (i = 0; i &lt; t.length; i++) { if (t.head[i] == elem) { return i + 1; } } return -1; } // 更改函數，其中，elem 為要更改的元素，newElem 為新的資料元素 table amendTable(table t, int elem, int newElem) { int add = selectTable(t, elem); t.head[add - 1] = newElem; return t; } // 輸出順序表中元素的函數 void displayTable(table t) { int i; for (i = 0; i &lt; t.length; i++) { printf(&#34;%d &#34;, t.head[i]); } printf(&#34;\\n&#34;); } int main() { int i, add; table t1 = initTable(); // 在順序表中新增元素 for (i = 1; i &lt;= Size; i++) { t1.head[i - 1] = i; t1.length++; } printf(&#34;原順序表：\\n&#34;); displayTable(t1); printf(&#34;刪除元素 1:\\n&#34;); t1 = delTable(t1, 1); displayTable(t1); printf(&#34;在第 2 的位置插入元素 5:\\n&#34;); t1 = addTable(t1, 5, 2); displayTable(t1); printf(&#34;尋找元素 3 的位置:\\n&#34;); add = selectTable(t1, 3); printf(&#34;%d\\n&#34;, add); printf(&#34;將元素 3 改為 6:\\n&#34;); t1 = amendTable(t1, 3, 6); displayTable(t1); return 0; } 結果 程式運行結果為：\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-tw/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-tw">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把這個不美好的世界，編程您所期望的樣子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/zh-tw/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/zh-tw/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首頁</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>檔案</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜尋</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>連結</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>關於</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" >简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" selected>繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>夜晚模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目錄</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#程式碼">程式碼</a></li>
+    <li><a href="#結果">結果</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-tw/categories/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%E5%9F%BA%E7%A4%8E/" >
+                程式設計基礎
+            </a>
+        
+            <a href="/zh-tw/categories/%E8%B3%87%E6%96%99%E7%B5%90%E6%A7%8B/" >
+                資料結構
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-tw/archives/16/">資料結構 順序表程式碼</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2021-11-20 23:01 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 3 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/archives/16/" class="link">简体中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>該文章使用 Google 翻譯處理。</p>
+</blockquote>
+<h2 id="程式碼">程式碼
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt; // malloc()、exit()</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define Size 5  </span><span style="color:#75715e">// 對 Size 進行巨集定義，表示順序表申請空間的大小
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> Table
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span> head; <span style="color:#75715e">// 宣告了一個名為head的長度不確定的數組，也叫“動態數組”
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> length; <span style="color:#75715e">// 記錄當前順序表的長度
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> size;   <span style="color:#75715e">// 記錄順序表分配的儲存容量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}table;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 初始化函數
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>table <span style="color:#a6e22e">initTable</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    table t;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    t.head <span style="color:#f92672">=</span> (<span style="color:#66d9ef">int</span><span style="color:#f92672">*</span>)<span style="color:#a6e22e">malloc</span>(Size <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>));  <span style="color:#75715e">// 建構一個空的順序表，動態申請儲存空間
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>t.head)    <span style="color:#75715e">// 若申請失敗，作出提示並直接退出程序
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;初始化失敗&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    t.length <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;   <span style="color:#75715e">// 空表的長度初始化為 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    t.size <span style="color:#f92672">=</span> Size;  <span style="color:#75715e">// 空表的初始儲存空間為 Size
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 插入函數，其中，elem 為插入的元素，add 為插入到順序表的位置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>table <span style="color:#a6e22e">addTable</span>(table t, <span style="color:#66d9ef">int</span> elem, <span style="color:#66d9ef">int</span> add)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 判斷插入本身是否有問題（如果插入元素位置比整張表的長度 +1 還大 (如果相等，是尾隨的情況)，或者插入的位置本身不存在，程序作為提示並自動退出)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (add <span style="color:#f92672">&gt;</span> t.length <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">||</span> add <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;插入位置有問題&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 做插入操作時，首先需要看順序表是否有多餘的儲存空間提供給插入的元素，如果沒有，則需要申請
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (t.length <span style="color:#f92672">==</span> t.size) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        t.head <span style="color:#f92672">=</span> (<span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>)<span style="color:#a6e22e">realloc</span>(t.head, (t.size <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>));
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>t.head) 
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;儲存分配失敗&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        t.size <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 插入操作，需要將從插入位置開始的後續元素，逐個後移
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> t.length <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&gt;=</span> add <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>; i<span style="color:#f92672">--</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        t.head[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> t.head[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 後移完成後，直接將所需插入元素，新增至順序表的相應位置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    t.head[add <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> elem;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 由於添加了元素，所以長度 +1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    t.length<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 刪除函數
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>table <span style="color:#a6e22e">delTable</span>(table t, <span style="color:#66d9ef">int</span> add) 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (add <span style="color:#f92672">&gt;</span> t.length <span style="color:#f92672">||</span> add <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;被刪除元素的位置有誤&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> add; i <span style="color:#f92672">&lt;</span> t.length; i<span style="color:#f92672">++</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        t.head[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> t.head[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    t.length<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 尋找函數，其中，elem 表示要尋找的資料元素的值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">selectTable</span>(table t, <span style="color:#66d9ef">int</span> elem) 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> t.length; i<span style="color:#f92672">++</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (t.head[i] <span style="color:#f92672">==</span> elem) 
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 更改函數，其中，elem 為要更改的元素，newElem 為新的資料元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>table <span style="color:#a6e22e">amendTable</span>(table t, <span style="color:#66d9ef">int</span> elem, <span style="color:#66d9ef">int</span> newElem) 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> add <span style="color:#f92672">=</span> <span style="color:#a6e22e">selectTable</span>(t, elem);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    t.head[add <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> newElem;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> t;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 輸出順序表中元素的函數
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">displayTable</span>(table t) 
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> t.length; i<span style="color:#f92672">++</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d &#34;</span>, t.head[i]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> i, add;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    table t1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">initTable</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 在順序表中新增元素
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; i <span style="color:#f92672">&lt;=</span> Size; i<span style="color:#f92672">++</span>) 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        t1.head[i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> i;
+</span></span><span style="display:flex;"><span>        t1.length<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;原順序表：</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">displayTable</span>(t1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;刪除元素 1:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    t1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">delTable</span>(t1, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">displayTable</span>(t1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;在第 2 的位置插入元素 5:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    t1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">addTable</span>(t1, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">displayTable</span>(t1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;尋找元素 3 的位置:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    add <span style="color:#f92672">=</span> <span style="color:#a6e22e">selectTable</span>(t1, <span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, add);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;將元素 3 改為 6:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    t1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">amendTable</span>(t1, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">displayTable</span>(t1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="結果">結果
+</h2><p>程式運行結果為：</p>
+<p>原順序表：
+1 2 3 4 5<br>
+刪除元素 1:<br>
+2 3 4 5<br>
+在第 2 的位置插入元素 5:<br>
+2 5 3 4 5<br>
+尋找元素 3 的位置:<br>
+3<br>
+將元素 3 改為 6:<br>
+2 5 6 4 5</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/zh-tw/tags/c/c&#43;&#43;/">C/C&#43;&#43;</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相關文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/zh-tw/archives/15/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">資料結構 鍊錶程式碼</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-tw/archives/14/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">C 資料結構程式碼</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/zh-tw/archives/6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">VsCode 配置 C 語言環境</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 建立 <span>|</span>
+        主題 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 設計
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+    </body>
+</html>

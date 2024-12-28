@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-tw" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 該文章使用 Google 翻譯處理。\nRedis 是一個基於記憶體的鍵值結構資料庫，是互聯網技術領域使用廣泛的儲存中間件\n官網：https://redis.io 簡體中文網：https://www.redis.net.cn/ Redis 基於記憶體存儲，讀寫效能高，適合儲存熱點資料 (商品、資訊、新聞) 。是用 C 語言開發的一個開源的高效能鍵值對資料庫，儲存 value 類型比較豐富，也被稱為結構化的 NoSql (Not Only SQL) 資料庫\n">
+<title>Redis</title>
+
+<link rel='canonical' href='https://blog.yexca.net/zh-tw/archives/157/'>
+
+<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="Redis">
+<meta property='og:description' content=" 該文章使用 Google 翻譯處理。\nRedis 是一個基於記憶體的鍵值結構資料庫，是互聯網技術領域使用廣泛的儲存中間件\n官網：https://redis.io 簡體中文網：https://www.redis.net.cn/ Redis 基於記憶體存儲，讀寫效能高，適合儲存熱點資料 (商品、資訊、新聞) 。是用 C 語言開發的一個開源的高效能鍵值對資料庫，儲存 value 類型比較豐富，也被稱為結構化的 NoSql (Not Only SQL) 資料庫\n">
+<meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/157/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringBoot' /><meta property='article:tag' content='JavaWeb' /><meta property='article:published_time' content='2024-02-23T16:40:34&#43;08:00'/><meta property='article:modified_time' content='2024-02-23T16:40:34&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Redis">
+<meta name="twitter:description" content=" 該文章使用 Google 翻譯處理。\nRedis 是一個基於記憶體的鍵值結構資料庫，是互聯網技術領域使用廣泛的儲存中間件\n官網：https://redis.io 簡體中文網：https://www.redis.net.cn/ Redis 基於記憶體存儲，讀寫效能高，適合儲存熱點資料 (商品、資訊、新聞) 。是用 C 語言開發的一個開源的高效能鍵值對資料庫，儲存 value 類型比較豐富，也被稱為結構化的 NoSql (Not Only SQL) 資料庫\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/zh-tw/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/zh-tw">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把這個不美好的世界，編程您所期望的樣子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/zh-tw/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/zh-tw/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>首頁</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>檔案</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜尋</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>連結</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/zh-tw/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>關於</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" >简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" selected>繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>夜晚模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目錄</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#redis-下載安裝與執行">Redis 下載安裝與執行</a>
+      <ul>
+        <li><a href="#docker-部署">Docker 部署</a></li>
+      </ul>
+    </li>
+    <li><a href="#redis-數據類型">Redis 數據類型</a></li>
+    <li><a href="#redis-常用命令">Redis 常用命令</a></li>
+    <li><a href="#在-java-中操作-redis">在 Java 中操作 Redis</a>
+      <ul>
+        <li><a href="#spring-data-redis">spring data Redis</a></li>
+      </ul>
+    </li>
+    <li><a href="#字串類型數據">字串類型數據</a></li>
+    <li><a href="#哈希類型數據">哈希類型數據</a></li>
+    <li><a href="#列表類型數據">列表類型數據</a></li>
+    <li><a href="#集合類型數據">集合類型數據</a></li>
+    <li><a href="#有序集合類型數據">有序集合類型數據</a></li>
+    <li><a href="#通用命令操作">通用命令操作</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/zh-tw/categories/%E5%BE%8C%E7%AB%AF/" >
+                後端
+            </a>
+        
+            <a href="/zh-tw/categories/redis/" >
+                Redis
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/zh-tw/archives/157/">Redis</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2024-02-23 16:40 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 6 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/archives/157/" class="link">简体中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>該文章使用 Google 翻譯處理。</p>
+</blockquote>
+<p>Redis 是一個基於記憶體的鍵值結構資料庫，是互聯網技術領域使用廣泛的儲存中間件</p>
+<ul>
+<li>官網：<a class="link" href="https://redis.io"  target="_blank" rel="noopener"
+    >https://redis.io</a></li>
+<li>簡體中文網：<a class="link" href="https://www.redis.net.cn/"  target="_blank" rel="noopener"
+    >https://www.redis.net.cn/</a></li>
+</ul>
+<p>Redis 基於記憶體存儲，讀寫效能高，適合儲存熱點資料 (商品、資訊、新聞) 。是用 C 語言開發的一個開源的高效能鍵值對資料庫，儲存 value 類型比較豐富，也被稱為結構化的 NoSql (Not Only SQL) 資料庫</p>
+<p>NoSql 泛指非關係型資料庫，不是要取代關係型資料庫，而是關係型資料庫的補充</p>
+<p>關係型資料庫 (RDBMS)：</p>
+<ul>
+<li>MySQL</li>
+<li>Oracle</li>
+<li>DB2</li>
+<li>SQLServer</li>
+</ul>
+<p>非關係型資料庫 (NoSQL)：</p>
+<ul>
+<li>Redis</li>
+<li>Mongo DB</li>
+<li>MemCached</li>
+</ul>
+<h2 id="redis-下載安裝與執行">Redis 下載安裝與執行
+</h2><p>下載地址：</p>
+<ul>
+<li>Windows: <a class="link" href="https://github.com/microsoftarchive/redis/releases"  target="_blank" rel="noopener"
+    >https://github.com/microsoftarchive/redis/releases</a></li>
+<li>Linux: <a class="link" href="https://download.redis.io/releases/"  target="_blank" rel="noopener"
+    >https://download.redis.io/releases/</a></li>
+<li>cn: <a class="link" href="http://www.redis.cn/download.html"  target="_blank" rel="noopener"
+    >http://www.redis.cn/download.html</a></li>
+</ul>
+<p>Windows 版直接解壓縮即可使用，Linux 版：</p>
+<ol>
+<li>解壓縮 <code>tar -zxvf redis-4.0.0.tar.gz -C /usr/local</code></li>
+<li>安裝依賴環境 <code>yum install gcc-c++</code></li>
+<li>進入安裝目錄，編譯 <code>make</code></li>
+<li>進入 redis 的 src 目錄安裝 <code>make install</code></li>
+</ol>
+<p>相關文件說明：</p>
+<ul>
+<li>/usr/local/redis-4.0.0/src/redis-server：Redis 服務啟動腳本</li>
+<li>/usr/local/redis-4.0.0/src/redis-cli：Redis 客戶端腳本</li>
+<li>/usr/local/redis-4.0.0/redis.conf：Redis 設定檔</li>
+</ul>
+<hr>
+<p>服務端啟動，以 Windows 版為例，啟動命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>redis-server.exe redis.windows.conf
+</span></span></code></pre></div><p>默認端口號為 6379，默認無密碼，啟動完成後可以用客戶端連接</p>
+<ul>
+<li>命令行連接</li>
+</ul>
+<p>通過 redis-cli.exe 進行連接</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>redis-cli.exe -h ip -p port -a password
+</span></span></code></pre></div><p>如果省略，則使用 <code>127.0.0.1:6379</code></p>
+<p>可以通過修改配置文件 (redis.windows.conf) 設置密碼</p>
+<pre tabindex="0"><code class="language-conf" data-lang="conf">requirepass 123456
+</code></pre><p>修改完成後重啟生效</p>
+<ul>
+<li>圖形化連接</li>
+</ul>
+<p>Github：<a class="link" href="https://github.com/qishibo/AnotherRedisDesktopManager"  target="_blank" rel="noopener"
+    >https://github.com/qishibo/AnotherRedisDesktopManager</a></p>
+<p>下載安裝後新建連接，輸入相關信息後連接即可</p>
+<hr>
+<h3 id="docker-部署">Docker 部署
+</h3><p>拉取鏡像</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull redis
+</span></span></code></pre></div><p>獲取配置文件，下載對應版本，抽取配置文件即可，Linux 為 redis.conf</p>
+<p>創建 Redis 數據映射文件夾，例如</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir /home/redis
+</span></span><span style="display:flex;"><span>mkdir /home/redis/data
+</span></span></code></pre></div><p>修改配置文件，傳送至部署機子，例如使用 scp 從 Win 傳至 Linux</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp pathOfFile root@IP:/PathOfFile
+</span></span></code></pre></div><p>啟動</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -p 6379:6379 --name redis -v /home/redis/redis.conf:/etc/redis/redis.conf  -v /home/redis/data:/data -d redis redis-server /etc/redis/redis.conf
+</span></span></code></pre></div><hr>
+<p>參考資料：<a class="link" href="https://cloud.tencent.com/developer/article/1670205"  target="_blank" rel="noopener"
+    >https://cloud.tencent.com/developer/article/1670205</a></p>
+<hr>
+<h2 id="redis-數據類型">Redis 數據類型
+</h2><p>Redis 的 key 是字符串類型，value 有 5 種常用的數據類型</p>
+<ul>
+<li>字串 (string)：普通字串</li>
+<li>哈希 (hash)：也叫散列</li>
+<li>清單 (list)：依插入順序排序，可以有重複元素</li>
+<li>集合 (set)：無序集合，不允許重複元素</li>
+<li>有序集合 (sorted set/zset)：集合中每個元素關聯一個分數 (score)，根據分數升序排序</li>
+</ul>
+<p><img src="https://github.com/yexca/picx-images-hosting/raw/master/2024/01-Redis/image-20221130190150749.4c54ob5v8i60.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Redis 數據類型"
+	
+	
+></p>
+<h2 id="redis-常用命令">Redis 常用命令
+</h2><p>Redis 大小寫不敏感</p>
+<p>字符串操作常用命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 設置指定 key 值</span>
+</span></span><span style="display:flex;"><span>SET key value
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 獲取指定 key 值</span>
+</span></span><span style="display:flex;"><span>GET key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 設置指定 key 值，並將 key 的過期時間設為 seconds 秒</span>
+</span></span><span style="display:flex;"><span>SETEX key seconds value
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 只在 key 不存在時才設置 key 的值</span>
+</span></span><span style="display:flex;"><span>SETNX key value
+</span></span></code></pre></div><p>hash 是一個 string 類型的 field 和 value 映射表，特別適合存儲對象，常用命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 將哈希表 key 中的 field 值設為 value</span>
+</span></span><span style="display:flex;"><span>HSET key field value
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 取得儲存在哈希表中指定欄位的值</span>
+</span></span><span style="display:flex;"><span>HGET key field
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 刪除儲存在哈希表中的指定字段</span>
+</span></span><span style="display:flex;"><span>HDEL key field
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 獲取哈希表中所有字段</span>
+</span></span><span style="display:flex;"><span>HKEYS key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 獲取哈希表中所有值</span>
+</span></span><span style="display:flex;"><span>HVALS key
+</span></span></code></pre></div><p>列表是簡單的字符串列表，按照插入順序排列，常用命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 將一個或多個值插入到清單頭部</span>
+</span></span><span style="display:flex;"><span>LPUSH key value1 <span style="color:#f92672">[</span>value2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 取得清單指定範圍內的元素</span>
+</span></span><span style="display:flex;"><span>LRANGE key start stop
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 移除並取得清單最後一個元素</span>
+</span></span><span style="display:flex;"><span>RPOP key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 取得清單長度</span>
+</span></span><span style="display:flex;"><span>LLEN key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 移出並取得清單的最後一個元素</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果清單沒有元素會阻塞清單直到等待逾時或發現可彈出元素為止</span>
+</span></span><span style="display:flex;"><span>BRPOP key1 <span style="color:#f92672">[</span>key2<span style="color:#f92672">]</span> timeout
+</span></span></code></pre></div><blockquote>
+<p>類似隊列，先進先出</p>
+</blockquote>
+<p>集合是字串型別的無序集合，集合成員唯一，常用指令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 在集合中新增一個或多個成員</span>
+</span></span><span style="display:flex;"><span>SADD key member1 <span style="color:#f92672">[</span>member2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 傳回集合中的所有成員</span>
+</span></span><span style="display:flex;"><span>SMEMBERS key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 取得集合的成員數</span>
+</span></span><span style="display:flex;"><span>SCARD key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 傳回給定所有集合的交集</span>
+</span></span><span style="display:flex;"><span>SINTER key2 <span style="color:#f92672">[</span>key2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 傳回所有給定集合的並集</span>
+</span></span><span style="display:flex;"><span>SUNION key1 <span style="color:#f92672">[</span>key2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 移除集合中一個或多個成員</span>
+</span></span><span style="display:flex;"><span>SREM key member1 <span style="color:#f92672">[</span>member2<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>有序集合是字符串類型元素的集合，每個成員關聯一個 double 類型的分數，常用命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 在有序集合中新增一個或多個成員</span>
+</span></span><span style="display:flex;"><span>ZADD key score1 member1 <span style="color:#f92672">[</span>score2 member2<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 透過索引區間傳回有序集合中指定區間內的成員</span>
+</span></span><span style="display:flex;"><span>ZRANGE key start stop <span style="color:#f92672">[</span>WITHSCORES<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 有序集合中對指定成員的分數加上增量increment</span>
+</span></span><span style="display:flex;"><span>ZINCRBY key increment member
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 移除有序集合中的一個或多個成員</span>
+</span></span><span style="display:flex;"><span>ZREM key member1 <span style="color:#f92672">[</span>member2<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>除了各數據類型專有，還有通用命令，即所有類型都可以使用的命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 尋找所有符合給定模式(pattern)的key</span>
+</span></span><span style="display:flex;"><span>KEYS pattern <span style="color:#75715e"># pattern可以為*</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 檢查指定key是否存在</span>
+</span></span><span style="display:flex;"><span>EXISTS key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 傳回key所儲存的值的類型</span>
+</span></span><span style="display:flex;"><span>TYPE key
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 在key存在時刪除key</span>
+</span></span><span style="display:flex;"><span>DEL key
+</span></span></code></pre></div><h2 id="在-java-中操作-redis">在 Java 中操作 Redis
+</h2><p>如同使用 JDBC 操作 MySQL 資料庫一樣，需要使用 Redis 的 Java 用戶端進行操作 Redis</p>
+<p>Redis 的 Java 客戶端很多，常用的幾種：</p>
+<ul>
+<li>Jedis</li>
+<li>Lettuce</li>
+<li>Spring Data Redis</li>
+</ul>
+<p>Jedis 封裝最好，與Redis 命令相同，是官方推薦；Lettuce 對線程呼叫更好，性能更好；Spring 對Redis 客戶端進行了整合，提供了Spring Data Redis，在Spring Boot 專案中還提供了對應的Starter，即spring-boot-starter-data-redis</p>
+<h3 id="spring-data-redis">spring data Redis
+</h3><p>Spring Data Redis 是 Spring 的一部分，提供了在 Spring 應用中透過簡單的配置就可以存取 Redis 服務，對 Redis 底層開發包進行了高度封裝。在 Spring 專案中，可以使用Spring Data Redis來簡化 Redis 操作。網址：<a class="link" href="https://spring.io/projects/spring-data-redis"  target="_blank" rel="noopener"
+    >https://spring.io/projects/spring-data-redis</a></p>
+<p>Maven 座標：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-data-redis<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>Spring Data Redis 中提供了一個高度封裝類 <code>RedisTemplate</code> 對相關 api 進行了歸類封裝，將同一類型的操作封裝為 operation 接口：</p>
+<ul>
+<li>ValueOperations：string 資料操作</li>
+<li>SetOperations：set 類型資料操作</li>
+<li>ZSetOperations：zset 類型資料操作</li>
+<li>HashOperations：hash 類型的資料操作</li>
+<li>ListOperations：list 類型的資料操作</li>
+</ul>
+<p>配置 Redis 資料來源，設定文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#75715e"># application</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">profiles</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">active</span>: <span style="color:#ae81ff">dev</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">host</span>: <span style="color:#ae81ff">${sky.redis.host}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">port</span>: <span style="color:#ae81ff">${sky.redis.port}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">password</span>: <span style="color:#ae81ff">${sky.redis.password}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">database</span>: <span style="color:#ae81ff">${sky.redis.database}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -dev</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">sky</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">redis</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">host</span>: <span style="color:#ae81ff">localhost</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">port</span>: <span style="color:#ae81ff">6379</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">password</span>: <span style="color:#ae81ff">123456</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 使用哪個資料庫，不填預設為 0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">database</span>: <span style="color:#ae81ff">10</span> 
+</span></span></code></pre></div><blockquote>
+<p>Redis 預設有 16 個資料庫 (0-15)，可以透過修改設定檔來指定資料庫的數量</p>
+</blockquote>
+<p>編寫配置類，建立 RedisTemplate 對象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisConfiguration</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> RedisTemplate <span style="color:#a6e22e">redisTemplate</span>(RedisConnectionFactory redisConnectionFactory){
+</span></span><span style="display:flex;"><span>        log.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#34;開始創建 Redis 對象&#34;</span>);
+</span></span><span style="display:flex;"><span>        RedisTemplate redisTemplate <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RedisTemplate();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 設定 redis 的連接工廠對象</span>
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">setConnectionFactory</span>(redisConnectionFactory);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 設定 redis key 的序列化器</span>
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">setKeySerializer</span>(<span style="color:#66d9ef">new</span> StringRedisSerializer());
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redisTemplate;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
+<p>此配置類別不是必須的，SpringBoot 框架會自動組裝 RedisTemplate 對象，不過預設的序列化器為 JdkSerializationRedisSerializer，儲存到 Redis 中的資料與原始資料有差別</p>
+</blockquote>
+<h2 id="字串類型數據">字串類型數據
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RedisTest</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RedisTemplate redisTemplate;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testString</span>(){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// set</span>
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">opsForValue</span>().<span style="color:#a6e22e">set</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;Tom&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// get</span>
+</span></span><span style="display:flex;"><span>        String name <span style="color:#f92672">=</span>(String) redisTemplate.<span style="color:#a6e22e">opsForValue</span>().<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;name&#34;</span>);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(name);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// setex</span>
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">opsForValue</span>().<span style="color:#a6e22e">set</span>(<span style="color:#e6db74">&#34;code&#34;</span>, <span style="color:#e6db74">&#34;1234&#34;</span>, 2, TimeUnit.<span style="color:#a6e22e">MINUTES</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// setnx</span>
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">opsForValue</span>().<span style="color:#a6e22e">setIfAbsent</span>(<span style="color:#e6db74">&#34;lock&#34;</span>,<span style="color:#e6db74">&#34;1&#34;</span>);
+</span></span><span style="display:flex;"><span>        redisTemplate.<span style="color:#a6e22e">opsForValue</span>().<span style="color:#a6e22e">setIfAbsent</span>(<span style="color:#e6db74">&#34;lock&#34;</span>,<span style="color:#e6db74">&#34;2&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="哈希類型數據">哈希類型數據
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testHash</span>(){
+</span></span><span style="display:flex;"><span>    HashOperations hashOperations <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">opsForHash</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hset</span>
+</span></span><span style="display:flex;"><span>    hashOperations.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;100&#34;</span>, <span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;Jerry&#34;</span>);
+</span></span><span style="display:flex;"><span>    hashOperations.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;100&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>, <span style="color:#e6db74">&#34;20&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hget</span>
+</span></span><span style="display:flex;"><span>    String name <span style="color:#f92672">=</span>(String) hashOperations.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;100&#34;</span>, <span style="color:#e6db74">&#34;name&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(name);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hkeys</span>
+</span></span><span style="display:flex;"><span>    Set keys <span style="color:#f92672">=</span> hashOperations.<span style="color:#a6e22e">keys</span>(<span style="color:#e6db74">&#34;100&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(keys);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hvals</span>
+</span></span><span style="display:flex;"><span>    List values <span style="color:#f92672">=</span> hashOperations.<span style="color:#a6e22e">values</span>(<span style="color:#e6db74">&#34;100&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(values);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hdel</span>
+</span></span><span style="display:flex;"><span>    hashOperations.<span style="color:#a6e22e">delete</span>(<span style="color:#e6db74">&#34;100&#34;</span>, <span style="color:#e6db74">&#34;name&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="列表類型數據">列表類型數據
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testList</span>(){
+</span></span><span style="display:flex;"><span>    ListOperations listOperations <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">opsForList</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// lpush</span>
+</span></span><span style="display:flex;"><span>    listOperations.<span style="color:#a6e22e">leftPushAll</span>(<span style="color:#e6db74">&#34;mylist&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>);
+</span></span><span style="display:flex;"><span>    listOperations.<span style="color:#a6e22e">leftPush</span>(<span style="color:#e6db74">&#34;mylist&#34;</span>, <span style="color:#e6db74">&#34;d&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// lrange</span>
+</span></span><span style="display:flex;"><span>    List mylist <span style="color:#f92672">=</span> listOperations.<span style="color:#a6e22e">range</span>(<span style="color:#e6db74">&#34;mylist&#34;</span>, 0, <span style="color:#f92672">-</span>1);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(mylist);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// rpop</span>
+</span></span><span style="display:flex;"><span>    listOperations.<span style="color:#a6e22e">rightPop</span>(<span style="color:#e6db74">&#34;mylist&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// llen</span>
+</span></span><span style="display:flex;"><span>    Long size <span style="color:#f92672">=</span> listOperations.<span style="color:#a6e22e">size</span>(<span style="color:#e6db74">&#34;mylist&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(size);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="集合類型數據">集合類型數據
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSet</span>(){
+</span></span><span style="display:flex;"><span>    SetOperations setOperations <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">opsForSet</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// sadd</span>
+</span></span><span style="display:flex;"><span>    setOperations.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;set1&#34;</span>,<span style="color:#e6db74">&#34;a&#34;</span>,<span style="color:#e6db74">&#34;b&#34;</span>,<span style="color:#e6db74">&#34;c&#34;</span>,<span style="color:#e6db74">&#34;d&#34;</span>);
+</span></span><span style="display:flex;"><span>    setOperations.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;set2&#34;</span>,<span style="color:#e6db74">&#34;a&#34;</span>,<span style="color:#e6db74">&#34;b&#34;</span>,<span style="color:#e6db74">&#34;x&#34;</span>,<span style="color:#e6db74">&#34;y&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// smembers</span>
+</span></span><span style="display:flex;"><span>    Set members <span style="color:#f92672">=</span> setOperations.<span style="color:#a6e22e">members</span>(<span style="color:#e6db74">&#34;set1&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(members);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// scard</span>
+</span></span><span style="display:flex;"><span>    Long size <span style="color:#f92672">=</span> setOperations.<span style="color:#a6e22e">size</span>(<span style="color:#e6db74">&#34;set1&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(size);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// sinter</span>
+</span></span><span style="display:flex;"><span>    Set intersect <span style="color:#f92672">=</span> setOperations.<span style="color:#a6e22e">intersect</span>(<span style="color:#e6db74">&#34;set1&#34;</span>, <span style="color:#e6db74">&#34;set2&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(intersect);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// sunion</span>
+</span></span><span style="display:flex;"><span>    Set union <span style="color:#f92672">=</span> setOperations.<span style="color:#a6e22e">union</span>(<span style="color:#e6db74">&#34;set1&#34;</span>, <span style="color:#e6db74">&#34;set2&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(union);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// srem</span>
+</span></span><span style="display:flex;"><span>    setOperations.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;set1&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="有序集合類型數據">有序集合類型數據
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testZset</span>(){
+</span></span><span style="display:flex;"><span>    ZSetOperations zSetOperations <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">opsForZSet</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// zadd</span>
+</span></span><span style="display:flex;"><span>    zSetOperations.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, 10);
+</span></span><span style="display:flex;"><span>    zSetOperations.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, 12);
+</span></span><span style="display:flex;"><span>    zSetOperations.<span style="color:#a6e22e">add</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>, 9);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// zrange</span>
+</span></span><span style="display:flex;"><span>    Set zset <span style="color:#f92672">=</span> zSetOperations.<span style="color:#a6e22e">range</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, 0, <span style="color:#f92672">-</span>1);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(zset);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// zincrby</span>
+</span></span><span style="display:flex;"><span>    zSetOperations.<span style="color:#a6e22e">incrementScore</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>, 10);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// zrem</span>
+</span></span><span style="display:flex;"><span>    zSetOperations.<span style="color:#a6e22e">remove</span>(<span style="color:#e6db74">&#34;zset1&#34;</span>, <span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="通用命令操作">通用命令操作
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testCommon</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// keys</span>
+</span></span><span style="display:flex;"><span>    Set keys <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">keys</span>(<span style="color:#e6db74">&#34;*&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(keys);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// exists</span>
+</span></span><span style="display:flex;"><span>    Boolean name <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">hasKey</span>(<span style="color:#e6db74">&#34;name&#34;</span>);
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(name);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// type</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Object key : keys) {
+</span></span><span style="display:flex;"><span>        DataType type <span style="color:#f92672">=</span> redisTemplate.<span style="color:#a6e22e">type</span>(key);
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(type.<span style="color:#a6e22e">name</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// del</span>
+</span></span><span style="display:flex;"><span>    redisTemplate.<span style="color:#a6e22e">delete</span>(<span style="color:#e6db74">&#34;set2&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/zh-tw/tags/springboot/">SpringBoot</a>
+        
+            <a href="/zh-tw/tags/javaweb/">JavaWeb</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2024 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 建立 <span>|</span>
+        主題 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 設計
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+    </body>
+</html>

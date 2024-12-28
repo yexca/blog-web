@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85;//对结点的 num 和 score 成员赋值 head = &amp;a;//将结点 a 的起始地址赋给头指针 head a.next = &amp;b;//将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL;// c 结点的 next 成员不存放其他结点地址 p = head;//使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score);// 输出 p 指向的结点的数据 p = p-&gt;next;//使 p 指向下一结点 }while(p != NULL);//输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 （1）malloc 函数\nvoid *malloc(unsigned int size);作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n（2）calloc 函数\nvoid *calloc(unsigned n, unsigned size);其作用是在内存的动态区存储中分配 n 个长度为 size 的连续空间。函数返回一个指向分配空间起始地址的指针，如果分配不成功，返回 NULL。 用 calloc 函数可以为一维数组开辟动态存储空间， n 为数组元素个数，每个元素长度为 size。\n（3）free 函数\nvoid free(void *p);其作用是释放由 p 指向的内存区，使这部分内存区能被其它变量使用， p 是最后一次调用 calloc 或 malloc 函数时返回的值。free 函数无返回值。请注意：以前的C版本提供的 malloc 和 calloc 函数得到的是指向字符型数据的指针。ANSI C 提供的 malloc 和 calloc 函数规定为 void * 类型。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85; // 对结点的 num 和 score 成员赋值 head = &amp;a; // 将结点 a 的起始地址赋给头指针 head a.next = &amp;b; // 将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL; // c 结点的 next 成员不存放其他结点地址 p = head; // 使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score); // 输出 p 指向的结点的数据 p = p-&gt;next; //使 p 指向下一结点 }while(p != NULL); //输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 malloc 函数 void *malloc(unsigned int size); 作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n">
 <title>数据结构 链表代码</title>
 
 <link rel='canonical' href='https://blog.yexca.net/archives/15/'>
 
 <link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="数据结构 链表代码">
-<meta property='og:description' content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85;//对结点的 num 和 score 成员赋值 head = &amp;a;//将结点 a 的起始地址赋给头指针 head a.next = &amp;b;//将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL;// c 结点的 next 成员不存放其他结点地址 p = head;//使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score);// 输出 p 指向的结点的数据 p = p-&gt;next;//使 p 指向下一结点 }while(p != NULL);//输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 （1）malloc 函数\nvoid *malloc(unsigned int size);作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n（2）calloc 函数\nvoid *calloc(unsigned n, unsigned size);其作用是在内存的动态区存储中分配 n 个长度为 size 的连续空间。函数返回一个指向分配空间起始地址的指针，如果分配不成功，返回 NULL。 用 calloc 函数可以为一维数组开辟动态存储空间， n 为数组元素个数，每个元素长度为 size。\n（3）free 函数\nvoid free(void *p);其作用是释放由 p 指向的内存区，使这部分内存区能被其它变量使用， p 是最后一次调用 calloc 或 malloc 函数时返回的值。free 函数无返回值。请注意：以前的C版本提供的 malloc 和 calloc 函数得到的是指向字符型数据的指针。ANSI C 提供的 malloc 和 calloc 函数规定为 void * 类型。\n">
+<meta property='og:description' content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85; // 对结点的 num 和 score 成员赋值 head = &amp;a; // 将结点 a 的起始地址赋给头指针 head a.next = &amp;b; // 将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL; // c 结点的 next 成员不存放其他结点地址 p = head; // 使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score); // 输出 p 指向的结点的数据 p = p-&gt;next; //使 p 指向下一结点 }while(p != NULL); //输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 malloc 函数 void *malloc(unsigned int size); 作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n">
 <meta property='og:url' content='https://blog.yexca.net/archives/15/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='c/c&#43;&#43;' /><meta property='article:published_time' content='2021-11-17T12:00:49&#43;08:00'/><meta property='article:modified_time' content='2021-11-17T12:00:49&#43;08:00'/>
 <meta name="twitter:site" content="@yexcano">
     <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="数据结构 链表代码">
-<meta name="twitter:description" content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85;//对结点的 num 和 score 成员赋值 head = &amp;a;//将结点 a 的起始地址赋给头指针 head a.next = &amp;b;//将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL;// c 结点的 next 成员不存放其他结点地址 p = head;//使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score);// 输出 p 指向的结点的数据 p = p-&gt;next;//使 p 指向下一结点 }while(p != NULL);//输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 （1）malloc 函数\nvoid *malloc(unsigned int size);作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n（2）calloc 函数\nvoid *calloc(unsigned n, unsigned size);其作用是在内存的动态区存储中分配 n 个长度为 size 的连续空间。函数返回一个指向分配空间起始地址的指针，如果分配不成功，返回 NULL。 用 calloc 函数可以为一维数组开辟动态存储空间， n 为数组元素个数，每个元素长度为 size。\n（3）free 函数\nvoid free(void *p);其作用是释放由 p 指向的内存区，使这部分内存区能被其它变量使用， p 是最后一次调用 calloc 或 malloc 函数时返回的值。free 函数无返回值。请注意：以前的C版本提供的 malloc 和 calloc 函数得到的是指向字符型数据的指针。ANSI C 提供的 malloc 和 calloc 函数规定为 void * 类型。\n">
+<meta name="twitter:description" content="简单链表 #include &lt;stdio.h&gt; struct student { long num; float score; struct student *next; }; void main() { struct student a, b, c, *head, *p; a.num = 99101; a.score = 89.5; b.num = 99103; b.score = 90; c.num = 99107; c.score = 85; // 对结点的 num 和 score 成员赋值 head = &amp;a; // 将结点 a 的起始地址赋给头指针 head a.next = &amp;b; // 将结点 b 的起始地址赋给 a 结点的 next 成员 b.next = &amp;c; c.next = NULL; // c 结点的 next 成员不存放其他结点地址 p = head; // 使 p 指针指向 a 结点 do { printf(&#34;%ld %5.1f\\n&#34;, p-&gt;num, p-&gt;score); // 输出 p 指向的结点的数据 p = p-&gt;next; //使 p 指向下一结点 }while(p != NULL); //输出完 c 结点后 p 的值为 NULL system(&#34;pause&#34;); } 内存分配函数 malloc 函数 void *malloc(unsigned int size); 作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -410,13 +410,32 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 2 分钟
                 </time>
             </div>
         
     </footer>
     
 
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/zh-tw/archives/15/" class="link">繁體中文</a>
+                
+            </div>
+        </footer>
     
 </div>
 
@@ -426,8 +445,7 @@
     
     
     <h2 id="简单链表">简单链表
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> student
 </span></span><span style="display:flex;"><span>{
@@ -441,29 +459,37 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> student a, b, c, <span style="color:#f92672">*</span>head, <span style="color:#f92672">*</span>p;
 </span></span><span style="display:flex;"><span>    a.num <span style="color:#f92672">=</span> <span style="color:#ae81ff">99101</span>; a.score <span style="color:#f92672">=</span> <span style="color:#ae81ff">89.5</span>;
 </span></span><span style="display:flex;"><span>    b.num <span style="color:#f92672">=</span> <span style="color:#ae81ff">99103</span>; b.score <span style="color:#f92672">=</span> <span style="color:#ae81ff">90</span>;
-</span></span><span style="display:flex;"><span>    c.num <span style="color:#f92672">=</span> <span style="color:#ae81ff">99107</span>; c.score <span style="color:#f92672">=</span> <span style="color:#ae81ff">85</span>;<span style="color:#75715e">//对结点的 num 和 score 成员赋值
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    head <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;<span style="color:#75715e">//将结点 a 的起始地址赋给头指针 head
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    a.next <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>b;<span style="color:#75715e">//将结点 b 的起始地址赋给 a 结点的 next 成员
+</span></span><span style="display:flex;"><span>    c.num <span style="color:#f92672">=</span> <span style="color:#ae81ff">99107</span>; c.score <span style="color:#f92672">=</span> <span style="color:#ae81ff">85</span>;  <span style="color:#75715e">// 对结点的 num 和 score 成员赋值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    head <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>a;  <span style="color:#75715e">// 将结点 a 的起始地址赋给头指针 head
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    a.next <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>b;  <span style="color:#75715e">// 将结点 b 的起始地址赋给 a 结点的 next 成员
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    b.next <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>c;
-</span></span><span style="display:flex;"><span>    c.next <span style="color:#f92672">=</span> NULL;<span style="color:#75715e">// c 结点的 next 成员不存放其他结点地址
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    p <span style="color:#f92672">=</span> head;<span style="color:#75715e">//使 p 指针指向 a 结点
+</span></span><span style="display:flex;"><span>    c.next <span style="color:#f92672">=</span> NULL;  <span style="color:#75715e">// c 结点的 next 成员不存放其他结点地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    p <span style="color:#f92672">=</span> head;  <span style="color:#75715e">// 使 p 指针指向 a 结点
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">do</span>
 </span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%ld %5.1f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, p<span style="color:#f92672">-&gt;</span>num, p<span style="color:#f92672">-&gt;</span>score);<span style="color:#75715e">// 输出 p 指向的结点的数据
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        p <span style="color:#f92672">=</span> p<span style="color:#f92672">-&gt;</span>next;<span style="color:#75715e">//使 p 指向下一结点
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }<span style="color:#66d9ef">while</span>(p <span style="color:#f92672">!=</span> NULL);<span style="color:#75715e">//输出完 c 结点后 p 的值为 NULL
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%ld %5.1f</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, p<span style="color:#f92672">-&gt;</span>num, p<span style="color:#f92672">-&gt;</span>score);  <span style="color:#75715e">// 输出 p 指向的结点的数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        p <span style="color:#f92672">=</span> p<span style="color:#f92672">-&gt;</span>next;  <span style="color:#75715e">//使 p 指向下一结点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }<span style="color:#66d9ef">while</span>(p <span style="color:#f92672">!=</span> NULL);  <span style="color:#75715e">//输出完 c 结点后 p 的值为 NULL
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">system</span>(<span style="color:#e6db74">&#34;pause&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="内存分配函数">内存分配函数
-</h2><p>（1）malloc 函数<br>
-void *malloc(unsigned int size);作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。<br>
-（2）calloc 函数<br>
-void *calloc(unsigned n, unsigned size);其作用是在内存的动态区存储中分配 n 个长度为 size 的连续空间。函数返回一个指向分配空间起始地址的指针，如果分配不成功，返回 NULL。 用 calloc 函数可以为一维数组开辟动态存储空间， n 为数组元素个数，每个元素长度为 size。<br>
-（3）free 函数<br>
-void free(void *p);其作用是释放由 p 指向的内存区，使这部分内存区能被其它变量使用， p 是最后一次调用 calloc 或 malloc 函数时返回的值。free 函数无返回值。请注意：以前的C版本提供的 malloc 和 calloc 函数得到的是指向字符型数据的指针。ANSI C 提供的 malloc 和 calloc 函数规定为 void * 类型。</p>
+</h2><ol>
+<li>malloc 函数</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">malloc</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size);
+</span></span></code></pre></div><p>作用是在内存的动态存储区中分配一个长度为 size 的连接空间。些函数的值（即返回值）是一个指向分配空间起始地址的指针（基类型为 void）。如果些函数未能成功地执行（例如内存空间不足）则返回空指针 NULL。</p>
+<ol start="2">
+<li>calloc 函数</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">calloc</span>(<span style="color:#66d9ef">unsigned</span> n, <span style="color:#66d9ef">unsigned</span> size);
+</span></span></code></pre></div><p>其作用是在内存的动态区存储中分配 n 个长度为 size 的连续空间。函数返回一个指向分配空间起始地址的指针，如果分配不成功，返回 NULL。 用 calloc 函数可以为一维数组开辟动态存储空间， n 为数组元素个数，每个元素长度为 size。</p>
+<ol start="3">
+<li>free 函数</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">free</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>p);
+</span></span></code></pre></div><p>其作用是释放由 p 指向的内存区，使这部分内存区能被其它变量使用， p 是最后一次调用 calloc 或 malloc 函数时返回的值。free 函数无返回值。请注意：以前的C版本提供的 malloc 和 calloc 函数得到的是指向字符型数据的指针。ANSI C 提供的 malloc 和 calloc 函数规定为 void * 类型。</p>
 <h2 id="动态链表的实现">动态链表的实现
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#define NULL 0
@@ -733,7 +759,7 @@ void free(void *p);其作用是释放由 p 指向的内存区，使这部分内�
         
 
         <div class="article-details">
-            <h2 class="article-title">VsCode配置C语言环境</h2>
+            <h2 class="article-title">VsCode 配置 C 语言环境</h2>
         </div>
     </a>
 </article>
