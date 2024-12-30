@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Feign是一个声明式的 Http 客户端，Github：https://github.com/OpenFeign/feign\n简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Feign是一个声明式的 Http 客户端，Github： https://github.com/OpenFeign/feign 简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
 <title>Feign 远程调用</title>
 
 <link rel='canonical' href='https://blog.yexca.net/archives/170/'>
 
 <link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="Feign 远程调用">
-<meta property='og:description' content="Feign是一个声明式的 Http 客户端，Github：https://github.com/OpenFeign/feign\n简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
+<meta property='og:description' content="Feign是一个声明式的 Http 客户端，Github： https://github.com/OpenFeign/feign 简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
 <meta property='og:url' content='https://blog.yexca.net/archives/170/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringCloud' /><meta property='article:published_time' content='2024-05-03T23:11:52&#43;08:00'/><meta property='article:modified_time' content='2024-05-03T23:11:52&#43;08:00'/>
 <meta name="twitter:site" content="@yexcano">
     <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Feign 远程调用">
-<meta name="twitter:description" content="Feign是一个声明式的 Http 客户端，Github：https://github.com/OpenFeign/feign\n简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
+<meta name="twitter:description" content="Feign是一个声明式的 Http 客户端，Github： https://github.com/OpenFeign/feign 简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -59,7 +59,7 @@
                     
                     
                         
-                        <img src="/img/avatar_hu15094572636139781955.png" width="300"
+                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
                             height="300" class="site-logo" loading="lazy" alt="Avatar">
                     
                 
@@ -436,8 +436,16 @@
     <section class="article-content">
     
     
-    <p>Feign是一个声明式的 Http 客户端，Github：<a class="link" href="https://github.com/OpenFeign/feign"  target="_blank" rel="noopener"
-    >https://github.com/OpenFeign/feign</a></p>
+    <p>Feign是一个声明式的 Http 客户端，Github：
+
+<a class="link" href="https://github.com/OpenFeign/feign" 
+
+
+   target="_blank" rel="noopener"
+>
+https://github.com/OpenFeign/feign
+</a>
+ </p>
 <h2 id="简单使用">简单使用
 </h2><p>引入依赖</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
@@ -966,6 +974,7 @@
         document.getElementById("htmer_time").innerHTML = currentTimeHtml;
     }    setInterval(setTime, 1000);
 </script>
+
 
     </body>
 </html>
