@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="关系模型中的基本术语 关系数据库系统是支持关系模型的数据库系统。有关关系模型的的一些基本术语如下：\n关系：一个关系就是一张二维表，每个关系有一个关系名 元组：表中的一行即为一个元组，对应存储文件中的一个记录值 属性：表中的列称为属性，每一列有一个属性名，属性值相当于记录中的数据项或者字段值 域：属性的取值范围，即不同元组对同一个属性的值所限定的范围 关系模式：对关系的描述称为关系模式，由关系名和其属性集合构成，关系模式的格式为：关系名(属性名 1，···，属性名 n) 通常一个关系模式对应一个关系文件的结果\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" SQL Series\n数据库学习一 数据库导论: https://blog.yexca.net/archives/86 数据库学习二 关系模型: 本文\n数据库学习三 SQL 语言: https://blog.yexca.net/archives/88 数据库学习四 关系数据库理论: https://blog.yexca.net/archives/89 数据库学习五 范式: https://blog.yexca.net/archives/90 数据库学习六 数据库设计: https://blog.yexca.net/archives/91 数据库学习七 数据库的控制功能: https://blog.yexca.net/archives/92 ">
 <title>数据库学习二 关系模型</title>
 
 <link rel='canonical' href='https://blog.yexca.net/archives/87/'>
 
-<link rel="stylesheet" href="/scss/style.min.6da8b604ce56fd6785cf13940a38fdff0290a3d63057a6c1ac1c8e77cb49ae81.css"><meta property='og:title' content="数据库学习二 关系模型">
-<meta property='og:description' content="关系模型中的基本术语 关系数据库系统是支持关系模型的数据库系统。有关关系模型的的一些基本术语如下：\n关系：一个关系就是一张二维表，每个关系有一个关系名 元组：表中的一行即为一个元组，对应存储文件中的一个记录值 属性：表中的列称为属性，每一列有一个属性名，属性值相当于记录中的数据项或者字段值 域：属性的取值范围，即不同元组对同一个属性的值所限定的范围 关系模式：对关系的描述称为关系模式，由关系名和其属性集合构成，关系模式的格式为：关系名(属性名 1，···，属性名 n) 通常一个关系模式对应一个关系文件的结果\n">
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="数据库学习二 关系模型">
+<meta property='og:description' content=" SQL Series\n数据库学习一 数据库导论: https://blog.yexca.net/archives/86 数据库学习二 关系模型: 本文\n数据库学习三 SQL 语言: https://blog.yexca.net/archives/88 数据库学习四 关系数据库理论: https://blog.yexca.net/archives/89 数据库学习五 范式: https://blog.yexca.net/archives/90 数据库学习六 数据库设计: https://blog.yexca.net/archives/91 数据库学习七 数据库的控制功能: https://blog.yexca.net/archives/92 ">
 <meta property='og:url' content='https://blog.yexca.net/archives/87/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2023-02-07T06:00:00&#43;08:00'/><meta property='article:modified_time' content='2023-02-07T06:00:00&#43;08:00'/>
 <meta name="twitter:site" content="@yexcano">
     <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="数据库学习二 关系模型">
-<meta name="twitter:description" content="关系模型中的基本术语 关系数据库系统是支持关系模型的数据库系统。有关关系模型的的一些基本术语如下：\n关系：一个关系就是一张二维表，每个关系有一个关系名 元组：表中的一行即为一个元组，对应存储文件中的一个记录值 属性：表中的列称为属性，每一列有一个属性名，属性值相当于记录中的数据项或者字段值 域：属性的取值范围，即不同元组对同一个属性的值所限定的范围 关系模式：对关系的描述称为关系模式，由关系名和其属性集合构成，关系模式的格式为：关系名(属性名 1，···，属性名 n) 通常一个关系模式对应一个关系文件的结果\n">
+<meta name="twitter:description" content=" SQL Series\n数据库学习一 数据库导论: https://blog.yexca.net/archives/86 数据库学习二 关系模型: 本文\n数据库学习三 SQL 语言: https://blog.yexca.net/archives/88 数据库学习四 关系数据库理论: https://blog.yexca.net/archives/89 数据库学习五 范式: https://blog.yexca.net/archives/90 数据库学习六 数据库设计: https://blog.yexca.net/archives/91 数据库学习七 数据库的控制功能: https://blog.yexca.net/archives/92 ">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -437,6 +437,25 @@
     
 
     
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/ja/archives/87/" class="link">日本語</a>
+                
+            </div>
+        </footer>
+    
 </div>
 
 </header>
@@ -444,7 +463,59 @@
     <section class="article-content">
     
     
-    <h2 id="关系模型中的基本术语">关系模型中的基本术语
+    <blockquote>
+<p><strong>SQL Series</strong></p>
+<p>数据库学习一 数据库导论: 
+
+<a class="link" href="https://blog.yexca.net/archives/86" 
+
+>
+https://blog.yexca.net/archives/86
+</a>
+ <br>
+数据库学习二 关系模型: 本文<br>
+数据库学习三 SQL 语言: 
+
+<a class="link" href="https://blog.yexca.net/archives/88" 
+
+>
+https://blog.yexca.net/archives/88
+</a>
+ <br>
+数据库学习四 关系数据库理论: 
+
+<a class="link" href="https://blog.yexca.net/archives/89" 
+
+>
+https://blog.yexca.net/archives/89
+</a>
+ <br>
+数据库学习五 范式: 
+
+<a class="link" href="https://blog.yexca.net/archives/90" 
+
+>
+https://blog.yexca.net/archives/90
+</a>
+ <br>
+数据库学习六 数据库设计: 
+
+<a class="link" href="https://blog.yexca.net/archives/91" 
+
+>
+https://blog.yexca.net/archives/91
+</a>
+ <br>
+数据库学习七 数据库的控制功能: 
+
+<a class="link" href="https://blog.yexca.net/archives/92" 
+
+>
+https://blog.yexca.net/archives/92
+</a>
+ </p>
+</blockquote>
+<h2 id="关系模型中的基本术语">关系模型中的基本术语
 </h2><p>关系数据库系统是支持关系模型的数据库系统。有关关系模型的的一些基本术语如下：</p>
 <ul>
 <li>关系：一个关系就是一张二维表，每个关系有一个关系名</li>
@@ -465,7 +536,7 @@
 <h2 id="关系模型的定义">关系模型的定义
 </h2><p>关系的描述称为关系模式，他可以形式化地表示为：R(U, D, dom, F)</p>
 <p>其中 R 为关系名，U 为组成该关系的属性名集合，D 为属性组 U 中属性所来自的域，dom 为属性向域的映像集合，F 为属性间数据的依赖关系集合</p>
-<p>通常简记为 R(U) 或 R(A<!-- raw HTML omitted -->1<!-- raw HTML omitted -->, A<!-- raw HTML omitted -->2<!-- raw HTML omitted -->, ···)，其中 R 为关系名，U 为属性名集合，A<!-- raw HTML omitted -->1<!-- raw HTML omitted -->、··· 为个属性名</p>
+<p>通常简记为 R(U) 或 R($A_1$, $A_2$, ···)，其中 R 为关系名，U 为属性名集合，$A_1$、··· 为个属性名</p>
 <p>关系模型由关系数据结构、关系操作集合和关系完整性约束三部分组成</p>
 <h3 id="关系数据结构">关系数据结构
 </h3><p>关系模型中数据的逻辑关系是一张二维表格</p>
@@ -476,7 +547,7 @@
 </h3><p>关系模型中的三个完整性规则如下：</p>
 <ul>
 <li>实体完整性：关系中主码的值不能为空或部分为空，也就是说，主码中属性即主属性不能取空值</li>
-<li>参照完整性：如果关系 R<!-- raw HTML omitted -->2<!-- raw HTML omitted --> 的外码 X 与关系 R<!-- raw HTML omitted -->1<!-- raw HTML omitted --> 的主码相对应 (基本关系 R<!-- raw HTML omitted -->1<!-- raw HTML omitted --> 和 R<!-- raw HTML omitted -->2<!-- raw HTML omitted --> 不一定是不同的关系，即它们可以是同一个关系)，则外码 X 的每一个值必须在关系 R<!-- raw HTML omitted -->1<!-- raw HTML omitted --> 中主码的值中找到，或者为空值</li>
+<li>参照完整性：如果关系 $R_2$ 的外码 X 与关系 $R_1$ 的主码相对应 (基本关系 $R_1$ 和 $R_2$ 不一定是不同的关系，即它们可以是同一个关系)，则外码 X 的每一个值必须在关系 $R_1$ 中主码的值中找到，或者为空值</li>
 <li>用户定义的完整性：指用户对某一具体数据指定的约束条件进行检验</li>
 </ul>
 <h2 id="关系代数运算符">关系代数运算符
@@ -535,16 +606,18 @@
 <ol start="2">
 <li>投影</li>
 </ol>
-<p>投影运算是从关系的垂直方向进行运算，在关系 R 中选出若干属性列 A 组成新的关系，记作 π<!-- raw HTML omitted -->A<!-- raw HTML omitted -->(R)</p>
+<p>投影运算是从关系的垂直方向进行运算，在关系 R 中选出若干属性列 A 组成新的关系，记作 $π_A(R)$</p>
 <ol start="3">
 <li>选择</li>
 </ol>
-<p>选择运算是从关系的水平方向进行运算，是从关系 R 中选择满足给定条件的元组，记作 σ<!-- raw HTML omitted -->F<!-- raw HTML omitted -->(R)</p>
+<p>选择运算是从关系的水平方向进行运算，是从关系 R 中选择满足给定条件的元组，记作 $σ_F(R)$</p>
 <p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/02-%e6%95%b0%e6%8d%ae%e5%ba%93/image.1v1v0l1iprkw.webp"
 	
 	
 	
 	loading="lazy"
+	
+		alt="img"
 	
 	
 ></p>
@@ -565,6 +638,8 @@
 	
 	
 	loading="lazy"
+	
+		alt="img"
 	
 	
 ></p>
@@ -597,29 +672,29 @@
   </tbody>
 </table></div>
 <h3 id="投影转-sql-语言">投影转 SQL 语言
-</h3><p>π<!-- raw HTML omitted -->?<!-- raw HTML omitted -->(?)</p>
+</h3><p>$π_?(?)$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">from</span> <span style="color:#f92672">?</span>
-</span></span></code></pre></div><p>π<!-- raw HTML omitted -->A, B, C<!-- raw HTML omitted -->(R) 或者 π<!-- raw HTML omitted -->1, 2, 3<!-- raw HTML omitted -->(R)</p>
+</span></span></code></pre></div><p>$π_{A, B, C}(R)$ 或者 $π_{1, 2, 3}(R)$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R
 </span></span></code></pre></div><blockquote>
 <p>注：SQL 语言不支持列 (属性) 的序号</p>
 </blockquote>
 <h3 id="选择转-sql-语言">选择转 SQL 语言
-</h3><p>π<!-- raw HTML omitted -->?<!-- raw HTML omitted -->(σ<!-- raw HTML omitted -->?<!-- raw HTML omitted -->(?))</p>
+</h3><p>$π_?(σ_?(?))$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">from</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">where</span> <span style="color:#f92672">?</span>
-</span></span></code></pre></div><p>π<!-- raw HTML omitted -->A, B, C<!-- raw HTML omitted -->(σ<!-- raw HTML omitted -->B &gt;= &lsquo;5&rsquo;<!-- raw HTML omitted -->(R)) 或者 π<!-- raw HTML omitted -->1, 2, 3<!-- raw HTML omitted -->(σ<!-- raw HTML omitted -->2 &gt;= &lsquo;5&rsquo;<!-- raw HTML omitted -->(R))</p>
+</span></span></code></pre></div><p>$π_{A, B, C}(σ_{B &gt;= &lsquo;5&rsquo;}(R))$ 或者 $π_{1, 2, 3}(σ_{2 &gt;= &lsquo;5&rsquo;}(R))$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R <span style="color:#66d9ef">where</span> B <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;5&#39;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">或者</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R <span style="color:#66d9ef">where</span> B <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">5</span>
 </span></span></code></pre></div><h3 id="笛卡尔积转-sql-语言">笛卡尔积转 SQL 语言
-</h3><p>π<!-- raw HTML omitted -->R.A, R.B, R.C, S.A, S.B, S.D<!-- raw HTML omitted -->(R×S)</p>
+</h3><p>$π_{R.A, R.B, R.C, S.A, S.B, S.D}(R×S)$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> R.A, R.B, R.<span style="color:#66d9ef">C</span>, S.A, S.B, S.D
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">from</span> R, S
 </span></span><span style="display:flex;"><span><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">升序排列</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> R.A <span style="color:#66d9ef">asc</span>
 </span></span></code></pre></div><h3 id="自然连接转-sql-语言">自然连接转 SQL 语言
 </h3><p>关系 R(A, B, C) 与 S(B, C, D)</p>
-<p>π<!-- raw HTML omitted -->R.A, R.B, R.C, S.D<!-- raw HTML omitted -->(σ<!-- raw HTML omitted -->R.B = S.B ∩ R.C = S.C<!-- raw HTML omitted -->(R×S))</p>
+<p>$π_{R.A, R.B, R.C, S.D}(σ_{R.B = S.B ∩ R.C = S.C}(R×S))$</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> R.A, R.B, R.<span style="color:#66d9ef">C</span>, S.D
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">from</span> R, S
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">where</span> R.B <span style="color:#f92672">=</span> S.B <span style="color:#66d9ef">and</span> R.<span style="color:#66d9ef">C</span> <span style="color:#f92672">=</span> S.<span style="color:#66d9ef">C</span>

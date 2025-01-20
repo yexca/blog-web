@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" この記事は Google 翻訳を使用して処理されました\n導入 コマンドラインから何かを実行して自慢したいと思わない男の子がいるでしょうか?以前から youtube-dl については知っていましたが、複雑すぎるようだったので使用していませんでした。今日試してみたところ、とても便利だとわかりました。\n">
+<title>コマンドラインからYouTube動画をダウンロードする</title>
+
+<link rel='canonical' href='https://blog.yexca.net/ja/archives/52/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="コマンドラインからYouTube動画をダウンロードする">
+<meta property='og:description' content=" この記事は Google 翻訳を使用して処理されました\n導入 コマンドラインから何かを実行して自慢したいと思わない男の子がいるでしょうか?以前から youtube-dl については知っていましたが、複雑すぎるようだったので使用していませんでした。今日試してみたところ、とても便利だとわかりました。\n">
+<meta property='og:url' content='https://blog.yexca.net/ja/archives/52/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Youtube' /><meta property='article:published_time' content='2022-07-25T12:52:27&#43;08:00'/><meta property='article:modified_time' content='2022-07-25T12:52:27&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="コマンドラインからYouTube動画をダウンロードする">
+<meta name="twitter:description" content=" この記事は Google 翻訳を使用して処理されました\n導入 コマンドラインから何かを実行して自慢したいと思わない男の子がいるでしょうか?以前から youtube-dl については知っていましたが、複雑すぎるようだったので使用していませんでした。今日試してみたところ、とても便利だとわかりました。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="メニューを開く・閉じる">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/ja/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/ja">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">この世で道が尽きることなく、行きたいと望めば、道は足元に広がっている</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/ja/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/ja/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>ホーム</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>アーカイブ</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>検索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>リンク</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>について</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" >简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" selected>日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>ダークモード</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目次</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#導入">導入</a></li>
+    <li><a href="#環境">環境</a>
+      <ul>
+        <li><a href="#python-37以降をインストールする">Python 3.7以降をインストールする</a></li>
+        <li><a href="#yt-dlp-をインストール">yt-dlp をインストール</a></li>
+      </ul>
+    </li>
+    <li><a href="#動画をダウンロード">動画をダウンロード</a></li>
+    <li><a href="#ダウンロード保存場所を変更する">ダウンロード保存場所を変更する</a></li>
+    <li><a href="#1080pをダウンロード">1080Pをダウンロード</a>
+      <ul>
+        <li><a href="#ffmpeg">ffmpeg</a></li>
+        <li><a href="#クエリコマンド">クエリコマンド</a></li>
+        <li><a href="#ダウンロードコマンド">ダウンロードコマンド</a></li>
+      </ul>
+    </li>
+    <li><a href="#aria2-を呼び出す">aria2 を呼び出す</a></li>
+    <li><a href="#字幕をダウンロード">字幕をダウンロード</a></li>
+    <li><a href="#ビデオリストをダウンロード">ビデオリストをダウンロード</a></li>
+    <li><a href="#視覚化">視覚化</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/ja/categories/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%83%84%E3%83%BC%E3%83%AB/" >
+                ソフトウェアツール
+            </a>
+        
+            <a href="/ja/categories/%E3%82%A8%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%86%E3%82%A4%E3%83%A1%E3%83%B3%E3%83%88%E9%96%A2%E9%80%A3/" >
+                エンターテイメント関連
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/ja/archives/52/">コマンドラインからYouTube動画をダウンロードする</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2022-07-25 12:52 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    読了時間: 4分
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/archives/52/" class="link">简体中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>この記事は Google 翻訳を使用して処理されました</p>
+</blockquote>
+<h2 id="導入">導入
+</h2><p>コマンドラインから何かを実行して自慢したいと思わない男の子がいるでしょうか?以前から youtube-dl については知っていましたが、複雑すぎるようだったので使用していませんでした。今日試してみたところ、とても便利だとわかりました。</p>
+<h2 id="環境">環境
+</h2><h3 id="python-37以降をインストールする">Python 3.7以降をインストールする
+</h3><p>
+
+<a class="link" href="https://www.python.org/downloads/" 
+
+
+   target="_blank" rel="noopener"
+>
+Python の公式サイト
+</a>
+ でダウンロードしていい、インストールのとき、<code>Add Python x.x to PATH</code> をチェックしてね</p>
+<h3 id="yt-dlp-をインストール">yt-dlp をインストール
+</h3><p>
+
+<a class="link" href="https://github.com/yt-dlp/yt-dlp" 
+
+
+   target="_blank" rel="noopener"
+>
+yt-dlp
+</a>
+  は 
+
+<a class="link" href="https://github.com/ytdl-org/youtube-dl" 
+
+
+   target="_blank" rel="noopener"
+>
+youtube-dl
+</a>
+  に基づいて変更され、ダウンロード速度が速い</p>
+<h4 id="ダウンロード">ダウンロード
+</h4><p>
+
+<a class="link" href="https://github.com/yt-dlp/yt-dlp/releases" 
+
+
+   target="_blank" rel="noopener"
+>
+releases
+</a>
+  で <code>yt-dlp.exe</code> をダウンロードする</p>
+<h4 id="構成">構成
+</h4><p>ダウンロードしたファイルを固定の場所に置き、マイコンピュータのプロパティを開き、システムの詳細設定 - 環境変数 - システム変数に移動し、<code>Path</code> を選択して編集をクリックし、新しいウィンドウで新規をクリックします。<code>yt -dlp.exe</code> のファイルを入力して</p>
+<p>次に、「はい」を 3 回クリックしてすべてのウィンドウを閉じる。</p>
+<h4 id="テスト">テスト
+</h4><p>Win+R を押して「cmd」と入力し、Enter を押す。</p>
+<p>cmd に <code>yt-dlp</code> と入力します。<code>Usage: yt-dlp [OPTIONS] URL [URL...]</code> が表示されたら、設定は成功だ。</p>
+<h4 id="更新">更新
+</h4><p>cmdに「yt-dlp -U」と入力するといい</p>
+<h2 id="動画をダウンロード">動画をダウンロード
+</h2><p>ダウンロードを開始するには、cmd に「yt-dlp」+「スペース」+「YouTube ビデオ リンク」と入力するだけです。</p>
+<p>デフォルトのダウンロードは720Pで、保存場所は<code>C:/Users/%UserName%/</code>です。</p>
+<h2 id="ダウンロード保存場所を変更する">ダウンロード保存場所を変更する
+</h2><p><code>C:\Users\%UserName%\AppData\Roaming</code> に新しいフォルダを作成し、<code>yt-dlp</code> という名前を付け、新しく作成したフォルダに入り、新しいファイル <code>config.txt</code> を作成します。</p>
+<p>ファイルに次のコードを入力してください</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>-o <span style="color:#e6db74">&#39;C:/Users/%UserName%/Downloads/Video/%(title)s.%(ext)s&#39;</span>
+</span></span></code></pre></div><p>このうち、<code>C:/Users/%UserName%/Downloads/Video/</code>はダウンロードディレクトリです。</p>
+<p><code>%(title)s.%(ext)s</code>は、ビデオのタイトルであるファイル名を保存する形式で、ビデオのタイトル.ビデオの拡張子名</p>
+<h2 id="1080pをダウンロード">1080Pをダウンロード
+</h2><p>1080P以上の動画は音声と動画が分離されているため、まずffmpegをダウンロードする必要があります。</p>
+<h3 id="ffmpeg">ffmpeg
+</h3><p>
+
+<a class="link" href="https://ffmpeg.org/download.html" 
+
+
+   target="_blank" rel="noopener"
+>
+公式サイト
+</a>
+ にアクセスし、左下隅のシステムタイプを選択してから、ダウンロードを選択します。</p>
+<p>
+
+<a class="link" href="https://github.com/BtbN/FFmpeg-Builds/releases" 
+
+
+   target="_blank" rel="noopener"
+>
+Releases · BtbN/FFmpeg-Builds
+</a>
+ を選択し、<code>ffmpeg-n5.0-latest-win64-gpl-5.0.zip</code>をダウンロードしました。</p>
+<p>次に、それを固定フォルダに配置し、システム変数に「bin」ファイルディレクトリを配置します。</p>
+<h4 id="テスト-1">テスト
+</h4><p>cmd を開いて <code>ffmpeg -version</code> と入力します。バージョン番号が表示されれば、設定は成功です。</p>
+<h3 id="クエリコマンド">クエリコマンド
+</h3><p>現在のビデオの完全な形式を表示するには、<code>yt-dlp -D [URL]</code>と入力します (クエリのみ、ダウンロードは行われません)</p>
+<h3 id="ダウンロードコマンド">ダウンロードコマンド
+</h3><p>指定した形式でビデオをダウンロードするには、<code>yt-dlp -f [ID] [URL]</code>と入力します。ビデオとオーディオをダウンロードするには、<code>[ID]+[ID]</code>の組み合わせを使用できます。つまり、<code>yt-dlp -f [ID]+[ID] [URL]</code>はダウンロード後に自動的に結合されます</p>
+<p><em>注: 最高品質のビデオとオーディオをダウンロードします:</em> <code>-f &quot;bv+ba/b&quot;</code></p>
+<h2 id="aria2-を呼び出す">aria2 を呼び出す
+</h2><p>ダウンロード コマンドの後に<code>--external-downloader aria2c --external-downloader-args &quot;-x 16  -k 1M&quot;</code> を追加するだけです。</p>
+<h2 id="字幕をダウンロード">字幕をダウンロード
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>outube-dl --write-sub <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span>	//これはvtt形式の英語字幕とmkv形式の1080pビデオをダウンロードします
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl --write-sub --skip-download <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> //ビデオをダウンロードせずに別の vtt 字幕ファイルをダウンロードします
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl --write-sub --all-subs <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> //すべての言語の字幕をダウンロードします（ある場合）
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl --write-auto-sub <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> //自動生成された字幕をダウンロードする（YouTubeのみ）
+</span></span></code></pre></div><h2 id="ビデオリストをダウンロード">ビデオリストをダウンロード
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>youtube-dl -f <span style="color:#f92672">[</span>format code<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>palylist_url<span style="color:#f92672">]</span> //この方法では、指定された解像度のmp4ビデオをダウンロードできます
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl <span style="color:#f92672">[</span>playlist_url<span style="color:#f92672">]</span> //ビデオ リストをダウンロードします。この方法でダウンロードされたビデオは、mkv または webm 形式である可能性があります。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl -cit <span style="color:#f92672">[</span>playlist_url<span style="color:#f92672">]</span> //ビデオ リストをダウンロードします。この方法でダウンロードされたビデオは、mkv または webm 形式である可能性があります。
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>youtube-dl --yes-playlist <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> //リンクがビデオリストの場合、リスト内のビデオをダウンロードします。上記と同じですが、mkv または webm 形式である可能性があります。
+</span></span></code></pre></div><h2 id="視覚化">視覚化
+</h2><p>
+
+<a class="link" href="https://github.com/jely2002/youtube-dl-gui/releases" 
+
+
+   target="_blank" rel="noopener"
+>
+Releases · jely2002/youtube-dl-gui
+</a>
+ </p>
+<h2 id="参考文献">参考文献
+</h2><p>
+
+<a class="link" href="https://github.com/yt-dlp/yt-dlp" 
+
+
+   target="_blank" rel="noopener"
+>
+yt-dlp - Github
+</a>
+ </p>
+<p>
+
+<a class="link" href="https://www.jianshu.com/p/6bae57859325" 
+
+
+   target="_blank" rel="noopener"
+>
+【备份】youtube-dl使用介绍 - 简书
+</a>
+ </p>
+<p>
+
+<a class="link" href="https://blog.csdn.net/u013430110/article/details/103797776" 
+
+
+   target="_blank" rel="noopener"
+>
+一文搞懂Windows系统【目录变量】的相关知识_黑就黑到底的博客-CSDN博客_username变量
+</a>
+ </p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/ja/tags/youtube/">Youtube</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p><a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> で構築されています。 <span>|</span>
+        テーマ <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> は <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> によって設計されています。
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+
+    </body>
+</html>

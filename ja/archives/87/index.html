@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" この記事は Google 翻訳を使用して処理されました\nSQL Series\nデータベース学習 1 データベース入門: https://blog.yexca.net/ja/archives/86 データベース学習 2 リレーショナル モデル: 本文\nデータベースの学習 3 SQL言語: https://blog.yexca.net/ja/archives/88 ">
+<title>データベース学習 2 リレーショナル モデル</title>
+
+<link rel='canonical' href='https://blog.yexca.net/ja/archives/87/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="データベース学習 2 リレーショナル モデル">
+<meta property='og:description' content=" この記事は Google 翻訳を使用して処理されました\nSQL Series\nデータベース学習 1 データベース入門: https://blog.yexca.net/ja/archives/86 データベース学習 2 リレーショナル モデル: 本文\nデータベースの学習 3 SQL言語: https://blog.yexca.net/ja/archives/88 ">
+<meta property='og:url' content='https://blog.yexca.net/ja/archives/87/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:published_time' content='2023-02-07T06:00:00&#43;08:00'/><meta property='article:modified_time' content='2023-02-07T06:00:00&#43;08:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="データベース学習 2 リレーショナル モデル">
+<meta name="twitter:description" content=" この記事は Google 翻訳を使用して処理されました\nSQL Series\nデータベース学習 1 データベース入門: https://blog.yexca.net/ja/archives/86 データベース学習 2 リレーショナル モデル: 本文\nデータベースの学習 3 SQL言語: https://blog.yexca.net/ja/archives/88 ">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="メニューを開く・閉じる">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/ja/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/ja">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">この世で道が尽きることなく、行きたいと望めば、道は足元に広がっている</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/ja/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/ja/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>ホーム</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>アーカイブ</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>検索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>リンク</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/ja/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>について</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" >简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" selected>日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>ダークモード</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目次</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#リレーショナルモデルの基本用語">リレーショナルモデルの基本用語</a></li>
+    <li><a href="#関係モデルの定義">関係モデルの定義</a>
+      <ul>
+        <li><a href="#リレーショナルデータ構造">リレーショナルデータ構造</a></li>
+        <li><a href="#関係演算セット">関係演算セット</a></li>
+        <li><a href="#リレーショナル整合性制約">リレーショナル整合性制約</a></li>
+      </ul>
+    </li>
+    <li><a href="#関係代数演算子">関係代数演算子</a>
+      <ul>
+        <li><a href="#従来の集合計算">従来の集合計算</a></li>
+        <li><a href="#専門的な関係オペレーター">専門的な関係オペレーター</a></li>
+      </ul>
+    </li>
+    <li><a href="#シンボルからsql言語へ">シンボルからSQL言語へ</a>
+      <ul>
+        <li><a href="#sql言語への投影">SQL言語への投影</a></li>
+        <li><a href="#選択からsqlへ">選択からSQLへ</a></li>
+        <li><a href="#デカルト積からsqlへ">デカルト積からSQLへ</a></li>
+        <li><a href="#sql言語への自然接続">SQL言語への自然接続</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/ja/categories/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E7%A4%8E/" >
+                プログラミングの基礎
+            </a>
+        
+            <a href="/ja/categories/%E3%83%87%E3%83%BC%E3%82%BF%E3%83%99%E3%83%BC%E3%82%B9/" >
+                データベース
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/ja/archives/87/">データベース学習 2 リレーショナル モデル</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2023-02-07 06:00 &#43;0800</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    読了時間: 6分
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/archives/87/" class="link">简体中文</a>
+                
+            </div>
+        </footer>
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>この記事は Google 翻訳を使用して処理されました</p>
+<p><strong>SQL Series</strong></p>
+<p>データベース学習 1 データベース入門: 
+
+<a class="link" href="https://blog.yexca.net/ja/archives/86" 
+
+>
+https://blog.yexca.net/ja/archives/86
+</a>
+ <br>
+データベース学習 2 リレーショナル モデル: 本文<br>
+データベースの学習 3 SQL言語: 
+
+<a class="link" href="https://blog.yexca.net/ja/archives/88" 
+
+>
+https://blog.yexca.net/ja/archives/88
+</a>
+ </p>
+<p>以下のはまだ翻訳しないので、中国語（簡体字）のリンクだよ</p>
+<p>数据库学习四 关系数据库理论: 
+
+<a class="link" href="https://blog.yexca.net/archives/89" 
+
+>
+https://blog.yexca.net/archives/89
+</a>
+ <br>
+数据库学习五 范式: 
+
+<a class="link" href="https://blog.yexca.net/archives/90" 
+
+>
+https://blog.yexca.net/archives/90
+</a>
+ <br>
+数据库学习六 数据库设计: 
+
+<a class="link" href="https://blog.yexca.net/archives/91" 
+
+>
+https://blog.yexca.net/archives/91
+</a>
+ <br>
+数据库学习七 数据库的控制功能: 
+
+<a class="link" href="https://blog.yexca.net/archives/92" 
+
+>
+https://blog.yexca.net/archives/92
+</a>
+ </p>
+</blockquote>
+<h2 id="リレーショナルモデルの基本用語">リレーショナルモデルの基本用語
+</h2><p>リレーショナル データベース システムは、リレーショナル モデルをサポートするデータベース システムです。リレーショナル モデルに関連する基本的な用語は次のとおりです。</p>
+<ul>
+<li>リレーションシップ: リレーションシップは2次元テーブルであり、各リレーションシップにはリレーションシップ名があります。</li>
+<li>タプル: テーブル内の行はタプルであり、ストレージファイル内のレコード値に対応します。</li>
+<li>属性: テーブル内の列は属性と呼ばれます。各列には属性名があり、属性値はレコード内のデータ項目またはフィールド値に相当します。</li>
+<li>ドメイン: 属性の値の範囲、つまり異なるタプル内の同じ属性の値の範囲</li>
+<li>リレーションシップモデル: リレーションシップの説明はリレーションシップモデルと呼ばれ、リレーションシップ名とその属性セットで構成されます。リレーションシップモデルの形式は次のとおりです: <code>リレーションシップ名(属性名 1，···，属性名 n)</code></li>
+</ul>
+<p>通常、リレーショナルモデルはリレーショナルファイルの結果に対応する。</p>
+<ul>
+<li>候補キー: タプルを一意に識別する値を持つ属性または属性の組み合わせ</li>
+<li>主キー: 関係には複数の候補キーが存在する場合があり、そのうちの1つが主キーとして選択されます。</li>
+<li>主属性: <strong>候補コード</strong> に含まれる属性は主属性と呼ばれ、<strong>候補コード</strong> に含まれない属性は非主属性と呼ばれます。</li>
+<li>外部キー: リレーション内の属性または属性グループがリレーションのキーではないが、別のリレーションのキーである場合、その属性または属性グループをリレーションの外部キーと呼びます。</li>
+<li>フルコード: リレーショナルスキーマのすべての属性グループは、このリレーショナルスキーマの候補コードであり、フルコードと呼ばれます。</li>
+<li>スーパーコード（スーパーキー）：コードを含む属性のセットはスーパーコードと呼ばれます</li>
+</ul>
+<h2 id="関係モデルの定義">関係モデルの定義
+</h2><p>関係の記述はリレーショナルモデルと呼ばれ、正式には次のように表現されます: R(U, D, dom, F)</p>
+<p>ここで、Rは関係名、Uは関係を構成する属性名のセット、Dは属性グループUの属性の由来となるドメイン、domは属性からドメインへのマッピングのセット、Fは属性データ間の依存関係のセット。</p>
+<p>これは通常、R(U)またはR($A_1$, $A_2$, ···)と略記されます。ここで、Rは関係名、Uは属性名セット、$A_1$、···は個々の属性です。名前。</p>
+<p>リレーショナル モデルは、リレーショナル データ構造、リレーショナル操作セット、リレーショナル整合性制約の 3 つの部分で構成されます。</p>
+<h3 id="リレーショナルデータ構造">リレーショナルデータ構造
+</h3><p>リレーショナルモデルにおけるデータの論理的な関係は2次元のテーブルである</p>
+<h3 id="関係演算セット">関係演算セット
+</h3><p>リレーショナルモデルは関係を操作する機能を提供する</p>
+<p>一般的なリレーショナル操作には、選択、投影、接続、除算、結合、積、差などのクエリ操作、および追加操作と削除操作が含まれます。</p>
+<h3 id="リレーショナル整合性制約">リレーショナル整合性制約
+</h3><p>リレーショナル モデルの 3 つの整合性ルールは次のとおりです。</p>
+<ul>
+<li>エンティティの整合性: リレーションシップの主キーの値は空または部分的に空にすることはできません。つまり、主キーの属性、つまり主属性は空の値を取ることはできません。</li>
+<li>参照整合性: リレーション $R_2$ の外部キーXがリレーション $R_1$ の主キーに対応する場合(基本リレーション $R_1$ と $R_2$ は必ずしも異なるリレーションではなく、同じリレーションである可能性があります)、次に、外部キー X の各値は、リレーション $R_1$ の主キーの値内に見つかる必要があります。見つからない場合は null になります。</li>
+<li>ユーザー定義の整合性: 特定のデータに対してユーザーが指定した制約の検証を指します。</li>
+</ul>
+<h2 id="関係代数演算子">関係代数演算子
+</h2><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>オペレーター</th>
+          <th>シンボル</th>
+          <th>意味</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>集合演算子</td>
+          <td>∪<!-- raw HTML omitted -->–<!-- raw HTML omitted -->∩<!-- raw HTML omitted -->×</td>
+          <td>連合<!-- raw HTML omitted -->違い<!-- raw HTML omitted -->交差点<!-- raw HTML omitted -->デカルト積</td>
+      </tr>
+      <tr>
+          <td>特殊な関係演算子</td>
+          <td>σ<!-- raw HTML omitted -->π<!-- raw HTML omitted --><strong>⋈</strong><!-- raw HTML omitted -->÷</td>
+          <td>選ぶ<!-- raw HTML omitted -->投影<!-- raw HTML omitted -->接続<!-- raw HTML omitted -->分割</td>
+      </tr>
+      <tr>
+          <td>比較演算子</td>
+          <td>＞<!-- raw HTML omitted -->≥<!-- raw HTML omitted -->＜<!-- raw HTML omitted -->≤<!-- raw HTML omitted -->＝<!-- raw HTML omitted -->≠</td>
+          <td>より大きい<!-- raw HTML omitted -->より大きいか等しい<!-- raw HTML omitted -->未満<!-- raw HTML omitted -->以下<!-- raw HTML omitted -->等しい<!-- raw HTML omitted -->等しくない</td>
+      </tr>
+      <tr>
+          <td>論理演算子</td>
+          <td>¬<!-- raw HTML omitted -->∧<!-- raw HTML omitted -->∨</td>
+          <td>否<!-- raw HTML omitted -->及び<!-- raw HTML omitted -->または</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="従来の集合計算">従来の集合計算
+</h3><p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/02-%e6%95%b0%e6%8d%ae%e5%ba%93/image.awlbuxf4l0g.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h3 id="専門的な関係オペレーター">専門的な関係オペレーター
+</h3><ol>
+<li>接続</li>
+</ol>
+<p>θ 接続、等接続と自然接続</p>
+<ul>
+<li>θ 接続：接続条件が等しくない</li>
+<li>等価接続：接続条件は等価です</li>
+<li>自然接続: 重複するプロパティの等価接続を削除します。最もよく使用される接続計算。</li>
+</ul>
+<ol start="2">
+<li>プロジェクター</li>
+</ol>
+<p>投影計算は関係の垂直方向から計算を実行し、関係 R で新しい関係を構成するいくつかの属性列 A を抽出し、$π_A(R)$ を計算します。</p>
+<ol start="3">
+<li>选择</li>
+</ol>
+<p>選択計算は関係の水平方向からの計算であり、関係 R の中から所定の条件を満たす要素を選択し、$σ_F(R)$ として計算します。</p>
+<p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/02-%e6%95%b0%e6%8d%ae%e5%ba%93/image.1v1v0l1iprkw.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<ol start="4">
+<li>外部接続</li>
+</ol>
+<p>外部接続計算は接続計算の拡張であり、接続計算によってメッセージが失われる可能性があります。</p>
+<ul>
+<li>左外部接続: 左側関係関係のすべてと右側関係関係のいずれかの要素グループが一致しない要素グループを取り出し、右側関係関係からのすべての属性を空の null で埋めます。</li>
+<li>外部接続: 右側関係系のすべてと左側関係系のいずれかの元組が一致しない元組を取り出し、左側関係系からのすべての属性を空の null で埋めます。
+※全外部接続：左外部接続と右外部接続の操作を完了します。</li>
+</ul>
+<ol start="5">
+<li>除法</li>
+</ol>
+<p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/02-%e6%95%b0%e6%8d%ae%e5%ba%93/image.2bjlkymb94u8.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="img"
+	
+	
+></p>
+<h2 id="シンボルからsql言語へ">シンボルからSQL言語へ
+</h2><p>関係 R：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>A</th>
+          <th>B</th>
+          <th>C</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="sql言語への投影">SQL言語への投影
+</h3><p>$π_?(?)$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">from</span> <span style="color:#f92672">?</span>
+</span></span></code></pre></div><p>$π_{A, B, C}(R)$ 或者 $π_{1, 2, 3}(R)$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R
+</span></span></code></pre></div><blockquote>
+<p>注：SQL 语言不サポート列 (プロパティ) の順序番号</p>
+</blockquote>
+<h3 id="選択からsqlへ">選択からSQLへ
+</h3><p>$π_?(σ_?(?))$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">from</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">where</span> <span style="color:#f92672">?</span>
+</span></span></code></pre></div><p>$π_{A, B, C}(σ_{B &gt;= &lsquo;5&rsquo;}(R))$ 或者 $π_{1, 2, 3}(σ_{2 &gt;= &lsquo;5&rsquo;}(R))$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R <span style="color:#66d9ef">where</span> B <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;5&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">または</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">select</span> A, B, <span style="color:#66d9ef">C</span> <span style="color:#66d9ef">from</span> R <span style="color:#66d9ef">where</span> B <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">5</span>
+</span></span></code></pre></div><h3 id="デカルト積からsqlへ">デカルト積からSQLへ
+</h3><p>$π_{R.A, R.B, R.C, S.A, S.B, S.D}(R×S)$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> R.A, R.B, R.<span style="color:#66d9ef">C</span>, S.A, S.B, S.D
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">from</span> R, S
+</span></span><span style="display:flex;"><span><span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">昇順で並べ替え</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">order</span> <span style="color:#66d9ef">by</span> R.A <span style="color:#66d9ef">asc</span>
+</span></span></code></pre></div><h3 id="sql言語への自然接続">SQL言語への自然接続
+</h3><p>関係 R(A, B, C) および S(B, C, D)</p>
+<p>$π_{R.A, R.B, R.C, S.D}(σ_{R.B = S.B ∩ R.C = S.C}(R×S))$</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">select</span> R.A, R.B, R.<span style="color:#66d9ef">C</span>, S.D
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">from</span> R, S
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">where</span> R.B <span style="color:#f92672">=</span> S.B <span style="color:#66d9ef">and</span> R.<span style="color:#66d9ef">C</span> <span style="color:#f92672">=</span> S.<span style="color:#66d9ef">C</span>
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p><a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> で構築されています。 <span>|</span>
+        テーマ <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> は <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> によって設計されています。
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+
+    </body>
+</html>
