@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的Cookie过期更换，故记录\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的 Cookie 过期更换，故记录\n">
 <title>原神自动签到 (Linux 服务器 Docker)</title>
 
 <link rel='canonical' href='https://blog.yexca.net/archives/47/'>
 
 <link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="原神自动签到 (Linux 服务器 Docker)">
-<meta property='og:description' content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的Cookie过期更换，故记录\n">
+<meta property='og:description' content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的 Cookie 过期更换，故记录\n">
 <meta property='og:url' content='https://blog.yexca.net/archives/47/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Docker' /><meta property='article:tag' content='miHoYo' /><meta property='article:published_time' content='2022-06-09T13:33:42&#43;08:00'/><meta property='article:modified_time' content='2022-06-09T13:33:42&#43;08:00'/>
 <meta name="twitter:site" content="@yexcano">
     <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="原神自动签到 (Linux 服务器 Docker)">
-<meta name="twitter:description" content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的Cookie过期更换，故记录\n">
+<meta name="twitter:description" content="引言 由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建\n既然六月收费为什么现在才写文章呢？因为可能还有三个月的免费试用我米游社的 Cookie 过期更换，故记录\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -339,25 +339,33 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#centos错误">CentOS错误</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#cookie获取">Cookie获取</a></li>
-    <li><a href="#简易配置">简易配置</a></li>
-    <li><a href="#重新配置更新cookie">重新配置/更新Cookie</a></li>
-    <li><a href="#常用命令">常用命令</a></li>
-  </ul>
-
-  <ul>
-    <li>
+    <li><a href="#引言">引言</a></li>
+    <li><a href="#工具原教程">工具&amp;原教程</a></li>
+    <li><a href="#腾讯云函数处理">腾讯云函数处理</a></li>
+    <li><a href="#前提">前提</a></li>
+    <li><a href="#docker安装">Docker安装</a></li>
+    <li><a href="#脚本安装">脚本安装</a>
       <ul>
-        <li><a href="#示例配置文件">示例配置文件</a></li>
+        <li><a href="#centos-错误">CentOS 错误</a></li>
       </ul>
     </li>
-    <li><a href="#安装">安装</a></li>
-    <li><a href="#配置">配置</a></li>
-    <li><a href="#配置文件新增">配置文件新增</a></li>
+    <li><a href="#简易使用">简易使用</a>
+      <ul>
+        <li><a href="#cookie-获取">Cookie 获取</a></li>
+        <li><a href="#简易配置">简易配置</a></li>
+        <li><a href="#重新配置更新cookie">重新配置/更新Cookie</a></li>
+        <li><a href="#常用命令">常用命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#高阶使用">高阶使用</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#配置">配置</a></li>
+        <li><a href="#配置文件新增">配置文件新增</a></li>
+        <li><a href="#onepush-推送参数一览">OnePush 推送参数一览</a></li>
+        <li><a href="#推送例子">推送例子</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
         </div>
@@ -422,7 +430,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 4 分钟
+                    阅读时长: 3 分钟
                 </time>
             </div>
         
@@ -437,26 +445,26 @@
     <section class="article-content">
     
     
-    <h1 id="引言">引言
-</h1><p>由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建</p>
-<p>既然六月收费为什么现在才写文章呢？因为<del>可能还有三个月的免费试用</del>我米游社的Cookie过期更换，故记录</p>
-<h1 id="工具原教程">工具&amp;原教程
-</h1><p>
+    <h2 id="引言">引言
+</h2><p>由于腾讯云函数从六月开始收费，于是便弃用改在自己的服务器上搭建</p>
+<p>既然六月收费为什么现在才写文章呢？因为<del>可能还有三个月的免费试用</del>我米游社的 Cookie 过期更换，故记录</p>
+<h2 id="工具原教程">工具&amp;原教程
+</h2><p>
 
 <a class="link" href="https://www.yindan.me/tutorial/genshin-impact-helper.html" 
 
 
    target="_blank" rel="noopener"
 >
-原神签到小助手 每日福利不用愁 - 银弹博客 (yindan.me)
+原神签到小助手 每日福利不用愁 - 银弹博客
 </a>
  </p>
 <p>由于原文介绍了多种使用方法，自己的阅读体验不是太好，故写此文</p>
-<h1 id="腾讯云函数处理">腾讯云函数处理
-</h1><p>请将腾讯云函数冻结已确保不会收取费用</p>
+<h2 id="腾讯云函数处理">腾讯云函数处理
+</h2><p>请将腾讯云函数冻结已确保不会收取费用</p>
 <p>当然，如果没什么其他需求可直接注销账号，但注销账号需要手持身份证照片，请注意</p>
-<h1 id="前提">前提
-</h1><p>服务器可以连接上米忽悠的服务器
+<h2 id="前提">前提
+</h2><p>服务器可以连接上米忽悠的服务器 
 
 <a class="link" href="https://mihoyo.com" 
 
@@ -466,24 +474,24 @@
 https://mihoyo.com
 </a>
  </p>
-<p>可在SSH命令行窗口输入<code>ping mihoyo.com</code>测试是否可以连接</p>
+<p>可在 SSH 命令行窗口输入 <code>ping mihoyo.com</code> 测试是否可以连接</p>
 <p><del>我的一个服务器就连接不上，只好换一个，唉</del></p>
-<h1 id="docker安装">Docker安装
-</h1><p>可以直接使用一键脚本进行安装，实测Debian10和CentOS7正常安装(请使用root账户)</p>
+<h2 id="docker安装">Docker安装
+</h2><p>可以直接使用一键脚本进行安装，实测 Debian10 和 CentOS7 正常安装 (请使用 root 账户)</p>
 <p>安装命令如下：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 </span></span></code></pre></div><p>也可以使用国内 daocloud 一键安装命令：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -sSL https://get.daocloud.io/docker | sh
-</span></span></code></pre></div><h1 id="脚本安装">脚本安装
-</h1><p>使用以下命令即可</p>
+</span></span></code></pre></div><h2 id="脚本安装">脚本安装
+</h2><p>使用以下命令即可</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull yindan/genshinhelper
-</span></span></code></pre></div><h2 id="centos错误">CentOS错误
-</h2><p>我使用CentOS安装时出现错误<code>Can't Connect to Docker Daemon</code></p>
-<p>请确保使用root账户，然后输入以下命令</p>
+</span></span></code></pre></div><h3 id="centos-错误">CentOS 错误
+</h3><p>我使用 CentOS 安装时出现错误 <code>Can't Connect to Docker Daemon</code></p>
+<p>请确保使用 root 账户，然后输入以下命令</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl start docker
-</span></span></code></pre></div><h1 id="简易使用">简易使用
-</h1><h2 id="cookie获取">Cookie获取
-</h2><p>获取米游社Cookie请参考：
+</span></span></code></pre></div><h2 id="简易使用">简易使用
+</h2><h3 id="cookie-获取">Cookie 获取
+</h3><p>获取米游社Cookie请参考：
 
 <a class="link" href="https://yexca.xyz/archives/12" 
 
@@ -495,17 +503,17 @@ https://mihoyo.com
  </p>
 <p><strong>注意</strong>：Cookie 应包含<code>account_id</code>和<code>cookie_token</code>两个字段</p>
 <p>多账号在不同Cookie中间加<code>#</code>即可，例如<code>Cookie1#Cookie2#Cookie3</code></p>
-<h2 id="简易配置">简易配置
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d --name<span style="color:#f92672">=</span>genshinhelper <span style="color:#ae81ff">\
+<h3 id="简易配置">简易配置
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d --name<span style="color:#f92672">=</span>genshinhelper <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-e COOKIE_MIHOYOBBS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;COOKIE_MIHOYOBBS&gt;&#34;</span> <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--restart always <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>yindan/genshinhelper:latest
 </span></span></code></pre></div><p>将自己的<code>Cookie</code>替换上述命令的<code>&lt;COOKIE_MIHOYOBBS&gt;</code>即可</p>
-<h2 id="重新配置更新cookie">重新配置/更新Cookie
-</h2><p>重新配置好像需要卸载再重装，然后再进行配置</p>
+<h3 id="重新配置更新cookie">重新配置/更新Cookie
+</h3><p>重新配置好像需要卸载再重装，然后再进行配置</p>
 <p>或者使用配置文件只需替换Cookie就可以了吧(没用过，<del>Cookie有效期很长的</del>)</p>
-<h2 id="常用命令">常用命令
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看Docker所有的容器</span>
+<h3 id="常用命令">常用命令
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看Docker所有的容器</span>
 </span></span><span style="display:flex;"><span>docker ps -a
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看日志</span>
@@ -522,9 +530,9 @@ https://mihoyo.com
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># 卸载</span>
 </span></span><span style="display:flex;"><span>docker rm -f genshinhelper
 </span></span><span style="display:flex;"><span>docker image rm genshinhelper
-</span></span></code></pre></div><h1 id="配置文件">配置文件
-</h1><h3 id="示例配置文件">示例配置文件
-</h3><blockquote>
+</span></span></code></pre></div><h2 id="高阶使用">高阶使用
+</h2><p>可下载示例文件修改</p>
+<blockquote>
 <ul>
 <li>Github: 
 
@@ -548,28 +556,27 @@ https://t.me/genshinhelperupdates/5
  </li>
 </ul>
 </blockquote>
-<p>可下载示例文件修改</p>
-<h2 id="安装">安装
-</h2><p>假设配置文件位于服务器的 <code>/etc/genshin/config.json</code>，使用以下命令已映射配置</p>
+<h3 id="安装">安装
+</h3><p>假设配置文件位于服务器的 <code>/etc/genshin/config.json</code>，使用以下命令已映射配置</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d --name<span style="color:#f92672">=</span>genshinhelper <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>-v /etc/genshin:/app/genshincheckinhelper/config <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--restart always <span style="color:#ae81ff">\
 </span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>yindan/genshinhelper:latest
-</span></span></code></pre></div><h2 id="配置">配置
-</h2><p>配置文件可以只留下需要的参数，把非必须的参数删除，例如只需要<code>Cookie</code></p>
+</span></span></code></pre></div><h3 id="配置">配置
+</h3><p>配置文件可以只留下需要的参数，把非必须的参数删除，例如只需要<code>Cookie</code></p>
 <p>则配置文件除了保持完整也可以写成：</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;COOKIE_MIHOYOBBS&#34;</span>: <span style="color:#e6db74">&#34;&lt;COOKIE_MIHOYOBBS&gt;&#34;</span>,
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="配置文件新增">配置文件新增
-</h2><p>RANDOM_SLEEP_SECS_RANGE：随机延迟休眠秒数范围，单位：秒。设置成&quot;0-0&quot;为取消延迟。
+</span></span></code></pre></div><h3 id="配置文件新增">配置文件新增
+</h3><p>RANDOM_SLEEP_SECS_RANGE：随机延迟休眠秒数范围，单位：秒。设置成&quot;0-0&quot;为取消延迟。
 CHECK_IN_TIME：每日签到时间。该时间和运行环境的时间有关，和时区无关。如果是docker，可以用TZ=Asia/Shanghai设置时区。
 CHECK_RESIN_SECS：原神原粹树脂检测间隔时间，单位：秒。
 COOKIE_RESIN_TIMER：需要开启原粹树脂检测账号的cookie。
 SHOPTOKEN：微信积分商城的token，通过抓包获取。
 ONEPUSH：推送配置。notifier为推送名字，params为所需参数。详见后文。</p>
-<h1 id="onepush推送参数一览">OnePush推送参数一览
-</h1><p>推送名称 / notifier: bark<br>
+<h3 id="onepush-推送参数一览">OnePush 推送参数一览
+</h3><p>推送名称 / notifier: bark<br>
 参数大全 / params:<br>
 {&lsquo;required&rsquo;: [&lsquo;key&rsquo;], &lsquo;optional&rsquo;: [&rsquo;title&rsquo;, &lsquo;content&rsquo;, &lsquo;sound&rsquo;, &lsquo;isarchive&rsquo;, &lsquo;icon&rsquo;, &lsquo;group&rsquo;, &lsquo;url&rsquo;, &lsquo;copy&rsquo;, &lsquo;autocopy&rsquo;]}</p>
 <p>推送名称 / notifier: custom<br>
@@ -602,23 +609,13 @@ ONEPUSH：推送配置。notifier为推送名字，params为所需参数。详�
 <p>推送名称 / notifier: wechatworkbot<br>
 参数大全 / params:<br>
 {&lsquo;required&rsquo;: [&lsquo;key&rsquo;], &lsquo;optional&rsquo;: [&rsquo;title&rsquo;, &lsquo;content&rsquo;, &lsquo;markdown&rsquo;]}</p>
-<p><strong>例子</strong>
-telegram<br>
-ONEPUSH={&ldquo;notifier&rdquo;:&ldquo;telegram&rdquo;,&ldquo;params&rdquo;:{&ldquo;markdown&rdquo;:false,&ldquo;token&rdquo;:&ldquo;xxxx&rdquo;,&ldquo;userid&rdquo;:&ldquo;xxx&rdquo;}}</p>
-<p>discord<br>
-ONEPUSH={&ldquo;notifier&rdquo;:&ldquo;discord&rdquo;,&ldquo;params&rdquo;:{&ldquo;markdown&rdquo;:true,&ldquo;webhook&rdquo;:&ldquo;
+<h3 id="推送例子">推送例子
+</h3><pre tabindex="0"><code class="language-conf" data-lang="conf">telegram  
+ONEPUSH={&#34;notifier&#34;:&#34;telegram&#34;,&#34;params&#34;:{&#34;markdown&#34;:false,&#34;token&#34;:&#34;xxxx&#34;,&#34;userid&#34;:&#34;xxx&#34;}}
 
-<a class="link" href="https://discord.com/api/webhooks/xxxxxx%22%7d%7d" 
-
-
-   target="_blank" rel="noopener"
->
-https://discord.com/api/webhooks/xxxxxx"}}
-</a>
- </p>
-<p>docker 配置文件映射目录为：/etc/genshin:/app/genshincheckinhelper/config</p>
-<h1 id="所有变量">所有变量
-</h1><!-- raw HTML omitted -->
+discord  
+ONEPUSH={&#34;notifier&#34;:&#34;discord&#34;,&#34;params&#34;:{&#34;markdown&#34;:true,&#34;webhook&#34;:&#34;https://discord.com/api/webhooks/xxxxxx&#34;}}
+</code></pre><p>docker 配置文件映射目录为：/etc/genshin:/app/genshincheckinhelper/config</p>
 
 </section>
 
