@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Redis 基础: https://blog.yexca.net/archives/157/ Redis 分布式缓存: 本文\n引言 所以这俩文章同时写的但却过了一年才发是吧\n其实是我当时有三个要写的来着，但每次想起来看的时候都忘了要写啥，就过了快一年。。。\n">
+<title>Redis 分布式缓存</title>
+
+<link rel='canonical' href='https://blog.yexca.net/archives/225/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="Redis 分布式缓存">
+<meta property='og:description' content=" Redis 基础: https://blog.yexca.net/archives/157/ Redis 分布式缓存: 本文\n引言 所以这俩文章同时写的但却过了一年才发是吧\n其实是我当时有三个要写的来着，但每次想起来看的时候都忘了要写啥，就过了快一年。。。\n">
+<meta property='og:url' content='https://blog.yexca.net/archives/225/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringBoot' /><meta property='article:tag' content='JavaWeb' /><meta property='article:published_time' content='2025-01-28T21:47:19&#43;09:00'/><meta property='article:modified_time' content='2025-01-28T21:47:19&#43;09:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Redis 分布式缓存">
+<meta name="twitter:description" content=" Redis 基础: https://blog.yexca.net/archives/157/ Redis 分布式缓存: 本文\n引言 所以这俩文章同时写的但却过了一年才发是吧\n其实是我当时有三个要写的来着，但每次想起来看的时候都忘了要写啥，就过了快一年。。。\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#引言">引言</a></li>
+    <li><a href="#问题">问题</a></li>
+    <li><a href="#redis-持久化">Redis 持久化</a>
+      <ul>
+        <li><a href="#rdb-持久化">RDB 持久化</a></li>
+        <li><a href="#aof-持久化">AOF 持久化</a></li>
+        <li><a href="#rdb-与-aof-对比">RDB 与 AOF 对比</a></li>
+      </ul>
+    </li>
+    <li><a href="#redis-主从架构">Redis 主从架构</a>
+      <ul>
+        <li><a href="#按照集群">按照集群</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" >
+                后端
+            </a>
+        
+            <a href="/categories/redis/" >
+                Redis
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/archives/225/">Redis 分布式缓存</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-28 21:47 &#43;0900</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <blockquote>
+<p>Redis 基础: 
+
+<a class="link" href="https://blog.yexca.net/archives/157/" 
+
+>
+https://blog.yexca.net/archives/157/
+</a>
+ <br>
+Redis 分布式缓存: 本文</p>
+</blockquote>
+<h2 id="引言">引言
+</h2><p><del>所以这俩文章同时写的但却过了一年才发是吧</del></p>
+<p>其实是我当时有三个要写的来着，但每次想起来看的时候都忘了要写啥，就过了快一年。。。</p>
+<h2 id="问题">问题
+</h2><p>单机 Redis 存在</p>
+<ul>
+<li>数据丢失问题：实现 Redis 数据持久化</li>
+<li>并发能力问题：搭建主从集群，实现读写分离</li>
+<li>存储能力问题：搭建分片集群，利用插槽机制实现动态扩容</li>
+<li>故障恢复问题：利用 Redis 哨兵，实现健康检测和自动恢复</li>
+</ul>
+<h2 id="redis-持久化">Redis 持久化
+</h2><p>Redis 持久化有两种方案：RDB 与 AOF</p>
+<h3 id="rdb-持久化">RDB 持久化
+</h3><p>RDB 全称 Redis Database Backup file (Redis 数据备份文件)，也叫做 Redis 数据快照。简单来说就是把内存中所有数据都记录到磁盘中。当 Redis 实例故障重启后，从磁盘读取快照文件，恢复数据。快照文件成为 RDB 文件，默认保存在运行目录</p>
+<p>RDB 会在以下四种情况下执行：</p>
+<ul>
+<li>执行 save 命令：立即执行，会导致主进程执行 RDB，其他所有命令被阻塞。仅在数据迁移时可能用到</li>
+<li>执行 bgsave 命令：异步执行，开启独立进程完成 RDB，主进程可以持续处理用户请求，不受影响</li>
+<li>Redis 停机时：停机时会执行一次 save 命令</li>
+<li>触发 RDB 条件时：配置文件配置，如下</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 900秒内，如果至少有1个key被修改，则执行bgsave ， 如果是save &#34;&#34; 则表示禁用RDB</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">900 1  </span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">300 10  </span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">60 10000 </span>
+</span></span></code></pre></div><p>其他配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 是否压缩 ,建议不开启，压缩也会消耗cpu，磁盘的话不值钱</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">rdbcompression</span> <span style="color:#e6db74">yes</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># RDB文件名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dbfilename</span> <span style="color:#e6db74">dump.rdb  </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 文件保存的路径目录</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dir</span> <span style="color:#e6db74">./ </span>
+</span></span></code></pre></div><h4 id="rdb-原理">RDB 原理
+</h4><p>bgsave 开始时会 fork 主进程得到子进程，子进程共享主进程的内存数据。完成 fork 后读取内存数据并写入 RDB 文件</p>
+<p>fork采用的是 copy-on-write 技术：</p>
+<ul>
+<li>当主进程执行读操作时，访问共享内存</li>
+<li>当主进程执行写操作时，则会拷贝一份数据，执行写操作</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/yexca/picx-images-hosting@master/2024/01-Redis/image-20210725151319695.3y8furqbi2g0.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image"
+	
+	
+></p>
+<p>RDB 的缺点：</p>
+<ul>
+<li>执行间隔时间长，两次 RDB 之间写入数据有丢失的风险</li>
+<li>fork 子进程、压缩、写出 RDB 文件都比较耗时</li>
+</ul>
+<h3 id="aof-持久化">AOF 持久化
+</h3><p>AOF 全称 Append Only File (追加文件)，Redis 处理的每一个写命令都会记录在 AOF 文件，可以看作命令日志文件</p>
+<p>AOF 默认是关闭的，修改配置文件开启</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 是否开启AOF功能，默认是no</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendonly</span> <span style="color:#e6db74">yes</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># AOF文件的名称</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfilename</span> <span style="color:#e6db74">&#34;appendonly.aof&#34;</span>
+</span></span></code></pre></div><p>记录频率也可以通过 redis.conf 配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 表示每执行一次写命令，立即记录到AOF文件</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">always </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写命令执行完先放入AOF缓冲区，然后表示每隔1秒将缓冲区数据写到AOF文件，是默认方案</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">everysec </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写命令执行完先放入AOF缓冲区，由操作系统决定何时将缓冲区内容写回磁盘</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">no</span>
+</span></span></code></pre></div><p>配置项对比：</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>配置项</th>
+          <th>刷盘时机</th>
+          <th>优点</th>
+          <th>缺点</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>always</td>
+          <td>同步刷盘</td>
+          <td>可靠性高，几乎不丢数据</td>
+          <td>性能影响大</td>
+      </tr>
+      <tr>
+          <td>everysec</td>
+          <td>每秒刷盘</td>
+          <td>性能适中</td>
+          <td>最多丢失 1 秒数据</td>
+      </tr>
+      <tr>
+          <td>no</td>
+          <td>操作系统控制</td>
+          <td>性能最好</td>
+          <td>可靠性差，可能丢失大量数据</td>
+      </tr>
+  </tbody>
+</table></div>
+<h4 id="文件重写">文件重写
+</h4><p>因为是记录命令，AOF 文件会比 RDB 大很多，而且 AOF 会记录对同一个 key 的多次写操作，但只有最后一次写操作才有意义。通过执行 <code>bgrewriteaof</code> 命令，可以让 AOF 文件执行重写功能，用最少的命令达到相同效果</p>
+<p>假设原先命令为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>set num <span style="color:#ae81ff">123</span>
+</span></span><span style="display:flex;"><span>set name jack
+</span></span><span style="display:flex;"><span>set num <span style="color:#ae81ff">666</span>
+</span></span></code></pre></div><p>重写后：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mset name jack num <span style="color:#ae81ff">666</span>
+</span></span></code></pre></div><p>Redis 也会在触发阈值时自动重写 AOF 文件，在配置文件配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># AOF文件比上次文件 增长超过多少百分比则触发重写</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">auto-aof-rewrite-percentage</span> <span style="color:#e6db74">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># AOF文件体积最小多大以上才触发重写 </span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">auto-aof-rewrite-min-size</span> <span style="color:#e6db74">64mb </span>
+</span></span></code></pre></div><h3 id="rdb-与-aof-对比">RDB 与 AOF 对比
+</h3><p>RDB 与 AOF 各有自己的优缺点，如果对数据安全性要求过高，在实际开发中往往会结合两者来使用</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>RDB</th>
+          <th>AOF</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>持久化方式</td>
+          <td>定时对整个内存做快照</td>
+          <td>记录每一次执行的命令</td>
+      </tr>
+      <tr>
+          <td>数据完整性</td>
+          <td>不完整，两次备份之间会丢失</td>
+          <td>相对完整，取决于刷盘策略</td>
+      </tr>
+      <tr>
+          <td>文件大小</td>
+          <td>会有压缩，文件体积小</td>
+          <td>记录命令，文件体积很大</td>
+      </tr>
+      <tr>
+          <td>宕机恢复优先级</td>
+          <td>很快</td>
+          <td>慢</td>
+      </tr>
+      <tr>
+          <td>数据恢复优先级</td>
+          <td>低，因为数据完整性不如 AOF</td>
+          <td>高，因为数据完整性更高</td>
+      </tr>
+      <tr>
+          <td>系统资源占用</td>
+          <td>高，大量 CPU 和内存消耗</td>
+          <td>低，主要是磁盘 I0 资源<!-- raw HTML omitted -->但 AOF 重写时会占用大量 CPU 和内存资源</td>
+      </tr>
+      <tr>
+          <td>使用场景</td>
+          <td>可以容忍数分钟的数据丢失，追求更快的启动速度</td>
+          <td>对数据安全性要求较高常见</td>
+      </tr>
+  </tbody>
+</table></div>
+<h2 id="redis-主从架构">Redis 主从架构
+</h2><p>单节点 Redis 的并发能力是有上限的，要进一步提高 Redis 的并发能力，就需要搭建主从集群，实现读写分离</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yexca/picx-images-hosting@master/2024/01-Redis/image-20210725152037611.3jmci0l268k0.webp"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image"
+	
+	
+></p>
+<h3 id="按照集群">按照集群
+</h3><p>基于 CentOS7</p>
+<p>参考上图一共三个节点，部署在同一个机子，端口为 7001(master)、7002、7003</p>
+<p>首先创建目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /tmp
+</span></span><span style="display:flex;"><span>mkdir <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span>
+</span></span></code></pre></div><p>如更改配置，需恢复默认的 RDB 模式</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 开启RDB</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># save &#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">3600 1</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">300 100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">60 10000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 关闭AOF</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendonly</span> <span style="color:#e6db74">no</span>
+</span></span></code></pre></div><p>拷贝配置文件到每个实例目录</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 方式一</span>
+</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7001</span>
+</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7002</span>
+</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7003</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 方式二</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -t -n <span style="color:#ae81ff">1</span> cp redis-6.2.4/redis.conf
+</span></span></code></pre></div><p>修改每个实例的端口，工作目录（端口修改，rdb 文件保存位置修改）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7001/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7001\//g&#39;</span> 7001/redis.conf
+</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7002/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7002\//g&#39;</span> 7002/redis.conf
+</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7003/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7003\//g&#39;</span> 7003/redis.conf
+</span></span></code></pre></div><p>修改 IP，每个目录都要改 (替换 ip_address)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 逐一执行</span>
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7001/redis.conf
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7002/redis.conf
+</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7003/redis.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者一键修改</span>
+</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -I<span style="color:#f92672">{}</span> -t sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> <span style="color:#f92672">{}</span>/redis.conf
+</span></span></code></pre></div><p>启动</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 第1个</span>
+</span></span><span style="display:flex;"><span>redis-server 7001/redis.conf
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 第2个</span>
+</span></span><span style="display:flex;"><span>redis-server 7002/redis.conf
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 第3个</span>
+</span></span><span style="display:flex;"><span>redis-server 7003/redis.conf
+</span></span></code></pre></div><p>停止</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -I<span style="color:#f92672">{}</span> -t redis-cli -p <span style="color:#f92672">{}</span> shutdown
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/springboot/">SpringBoot</a>
+        
+            <a href="/tags/javaweb/">JavaWeb</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/archives/223/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Spring 自动配置与起步依赖</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/222/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Spring 事务管理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/221/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Spring AOP(面向切面编程)</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/218/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JWT 登录校验</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/216/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MyBatis 使用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+
+    </body>
+</html>

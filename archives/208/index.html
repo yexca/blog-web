@@ -10,7 +10,7 @@
 <meta property='og:description' content="简单 (非技术框架) 实现的 Go 后端\n~~众所周知，~~后端的开发一般是面向接口的开发，也可以说是 CRUD 工程师，本文章将使用 Go 描述从数据库读出数据，然后返回 JSON 数据\n">
 <meta property='og:url' content='https://blog.yexca.net/archives/208/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Go' /><meta property='article:published_time' content='2024-12-22T22:07:15&#43;08:00'/><meta property='article:modified_time' content='2024-12-22T22:07:15&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Go' /><meta property='article:published_time' content='2024-12-22T22:07:15&#43;08:00'/><meta property='article:modified_time' content='2025-01-28T21:30:18&#43;09:00'/>
 <meta name="twitter:site" content="@yexcano">
     <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="GoLang 后端入门">
 <meta name="twitter:description" content="简单 (非技术框架) 实现的 Go 后端\n~~众所周知，~~后端的开发一般是面向接口的开发，也可以说是 CRUD 工程师，本文章将使用 Go 描述从数据库读出数据，然后返回 JSON 数据\n">
@@ -423,6 +423,25 @@
     
 
     
+        <footer class="article-translations">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+            <div>
+                
+                    <a href="https://blog.yexca.net/ja/archives/208/" class="link">日本語</a>
+                
+            </div>
+        </footer>
+    
 </div>
 
 </header>
@@ -442,51 +461,51 @@
 </span></span><span style="display:flex;"><span>) ENGINE<span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>utf8mb4;
 </span></span></code></pre></div><h2 id="项目结构">项目结构
 </h2><p>本例子的项目结构如下</p>
-<pre tabindex="0"><code>project/
-├── database/       // 数据库包
-│   └── database.go // 数据库连接
-├── handler/        // 处理器包
-│   └── category.go // 分类相关接口
-├── model/          // 数据模型包
-│   ├── category.go // 分类表模型
-│   └── response.go // 响应数据模型
-├── router/         // 路由包
-│   └── router.go   // 路由配置
-├── utils           // 工具包
-│   └── response.go // 统一响应
-├── main.go         // 程序入口
-</code></pre><p>接下来将分目录说明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>project/
+</span></span><span style="display:flex;"><span>├── database/       // 数据库包
+</span></span><span style="display:flex;"><span>│   └── database.go // 数据库连接
+</span></span><span style="display:flex;"><span>├── handler/        // 处理器包
+</span></span><span style="display:flex;"><span>│   └── category.go // 分类相关接口
+</span></span><span style="display:flex;"><span>├── model/          // 数据模型包
+</span></span><span style="display:flex;"><span>│   ├── category.go // 分类表模型
+</span></span><span style="display:flex;"><span>│   └── response.go // 响应数据模型
+</span></span><span style="display:flex;"><span>├── router/         // 路由包
+</span></span><span style="display:flex;"><span>│   └── router.go   // 路由配置
+</span></span><span style="display:flex;"><span>├── utils           // 工具包
+</span></span><span style="display:flex;"><span>│   └── response.go // 统一响应
+</span></span><span style="display:flex;"><span>├── main.go         // 程序入口
+</span></span></code></pre></div><p>接下来将分目录说明</p>
 <h2 id="database">database
 </h2><p>该包是管理与数据库的连接</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// database.go
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">database</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;database/sql&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;database/sql&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;log&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/go-sql-driver/mysql&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/go-sql-driver/mysql&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">DB</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">DB</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">InitDB</span>() {
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dsn</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;username:password@tcp(address:3306)/name?charset=utf8&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dsn</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;Failed to open database: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
-</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">dsn</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;username:password@tcp(address:3306)/name?charset=utf8&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">sql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dsn</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;Failed to open database: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Test Connect
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">Ping</span>()
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;Failed to ping database: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
-</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Test Connect
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">Ping</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;Failed to ping database: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Successfully connected Database!&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Successfully connected Database!&#34;</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="handler">handler
 </h2><p>这个包是对于特定处理的逻辑 (类似于三层架构的 service)，其中数据库处理还可以分层 (类似于 Mapper)，但这只是一个简单的示例，就酱子啦~</p>
@@ -494,38 +513,38 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">handler</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;net/http&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/database&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/model&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/utils&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/database&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/model&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/utils&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetCategories</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Select Database
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;select id,name from categories&#34;</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;Failed to query Categories&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>)
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
-</span></span><span style="display:flex;"><span>	}
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Select Database
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">DB</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;select id,name from categories&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;Failed to query Categories&#34;</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// analyze data
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">categories</span> []<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Category</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">category</span> <span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Category</span>
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">category</span>.<span style="color:#a6e22e">Id</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">category</span>.<span style="color:#a6e22e">Name</span>)
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">utils</span>.<span style="color:#a6e22e">JSONResponse</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>, <span style="color:#e6db74">&#34;Failed to analyze Categories&#34;</span>, <span style="color:#66d9ef">nil</span>)
-</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//http.Error(w, &#34;Failed to analyze Categories&#34;, http.StatusInternalServerError)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#66d9ef">return</span>
-</span></span><span style="display:flex;"><span>		}
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">categories</span> = append(<span style="color:#a6e22e">categories</span>, <span style="color:#a6e22e">category</span>)
-</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// analyze data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">categories</span> []<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Category</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">category</span> <span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Category</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">category</span>.<span style="color:#a6e22e">Id</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">category</span>.<span style="color:#a6e22e">Name</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">utils</span>.<span style="color:#a6e22e">JSONResponse</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>, <span style="color:#e6db74">&#34;Failed to analyze Categories&#34;</span>, <span style="color:#66d9ef">nil</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//http.Error(w, &#34;Failed to analyze Categories&#34;, http.StatusInternalServerError)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">categories</span> = append(<span style="color:#a6e22e">categories</span>, <span style="color:#a6e22e">category</span>)
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// return JSON
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//w.Header().Set(&#34;Content-Type&#34;, &#34;application/json&#34;)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//json.NewEncoder(w).Encode(categories)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">utils</span>.<span style="color:#a6e22e">JSONResponse</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">categories</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// return JSON
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//w.Header().Set(&#34;Content-Type&#34;, &#34;application/json&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//json.NewEncoder(w).Encode(categories)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">utils</span>.<span style="color:#a6e22e">JSONResponse</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>, <span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#a6e22e">categories</span>)
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>注释掉的内容为不适用统一响应接口，直接返回 JSON 的情况</p>
 <h2 id="model">model
@@ -534,17 +553,17 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">model</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Category</span> <span style="color:#66d9ef">struct</span> {
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>          <span style="color:#66d9ef">int</span>    <span style="color:#e6db74">`json:&#34;id&#34;`</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34;`</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Description</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;description&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Id</span>          <span style="color:#66d9ef">int</span>    <span style="color:#e6db74">`json:&#34;id&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Name</span>        <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;name&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Description</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;description&#34;`</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>响应的数据模型为</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">model</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Response</span> <span style="color:#66d9ef">struct</span> {
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Code</span> <span style="color:#66d9ef">int</span>         <span style="color:#e6db74">`json:&#34;code&#34;`</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Msg</span>  <span style="color:#66d9ef">string</span>      <span style="color:#e6db74">`json:&#34;msf&#34;`</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Data</span> <span style="color:#66d9ef">interface</span>{} <span style="color:#e6db74">`json:&#34;data&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Code</span> <span style="color:#66d9ef">int</span>         <span style="color:#e6db74">`json:&#34;code&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Msg</span>  <span style="color:#66d9ef">string</span>      <span style="color:#e6db74">`json:&#34;msf&#34;`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">Data</span> <span style="color:#66d9ef">interface</span>{} <span style="color:#e6db74">`json:&#34;data&#34;`</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="router">router
 </h2><p>该包管理路由，即访问了什么路径要指定相应的处理逻辑 (类似于三层架构的 controller)</p>
@@ -552,14 +571,14 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">router</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;github.com/gorilla/mux&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/handler&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;github.com/gorilla/mux&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/handler&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">InitRouter</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">Router</span> {
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">router</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">NewRouter</span>()
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/categories&#34;</span>, <span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">GetCategories</span>).<span style="color:#a6e22e">Methods</span>(<span style="color:#e6db74">&#34;GET&#34;</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">router</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">router</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mux</span>.<span style="color:#a6e22e">NewRouter</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/categories&#34;</span>, <span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">GetCategories</span>).<span style="color:#a6e22e">Methods</span>(<span style="color:#e6db74">&#34;GET&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">router</span>
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="utils">utils
 </h2><p>该包为工具类，用于定义可以通用的工具</p>
@@ -567,20 +586,20 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">utils</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;encoding/json&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;log&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;net/http&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/model&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/model&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">JSONResponse</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">code</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) {
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json; charset=utf-8&#34;</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">WriteHeader</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewEncoder</span>(<span style="color:#a6e22e">w</span>).<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Response</span>{<span style="color:#a6e22e">Code</span>: <span style="color:#a6e22e">code</span>, <span style="color:#a6e22e">Msg</span>: <span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">Data</span>: <span style="color:#a6e22e">data</span>})
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
-</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/json; charset=utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">WriteHeader</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">NewEncoder</span>(<span style="color:#a6e22e">w</span>).<span style="color:#a6e22e">Encode</span>(<span style="color:#a6e22e">model</span>.<span style="color:#a6e22e">Response</span>{<span style="color:#a6e22e">Code</span>: <span style="color:#a6e22e">code</span>, <span style="color:#a6e22e">Msg</span>: <span style="color:#a6e22e">message</span>, <span style="color:#a6e22e">Data</span>: <span style="color:#a6e22e">data</span>})
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h2 id="main">main
 </h2><p>程序的入口</p>
@@ -588,22 +607,22 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;log&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;net/http&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/database&#34;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;project/router&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/database&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;project/router&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// init Database
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">InitDB</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// init Database
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">database</span>.<span style="color:#a6e22e">InitDB</span>()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Init Router
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">InitRouter</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Init Router
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">InitRouter</span>()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// start
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Starting server on port 8848&#34;</span>)
-</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8848&#34;</span>, <span style="color:#a6e22e">r</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// start
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Starting server on port 8848&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;:8848&#34;</span>, <span style="color:#a6e22e">r</span>))
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>运行 <code>go run main.go</code>，程序将监听 8848 端口</p>
 
@@ -631,7 +650,19 @@
 
         <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
     </section>
-    </footer>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-01-28 21:30 &#43;0900
+        </span>
+    </section></footer>
 
 
     
