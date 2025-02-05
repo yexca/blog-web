@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="文档的查询同样使用 RestHighLevelClient 对象\nmatch_all 发起请求如下\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); System.out.println(response); } 解析响应\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); // 解析结果 SearchHits searchHits = response.getHits(); // 查询的总条数 long total = searchHits.getTotalHits().value; // 查询的结果数组 SearchHit[] hits = searchHits.getHits(); for (SearchHit hit : hits) { String json = hit.getSourceAsString(); System.out.println(json); } } es 返回的结果是一个 JSON 字符串，包含：\n">
+<title>Elasticsearch RestClient 查询</title>
+
+<link rel='canonical' href='https://blog.yexca.net/archives/229/'>
+
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="Elasticsearch RestClient 查询">
+<meta property='og:description' content="文档的查询同样使用 RestHighLevelClient 对象\nmatch_all 发起请求如下\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); System.out.println(response); } 解析响应\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); // 解析结果 SearchHits searchHits = response.getHits(); // 查询的总条数 long total = searchHits.getTotalHits().value; // 查询的结果数组 SearchHit[] hits = searchHits.getHits(); for (SearchHit hit : hits) { String json = hit.getSourceAsString(); System.out.println(json); } } es 返回的结果是一个 JSON 字符串，包含：\n">
+<meta property='og:url' content='https://blog.yexca.net/archives/229/'>
+<meta property='og:site_name' content='yexca&#39;Blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringCloud' /><meta property='article:published_time' content='2025-02-05T15:50:26&#43;09:00'/><meta property='article:modified_time' content='2025-02-05T15:50:26&#43;09:00'/>
+<meta name="twitter:site" content="@yexcano">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Elasticsearch RestClient 查询">
+<meta name="twitter:description" content="文档的查询同样使用 RestHighLevelClient 对象\nmatch_all 发起请求如下\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); System.out.println(response); } 解析响应\n@Test public void testMatchAll() throws IOException { // 准备request SearchRequest request = new SearchRequest(&#34;hotel&#34;); // 组织DSL参数 request.source().query(QueryBuilders.matchAllQuery()); // 发送请求 SearchResponse response = client.search(request, RequestOptions.DEFAULT); // 解析结果 SearchHits searchHits = response.getHits(); // 查询的总条数 long total = searchHits.getTotalHits().value; // 查询的结果数组 SearchHit[] hits = searchHits.getHits(); for (SearchHit hit : hits) { String json = hit.getSourceAsString(); System.out.println(json); } } es 返回的结果是一个 JSON 字符串，包含：\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
+            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/yexca'
+                        target="_blank"
+                        title="0GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:yexca@duck.com'
+                        target="_blank"
+                        title="1Mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://t.me/yexca'
+                        target="_blank"
+                        title="2Telegram"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
+                        
+                    </a>
+                </li>
+            
+
+            <li>
+                <a 
+                    href="/feed.xml" 
+                    target="_blank" 
+                    title="RSS" 
+                    rel="me"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="5" cy="19" r="1" />
+  <path d="M4 4a16 16 0 0 1 16 16" />
+  <path d="M4 11a9 9 0 0 1 9 9" />
+</svg>
+
+
+
+                </a>
+            </li>
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/background/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                
+                <span>背景</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
+                                
+                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
+                                
+                                    <option value="https://blog.yexca.net/en/" >English</option>
+                                
+                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#match_all">match_all</a></li>
+    <li><a href="#match-与-multi_match">match 与 multi_match</a></li>
+    <li><a href="#精准查询">精准查询</a></li>
+    <li><a href="#布尔查询">布尔查询</a></li>
+    <li><a href="#排序与分页">排序与分页</a></li>
+    <li><a href="#高亮">高亮</a></li>
+    <li><a href="#酒店查询案例">酒店查询案例</a>
+      <ul>
+        <li><a href="#搜索和分页">搜索和分页</a></li>
+        <li><a href="#结果过滤">结果过滤</a></li>
+        <li><a href="#附近的酒店">附近的酒店</a></li>
+        <li><a href="#距离显示">距离显示</a></li>
+        <li><a href="#添加广告酒店">添加广告酒店</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" >
+                后端
+            </a>
+        
+            <a href="/categories/spring/" >
+                Spring
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/archives/229/">Elasticsearch RestClient 查询</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-02-05 15:50 &#43;0900</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>文档的查询同样使用 RestHighLevelClient 对象</p>
+<h2 id="match_all">match_all
+</h2><p>发起请求如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMatchAll</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 组织DSL参数</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(response);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>解析响应</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMatchAll</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 组织DSL参数</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析结果</span>
+</span></span><span style="display:flex;"><span>    SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询的总条数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询的结果数组</span>
+</span></span><span style="display:flex;"><span>    SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>        String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(json);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>es 返回的结果是一个 JSON 字符串，包含：</p>
+<ul>
+<li>hits：命中结果
+<ul>
+<li>total：总条数，其中 value 是具体的总条数值</li>
+<li>max_score：所有结果中得分最高的文档相关性算分</li>
+<li>hits：搜索结果的文档数组，其中的每个文档都是一个 JSON 对象
+<ul>
+<li>source：文档中的原始数据，也是 JSON 对象</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>因此，解析响应结果，就是逐层解析JSON字符串，流程如下：</p>
+<ul>
+<li><code>SearchHits</code>：通过 response.getHits() 获取，就是 JSON 中的最外层的 hits，代表命中的结果
+<ul>
+<li><code>SearchHits.getTotalHits().value</code>：获取总条数信息</li>
+<li><code>SearchHits.getHits()</code>：获取 SearchHit 数组，也就是文档数组
+<ul>
+<li><code>SearchHit.getSourceAsString()</code>：获取文档结果中的 _source，也就是原始的 json 文档数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="match-与-multi_match">match 与 multi_match
+</h2><p>与 match_all 类似，差别是查询条件</p>
+<p>match 代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMatch</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, <span style="color:#e6db74">&#34;如家&#34;</span>));
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(total);
+</span></span><span style="display:flex;"><span>    SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>        String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(json);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>multi_match 代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testMultiMatch</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">multiMatchQuery</span>(<span style="color:#e6db74">&#34;如家&#34;</span>, <span style="color:#e6db74">&#34;brand&#34;</span>, <span style="color:#e6db74">&#34;name&#34;</span>));
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(total);
+</span></span><span style="display:flex;"><span>    SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>        String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(json);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>可以看到代码重复部分较多，使用 <code>Ctrl+Alt+M</code> 进行代码抽取，term 代码展示了抽取</p>
+<h2 id="精准查询">精准查询
+</h2><p>term 词条精确匹配查询</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testTerm</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;city&#34;</span>, <span style="color:#e6db74">&#34;上海&#34;</span>));
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    responseHandle(response);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 响应处理代码抽取</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">responseHandle</span>(SearchResponse response) {
+</span></span><span style="display:flex;"><span>    SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(total);
+</span></span><span style="display:flex;"><span>    SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>        String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(json);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>range 范围查询</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testRange</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders
+</span></span><span style="display:flex;"><span>                           .<span style="color:#a6e22e">rangeQuery</span>(<span style="color:#e6db74">&#34;price&#34;</span>)
+</span></span><span style="display:flex;"><span>                           .<span style="color:#a6e22e">gte</span>(100)
+</span></span><span style="display:flex;"><span>                           .<span style="color:#a6e22e">lte</span>(400));
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    responseHandle(response);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="布尔查询">布尔查询
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testBool</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 构建bool查询</span>
+</span></span><span style="display:flex;"><span>    BoolQueryBuilder booledQuery <span style="color:#f92672">=</span> QueryBuilders.<span style="color:#a6e22e">boolQuery</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 添加must条件</span>
+</span></span><span style="display:flex;"><span>    booledQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;city&#34;</span>, <span style="color:#e6db74">&#34;上海&#34;</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 添加filter组件</span>
+</span></span><span style="display:flex;"><span>    booledQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">rangeQuery</span>(<span style="color:#e6db74">&#34;price&#34;</span>).<span style="color:#a6e22e">lte</span>(300));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(booledQuery);
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    responseHandle(response);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="排序与分页">排序与分页
+</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSort</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">from</span>(10).<span style="color:#a6e22e">size</span>(10);
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">sort</span>(<span style="color:#e6db74">&#34;price&#34;</span>, SortOrder.<span style="color:#a6e22e">ASC</span>);
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    responseHandle(response);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="高亮">高亮
+</h2><p>高亮与上述代码差异较大，请求构建</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testHigh</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DSL</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, <span style="color:#e6db74">&#34;汉庭&#34;</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 高亮</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">highlighter</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> HighlightBuilder()
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;name&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">requireFieldMatch</span>(<span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析</span>
+</span></span><span style="display:flex;"><span>    responseHandle(response);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>因为查询文档结果与高亮分离，结果解析要额外处理</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testHigh</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DSL</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, <span style="color:#e6db74">&#34;汉庭&#34;</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 高亮</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">highlighter</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> HighlightBuilder()
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;name&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">requireFieldMatch</span>(<span style="color:#66d9ef">false</span>)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析</span>
+</span></span><span style="display:flex;"><span>    SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 总条数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(total);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 文档数组</span>
+</span></span><span style="display:flex;"><span>    SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>        String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 反序列化</span>
+</span></span><span style="display:flex;"><span>        HotelDoc hotelDoc <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">parseObject</span>(json, HotelDoc.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取高亮结果</span>
+</span></span><span style="display:flex;"><span>        Map<span style="color:#f92672">&lt;</span>String, HighlightField<span style="color:#f92672">&gt;</span> highlightFields <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getHighlightFields</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>CollectionUtils.<span style="color:#a6e22e">isEmpty</span>(highlightFields)){
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 获取高亮结果</span>
+</span></span><span style="display:flex;"><span>            HighlightField highlightField <span style="color:#f92672">=</span> highlightFields.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;name&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (highlightField <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>){
+</span></span><span style="display:flex;"><span>                String name <span style="color:#f92672">=</span> highlightField.<span style="color:#a6e22e">getFragments</span>()<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// 覆盖非高亮</span>
+</span></span><span style="display:flex;"><span>                hotelDoc.<span style="color:#a6e22e">setName</span>(name);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(hotelDoc);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="酒店查询案例">酒店查询案例
+</h2><p>实现四部分功能：</p>
+<ul>
+<li>酒店搜索和分页</li>
+<li>酒店结果过滤</li>
+<li>我周边的酒店</li>
+<li>酒店竞价排名</li>
+</ul>
+<h3 id="搜索和分页">搜索和分页
+</h3><p>搜索请求：</p>
+<ul>
+<li>请求方式：POST</li>
+<li>请求路径：/hotel/list</li>
+<li>请求参数：JSON对象，包含4个字段：
+<ul>
+<li>key：搜索关键字</li>
+<li>page：页码</li>
+<li>size：每页大小</li>
+<li>sortBy：排序，目前暂不实现</li>
+</ul>
+</li>
+<li>返回值：分页查询，需要返回分页结果PageResult，包含两个属性：
+<ul>
+<li><code>total</code>：总条数</li>
+<li><code>List&lt;HotelDoc&gt;</code>：当前页的数据</li>
+</ul>
+</li>
+</ul>
+<p>首先定义实体类，接收参数</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestParams</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String key;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer page;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer size;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String sortBy;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>定义返回类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PageResult</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long total;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>HotelDoc<span style="color:#f92672">&gt;</span> hotels;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">PageResult</span>(){
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">PageResult</span>(Long total, List<span style="color:#f92672">&lt;</span>HotelDoc<span style="color:#f92672">&gt;</span> hotels) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">total</span> <span style="color:#f92672">=</span> total;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">hotels</span> <span style="color:#f92672">=</span> hotels;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>定义 Controller</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@RestController</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RequestMapping</span>(<span style="color:#e6db74">&#34;/hotel&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelController</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> IHotelService hotelService;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@PostMapping</span>(<span style="color:#e6db74">&#34;/list&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> PageResult <span style="color:#a6e22e">search</span>(<span style="color:#a6e22e">@RequestBody</span> RequestParams params){
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> hotelService.<span style="color:#a6e22e">search</span>(params);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>实现搜索业务，首先注册一个 Bean 对象</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> RestHighLevelClient <span style="color:#a6e22e">client</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RestHighLevelClient(RestClient
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">builder</span>(HttpHost.<span style="color:#a6e22e">create</span>(<span style="color:#e6db74">&#34;http://ip:9200&#34;</span>)
+</span></span><span style="display:flex;"><span>            ));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>编写逻辑</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> PageResult <span style="color:#a6e22e">search</span>(RequestParams params) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// request</span>
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    BoolQueryBuilder boolQuery <span style="color:#f92672">=</span> QueryBuilders.<span style="color:#a6e22e">boolQuery</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DSL</span>
+</span></span><span style="display:flex;"><span>    String key <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getKey</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>.<span style="color:#a6e22e">equals</span>(key)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, key));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 分页</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> page <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getPage</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getSize</span>();
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">from</span>((page <span style="color:#f92672">-</span> 1) <span style="color:#f92672">*</span> size).<span style="color:#a6e22e">size</span>(size);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(boolQuery);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 响应解析</span>
+</span></span><span style="display:flex;"><span>        SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 总数</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 文档</span>
+</span></span><span style="display:flex;"><span>        SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 遍历</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>HotelDoc<span style="color:#f92672">&gt;</span> hotels <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>            String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>            HotelDoc hotelDoc <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">parseObject</span>(json, HotelDoc.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>            hotels.<span style="color:#a6e22e">add</span>(hotelDoc);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> PageResult(total, hotels);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="结果过滤">结果过滤
+</h3><p>包含的过滤条件：</p>
+<ul>
+<li>brand：品牌值</li>
+<li>city：城市</li>
+<li>minPrice~maxPrice：价格范围</li>
+<li>starName：星级</li>
+</ul>
+<p>修改实体类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestParams</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String key;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer page;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer size;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String sortBy;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 下面是新增的过滤条件参数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String city;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String brand;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String starName;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer minPrice;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer maxPrice;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>修改查询条件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> PageResult <span style="color:#a6e22e">search</span>(RequestParams params) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// request</span>
+</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
+</span></span><span style="display:flex;"><span>    basicQuery(params, request);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 分页</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> page <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getPage</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getSize</span>();
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">from</span>((page <span style="color:#f92672">-</span> 1) <span style="color:#f92672">*</span> size).<span style="color:#a6e22e">size</span>(size);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 响应解析</span>
+</span></span><span style="display:flex;"><span>        SearchHits searchHits <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 总数</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">long</span> total <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getTotalHits</span>().<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 文档</span>
+</span></span><span style="display:flex;"><span>        SearchHit<span style="color:#f92672">[]</span> hits <span style="color:#f92672">=</span> searchHits.<span style="color:#a6e22e">getHits</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 遍历</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>HotelDoc<span style="color:#f92672">&gt;</span> hotels <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>            String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>            HotelDoc hotelDoc <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">parseObject</span>(json, HotelDoc.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>            hotels.<span style="color:#a6e22e">add</span>(hotelDoc);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> PageResult(total, hotels);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">basicQuery</span>(RequestParams params, SearchRequest request) {
+</span></span><span style="display:flex;"><span>    BoolQueryBuilder boolQuery <span style="color:#f92672">=</span> QueryBuilders.<span style="color:#a6e22e">boolQuery</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 输入内容</span>
+</span></span><span style="display:flex;"><span>    String key <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getKey</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>.<span style="color:#a6e22e">equals</span>(key)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, key));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// brand</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getBrand</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getBrand</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;brand&#34;</span>, params.<span style="color:#a6e22e">getBrand</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// starName</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getStarName</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getStarName</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;starName&#34;</span>, params.<span style="color:#a6e22e">getStarName</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// city</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getCity</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getStarName</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;city&#34;</span>, params.<span style="color:#a6e22e">getCity</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// price</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getMinPrice</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> params.<span style="color:#a6e22e">getMaxPrice</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">rangeQuery</span>(<span style="color:#e6db74">&#34;price&#34;</span>).<span style="color:#a6e22e">gte</span>(params.<span style="color:#a6e22e">getMinPrice</span>()).<span style="color:#a6e22e">lte</span>(params.<span style="color:#a6e22e">getMaxPrice</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(boolQuery);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="附近的酒店">附近的酒店
+</h3><p>基于 location 坐标，按距离对周围的酒店排序</p>
+<p>修改实体类</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RequestParams</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String key;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer page;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer size;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String sortBy;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String city;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String brand;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String starName;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer minPrice;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer maxPrice;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 我当前的地理坐标</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String location;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>添加距离排序</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getLocation</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 距离排序</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">sort</span>(SortBuilders
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">geoDistanceSort</span>(<span style="color:#e6db74">&#34;location&#34;</span>, <span style="color:#66d9ef">new</span> GeoPoint(params.<span style="color:#a6e22e">getLocation</span>()))
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">order</span>(SortOrder.<span style="color:#a6e22e">ASC</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">unit</span>(DistanceUnit.<span style="color:#a6e22e">KILOMETERS</span>)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="距离显示">距离显示
+</h3><p>修改 HotelDoc，添加距离</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NoArgsConstructor</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelDoc</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String address;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer price;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer score;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String brand;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String city;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String starName;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String business;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String location;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String pic;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 距离</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Object distance;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">HotelDoc</span>(Hotel hotel) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getId</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getName</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">address</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getAddress</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">price</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getPrice</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">score</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getScore</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">brand</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getBrand</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">city</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getCity</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">starName</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getStarName</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">business</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getBusiness</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">location</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getLatitude</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> hotel.<span style="color:#a6e22e">getLongitude</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pic</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getPic</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>修改响应处理</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (SearchHit hit : hits) {
+</span></span><span style="display:flex;"><span>    String json <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSourceAsString</span>();
+</span></span><span style="display:flex;"><span>    HotelDoc hotelDoc <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">parseObject</span>(json, HotelDoc.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>    Object<span style="color:#f92672">[]</span> sortValues <span style="color:#f92672">=</span> hit.<span style="color:#a6e22e">getSortValues</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (sortValues.<span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0){
+</span></span><span style="display:flex;"><span>        Object sortValue <span style="color:#f92672">=</span> sortValues<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>        hotelDoc.<span style="color:#a6e22e">setDistance</span>(sortValue);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    hotels.<span style="color:#a6e22e">add</span>(hotelDoc);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="添加广告酒店">添加广告酒店
+</h3><p>需求：让指定的酒店在搜索结果中排名置顶</p>
+<p>给指定酒店添加标记，在过滤条件中根据此标记判断是否提高 function_score</p>
+<p>在 HotelDoc 添加广告标记字段</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> Boolean isAD;
+</span></span></code></pre></div><p>用 DSL 给一些酒店添加标记</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#960050;background-color:#1e0010">添加广告</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/hotel/_update/</span><span style="color:#ae81ff">607915</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;doc&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isAD&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/hotel/_update/</span><span style="color:#ae81ff">728461</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;doc&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isAD&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/hotel/_update/</span><span style="color:#ae81ff">7094829</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;doc&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isAD&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/hotel/_update/</span><span style="color:#ae81ff">198323591</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;doc&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isAD&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>添加算分函数查询，修改 basicQuery() 方法</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">basicQuery</span>(RequestParams params, SearchRequest request) {
+</span></span><span style="display:flex;"><span>    BoolQueryBuilder boolQuery <span style="color:#f92672">=</span> QueryBuilders.<span style="color:#a6e22e">boolQuery</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 输入内容</span>
+</span></span><span style="display:flex;"><span>    String key <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getKey</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (key <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>.<span style="color:#a6e22e">equals</span>(key)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchAllQuery</span>());
+</span></span><span style="display:flex;"><span>    }<span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">must</span>(QueryBuilders.<span style="color:#a6e22e">matchQuery</span>(<span style="color:#e6db74">&#34;all&#34;</span>, key));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// brand</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getBrand</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getBrand</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;brand&#34;</span>, params.<span style="color:#a6e22e">getBrand</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// starName</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getStarName</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getStarName</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;starName&#34;</span>, params.<span style="color:#a6e22e">getStarName</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// city</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getCity</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>params.<span style="color:#a6e22e">getStarName</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;&#34;</span>)){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;city&#34;</span>, params.<span style="color:#a6e22e">getCity</span>()));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// price</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (params.<span style="color:#a6e22e">getMinPrice</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> params.<span style="color:#a6e22e">getMaxPrice</span>() <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>){
+</span></span><span style="display:flex;"><span>        boolQuery.<span style="color:#a6e22e">filter</span>(QueryBuilders
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">rangeQuery</span>(<span style="color:#e6db74">&#34;price&#34;</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">gte</span>(params.<span style="color:#a6e22e">getMinPrice</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">lte</span>(params.<span style="color:#a6e22e">getMaxPrice</span>())
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 算分 function_score</span>
+</span></span><span style="display:flex;"><span>    FunctionScoreQueryBuilder functionScoreQuery <span style="color:#f92672">=</span> QueryBuilders.<span style="color:#a6e22e">functionScoreQuery</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 原始查询</span>
+</span></span><span style="display:flex;"><span>            boolQuery,
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 数组</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> FunctionScoreQueryBuilder.<span style="color:#a6e22e">FilterFunctionBuilder</span><span style="color:#f92672">[]</span>{
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">// 其中一个 function score 元素</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> FunctionScoreQueryBuilder.<span style="color:#a6e22e">FilterFunctionBuilder</span>(
+</span></span><span style="display:flex;"><span>                            <span style="color:#75715e">// 过滤条件</span>
+</span></span><span style="display:flex;"><span>                            QueryBuilders.<span style="color:#a6e22e">termQuery</span>(<span style="color:#e6db74">&#34;isAD&#34;</span>, <span style="color:#66d9ef">true</span>),
+</span></span><span style="display:flex;"><span>                            <span style="color:#75715e">// 算分函数</span>
+</span></span><span style="display:flex;"><span>                            ScoreFunctionBuilders.<span style="color:#a6e22e">weightFactorFunction</span>(10)
+</span></span><span style="display:flex;"><span>                    )
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询</span>
+</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">query</span>(functionScoreQuery);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/springcloud/">SpringCloud</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/archives/228/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Elasticsearch RestClient 入门</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/227/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Elasticsearch 查询</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/226/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Elasticsearch 入门</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/217/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">SpringAMQP</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/archives/171/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Gateway 服务网关</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
+<div id="tcomment"></div>
+<style>
+    .twikoo {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+    :root[data-scheme="dark"] {
+        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
+        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .twikoo .el-input-group__prepend,
+    .twikoo .tk-action-icon,
+    .twikoo .tk-submit-action-icon,
+    .twikoo .tk-time,
+    .twikoo .tk-comments-no,
+    .twikoo .tk-comments-count {
+        color: var(--twikoo-body-text-color);
+    }
+    .twikoo .el-input__inner,
+    .twikoo .el-textarea__inner,
+    .twikoo .tk-preview-container,
+    .twikoo .tk-content,
+    .twikoo .tk-nick,
+    .twikoo .tk-send {
+        color: var(--twikoo-body-text-color-main);
+    }
+    .twikoo .el-button{
+        color: var(--twikoo-body-text-color)!important;
+    }
+    .twikoo .el-input__count {
+        color: var(--twikoo-body-text-color) !important;
+    }
+    .OwO .OwO-body {
+        background-color: var(--body-background) !important;
+        color: var(--body-text-color) !important;
+    }
+</style><script>
+    twikoo.init({
+        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
+        el: '#tcomment',})
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2021 - 
+        
+        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
+    </section>
+    
+    <section class="powerby">
+        
+
+        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<script>
+    function secondToDate(second) {
+        if (!second) {
+            return 0;
+        }
+        var time = new Array(0, 0, 0, 0, 0);
+        if (second >= 365 * 24 * 3600) {
+            time[0] = parseInt(second / (365 * 24 * 3600));
+            second %= 365 * 24 * 3600;
+        }
+        if (second >= 24 * 3600) {
+            time[1] = parseInt(second / (24 * 3600));
+            second %= 24 * 3600;
+        }
+        if (second >= 3600) {
+            time[2] = parseInt(second / 3600);
+            second %= 3600;
+        }
+        if (second >= 60) {
+            time[3] = parseInt(second / 60);
+            second %= 60;
+        }
+        if (second > 0) {
+            time[4] = second;
+        }
+        return time;
+    }</script>
+<script type="text/javascript" language="javascript">
+    function setTime() {
+        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
+        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+        currentTime = secondToDate((timestamp - create_time));
+        currentTimeHtml = 'This Blog has running: ' + currentTime[0] + ' y ' + currentTime[1] + ' d '
+                + currentTime[2] + ' h ' + currentTime[3] + ' m ' + currentTime[4]
+                + ' s';
+        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+    }    setInterval(setTime, 1000);
+</script>
+
+
+    </body>
+</html>

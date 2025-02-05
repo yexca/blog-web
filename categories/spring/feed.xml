@@ -7,7 +7,50 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>yexca</copyright>
-        <lastBuildDate>Mon, 03 Feb 2025 22:30:00 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/categories/spring/feed.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 05 Feb 2025 15:50:26 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/categories/spring/feed.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Elasticsearch RestClient 查询</title>
+        <link>https://blog.yexca.net/archives/229/</link>
+        <pubDate>Wed, 05 Feb 2025 15:50:26 +0900</pubDate>
+        
+        <guid>https://blog.yexca.net/archives/229/</guid>
+        <description>&lt;p&gt;文档的查询同样使用 RestHighLevelClient 对象&lt;/p&gt;
+&lt;h2 id=&#34;match_all&#34;&gt;match_all
+&lt;/h2&gt;&lt;p&gt;发起请求如下&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testMatchAll&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; IOException {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 准备request&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchRequest request &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SearchRequest(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hotel&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 组织DSL参数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    request.&lt;span style=&#34;color:#a6e22e&#34;&gt;source&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;(QueryBuilders.&lt;span style=&#34;color:#a6e22e&#34;&gt;matchAllQuery&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 发送请求&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchResponse response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; client.&lt;span style=&#34;color:#a6e22e&#34;&gt;search&lt;/span&gt;(request, RequestOptions.&lt;span style=&#34;color:#a6e22e&#34;&gt;DEFAULT&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    System.&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;(response);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;解析响应&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testMatchAll&lt;/span&gt;() &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; IOException {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 准备request&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchRequest request &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SearchRequest(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hotel&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 组织DSL参数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    request.&lt;span style=&#34;color:#a6e22e&#34;&gt;source&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;(QueryBuilders.&lt;span style=&#34;color:#a6e22e&#34;&gt;matchAllQuery&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 发送请求&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchResponse response &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; client.&lt;span style=&#34;color:#a6e22e&#34;&gt;search&lt;/span&gt;(request, RequestOptions.&lt;span style=&#34;color:#a6e22e&#34;&gt;DEFAULT&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 解析结果&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchHits searchHits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; response.&lt;span style=&#34;color:#a6e22e&#34;&gt;getHits&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 查询的总条数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;long&lt;/span&gt; total &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; searchHits.&lt;span style=&#34;color:#a6e22e&#34;&gt;getTotalHits&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// 查询的结果数组&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    SearchHit&lt;span style=&#34;color:#f92672&#34;&gt;[]&lt;/span&gt; hits &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; searchHits.&lt;span style=&#34;color:#a6e22e&#34;&gt;getHits&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (SearchHit hit : hits) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        String json &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; hit.&lt;span style=&#34;color:#a6e22e&#34;&gt;getSourceAsString&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        System.&lt;span style=&#34;color:#a6e22e&#34;&gt;out&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;println&lt;/span&gt;(json);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;es 返回的结果是一个 JSON 字符串，包含：&lt;/p&gt;</description>
+        </item>
+        <item>
         <title>Elasticsearch RestClient 入门</title>
         <link>https://blog.yexca.net/archives/228/</link>
         <pubDate>Mon, 03 Feb 2025 22:30:00 +0900</pubDate>
