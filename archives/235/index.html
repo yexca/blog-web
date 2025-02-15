@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 本文 Elasticsearch 集群 https://blog.yexca.net/archives/235 es 的数据来自 MySQL 数据库，因此 MySQL 数据发送改变时，es 也必须跟着改变，此为 es 与 MySQL 之间的数据同步\n">
-<title>Elasticsearch 数据同步</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 https://blog.yexca.net/archives/234 Elasticsearch 集群 本文 单机的 es 做数据存储必然面临两个问题：海量数据存储与单点故障问题\n">
+<title>Elasticsearch 集群</title>
 
-<link rel='canonical' href='https://blog.yexca.net/archives/234/'>
+<link rel='canonical' href='https://blog.yexca.net/archives/235/'>
 
-<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="Elasticsearch 数据同步">
-<meta property='og:description' content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 本文 Elasticsearch 集群 https://blog.yexca.net/archives/235 es 的数据来自 MySQL 数据库，因此 MySQL 数据发送改变时，es 也必须跟着改变，此为 es 与 MySQL 之间的数据同步\n">
-<meta property='og:url' content='https://blog.yexca.net/archives/234/'>
+<link rel="stylesheet" href="/scss/style.min.4f22d36bf80fc0b37a74395c9d8e67b98955cdf302373f4dc3f16ce564de537d.css"><meta property='og:title' content="Elasticsearch 集群">
+<meta property='og:description' content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 https://blog.yexca.net/archives/234 Elasticsearch 集群 本文 单机的 es 做数据存储必然面临两个问题：海量数据存储与单点故障问题\n">
+<meta property='og:url' content='https://blog.yexca.net/archives/235/'>
 <meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringCloud' /><meta property='article:published_time' content='2025-02-14T20:36:55&#43;09:00'/><meta property='article:modified_time' content='2025-02-15T17:17:08&#43;09:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='SpringCloud' /><meta property='article:published_time' content='2025-02-15T17:17:08&#43;09:00'/><meta property='article:modified_time' content='2025-02-15T17:17:08&#43;09:00'/>
 <meta name="twitter:site" content="@yexcano">
-    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Elasticsearch 数据同步">
-<meta name="twitter:description" content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 本文 Elasticsearch 集群 https://blog.yexca.net/archives/235 es 的数据来自 MySQL 数据库，因此 MySQL 数据发送改变时，es 也必须跟着改变，此为 es 与 MySQL 之间的数据同步\n">
+    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Elasticsearch 集群">
+<meta name="twitter:description" content=" Elasticsearch 系列\n内容 链接 Elasticsearch 基础操作 https://blog.yexca.net/archives/226 Elasticsearch 查询操作 https://blog.yexca.net/archives/227 RestClient 基础操作 https://blog.yexca.net/archives/228 RestClient 查询操作 https://blog.yexca.net/archives/229 Elasticsearch 数据聚合 https://blog.yexca.net/archives/231 Elasticsearch 自动补全 https://blog.yexca.net/archives/232 Elasticsearch 数据同步 https://blog.yexca.net/archives/234 Elasticsearch 集群 本文 单机的 es 做数据存储必然面临两个问题：海量数据存储与单点故障问题\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
     </head>
@@ -339,11 +339,13 @@
         <div class="widget--toc">
             <nav id="TableOfContents">
   <ul>
-    <li><a href="#同步调用">同步调用</a></li>
-    <li><a href="#异步通知">异步通知</a></li>
-    <li><a href="#监听-binlog">监听 binlog</a></li>
-    <li><a href="#方案对比">方案对比</a></li>
-    <li><a href="#数据同步实现">数据同步实现</a></li>
+    <li><a href="#搭建-es-集群">搭建 ES 集群</a></li>
+    <li><a href="#监控集群状态">监控集群状态</a></li>
+    <li><a href="#集群职责划分">集群职责划分</a></li>
+    <li><a href="#集群脑裂问题">集群脑裂问题</a></li>
+    <li><a href="#集群分布式存储">集群分布式存储</a></li>
+    <li><a href="#集群分布式查询">集群分布式查询</a></li>
+    <li><a href="#集群故障转移">集群故障转移</a></li>
   </ul>
 </nav>
         </div>
@@ -375,7 +377,7 @@
 
     <div class="article-title-wrapper">
         <h2 class="article-title">
-            <a href="/archives/234/">Elasticsearch 数据同步</a>
+            <a href="/archives/235/">Elasticsearch 集群</a>
         </h2>
     
         
@@ -397,7 +399,7 @@
   <path d="M3 11h16" />
   <path d="M18 16.496v1.504l1 1" />
 </svg>
-                <time class="article-time--published">2025-02-14 20:36 &#43;0900</time>
+                <time class="article-time--published">2025-02-15 17:17 &#43;0900</time>
             </div>
         
 
@@ -412,7 +414,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 2 分钟
+                    阅读时长: 4 分钟
                 </time>
             </div>
         
@@ -505,63 +507,207 @@ https://blog.yexca.net/archives/232
       </tr>
       <tr>
           <td style="text-align: left">Elasticsearch 数据同步</td>
-          <td style="text-align: left">本文</td>
+          <td style="text-align: left">
+
+<a class="link" href="https://blog.yexca.net/archives/234" 
+
+>
+https://blog.yexca.net/archives/234
+</a>
+ </td>
       </tr>
       <tr>
           <td style="text-align: left">Elasticsearch 集群</td>
-          <td style="text-align: left">
-
-<a class="link" href="https://blog.yexca.net/archives/235" 
-
->
-https://blog.yexca.net/archives/235
-</a>
- </td>
+          <td style="text-align: left">本文</td>
       </tr>
   </tbody>
 </table></div>
 </blockquote>
-<p>es 的数据来自 MySQL 数据库，因此 MySQL 数据发送改变时，es 也必须跟着改变，此为 es 与 MySQL 之间的数据同步</p>
-<p>常见的数据同步方案有三种：</p>
+<p>单机的 es 做数据存储必然面临两个问题：海量数据存储与单点故障问题</p>
 <ul>
-<li>同步调用</li>
-<li>异步通知</li>
-<li>监听 binlog</li>
+<li>海量数据存储问题：将索引库从逻辑上拆分为 N 个分片 (shard)，存储到多个节点</li>
+<li>单点故障问题：将分片数据在不同节点备份 (replica)</li>
 </ul>
-<h2 id="同步调用">同步调用
-</h2><p><img src="https://raw.githubusercontent.com/yexca/picx-images-hosting/master/2024/01-SpringCloud/image.1lj3wtigvg1s.webp"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image"
-	
-	
-></p>
-<p>步骤：</p>
+<p>ES 集群相关概念</p>
 <ul>
-<li>hotel-demo 对外提供接口，用于修改 es 中的数据</li>
-<li>后台管理系统 (hotel-admin) 在完成数据库操作后，之间调用 hotel-demo 提供的接口</li>
+<li>集群 (cluster)：一组拥有共同的 cluster name 的节点</li>
+<li>节点 (node)：集群中的一个 ES 实例</li>
+<li>分片 (shard)：索引可以被拆分为不同的部分进行存储，称为分片。在集群环境下，一个索引的不同分片可以拆分到不同的节点中</li>
 </ul>
-<h2 id="异步通知">异步通知
-</h2><p><img src="https://raw.githubusercontent.com/yexca/picx-images-hosting/master/2024/01-SpringCloud/image.7639v9kp7l0.webp"
-	
-	
-	
-	loading="lazy"
-	
-		alt="image"
-	
-	
-></p>
-<p>步骤：</p>
+<p>解决问题：数据量太大，单点存储量有限的问题</p>
+<blockquote>
+<p>分片类似 Hadoop 的 HDFS 的数据分成多份备份</p>
+</blockquote>
 <ul>
-<li>hotel-admin 对 mysql 数据完成 CRUD 后发送 MQ 消息</li>
-<li>hotel-demo 监听 MQ，接收消息后完成对 es 数据修改</li>
+<li>主分片 (Primary shard)：相对于副本分片的定义</li>
+<li>副本分片 (Replica shard)：每个主分片可以有一个或者多个副本，数据和主分片一样</li>
 </ul>
-<h2 id="监听-binlog">监听 binlog
-</h2><p><img src="https://raw.githubusercontent.com/yexca/picx-images-hosting/master/2024/01-SpringCloud/image.6t9hbchmlm00.webp"
+<h2 id="搭建-es-集群">搭建 ES 集群
+</h2><p>可以通过 docker-compose 来完成</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#39;2.2&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">es01</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">elasticsearch:7.12.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">es01</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">node.name=es01</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.name=es-docker-cluster</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">discovery.seed_hosts=es02,es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.initial_master_nodes=es01,es02,es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">data01:/usr/share/elasticsearch/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9200</span>:<span style="color:#ae81ff">9200</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">elastic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">es02</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">elasticsearch:7.12.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">es02</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">node.name=es02</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.name=es-docker-cluster</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">discovery.seed_hosts=es01,es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.initial_master_nodes=es01,es02,es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">data02:/usr/share/elasticsearch/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9201</span>:<span style="color:#ae81ff">9200</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">elastic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">es03</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">elasticsearch:7.12.1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">es03</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">node.name=es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.name=es-docker-cluster</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">discovery.seed_hosts=es01,es02</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">cluster.initial_master_nodes=es01,es02,es03</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">data03:/usr/share/elasticsearch/data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">elastic</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">9202</span>:<span style="color:#ae81ff">9200</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">volumes</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">data01</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">local</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">data02</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">local</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">data03</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">local</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">networks</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">elastic</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">driver</span>: <span style="color:#ae81ff">bridge</span>
+</span></span></code></pre></div><p>es 运行需要修改一些 linux 系统权限，修改 <code>/etc/sysctl.conf</code> 文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vi /etc/sysctl.conf
+</span></span></code></pre></div><p>添加下面的内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>vm.max_map_count<span style="color:#f92672">=</span><span style="color:#ae81ff">262144</span>
+</span></span></code></pre></div><p>然后执行命令，让配置生效：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sysctl -p
+</span></span></code></pre></div><p>通过docker-compose启动集群：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker-compose up -d
+</span></span></code></pre></div><h2 id="监控集群状态">监控集群状态
+</h2><p>kibana 可以监控 es 集群，不过需要依赖 es 的 x-pack 功能，配置比较复杂</p>
+<p>可以使用 cerebro 来监控 es 集群，Github：
+
+<a class="link" href="https://github.com/lmenezes/cerebro" 
+
+
+   target="_blank" rel="noopener"
+>
+https://github.com/lmenezes/cerebro
+</a>
+ </p>
+<p>运行 <code>bin/cerebro.bat</code> 后访问 
+
+<a class="link" href="http://localhost:9000" 
+
+
+   target="_blank" rel="noopener"
+>
+http://localhost:9000
+</a>
+  即可进入管理界面</p>
+<p>使用 cerebro 可以可视化创建索引库，以下是 DSL 语句创建</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT</span> <span style="color:#960050;background-color:#1e0010">/indexName</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;settings&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;number_of_shards&#34;</span>: <span style="color:#ae81ff">3</span>, <span style="color:#75715e">// 分片数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">&#34;number_of_replicas&#34;</span>: <span style="color:#ae81ff">1</span> <span style="color:#75715e">// 副本数量
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;mappings&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// mapping映射定义 ...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="集群职责划分">集群职责划分
+</h2><p>ES 中集群节点有不同的职责划分</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>节点类型</th>
+          <th>配置参数</th>
+          <th>默认值</th>
+          <th>节点职责</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>master eligible</td>
+          <td>node.master</td>
+          <td>true</td>
+          <td>备选主节点：主节点可以管理和记录集群状态、决定分片在哪个节点、处理创建和删除索引库的请求</td>
+      </tr>
+      <tr>
+          <td>data</td>
+          <td>node.data</td>
+          <td>true</td>
+          <td>数据节点：存储数据、搜索、聚合、CRUD</td>
+      </tr>
+      <tr>
+          <td>ingest</td>
+          <td>node.ingest</td>
+          <td>true</td>
+          <td>数据存储之前的预处理</td>
+      </tr>
+      <tr>
+          <td>coordinating</td>
+          <td>上面 3 个参数都为 false 则为 coordinating 节点</td>
+          <td>无</td>
+          <td>路由请求到其它节点，合并其它节点处理的结果，返回给用户</td>
+      </tr>
+  </tbody>
+</table></div>
+<p>默认情况下，集群的任何一个节点都同时具备上述四种角色</p>
+<p>但真实的集群一定要将集群职责分离</p>
+<ul>
+<li>master 节点：对 CPU 要求高，但是内存要求低</li>
+<li>data 节点：对 CPU 和内存要求都高</li>
+<li>coordinating 节点：对网络带宽、CPU 要求高</li>
+</ul>
+<p>职责分离可以让我们根据不同节点的需求分配不同的硬件去部署。而且避免业务之间的相互干扰</p>
+<h2 id="集群脑裂问题">集群脑裂问题
+</h2><p>脑裂是因为集群中的节点失联导致的</p>
+<p>假设有三个节点，现在主节点 (node1) 与其他节点失联 (网络阻塞)，node2 和 node3 会认为 node1 宕机，就会重新选主。假设 node3 当选，集群会继续对外提供服务，node2 和 node3 自成集群，node1 自成集群，俩集群数据不同步，出现数据差异</p>
+<p>当网络阻塞恢复正常，因为集群中有两个 master 节点，集群状态不一致，出现脑裂的情况</p>
+<p>解决方案：要求选票超过 <code>(eligible 节点数量 + 1) / 2</code> 才能当选为 master 节点，因此 eligible 节点数量最好是奇数。对应的配置项为 <code>discovery.zen.minimum_master_nodes</code>，在 es7.0 以后，已经成为默认配置，因此一般不会发送脑裂问题</p>
+<p>例如上述 3 个节点形成的集群，选票必须超过 (3+1)/2 = 2 票。node3 得到 node2 和 node3 的选票，当选为主，而 node1 只有自己的一票，没有当选。集群中依然只有 1 个主节点，没有出现脑裂</p>
+<h2 id="集群分布式存储">集群分布式存储
+</h2><p>当新增文档时，应该保存到不同分片，保证数据均衡，那么 coordinating node 如何确定数据该存储到哪个分片呢</p>
+<p>es 会通过 hash 算法来计算文档应该存储到哪个分片</p>
+<p>公式：shard = hash(_routing) % number_of_shards</p>
+<p>说明：</p>
+<ul>
+<li>_routing 默认是文档的 id</li>
+<li>算法与分片数量有关，因此索引库一旦创建，分片数量不能修改</li>
+</ul>
+<p>新增文档流程：</p>
+<p><img src="https://raw.githubusercontent.com/yexca/picx-images-hosting/master/2024/01-SpringCloud/image-20210723225436084.5mtf1uqklgc0.webp"
 	
 	
 	
@@ -572,158 +718,29 @@ https://blog.yexca.net/archives/235
 	
 ></p>
 <p>流程：</p>
+<ol>
+<li>新增一个 id = 1 的文档</li>
+<li>对 id 做 hash 运算，假如得到的是 2，则对应存储到 shard-2</li>
+<li>shard-2 的主分片在 node3 节点，将数据路由到 node3</li>
+<li>保存文档</li>
+<li>同步给 shard-2 的副本 replica-2，在 node2 节点</li>
+<li>返回结果给 coordinating-node 节点</li>
+</ol>
+<h2 id="集群分布式查询">集群分布式查询
+</h2><p>es 的查询分为两个阶段：</p>
 <ul>
-<li>开启 MySQL 的 binlog 功能</li>
-<li>MySQL 完成 CRUD 操作都会记录在 binlog 中</li>
-<li>hotel-demo 基于 canal 监听 binlog 变化，实时更新 es 中的内容</li>
+<li>scatter phase：分散阶段，coordinating node 会把请求分发到每一个分片</li>
+<li>gather phase：聚集阶段，coordinating node 汇总 data node 的搜索结果，并处理为最终结果集返回给用户</li>
 </ul>
-<h2 id="方案对比">方案对比
-</h2><p>方式一：同步调用</p>
-<ul>
-<li>优点：实现简单，粗暴</li>
-<li>缺点：业务耦合度高</li>
-</ul>
-<p>方式二：异步通知</p>
-<ul>
-<li>优点：低耦合，实现难度一般</li>
-<li>缺点：依赖 mq 的可靠性</li>
-</ul>
-<p>方式三：监听binlog</p>
-<ul>
-<li>优点：完全解除服务间耦合</li>
-<li>缺点：开启 binlog 增加数据库负担、实现复杂度高</li>
-</ul>
-<h2 id="数据同步实现">数据同步实现
-</h2><p>说明：使用 MQ 异步通知，在 hotel-admin 实现对 MySQL 的 CRUD 操作</p>
-<p>在 hotel-admin、hotel-demo 引入 rabbitmq 依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--amqp--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-amqp<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><p>声明队列、交换机名称</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MqConstants</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 交换机</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> String HOTEL_EXCHANGE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hotel.topic&#34;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 监听新增和修改队列</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> String HOTEL_INSERT_QUEUE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hotel.insert.queue&#34;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 监听删除的队列</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> String HOTEL_DELETE_QUEUE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hotel.delete.queue&#34;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 新增或修改的RoutingKey</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> String HOTEL_INSERT_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hotel.insert&#34;</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 删除的RoutingKey</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">static</span> String HOTEL_DELETE_KEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hotel.delete&#34;</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在 hotel-demo 声明交换机配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MqConfig</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> TopicExchange <span style="color:#a6e22e">topicExchange</span>(){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TopicExchange(MqConstants.<span style="color:#a6e22e">HOTEL_EXCHANGE</span>,<span style="color:#66d9ef">true</span>,<span style="color:#66d9ef">false</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Queue <span style="color:#a6e22e">insertQueue</span>(){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Queue(MqConstants.<span style="color:#a6e22e">HOTEL_INSERT_QUEUE</span>,<span style="color:#66d9ef">true</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Queue <span style="color:#a6e22e">deleteQueue</span>(){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Queue(MqConstants.<span style="color:#a6e22e">HOTEL_DELETE_QUEUE</span>, <span style="color:#66d9ef">true</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">insertQueueBinding</span>(){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> BindingBuilder.<span style="color:#a6e22e">bind</span>(insertQueue()).<span style="color:#a6e22e">to</span>(topicExchange()).<span style="color:#a6e22e">with</span>(MqConstants.<span style="color:#a6e22e">HOTEL_INSERT_KEY</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">deleteQueueBinding</span>(){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> BindingBuilder.<span style="color:#a6e22e">bind</span>(deleteQueue()).<span style="color:#a6e22e">to</span>(topicExchange()).<span style="color:#a6e22e">with</span>(MqConstants.<span style="color:#a6e22e">HOTEL_DELETE_KEY</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在 hotel-admin 发送 MQ 消息</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelController</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RabbitTemplate rabbitTemplate;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@PostMapping</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">saveHotel</span>(<span style="color:#a6e22e">@RequestBody</span> Hotel hotel){
-</span></span><span style="display:flex;"><span>        hotelService.<span style="color:#a6e22e">save</span>(hotel);
-</span></span><span style="display:flex;"><span>        rabbitTemplate.<span style="color:#a6e22e">convertAndSend</span>(MqConstants.<span style="color:#a6e22e">HOTEL_EXCHANGE</span>, MqConstants.<span style="color:#a6e22e">HOTEL_INSERT_KEY</span>, hotel.<span style="color:#a6e22e">getId</span>());
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@PutMapping</span>()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updateById</span>(<span style="color:#a6e22e">@RequestBody</span> Hotel hotel){
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (hotel.<span style="color:#a6e22e">getId</span>() <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> InvalidParameterException(<span style="color:#e6db74">&#34;id不能为空&#34;</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        hotelService.<span style="color:#a6e22e">updateById</span>(hotel);
-</span></span><span style="display:flex;"><span>        rabbitTemplate.<span style="color:#a6e22e">convertAndSend</span>(MqConstants.<span style="color:#a6e22e">HOTEL_EXCHANGE</span>, MqConstants.<span style="color:#a6e22e">HOTEL_INSERT_KEY</span>,hotel.<span style="color:#a6e22e">getId</span>());
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@DeleteMapping</span>(<span style="color:#e6db74">&#34;/{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteById</span>(<span style="color:#a6e22e">@PathVariable</span>(<span style="color:#e6db74">&#34;id&#34;</span>) Long id) {
-</span></span><span style="display:flex;"><span>        hotelService.<span style="color:#a6e22e">removeById</span>(id);
-</span></span><span style="display:flex;"><span>        rabbitTemplate.<span style="color:#a6e22e">convertAndSend</span>(MqConstants.<span style="color:#a6e22e">HOTEL_EXCHANGE</span>, MqConstants.<span style="color:#a6e22e">HOTEL_DELETE_KEY</span>, id);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在 hotel-demo 接收 MQ 消息，业务逻辑：</p>
-<ul>
-<li>新增消息：根据传递的 hotel.id 查询信息，然后新增一条数据到索引库</li>
-<li>删除消息：根据传递的 hotel.id 删除索引库中的一条数据</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteById</span>(Long id) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>        DeleteRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>, id.<span style="color:#a6e22e">toString</span>());
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>        client.<span style="color:#a6e22e">delete</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insertById</span>(Long id) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 根据id查询数据</span>
-</span></span><span style="display:flex;"><span>        Hotel hotel <span style="color:#f92672">=</span> getById(id);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 转换文档类型</span>
-</span></span><span style="display:flex;"><span>        HotelDoc hotelDoc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HotelDoc(hotel);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>        IndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>).<span style="color:#a6e22e">id</span>(id.<span style="color:#a6e22e">toString</span>());
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 准备json</span>
-</span></span><span style="display:flex;"><span>        request.<span style="color:#a6e22e">source</span>(JSON.<span style="color:#a6e22e">toJSONString</span>(hotelDoc), XContentType.<span style="color:#a6e22e">JSON</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>        client.<span style="color:#a6e22e">index</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在 hotel-demo 编写监听器</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelLinster</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> IHotelService hotelService;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 监听修改或新增
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param id
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RabbitListener</span>(queues <span style="color:#f92672">=</span> MqConstants.<span style="color:#a6e22e">HOTEL_INSERT_QUEUE</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">listenHotelInsertOrUpdate</span>(Long id){
-</span></span><span style="display:flex;"><span>        hotelService.<span style="color:#a6e22e">insertById</span>(id);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 监听删除
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param id
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@RabbitListener</span>(queues <span style="color:#f92672">=</span> MqConstants.<span style="color:#a6e22e">HOTEL_DELETE_QUEUE</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">listenHotelDelete</span>(Long id){
-</span></span><span style="display:flex;"><span>        hotelService.<span style="color:#a6e22e">deleteById</span>(id);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+<h2 id="集群故障转移">集群故障转移
+</h2><p>集群的 master 节点会监控集群中的节点状态，如果发现有节点宕机，会立即将宕机节点的分片数据迁移到其它节点，确保数据安全，这个叫做故障转移</p>
+<p>假设一个集群三个节点，node1 是主节点</p>
+<ol>
+<li>node1 发生了宕机</li>
+<li>需要重新选主，假设选中了 node2</li>
+<li>node2 成为主节点后，会检测集群状态，发现 node1 的分片没有副本节点，需要将 node1 上的数据迁移到 node2、node3</li>
+</ol>
+
 </section>
 
 
@@ -748,19 +765,7 @@ https://blog.yexca.net/archives/235
 
         <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
     </section>
-    <section class="article-lastmod">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-        <span>
-            最后更新于 2025-02-15 17:17 &#43;0900
-        </span>
-    </section></footer>
+    </footer>
 
 
     
@@ -800,6 +805,19 @@ https://blog.yexca.net/archives/235
     <h2 class="section-title">相关文章</h2>
     <div class="related-content">
         <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/archives/234/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Elasticsearch 数据同步</h2>
+        </div>
+    </a>
+</article>
+
             
                 
 <article class="">
@@ -848,19 +866,6 @@ https://blog.yexca.net/archives/235
 
         <div class="article-details">
             <h2 class="article-title">Elasticsearch RestClient 入门</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/227/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Elasticsearch 查询</h2>
         </div>
     </a>
 </article>
