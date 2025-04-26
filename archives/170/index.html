@@ -16,6 +16,41 @@
 <meta name="twitter:description" content="Feign是一个声明式的 Http 客户端，Github： https://github.com/OpenFeign/feign 简单使用 引入依赖\n&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt; &lt;/dependency&gt; 在启动类添加注解开启 Feign 的功能\n@EnableFeignClients @SpringBootApplication 编写 Feign 客户端\n@FeignClient(&#34;userService&#34;) public interface UserClient { @GetMapping(&#34;/user/{id}&#34;) User findById(@PathVariable(&#34;id&#34;) Long id); } 替换 RestTemplate\n@Service public class OrderService { @Autowired private OrderMapper orderMapper; // @Autowired // private RestTemplate restTemplate; @Autowired private UserClient userClient; public Order queryOrderById(Long orderId) { // 1.查询订单 Order order = orderMapper.findById(orderId); // 2.查询用户 // String url = &#34;http://localhost:8081/user/&#34; + order.getUserId(); // String url = &#34;http://userService/user/&#34; + order.getUserId(); // User user = restTemplate.getForObject(url, User.class); // Feign User user = userClient.findById(order.getUserId()); // 3.封装用户信息 order.setUser(user); // 4.返回 return order; } } 自定义配置 Feign运行自定义配置来覆盖默认配置，可以修改的配置如下：\n">
     <link rel="shortcut icon" href="/favicon.ico" />
 
+
+
+
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/blog.yexca.net\/archives\/170\/"
+    },
+    "headline": "Feign 远程调用",
+    "name": "yexca'Blog",
+    "author": {
+      "@type": "Person",
+      "name": "yexca"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "yexca'Blog"
+    },
+    "datePublished": "2024-05-03",
+    "dateModified": "2024-05-03",
+    "inLanguage": "zh-cn",
+    "description": "yexca 的技术与生活博客，记录编程学习与生活随想。"
+  }
+  </script>
+
+
+<link rel="alternate" hreflang="x-default" href="https://blog.yexca.net/" />
+<link rel="alternate" hreflang="zh-TW" href="https://blog.yexca.net/zh-tw/" />
+<link rel="alternate" hreflang="ja" href="https://blog.yexca.net/ja/" />
+<link rel="alternate" hreflang="en" href="https://blog.yexca.net/en/" />
     </head>
     <body class="
     article-page
