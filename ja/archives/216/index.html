@@ -476,7 +476,7 @@
 
 
                 <time class="article-time--reading">
-                    読了時間: 7分
+                    読了時間: 8分
                 </time>
             </div>
         
@@ -542,30 +542,69 @@ https://blog.yexca.net/ja/archives/215
 </blockquote>
 <h2 id="削除">削除
 </h2><p>パラメータ名を中に入れたプレースホルダとして <code>#{}</code> を使用します</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 削除</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Delete</span>(<span style="color:#e6db74">&#34;delete from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">delete</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Mybatis02ApplicationTests</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EmpMapper empMapper;
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">contextLoads</span>() {
-</span></span><span style="display:flex;"><span>        empMapper.<span style="color:#a6e22e">delete</span>(17);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>通常、戻り値は必要ありません。戻り値は、この操作によって影響を受ける行の数です。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 削除</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Delete</span>(<span style="color:#e6db74">&#34;delete from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">delete</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="プレースホルダー">プレースホルダー
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 削除</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Delete</span><span class="p">(</span><span class="s">&#34;delete from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Mybatis02ApplicationTests</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmpMapper</span><span class="w"> </span><span class="n">empMapper</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">contextLoads</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">empMapper</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">17</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>通常、戻り値は必要ありません。戻り値は、この操作によって影響を受ける行の数です。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 削除</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Delete</span><span class="p">(</span><span class="s">&#34;delete from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="プレースホルダー">プレースホルダー
 </h3><p>パラメータプレースホルダは <code>#{}</code> と <code>${}</code> です</p>
 <div class="table-wrapper"><table>
   <thead>
@@ -595,184 +634,428 @@ https://blog.yexca.net/ja/archives/215
 </table></div>
 <h2 id="挿入新規">挿入（新規）
 </h2><p>プレースホルダも使用されますが、渡されるパラメータが多すぎる場合は、オブジェクトのカプセル化を使用することができ、正式なパラメータ名はオブジェクトのパラメータ名になります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 増加</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Insert</span>(<span style="color:#e6db74">&#34;insert into mybatis.emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) &#34;</span><span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;values (#{username},#{name},#{gender},#{image},#{job},#{entrydate},#{deptId},#{createTime},#{updateTime});&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insert</span>(Emp emp);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Mybatis02ApplicationTests</span> {
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EmpMapper empMapper;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testInsert</span>(){
-</span></span><span style="display:flex;"><span>        Emp emp <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Emp();
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setUsername</span>(<span style="color:#e6db74">&#34;Tom&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;トム&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setGender</span>((<span style="color:#66d9ef">short</span>) 1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setImage</span>(<span style="color:#e6db74">&#34;tom.jpg&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setJob</span>((<span style="color:#66d9ef">short</span>) 1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setEntrydate</span>(LocalDate.<span style="color:#a6e22e">of</span>(2000,1,1));
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setDeptId</span>(1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setCreateTime</span>(LocalDateTime.<span style="color:#a6e22e">now</span>());
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setUpdateTime</span>(LocalDateTime.<span style="color:#a6e22e">now</span>());
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        empMapper.<span style="color:#a6e22e">insert</span>(emp);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="主キーの値を取得する">主キーの値を取得する
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 増加</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Insert</span><span class="p">(</span><span class="s">&#34;insert into mybatis.emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) &#34;</span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;values (#{username},#{name},#{gender},#{image},#{job},#{entrydate},#{deptId},#{createTime},#{updateTime});&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Mybatis02ApplicationTests</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmpMapper</span><span class="w"> </span><span class="n">empMapper</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testInsert</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Emp</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setUsername</span><span class="p">(</span><span class="s">&#34;Tom&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&#34;トム&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setGender</span><span class="p">((</span><span class="kt">short</span><span class="p">)</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setImage</span><span class="p">(</span><span class="s">&#34;tom.jpg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setJob</span><span class="p">((</span><span class="kt">short</span><span class="p">)</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setEntrydate</span><span class="p">(</span><span class="n">LocalDate</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="n">2000</span><span class="p">,</span><span class="n">1</span><span class="p">,</span><span class="n">1</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setDeptId</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setCreateTime</span><span class="p">(</span><span class="n">LocalDateTime</span><span class="p">.</span><span class="na">now</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setUpdateTime</span><span class="p">(</span><span class="n">LocalDateTime</span><span class="p">.</span><span class="na">now</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">empMapper</span><span class="p">.</span><span class="na">insert</span><span class="p">(</span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="主キーの値を取得する">主キーの値を取得する
 </h3><p>場合によっては、データが正常に追加された後、データベースに挿入されたデータの主キーを取得する必要があります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 主キーを取得します。最初の属性は、emp オブジェクトの id 属性に割り当てられた主キー値を定義します。2 番目の属性は、返される主キー値を表します。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Options</span>(keyProperty <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;id&#34;</span>, useGeneratedKeys <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 増加</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Insert</span>(<span style="color:#e6db74">&#34;insert into mybatis.emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) &#34;</span><span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;values (#{username},#{name},#{gender},#{image},#{job},#{entrydate},#{deptId},#{createTime},#{updateTime});&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">insert</span>(Emp emp);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="更新変更">更新（変更）
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 主キーを取得します。最初の属性は、emp オブジェクトの id 属性に割り当てられた主キー値を定義します。2 番目の属性は、返される主キー値を表します。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Options</span><span class="p">(</span><span class="n">keyProperty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;id&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">useGeneratedKeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 増加</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Insert</span><span class="p">(</span><span class="s">&#34;insert into mybatis.emp(username, name, gender, image, job, entrydate, dept_id, create_time, update_time) &#34;</span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;values (#{username},#{name},#{gender},#{image},#{job},#{entrydate},#{deptId},#{createTime},#{updateTime});&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="更新変更">更新（変更）
 </h2><p>増加と同様に、オブジェクトにカプセル化することができます</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 変更</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Update</span>(<span style="color:#e6db74">&#34;update mybatis.emp set username = #{username}, name = #{name}, gender = #{gender}, image = #{image}, job = #{job}, &#34;</span><span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;entrydate = #{entrydate}, dept_id = #{deptId}, update_time = #{updateTime} where id = #{id};&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span>(Emp emp);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Mybatis02ApplicationTests</span> {
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EmpMapper empMapper;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testUpdate</span>(){
-</span></span><span style="display:flex;"><span>        Emp emp <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Emp();
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setUsername</span>(<span style="color:#e6db74">&#34;Tom2&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;トム2&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setGender</span>((<span style="color:#66d9ef">short</span>) 1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setImage</span>(<span style="color:#e6db74">&#34;tom.jpg&#34;</span>);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setJob</span>((<span style="color:#66d9ef">short</span>) 1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setEntrydate</span>(LocalDate.<span style="color:#a6e22e">of</span>(2000,1,1));
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setDeptId</span>(1);
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setUpdateTime</span>(LocalDateTime.<span style="color:#a6e22e">now</span>());
-</span></span><span style="display:flex;"><span>        emp.<span style="color:#a6e22e">setId</span>(19);
-</span></span><span style="display:flex;"><span>        empMapper.<span style="color:#a6e22e">update</span>(emp);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="クエリ">クエリ
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 変更</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Update</span><span class="p">(</span><span class="s">&#34;update mybatis.emp set username = #{username}, name = #{name}, gender = #{gender}, image = #{image}, job = #{job}, &#34;</span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;entrydate = #{entrydate}, dept_id = #{deptId}, update_time = #{updateTime} where id = #{id};&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Mybatis02ApplicationTests</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmpMapper</span><span class="w"> </span><span class="n">empMapper</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testUpdate</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Emp</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setUsername</span><span class="p">(</span><span class="s">&#34;Tom2&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setName</span><span class="p">(</span><span class="s">&#34;トム2&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setGender</span><span class="p">((</span><span class="kt">short</span><span class="p">)</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setImage</span><span class="p">(</span><span class="s">&#34;tom.jpg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setJob</span><span class="p">((</span><span class="kt">short</span><span class="p">)</span><span class="w"> </span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setEntrydate</span><span class="p">(</span><span class="n">LocalDate</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="n">2000</span><span class="p">,</span><span class="n">1</span><span class="p">,</span><span class="n">1</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setDeptId</span><span class="p">(</span><span class="n">1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setUpdateTime</span><span class="p">(</span><span class="n">LocalDateTime</span><span class="p">.</span><span class="na">now</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">emp</span><span class="p">.</span><span class="na">setId</span><span class="p">(</span><span class="n">19</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">empMapper</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="クエリ">クエリ
 </h2><p>クエリには、IDに基づいてすべての属性をクエリするクエリと条件に基づいてクエリするクエリの2種類があります。</p>
 <h3 id="idによるクエリ">IDによるクエリ
 </h3><p>インタフェース</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// IDによるクエリ</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Emp <span style="color:#a6e22e">idSelect</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Mybatis02ApplicationTests</span> {
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EmpMapper empMapper;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testIdSelect</span>(){
-</span></span><span style="display:flex;"><span>        Emp emp <span style="color:#f92672">=</span> empMapper.<span style="color:#a6e22e">idSelect</span>(19);
-</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(emp);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>結果</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Emp<span style="color:#f92672">(</span>id<span style="color:#f92672">=</span>19, username<span style="color:#f92672">=</span>Tom2, password<span style="color:#f92672">=</span>123456, name<span style="color:#f92672">=</span>汤姆2, gender<span style="color:#f92672">=</span>1, image<span style="color:#f92672">=</span>tom.jpg, job<span style="color:#f92672">=</span>1, entrydate<span style="color:#f92672">=</span>2000-01-01, deptId<span style="color:#f92672">=</span>null, createTime<span style="color:#f92672">=</span>null, updateTime<span style="color:#f92672">=</span>null<span style="color:#f92672">)</span>
-</span></span></code></pre></div><p>クラス Emp のフィールド名がデータベースと異なるため、クエリ結果は null になります。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// IDによるクエリ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Emp</span><span class="w"> </span><span class="nf">idSelect</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Mybatis02ApplicationTests</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmpMapper</span><span class="w"> </span><span class="n">empMapper</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testIdSelect</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Emp</span><span class="w"> </span><span class="n">emp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empMapper</span><span class="p">.</span><span class="na">idSelect</span><span class="p">(</span><span class="n">19</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">emp</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>結果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Emp<span class="o">(</span><span class="nv">id</span><span class="o">=</span>19, <span class="nv">username</span><span class="o">=</span>Tom2, <span class="nv">password</span><span class="o">=</span>123456, <span class="nv">name</span><span class="o">=</span>汤姆2, <span class="nv">gender</span><span class="o">=</span>1, <span class="nv">image</span><span class="o">=</span>tom.jpg, <span class="nv">job</span><span class="o">=</span>1, <span class="nv">entrydate</span><span class="o">=</span>2000-01-01, <span class="nv">deptId</span><span class="o">=</span>null, <span class="nv">createTime</span><span class="o">=</span>null, <span class="nv">updateTime</span><span class="o">=</span>null<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>クラス Emp のフィールド名がデータベースと異なるため、クエリ結果は null になります。</p>
 <p>解決方法は3つあります</p>
 <h4 id="エイリアスの使用">エイリアスの使用
-</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 方法 1: エイリアス</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select id, username, password, name, gender, image, job, entrydate, dept_id deptId, create_time createTime, update_time updateTime&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34; from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Emp <span style="color:#a6e22e">idSelect</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h4 id="results-アノテーションの使用">@Results アノテーションの使用
-</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 方法 2: @Results @Result アノテーション</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Results</span>({
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span>(column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;dept_id&#34;</span>, property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;deptId&#34;</span>),
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span>(column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;create_time&#34;</span>, property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;createTime&#34;</span>),
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Result</span>(column <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;update_time&#34;</span>, property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;updateTime&#34;</span>)
-</span></span><span style="display:flex;"><span>    })
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Emp <span style="color:#a6e22e">idSelect</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h4 id="自動包装の使用">自動包装の使用
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 方法 1: エイリアス</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select id, username, password, name, gender, image, job, entrydate, dept_id deptId, create_time createTime, update_time updateTime&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34; from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Emp</span><span class="w"> </span><span class="nf">idSelect</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="results-アノテーションの使用">@Results アノテーションの使用
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 方法 2: @Results @Result アノテーション</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Results</span><span class="p">({</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Result</span><span class="p">(</span><span class="n">column</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;dept_id&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;deptId&#34;</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Result</span><span class="p">(</span><span class="n">column</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;create_time&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;createTime&#34;</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nd">@Result</span><span class="p">(</span><span class="n">column</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;update_time&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">property</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;updateTime&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">})</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Emp</span><span class="w"> </span><span class="nf">idSelect</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="自動包装の使用">自動包装の使用
 </h4><p>フィールド名と属性名がキャメルケース命名規則に準拠している場合は、自動キャメルケース命名カプセル化を有効にすることができ、Mybatisはキャメルケース命名規則に従って自動的にマッピングします。具体的には、データベースはアンダースコア「a_column」をJava属性「aColumn」にマッピングします。</p>
 <p>キャメルケース命名を有効にするには、<code>application.properties</code>に追加します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">mybatis.configuration.map-underscore-to-camel-case</span><span style="color:#f92672">=</span><span style="color:#e6db74">true</span>
-</span></span></code></pre></div><p>然后直接使用最初的代码</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// IDによるクエリ</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where id = #{id}&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Emp <span style="color:#a6e22e">idSelect</span>(Integer id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">mybatis.configuration.map-underscore-to-camel-case</span><span class="o">=</span><span class="s">true</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后直接使用最初的代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// IDによるクエリ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where id = #{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Emp</span><span class="w"> </span><span class="nf">idSelect</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>使いやすさのために、IDEA に MyBatisX プラグインをインストールすることができます。</p>
 </blockquote>
 <h3 id="条件による検索">条件による検索
 </h3><p>要件: 従業員名 (あいまい一致)、性別 (完全一致)、雇用日 (範囲) に基づいて条件を満たす従業員情報を検索します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 条件による検索</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// &#39;%${name}%&#39; のように名前に使用される ${} は、&#39;&#39; 内でも使用できることに注意してください。</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where name like &#39;%${name}%&#39; and gender = #{gender} and &#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">conditionSelect</span>(String name, <span style="color:#66d9ef">short</span> gender, LocalDate begin, LocalDate end);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>文字列の連結には補間が使用されるため、この方法は安全ではありません。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// より安全な条件付きクエリ</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and &#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">conditionSelect</span>(String name, <span style="color:#66d9ef">short</span> gender, LocalDate begin, LocalDate end);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>concat 関数は文字列を連結するために使用されます。テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Mybatis02ApplicationTests</span> {
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EmpMapper empMapper;
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testConditionSelect</span>(){
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> empList <span style="color:#f92672">=</span> empMapper.<span style="color:#a6e22e">conditionSelect</span>(<span style="color:#e6db74">&#34;张&#34;</span>, (<span style="color:#66d9ef">short</span>) 1, LocalDate.<span style="color:#a6e22e">of</span>(2010, 1, 1), LocalDate.<span style="color:#a6e22e">of</span>(2020, 1, 1));
-</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(empList);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="パラメータ名の説明">パラメータ名の説明
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 条件による検索</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// &#39;%${name}%&#39; のように名前に使用される ${} は、&#39;&#39; 内でも使用できることに注意してください。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where name like &#39;%${name}%&#39; and gender = #{gender} and &#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">conditionSelect</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>文字列の連結には補間が使用されるため、この方法は安全ではありません。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// より安全な条件付きクエリ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and &#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">conditionSelect</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>concat 関数は文字列を連結するために使用されます。テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Mybatis02ApplicationTests</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">EmpMapper</span><span class="w"> </span><span class="n">empMapper</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testConditionSelect</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="n">empList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">empMapper</span><span class="p">.</span><span class="na">conditionSelect</span><span class="p">(</span><span class="s">&#34;张&#34;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">short</span><span class="p">)</span><span class="w"> </span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="n">2010</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">),</span><span class="w"> </span><span class="n">LocalDate</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="n">2020</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">,</span><span class="w"> </span><span class="n">1</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">empList</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="パラメータ名の説明">パラメータ名の説明
 </h2><p>SQLで使用される<code>#{}</code>内の変数名はSpringBoot 2.x以降では自動的に認識されますが、バージョン1.xまたはMyBatisのみを使用する場合は、メソッド内で定義された変数名をアノテーションを使用して指定する必要があります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// より安全な条件付きクエリ</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Select</span>(<span style="color:#e6db74">&#34;select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and &#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">conditionSelect</span>(String name, <span style="color:#66d9ef">short</span> gender, LocalDate begin, LocalDate end);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// 上記のコードは1.xでは動作しません。またMyBatisのみを使用する場合も動作しません。関数に注釈を付ける必要がある。</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">conditionSelect</span>(<span style="color:#a6e22e">@Param</span>(<span style="color:#e6db74">&#34;name&#34;</span>) String name, <span style="color:#a6e22e">@Param</span>(<span style="color:#e6db74">&#34;gender&#34;</span>) <span style="color:#66d9ef">short</span> gender, <span style="color:#a6e22e">@Param</span>(<span style="color:#e6db74">&#34;begin&#34;</span>) LocalDate begin, <span style="color:#a6e22e">@Param</span>(<span style="color:#e6db74">&#34;end&#34;</span>) LocalDate end);
-</span></span></code></pre></div><h2 id="xml-マッピングファイルの使用">XML マッピングファイルの使用
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// より安全な条件付きクエリ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Select</span><span class="p">(</span><span class="s">&#34;select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and &#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;entrydate between #{begin} and #{end} order by update_time desc&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">conditionSelect</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 上記のコードは1.xでは動作しません。またMyBatisのみを使用する場合も動作しません。関数に注釈を付ける必要がある。</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">conditionSelect</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="nd">@Param</span><span class="p">(</span><span class="s">&#34;gender&#34;</span><span class="p">)</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="nd">@Param</span><span class="p">(</span><span class="s">&#34;begin&#34;</span><span class="p">)</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="nd">@Param</span><span class="p">(</span><span class="s">&#34;end&#34;</span><span class="p">)</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="xml-マッピングファイルの使用">XML マッピングファイルの使用
 </h2><p>SQL コードが比較的短い場合は、アノテーションを使用すると便利ですが、SQL が長かったり複雑だったりする場合は、少し乱雑に見えます。この目的のために、XML マッピング ファイルを使用できます。仕様は以下の通りです</p>
 <ul>
 <li>XML マッピングファイルの名前は Mapperイ ンターフェースの名前と一致しており、XML マッピングファイルと Mapper インターフェースは同じパッケージ（同じパッケージ、同じ名前）に配置されています。</li>
@@ -782,112 +1065,268 @@ https://blog.yexca.net/ja/archives/215
 <h3 id="xml">XML
 </h3><p>Maven プロジェクトでは、Java 以外のファイルは <code>src/main/resources</code> の下に配置されます。このディレクトリの下に Mapper インターフェースと一致するディレクトリを作成します。</p>
 <p>インターフェースが <code>net.yexca.mapper.EmpMapper.java</code> の場合、XML ファイルは <code>net.yexca.mapper.EmpMapper.xml</code> にあります。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE mapper
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        &#34;https://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 上記のヘッダーファイルを見つけるには、公式ウェブサイトにアクセスしてください。 --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- namespace 属性はインターフェースである --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;mapper</span> <span style="color:#a6e22e">namespace=</span><span style="color:#e6db74">&#34;net.yexca.mapper.EmpMapper&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--  id属性はメソッド名です --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--  resultTypeは単一のレコードでカプセル化された型です --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;conditionSelect&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;net.yexca.pojo.Emp&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>        select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and
-</span></span><span style="display:flex;"><span>        entrydate between #{begin} and #{end} order by update_time desc
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/select&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/mapper&gt;</span>
-</span></span></code></pre></div><h3 id="インターフェースクラス">インターフェースクラス
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Mapper</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">EmpMapper</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>Emp<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">conditionSelect</span>(String name, <span style="color:#66d9ef">short</span> gender, LocalDate begin, LocalDate end);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="動的-sql">動的 SQL
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE mapper
+</span></span></span><span class="line"><span class="cl"><span class="cp">        PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">        &#34;https://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- 上記のヘッダーファイルを見つけるには、公式ウェブサイトにアクセスしてください。 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- namespace 属性はインターフェースである --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;mapper</span> <span class="na">namespace=</span><span class="s">&#34;net.yexca.mapper.EmpMapper&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!--  id属性はメソッド名です --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!--  resultTypeは単一のレコードでカプセル化された型です --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;select</span> <span class="na">id=</span><span class="s">&#34;conditionSelect&#34;</span> <span class="na">resultType=</span><span class="s">&#34;net.yexca.pojo.Emp&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">        select * from mybatis.emp where name like concat(&#39;%&#39;,#{name},&#39;%&#39;) and gender = #{gender} and
+</span></span><span class="line"><span class="cl">        entrydate between #{begin} and #{end} order by update_time desc
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/select&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/mapper&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="インターフェースクラス">インターフェースクラス
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Mapper</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">EmpMapper</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Emp</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">conditionSelect</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">LocalDate</span><span class="w"> </span><span class="n">end</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="動的-sql">動的 SQL
 </h2><p>動的 SQL は、ユーザー入力または外部条件に応じて変化する SQL ステートメントです。</p>
 <p>たとえば、上記の最後の条件クエリでは、クエリを実行するために 3 つの条件すべてを入力する必要があります。実際の使用では、1 つまたは 2 つの条件のみを指定するか、指定しない (すべてをクエリする) ことができます。上記の手順に従って実行すると、空の結果が返されます。</p>
 <h3 id="where-if">where if
 </h3><p>条件が真であるかどうかを判断するために使用されます。条件判定を実行するには、テスト属性を使用します。条件が真の場合、SQLを連結します。</p>
 <p>たとえば、名前が空でない場合、連結条件は名前によって照会されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;name!=null&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    name like contact(&#39;%&#39;,#{name},&#39;%&#39;)
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/if&gt;</span>
-</span></span></code></pre></div><p>where タグは、where キーワードを生成するかどうか、および and キーワードと or キーワードを自動的に削除するかどうかを管理します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;select</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;conditionSelect&#34;</span> <span style="color:#a6e22e">resultType=</span><span style="color:#e6db74">&#34;net.yexca.pojo.Emp&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>        select * from mybatis.emp
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;where&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;name!=null&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>                name like concat(&#39;%&#39;,#{name},&#39;%&#39;)
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;gender!=null&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>                and gender = #{gender}
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;begin!=null and end!=null&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>                and entrydate between #{begin} and #{end}
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/where&gt;</span>
-</span></span><span style="display:flex;"><span>        order by update_time desc
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/select&gt;</span>
-</span></span></code></pre></div><h3 id="set">set
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;name!=null&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    name like contact(&#39;%&#39;,#{name},&#39;%&#39;)
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/if&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>where タグは、where キーワードを生成するかどうか、および and キーワードと or キーワードを自動的に削除するかどうかを管理します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;select</span> <span class="na">id=</span><span class="s">&#34;conditionSelect&#34;</span> <span class="na">resultType=</span><span class="s">&#34;net.yexca.pojo.Emp&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">        select * from mybatis.emp
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;where&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;name!=null&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">                name like concat(&#39;%&#39;,#{name},&#39;%&#39;)
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;gender!=null&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">                and gender = #{gender}
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;begin!=null and end!=null&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">                and entrydate between #{begin} and #{end}
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/where&gt;</span>
+</span></span><span class="line"><span class="cl">        order by update_time desc
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/select&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="set">set
 </h3><p>SQL の set キーワードを置き換え、UPDATE ステートメントで使用する余分なカンマを自動的に削除します。</p>
 <p>たとえば、次のSQL文は動的SQLに変更されます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">update</span> mybatis.emp
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">set</span> username    <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>username<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        name        <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>name<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        gender      <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>gender<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        image       <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>image<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        job         <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>job<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        entrydate   <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>entrydate<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        dept_id     <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>deptId<span style="color:#960050;background-color:#1e0010">}</span>,
-</span></span><span style="display:flex;"><span>        update_time <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>updateTime<span style="color:#960050;background-color:#1e0010">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">where</span> id <span style="color:#f92672">=</span> <span style="color:#f92672">#</span><span style="color:#960050;background-color:#1e0010">{</span>id<span style="color:#960050;background-color:#1e0010">}</span>;
-</span></span></code></pre></div><p>XML</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;update</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;update2&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    update mybatis.emp
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;set&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;username != null&#34;</span><span style="color:#f92672">&gt;</span>username = #{username},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;name != null&#34;</span><span style="color:#f92672">&gt;</span>name = #{name},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;gender != null&#34;</span><span style="color:#f92672">&gt;</span>gender = #{gender},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;image != null&#34;</span><span style="color:#f92672">&gt;</span>image = #{image},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;job != null&#34;</span><span style="color:#f92672">&gt;</span>job = #{job},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;entrydate != null&#34;</span><span style="color:#f92672">&gt;</span>entrydate = #{entrydate},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;deptId != null&#34;</span><span style="color:#f92672">&gt;</span>dept_id = #{deptId},<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;if</span> <span style="color:#a6e22e">test=</span><span style="color:#e6db74">&#34;updateTime != null&#34;</span><span style="color:#f92672">&gt;</span>update_time = #{updateTime}<span style="color:#f92672">&lt;/if&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/set&gt;</span>
-</span></span><span style="display:flex;"><span>    where id = #{id};
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/update&gt;</span>
-</span></span></code></pre></div><h3 id="foreach">foreach
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">update</span><span class="w"> </span><span class="n">mybatis</span><span class="p">.</span><span class="n">emp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">set</span><span class="w"> </span><span class="n">username</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">username</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">name</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">name</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">gender</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">gender</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">image</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">image</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">job</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">job</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">entrydate</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">entrydate</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">dept_id</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">deptId</span><span class="err">}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">update_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">updateTime</span><span class="err">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">#</span><span class="err">{</span><span class="n">id</span><span class="err">}</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>XML</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;update</span> <span class="na">id=</span><span class="s">&#34;update2&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    update mybatis.emp
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;set&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;username != null&#34;</span><span class="nt">&gt;</span>username = #{username},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;name != null&#34;</span><span class="nt">&gt;</span>name = #{name},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;gender != null&#34;</span><span class="nt">&gt;</span>gender = #{gender},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;image != null&#34;</span><span class="nt">&gt;</span>image = #{image},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;job != null&#34;</span><span class="nt">&gt;</span>job = #{job},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;entrydate != null&#34;</span><span class="nt">&gt;</span>entrydate = #{entrydate},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;deptId != null&#34;</span><span class="nt">&gt;</span>dept_id = #{deptId},<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;if</span> <span class="na">test=</span><span class="s">&#34;updateTime != null&#34;</span><span class="nt">&gt;</span>update_time = #{updateTime}<span class="nt">&lt;/if&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/set&gt;</span>
+</span></span><span class="line"><span class="cl">    where id = #{id};
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/update&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="foreach">foreach
 </h3><p>foreach タグはトラバーサルに使用されます</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span>      <span style="color:#75715e">&lt;!--走査するコレクション    横断された要素  デリミタ     開始前と開始後に連結されたSQLフラグメント--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;foreach</span> <span style="color:#a6e22e">collection=</span><span style="color:#e6db74">&#34;ids&#34;</span> <span style="color:#a6e22e">item=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">separator=</span><span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#a6e22e">open=</span><span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#a6e22e">close=</span><span style="color:#e6db74">&#34;)&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    #{id}
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/foreach&gt;</span>
-</span></span></code></pre></div><p>ids が [13, 14, 15] の場合、上記は <code>(13,14,15)</code> を生成します。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl">      <span class="c">&lt;!--走査するコレクション    横断された要素  デリミタ     開始前と開始後に連結されたSQLフラグメント--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;foreach</span> <span class="na">collection=</span><span class="s">&#34;ids&#34;</span> <span class="na">item=</span><span class="s">&#34;id&#34;</span> <span class="na">separator=</span><span class="s">&#34;,&#34;</span> <span class="na">open=</span><span class="s">&#34;(&#34;</span> <span class="na">close=</span><span class="s">&#34;)&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    #{id}
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/foreach&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>ids が [13, 14, 15] の場合、上記は <code>(13,14,15)</code> を生成します。</p>
 <p>要件: ID 1、2、3 の項目を走査して削除します。 SQL文は</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">delete</span> <span style="color:#66d9ef">from</span> emp <span style="color:#66d9ef">where</span> id <span style="color:#66d9ef">in</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>)
-</span></span></code></pre></div><p>インターフェースメソッド</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">deleteByIds</span>(List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> ids);
-</span></span></code></pre></div><p>XML</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;delete</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;deleteByIds&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    delete from mybatis.emp where id in
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;foreach</span> <span style="color:#a6e22e">collection=</span><span style="color:#e6db74">&#34;ids&#34;</span> <span style="color:#a6e22e">item=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">separator=</span><span style="color:#e6db74">&#34;,&#34;</span> <span style="color:#a6e22e">open=</span><span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#a6e22e">close=</span><span style="color:#e6db74">&#34;)&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>        #{id}
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/foreach&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/delete&gt;</span>
-</span></span></code></pre></div><p>テスト</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDeleteByIds</span>(){
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Integer<span style="color:#f92672">&gt;</span> ids <span style="color:#f92672">=</span> Arrays.<span style="color:#a6e22e">asList</span>(13,14,15);
-</span></span><span style="display:flex;"><span>    empMapper.<span style="color:#a6e22e">deleteByIds</span>(ids);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="sql-と-include">sql と include
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">delete</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">emp</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">in</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>インターフェースメソッド</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">deleteByIds</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ids</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>XML</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;delete</span> <span class="na">id=</span><span class="s">&#34;deleteByIds&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    delete from mybatis.emp where id in
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;foreach</span> <span class="na">collection=</span><span class="s">&#34;ids&#34;</span> <span class="na">item=</span><span class="s">&#34;id&#34;</span> <span class="na">separator=</span><span class="s">&#34;,&#34;</span> <span class="na">open=</span><span class="s">&#34;(&#34;</span> <span class="na">close=</span><span class="s">&#34;)&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">        #{id}
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/foreach&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/delete&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>テスト</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testDeleteByIds</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">13</span><span class="p">,</span><span class="n">14</span><span class="p">,</span><span class="n">15</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">empMapper</span><span class="p">.</span><span class="na">deleteByIds</span><span class="p">(</span><span class="n">ids</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="sql-と-include">sql と include
 </h3><p>開発プロセスでは、多数の SQL ステートメントが繰り返される場合があります。sql タグを使用して再利用可能な SQL フラグメントを定義し、include タグを使用して再利用できます。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- id属性を通じてステートメントを一意に識別する --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;sql</span> <span style="color:#a6e22e">id =</span> <span style="color:#e6db74">&#34;commonCode&#34;</span><span style="color:#f92672">&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- SQL语句 --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/sql&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- refid 属性は参照ステートメントを指定します。 --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;include</span> <span style="color:#a6e22e">refid =</span> <span style="color:#e6db74">&#34;commonCode&#34;</span> <span style="color:#f92672">/&gt;</span>
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- id属性を通じてステートメントを一意に識別する --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;sql</span> <span class="na">id =</span> <span class="s">&#34;commonCode&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- SQL语句 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/sql&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- refid 属性は参照ステートメントを指定します。 --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;include</span> <span class="na">refid =</span> <span class="s">&#34;commonCode&#34;</span> <span class="nt">/&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

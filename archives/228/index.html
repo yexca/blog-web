@@ -475,7 +475,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -617,20 +617,39 @@ https://www.elastic.co/guide/en/elasticsearch/client/index.html
 <p>以下使用 Java HighLevel Rest Client 客户端 API</p>
 <h2 id="创建索引库">创建索引库
 </h2><p>数据库表结构如下</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> bigint(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店id&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店名称&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>address<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店地址&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>price<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店价格&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>score<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店评分&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>brand<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">32</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店品牌&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>city<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">32</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;所在城市&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>star_name<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">16</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店星级，1星到5星，1钻到5钻&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>business<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;商圈&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>latitude<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">32</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;纬度&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>longitude<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">32</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;经度&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#f92672">`</span>pic<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) CHARACTER <span style="color:#66d9ef">SET</span> utf8mb4 <span style="color:#66d9ef">COLLATE</span> utf8mb4_general_ci <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">COMMENT</span> <span style="color:#e6db74">&#39;酒店图片&#39;</span>,
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>) <span style="color:#66d9ef">USING</span> BTREE
-</span></span></code></pre></div><p>创建索引库最关键的是 mapping 映射，需要考虑</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店id&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店名称&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">address</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店地址&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">price</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店价格&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">score</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店评分&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">brand</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店品牌&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">city</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;所在城市&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">star_name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店星级，1星到5星，1钻到5钻&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">business</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;商圈&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">latitude</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;纬度&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">longitude</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;经度&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">`</span><span class="n">pic</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_general_ci</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;酒店图片&#39;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">BTREE</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建索引库最关键的是 mapping 映射，需要考虑</p>
 <ul>
 <li>字段名、字段数据类型 (参考数据库表结构的名称与类型)</li>
 <li>是否参与搜索 (根据业务判断，例如图片地址不需要参与搜索)</li>
@@ -638,61 +657,121 @@ https://www.elastic.co/guide/en/elasticsearch/client/index.html
 <li>分词器是什么 (可以统一 ik_max_word)</li>
 </ul>
 <p>上表示例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#960050;background-color:#1e0010">创建索引库</span>
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">PUT</span> <span style="color:#960050;background-color:#1e0010">/hotel</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;mappings&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;properties&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;id&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;analyzer&#34;</span>: <span style="color:#e6db74">&#34;ik_max_word&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;copy_to&#34;</span>: <span style="color:#e6db74">&#34;all&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">/*</span> <span style="color:#960050;background-color:#1e0010">将当前字段拷贝到指定字段</span> <span style="color:#960050;background-color:#1e0010">all</span> <span style="color:#960050;background-color:#1e0010">*/</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;address&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;index&#34;</span>: <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;price&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;integer&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;score&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;integer&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;brand&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;copy_to&#34;</span>: <span style="color:#e6db74">&#34;all&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;city&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;copy_to&#34;</span>: <span style="color:#e6db74">&#34;all&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;starName&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;business&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;location&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;geo_point&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">/*</span> <span style="color:#960050;background-color:#1e0010">ES</span> <span style="color:#960050;background-color:#1e0010">支持两种地理坐标数据类型</span> <span style="color:#960050;background-color:#1e0010">*/</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;pic&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;keyword&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;index&#34;</span>: <span style="color:#66d9ef">false</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;all&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#960050;background-color:#1e0010">/*</span> <span style="color:#960050;background-color:#1e0010">组合字段，不会在查询结果显示，但可用于查询</span> <span style="color:#960050;background-color:#1e0010">*/</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;text&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;analyzer&#34;</span>: <span style="color:#e6db74">&#34;ik_max_word&#34;</span>
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>地理坐标数据类型：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">#</span> <span class="err">创建索引库</span>
+</span></span><span class="line"><span class="cl"><span class="err">PUT</span> <span class="err">/hotel</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;mappings&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;properties&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;text&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;analyzer&#34;</span><span class="p">:</span> <span class="s2">&#34;ik_max_word&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;copy_to&#34;</span><span class="p">:</span> <span class="s2">&#34;all&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="err">/*</span> <span class="err">将当前字段拷贝到指定字段</span> <span class="err">all</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;address&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;index&#34;</span><span class="p">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;price&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;integer&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;score&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;integer&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;brand&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;copy_to&#34;</span><span class="p">:</span> <span class="s2">&#34;all&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;city&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;copy_to&#34;</span><span class="p">:</span> <span class="s2">&#34;all&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;starName&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;business&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;location&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;geo_point&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="err">/*</span> <span class="err">ES</span> <span class="err">支持两种地理坐标数据类型</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;pic&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;keyword&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;index&#34;</span><span class="p">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;all&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="err">/*</span> <span class="err">组合字段，不会在查询结果显示，但可用于查询</span> <span class="err">*/</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;text&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;analyzer&#34;</span><span class="p">:</span> <span class="s2">&#34;ik_max_word&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>地理坐标数据类型：</p>
 <ul>
 <li>geo_point：由纬度 (latitude) 和经度 (longitude) 确定的一个点。例如 <code>&quot;32.84 120.25&quot;</code></li>
 <li>geo_shape：由多个 geo_point 组成的复杂几何图形。例如一条直线 <code>&quot;LINESTRING(-77.03 38.29, +77.00 38.88)&quot;</code></li>
@@ -700,289 +779,666 @@ https://www.elastic.co/guide/en/elasticsearch/client/index.html
 <h2 id="初始化-restclient">初始化 RestClient
 </h2><p>与 elasticsearch 一切交互都封装在一个名为 RestHighLevelClient 的类中</p>
 <p>首先引入 es 的 RestHighLevelClient 依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.elasticsearch.client<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>elasticsearch-rest-high-level-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><p>因为 SpringBoot 默认的 ES 版本为 7.6.2，需要覆盖默认 ES 版本</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;properties&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;java.version&gt;</span>1.8<span style="color:#f92672">&lt;/java.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;elasticsearch.version&gt;</span>7.12.1<span style="color:#f92672">&lt;/elasticsearch.version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/properties&gt;</span>
-</span></span></code></pre></div><p>初始化 RestHighLevelClient 代码如下</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>RestHighLevelClient client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RestHighLevelClient(RestClient.<span style="color:#a6e22e">builder</span>(
-</span></span><span style="display:flex;"><span>        HttpHost.<span style="color:#a6e22e">create</span>(<span style="color:#e6db74">&#34;http://IP:9200&#34;</span>)
-</span></span><span style="display:flex;"><span>));
-</span></span></code></pre></div><p>不过为了测试方便，初始化代码放在 @BeforeEach</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelIndexTest</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RestHighLevelClient client;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@BeforeEach</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span>() {
-</span></span><span style="display:flex;"><span>        client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RestHighLevelClient(RestClient.<span style="color:#a6e22e">builder</span>(
-</span></span><span style="display:flex;"><span>                        HttpHost.<span style="color:#a6e22e">create</span>(<span style="color:#e6db74">&#34;http://127.0.0.1:9200&#34;</span>)));
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@AfterEach</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">close</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>定义索引库需要 DSL 语句的 JSON 部分，可以单独抽出</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelContants</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String MAPPING_TEMPLATE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;{\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;  \&#34;mappings\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;    \&#34;properties\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;id\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;name\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;address\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;index\&#34;: false\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;price\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;score\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;brand\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;city\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;starName\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;business\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;location\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;geo_point\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;pic\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;index\&#34;: false\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      },\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      \&#34;all\&#34;: {\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;      }\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;    }\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;  }\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;}&#34;</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>创建索引代码</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// 注意CreateIndexRequest的包</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.elasticsearch.client.indices.CreateIndexRequest;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testCreateHotelIndex</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建Request对象</span>
-</span></span><span style="display:flex;"><span>    CreateIndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> CreateIndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 请求参数</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>(MAPPING_TEMPLATE, XContentType.<span style="color:#a6e22e">JSON</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发起请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">indices</span>().<span style="color:#a6e22e">create</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="删除索引库">删除索引库
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.elasticsearch.client<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>elasticsearch-rest-high-level-client<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为 SpringBoot 默认的 ES 版本为 7.6.2，需要覆盖默认 ES 版本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;properties&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;elasticsearch.version&gt;</span>7.12.1<span class="nt">&lt;/elasticsearch.version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>初始化 RestHighLevelClient 代码如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">RestHighLevelClient</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RestHighLevelClient</span><span class="p">(</span><span class="n">RestClient</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HttpHost</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&#34;http://IP:9200&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">));</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>不过为了测试方便，初始化代码放在 @BeforeEach</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HotelIndexTest</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">RestHighLevelClient</span><span class="w"> </span><span class="n">client</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@BeforeEach</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setUp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RestHighLevelClient</span><span class="p">(</span><span class="n">RestClient</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">HttpHost</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">)));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@AfterEach</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">tearDown</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>定义索引库需要 DSL 语句的 JSON 部分，可以单独抽出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HotelContants</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">MAPPING_TEMPLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#34;{\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;  \&#34;mappings\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;    \&#34;properties\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;id\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;name\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;address\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;index\&#34;: false\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;price\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;score\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;brand\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;city\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;starName\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;business\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;location\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;geo_point\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;pic\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;index\&#34;: false\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      },\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      \&#34;all\&#34;: {\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;      }\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;    }\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;  }\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;}&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建索引代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// 注意CreateIndexRequest的包</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kn">import</span><span class="w"> </span><span class="nn">org.elasticsearch.client.indices.CreateIndexRequest</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">void</span><span class="w"> </span><span class="nf">testCreateHotelIndex</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建Request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">CreateIndexRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CreateIndexRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 请求参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">(</span><span class="n">MAPPING_TEMPLATE</span><span class="p">,</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发起请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">indices</span><span class="p">().</span><span class="na">create</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="删除索引库">删除索引库
 </h2><p>DSL 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE</span> <span style="color:#960050;background-color:#1e0010">/hotel</span>
-</span></span></code></pre></div><p>与创建的代码差异仅在 Request 对象上，并且无参数</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDeleteHotelIndex</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建请求</span>
-</span></span><span style="display:flex;"><span>    DeleteIndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteIndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发起请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">indices</span>().<span style="color:#a6e22e">delete</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="判断索引库是否存在">判断索引库是否存在
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">DELETE</span> <span class="err">/hotel</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>与创建的代码差异仅在 Request 对象上，并且无参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">void</span><span class="w"> </span><span class="nf">testDeleteHotelIndex</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">DeleteIndexRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeleteIndexRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发起请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">indices</span><span class="p">().</span><span class="na">delete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="判断索引库是否存在">判断索引库是否存在
 </h2><p>DSL 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel</span>
-</span></span></code></pre></div><p>差异依旧为 Request 对象</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testExistsHotelIndex</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建请求</span>
-</span></span><span style="display:flex;"><span>    GetIndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GetIndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发请求</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> exists <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">indices</span>().<span style="color:#a6e22e">exists</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 输出</span>
-</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(exists);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>差异依旧为 Request 对象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">void</span><span class="w"> </span><span class="nf">testExistsHotelIndex</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">GetIndexRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GetIndexRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">boolean</span><span class="w"> </span><span class="n">exists</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">indices</span><span class="p">().</span><span class="na">exists</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 输出</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">exists</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p><strong>总结</strong></p>
 <p>JavaRestClient 操作 ES 的流程基本类似，使用 <code>client.indices()</code> 方法获取索引库的操作对象</p>
 </blockquote>
 <h2 id="restclient">RestClient
 </h2><p>一般数据在数据库通过查询数据库对索引库 CRUD</p>
 <p>初始化 RestHighLevelClient</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SpringBootTest</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelDocumentTest</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 注入服务</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Autowired</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> IHotelService hotelService;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> RestHighLevelClient client;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@BeforeEach</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 构造 RestClient</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> RestHighLevelClient(
-</span></span><span style="display:flex;"><span>                RestClient.<span style="color:#a6e22e">builder</span>(
-</span></span><span style="display:flex;"><span>                        HttpHost.<span style="color:#a6e22e">create</span>(<span style="color:#e6db74">&#34;http://127.0.0.1:9200&#34;</span>)));
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@AfterEach</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">close</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="新增文档">新增文档
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@SpringBootTest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HotelDocumentTest</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 注入服务</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Autowired</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">IHotelService</span><span class="w"> </span><span class="n">hotelService</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">RestHighLevelClient</span><span class="w"> </span><span class="n">client</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@BeforeEach</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setUp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 构造 RestClient</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RestHighLevelClient</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">RestClient</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="n">HttpHost</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&#34;http://127.0.0.1:9200&#34;</span><span class="p">)));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@AfterEach</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">tearDown</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="新增文档">新增文档
 </h2><p>将数据库的数据查询出来，写入 ES 中</p>
 <h3 id="结构调整">结构调整
 </h3><p>数据库查询后的结果是一个 Hotel 类型的对象</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@TableName</span>(<span style="color:#e6db74">&#34;tb_hotel&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hotel</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@TableId</span>(type <span style="color:#f92672">=</span> IdType.<span style="color:#a6e22e">INPUT</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String address;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer price;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer score;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String brand;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String city;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String starName;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String business;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String longitude;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String latitude;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String pic;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>与索引库结构存在差异，需要定义一个新的类型，与索引库结构相同</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NoArgsConstructor</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HotelDoc</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String address;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer price;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer score;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String brand;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String city;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String starName;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String business;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String location;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String pic;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">HotelDoc</span>(Hotel hotel) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getId</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getName</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">address</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getAddress</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">price</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getPrice</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">score</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getScore</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">brand</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getBrand</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">city</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getCity</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">starName</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getStarName</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">business</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getBusiness</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">location</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getLatitude</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> hotel.<span style="color:#a6e22e">getLongitude</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">pic</span> <span style="color:#f92672">=</span> hotel.<span style="color:#a6e22e">getPic</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="新增语法">新增语法
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@TableName</span><span class="p">(</span><span class="s">&#34;tb_hotel&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Hotel</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@TableId</span><span class="p">(</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IdType</span><span class="p">.</span><span class="na">INPUT</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">address</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">price</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">score</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">brand</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">city</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">starName</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">business</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">longitude</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">latitude</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pic</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>与索引库结构存在差异，需要定义一个新的类型，与索引库结构相同</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@NoArgsConstructor</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HotelDoc</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">address</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">price</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">score</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">brand</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">city</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">starName</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">business</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">location</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">pic</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">HotelDoc</span><span class="p">(</span><span class="n">Hotel</span><span class="w"> </span><span class="n">hotel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getId</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getAddress</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getPrice</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getScore</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">brand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getBrand</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getCity</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">starName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getStarName</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">business</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getBusiness</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getLatitude</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;, &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getLongitude</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">pic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotel</span><span class="p">.</span><span class="na">getPic</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="新增语法">新增语法
 </h3><p>DSL 的语法为</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/</span>{<span style="color:#960050;background-color:#1e0010">indexName</span>}<span style="color:#960050;background-color:#1e0010">/_doc/</span>{<span style="color:#960050;background-color:#1e0010">id</span>}
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Jack&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;age&#34;</span>: <span style="color:#ae81ff">21</span>
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>对应的 Java</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelCreateTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request对象</span>
-</span></span><span style="display:flex;"><span>    IndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>).<span style="color:#a6e22e">id</span>(<span style="color:#e6db74">&#34;1&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备JSON对象</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>(<span style="color:#e6db74">&#34;{\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;    \&#34;name\&#34;: \&#34;Jack\&#34;,\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;    \&#34;age\&#34;: 21\n&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;}&#34;</span>, XContentType.<span style="color:#a6e22e">JSON</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">index</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="新增文档实例代码">新增文档实例代码
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelCreateTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 查询酒店数据</span>
-</span></span><span style="display:flex;"><span>    Hotel hotel <span style="color:#f92672">=</span> hotelService.<span style="color:#a6e22e">getById</span>(61083L);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 转换文档类型</span>
-</span></span><span style="display:flex;"><span>    HotelDoc hotelDoc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HotelDoc(hotel);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 转为JSON</span>
-</span></span><span style="display:flex;"><span>    String json <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">toJSONString</span>(hotelDoc);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request对象</span>
-</span></span><span style="display:flex;"><span>    IndexRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>).<span style="color:#a6e22e">id</span>(hotelDoc.<span style="color:#a6e22e">getId</span>().<span style="color:#a6e22e">toString</span>());
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备JSON对象</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>(json, XContentType.<span style="color:#a6e22e">JSON</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">index</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="查询文档">查询文档
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">POST</span> <span class="err">/</span><span class="p">{</span><span class="err">indexName</span><span class="p">}</span><span class="err">/_doc/</span><span class="p">{</span><span class="err">id</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Jack&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;age&#34;</span><span class="p">:</span> <span class="mi">21</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>对应的 Java</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelCreateTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">IndexRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IndexRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="s">&#34;1&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备JSON对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">(</span><span class="s">&#34;{\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;    \&#34;name\&#34;: \&#34;Jack\&#34;,\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;    \&#34;age\&#34;: 21\n&#34;</span><span class="w"> </span><span class="o">+</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;}&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="新增文档实例代码">新增文档实例代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelCreateTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 查询酒店数据</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Hotel</span><span class="w"> </span><span class="n">hotel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotelService</span><span class="p">.</span><span class="na">getById</span><span class="p">(</span><span class="n">61083L</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 转换文档类型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">HotelDoc</span><span class="w"> </span><span class="n">hotelDoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HotelDoc</span><span class="p">(</span><span class="n">hotel</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 转为JSON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">toJSONString</span><span class="p">(</span><span class="n">hotelDoc</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">IndexRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IndexRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="n">hotelDoc</span><span class="p">.</span><span class="na">getId</span><span class="p">().</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备JSON对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">index</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="查询文档">查询文档
 </h2><h3 id="查询语法">查询语法
 </h3><p>DSL 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/</span>{<span style="color:#960050;background-color:#1e0010">indexName</span>}<span style="color:#960050;background-color:#1e0010">/_doc/</span>{<span style="color:#960050;background-color:#1e0010">id</span>}
-</span></span></code></pre></div><p>Java 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelGetTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>    GetRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GetRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>, <span style="color:#e6db74">&#34;id&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    GetResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">get</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析结果</span>
-</span></span><span style="display:flex;"><span>    String json <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getSourceAsString</span>();
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(json);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="查询文档实例代码">查询文档实例代码
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelGetTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>    GetRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> GetRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>, <span style="color:#e6db74">&#34;61083&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    GetResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">get</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析结果</span>
-</span></span><span style="display:flex;"><span>    String json <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getSourceAsString</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 反序列化为Java对象</span>
-</span></span><span style="display:flex;"><span>    HotelDoc hotelDoc <span style="color:#f92672">=</span> JSON.<span style="color:#a6e22e">parseObject</span>(json, HotelDoc.<span style="color:#a6e22e">class</span>);
-</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(hotelDoc);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="删除文档">删除文档
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/</span><span class="p">{</span><span class="err">indexName</span><span class="p">}</span><span class="err">/_doc/</span><span class="p">{</span><span class="err">id</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Java 语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelGetTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">GetRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GetRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;id&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">GetResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 解析结果</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="na">getSourceAsString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">json</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="查询文档实例代码">查询文档实例代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelGetTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">GetRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">GetRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;61083&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">GetResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 解析结果</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="na">getSourceAsString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 反序列化为Java对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">HotelDoc</span><span class="w"> </span><span class="n">hotelDoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSON</span><span class="p">.</span><span class="na">parseObject</span><span class="p">(</span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">HotelDoc</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">hotelDoc</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="删除文档">删除文档
 </h2><h3 id="删除语法">删除语法
 </h3><p>DSL 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">DELETE</span> <span style="color:#960050;background-color:#1e0010">/</span>{<span style="color:#960050;background-color:#1e0010">indexName</span>}<span style="color:#960050;background-color:#1e0010">/_doc/</span>{<span style="color:#960050;background-color:#1e0010">id</span>}
-</span></span></code></pre></div><p>Java 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelDeleteTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>    DeleteRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>, <span style="color:#e6db74">&#34;id&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">delete</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="删除文档实例代码">删除文档实例代码
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelDeleteTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备request</span>
-</span></span><span style="display:flex;"><span>    DeleteRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DeleteRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>, <span style="color:#e6db74">&#34;61083&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发送请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">delete</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="修改文档">修改文档
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">DELETE</span> <span class="err">/</span><span class="p">{</span><span class="err">indexName</span><span class="p">}</span><span class="err">/_doc/</span><span class="p">{</span><span class="err">id</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Java 语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelDeleteTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">DeleteRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeleteRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;id&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="删除文档实例代码">删除文档实例代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelDeleteTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">DeleteRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DeleteRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;61083&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发送请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">delete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="修改文档">修改文档
 </h2><h3 id="修改语法">修改语法
 </h3><p>修改有全量修改与增量修改，在 RestClient 的 API 中，两种方式的 API 完全一致，判断依据是 ID，新增时：</p>
 <ul>
@@ -990,72 +1446,162 @@ https://www.elastic.co/guide/en/elasticsearch/client/index.html
 <li>ID 不存在，新增</li>
 </ul>
 <p>这里主要关注增量修改，DSL 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">POST</span> <span style="color:#960050;background-color:#1e0010">/</span>{<span style="color:#960050;background-color:#1e0010">indexName</span>}<span style="color:#960050;background-color:#1e0010">/_update/</span>{<span style="color:#960050;background-color:#1e0010">id</span>}
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;doc&#34;</span>: <span style="color:#e6db74">&#34;Rose&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;age&#34;</span>: <span style="color:#ae81ff">18</span>
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Java 语句</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelUpdateTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建request对象</span>
-</span></span><span style="display:flex;"><span>    UpdateRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>, <span style="color:#e6db74">&#34;id&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备参数</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">doc</span>(
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;Rose&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;age&#34;</span>, 18
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 更新文档</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">update</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="修改文档实例代码">修改文档实例代码
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">HotelUpdateTest</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建request对象</span>
-</span></span><span style="display:flex;"><span>    UpdateRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> UpdateRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>, <span style="color:#e6db74">&#34;61083&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 准备参数</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">doc</span>(
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;price&#34;</span>, 950,
-</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;starName&#34;</span>, <span style="color:#e6db74">&#34;四钻&#34;</span>
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 更新文档</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">update</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="批量导入文档">批量导入文档
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">POST</span> <span class="err">/</span><span class="p">{</span><span class="err">indexName</span><span class="p">}</span><span class="err">/_update/</span><span class="p">{</span><span class="err">id</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;doc&#34;</span><span class="p">:</span> <span class="s2">&#34;Rose&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;age&#34;</span><span class="p">:</span> <span class="mi">18</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Java 语句</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelUpdateTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UpdateRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UpdateRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;id&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">doc</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;name&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;Rose&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;age&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">18</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 更新文档</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="修改文档实例代码">修改文档实例代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">HotelUpdateTest</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">UpdateRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">UpdateRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;61083&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 准备参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">doc</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;price&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">950</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;starName&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;四钻&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 更新文档</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="批量导入文档">批量导入文档
 </h2><p>利用 BulkRequest 批量将数据库数据导入到索引库中。本质是将多个普通的 CRUD 请求组合在一起发送，示例</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testBulk</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建bulk请求</span>
-</span></span><span style="display:flex;"><span>    BulkRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BulkRequest();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 添加批量请求</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>).<span style="color:#a6e22e">id</span>(<span style="color:#e6db74">&#34;id1&#34;</span>).<span style="color:#a6e22e">source</span>(<span style="color:#e6db74">&#34;json1&#34;</span>, XContentType.<span style="color:#a6e22e">JSON</span>));
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;indexName&#34;</span>).<span style="color:#a6e22e">id</span>(<span style="color:#e6db74">&#34;id2&#34;</span>).<span style="color:#a6e22e">source</span>(<span style="color:#e6db74">&#34;json2&#34;</span>, XContentType.<span style="color:#a6e22e">JSON</span>));
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发起bulk请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">bulk</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span></code></pre></div><h3 id="批量导入文档实例代码">批量导入文档实例代码
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testBulk</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 批量查询数据</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Hotel<span style="color:#f92672">&gt;</span> hotelList <span style="color:#f92672">=</span> hotelService.<span style="color:#a6e22e">list</span>();
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建bulk请求</span>
-</span></span><span style="display:flex;"><span>    BulkRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BulkRequest();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 添加批量请求</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Hotel hotel : hotelList) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 转换文档类型</span>
-</span></span><span style="display:flex;"><span>        HotelDoc hotelDoc <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HotelDoc(hotel);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 创建新增文档request对象</span>
-</span></span><span style="display:flex;"><span>        request.<span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">new</span> IndexRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>)
-</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">id</span>(hotelDoc.<span style="color:#a6e22e">getId</span>().<span style="color:#a6e22e">toString</span>())
-</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">source</span>(JSON.<span style="color:#a6e22e">toJSONString</span>(hotelDoc), XContentType.<span style="color:#a6e22e">JSON</span>)
-</span></span><span style="display:flex;"><span>        );
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 发起bulk请求</span>
-</span></span><span style="display:flex;"><span>    client.<span style="color:#a6e22e">bulk</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testBulk</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建bulk请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">BulkRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BulkRequest</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 添加批量请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IndexRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="s">&#34;id1&#34;</span><span class="p">).</span><span class="na">source</span><span class="p">(</span><span class="s">&#34;json1&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IndexRequest</span><span class="p">(</span><span class="s">&#34;indexName&#34;</span><span class="p">).</span><span class="na">id</span><span class="p">(</span><span class="s">&#34;id2&#34;</span><span class="p">).</span><span class="na">source</span><span class="p">(</span><span class="s">&#34;json2&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发起bulk请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">bulk</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="批量导入文档实例代码">批量导入文档实例代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testBulk</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 批量查询数据</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Hotel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hotelList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hotelService</span><span class="p">.</span><span class="na">list</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 创建bulk请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">BulkRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BulkRequest</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 添加批量请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Hotel</span><span class="w"> </span><span class="n">hotel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">hotelList</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 转换文档类型</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">HotelDoc</span><span class="w"> </span><span class="n">hotelDoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HotelDoc</span><span class="p">(</span><span class="n">hotel</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 创建新增文档request对象</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">request</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IndexRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">id</span><span class="p">(</span><span class="n">hotelDoc</span><span class="p">.</span><span class="na">getId</span><span class="p">().</span><span class="na">toString</span><span class="p">())</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">source</span><span class="p">(</span><span class="n">JSON</span><span class="p">.</span><span class="na">toJSONString</span><span class="p">(</span><span class="n">hotelDoc</span><span class="p">),</span><span class="w"> </span><span class="n">XContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 发起bulk请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="na">bulk</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

@@ -628,49 +628,109 @@
 <h4 id="p-操作的定义">P 操作的定义
 </h4><p>S := S - 1 ，若 S ≥ 0 ，则执行 P 操作的进程继续执行；反之，则置该进程为阻塞状态 (因为无可用资源) ，并将其插入阻塞队列</p>
 <p>P 操作可用如下过程表示，其中 Semaphore 表示所定义的变量是信号量</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>Procedure <span style="color:#a6e22e">P</span>(Var S:Semaphore);
-</span></span><span style="display:flex;"><span>    Begain
-</span></span><span style="display:flex;"><span>        S :<span style="color:#f92672">=</span> S <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>        If S <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> then W(S) {<span style="color:#960050;background-color:#1e0010">执行</span>P操作的进程插入等待队列}
-</span></span><span style="display:flex;"><span>    End;
-</span></span></code></pre></div><h4 id="v-操作定义">V 操作定义
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Procedure</span> <span class="nf">P</span><span class="p">(</span><span class="n">Var</span> <span class="nl">S</span><span class="p">:</span><span class="n">Semaphore</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Begain</span>
+</span></span><span class="line"><span class="cl">        <span class="nl">S</span> <span class="p">:</span><span class="o">=</span> <span class="n">S</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">If</span> <span class="n">S</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="n">then</span> <span class="n">W</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span><span class="err">执行</span><span class="n">P操作的进程插入等待队列</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">End</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="v-操作定义">V 操作定义
 </h4><p>S := S - 1 ，若 S ＞ 0 则执行 V 操作的进程继续执行；反之，则从阻塞状态唤醒一个进程，并将其插入就绪队列，然后执行 V 操作的进程继续</p>
 <p>V 操作可用如下进程表示</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>Procedure <span style="color:#a6e22e">V</span>(Var S:Semaphore);
-</span></span><span style="display:flex;"><span>    Begain
-</span></span><span style="display:flex;"><span>        S :<span style="color:#f92672">=</span> S <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>        If S <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> then R(S) {<span style="color:#960050;background-color:#1e0010">从阻塞队列中唤醒一个进程</span>}
-</span></span><span style="display:flex;"><span>    End;
-</span></span></code></pre></div><h3 id="利用-pv-操作实现进程的互斥">利用 PV 操作实现进程的互斥
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">Procedure</span> <span class="nf">V</span><span class="p">(</span><span class="n">Var</span> <span class="nl">S</span><span class="p">:</span><span class="n">Semaphore</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Begain</span>
+</span></span><span class="line"><span class="cl">        <span class="nl">S</span> <span class="p">:</span><span class="o">=</span> <span class="n">S</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">If</span> <span class="n">S</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="n">then</span> <span class="n">R</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="p">{</span><span class="err">从阻塞队列中唤醒一个进程</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">End</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="利用-pv-操作实现进程的互斥">利用 PV 操作实现进程的互斥
 </h3><p>例如以下俩进程可能会导致 <code>COUNT</code> 的值改变不当</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e"># 1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">有车通过</span> then
-</span></span><span style="display:flex;"><span>    COUNT :<span style="color:#f92672">=</span> COUNT <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>GOTO L1;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>PRINT COUNT;
-</span></span><span style="display:flex;"><span>COUNT :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>GOTO L2;
-</span></span></code></pre></div><p>令信号量互斥 (mutex) 的初值为 1，在进入临界区之前执行 P 操作锁定资源，离开临界区后执行 V 操作，代码如下</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#75715e"># 1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#960050;background-color:#1e0010">有车通过</span> then
-</span></span><span style="display:flex;"><span>    begin
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">P</span>(mutex)
-</span></span><span style="display:flex;"><span>        COUNT :<span style="color:#f92672">=</span> COUNT <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
-</span></span><span style="display:flex;"><span>        V(mutex)
-</span></span><span style="display:flex;"><span>    end
-</span></span><span style="display:flex;"><span>GOTO L1;
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>begin
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">P</span>(mutex)
-</span></span><span style="display:flex;"><span>    PRINT COUNT;
-</span></span><span style="display:flex;"><span>    COUNT :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    V(mutex)
-</span></span><span style="display:flex;"><span>end
-</span></span><span style="display:flex;"><span>GOTO L2;
-</span></span></code></pre></div><p>建议观看：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp"># 1
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">if</span> <span class="err">有车通过</span> <span class="n">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">COUNT</span> <span class="p">:</span><span class="o">=</span> <span class="n">COUNT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">GOTO</span> <span class="n">L1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp"># 2
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="n">PRINT</span> <span class="n">COUNT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nl">COUNT</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">GOTO</span> <span class="n">L2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>令信号量互斥 (mutex) 的初值为 1，在进入临界区之前执行 P 操作锁定资源，离开临界区后执行 V 操作，代码如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp"># 1
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">if</span> <span class="err">有车通过</span> <span class="n">then</span>
+</span></span><span class="line"><span class="cl">    <span class="n">begin</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">P</span><span class="p">(</span><span class="n">mutex</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nl">COUNT</span> <span class="p">:</span><span class="o">=</span> <span class="n">COUNT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">V</span><span class="p">(</span><span class="n">mutex</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span>
+</span></span><span class="line"><span class="cl"><span class="n">GOTO</span> <span class="n">L1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp"># 2
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="n">begin</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">P</span><span class="p">(</span><span class="n">mutex</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PRINT</span> <span class="n">COUNT</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">COUNT</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">V</span><span class="p">(</span><span class="n">mutex</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">end</span>
+</span></span><span class="line"><span class="cl"><span class="n">GOTO</span> <span class="n">L2</span><span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>建议观看：
 
 <a class="link" href="https://www.bilibili.com/video/BV1oK4y1n7xH" 
 

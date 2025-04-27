@@ -521,20 +521,44 @@ Redis 分布式缓存: 本文</p>
 <li>Redis 停机时：停机时会执行一次 save 命令</li>
 <li>触发 RDB 条件时：配置文件配置，如下</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 900秒内，如果至少有1个key被修改，则执行bgsave ， 如果是save &#34;&#34; 则表示禁用RDB</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">900 1  </span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">300 10  </span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">60 10000 </span>
-</span></span></code></pre></div><p>其他配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 是否压缩 ,建议不开启，压缩也会消耗cpu，磁盘的话不值钱</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">rdbcompression</span> <span style="color:#e6db74">yes</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># RDB文件名称</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dbfilename</span> <span style="color:#e6db74">dump.rdb  </span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 文件保存的路径目录</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">dir</span> <span style="color:#e6db74">./ </span>
-</span></span></code></pre></div><h4 id="rdb-原理">RDB 原理
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 900秒内，如果至少有1个key被修改，则执行bgsave ， 如果是save &#34;&#34; 则表示禁用RDB</span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">900 1  </span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">300 10  </span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">60 10000 </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其他配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 是否压缩 ,建议不开启，压缩也会消耗cpu，磁盘的话不值钱</span>
+</span></span><span class="line"><span class="cl"><span class="na">rdbcompression</span> <span class="s">yes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># RDB文件名称</span>
+</span></span><span class="line"><span class="cl"><span class="na">dbfilename</span> <span class="s">dump.rdb  </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 文件保存的路径目录</span>
+</span></span><span class="line"><span class="cl"><span class="na">dir</span> <span class="s">./ </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="rdb-原理">RDB 原理
 </h4><p>bgsave 开始时会 fork 主进程得到子进程，子进程共享主进程的内存数据。完成 fork 后读取内存数据并写入 RDB 文件</p>
 <p>fork采用的是 copy-on-write 技术：</p>
 <ul>
@@ -559,18 +583,40 @@ Redis 分布式缓存: 本文</p>
 <h3 id="aof-持久化">AOF 持久化
 </h3><p>AOF 全称 Append Only File (追加文件)，Redis 处理的每一个写命令都会记录在 AOF 文件，可以看作命令日志文件</p>
 <p>AOF 默认是关闭的，修改配置文件开启</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 是否开启AOF功能，默认是no</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendonly</span> <span style="color:#e6db74">yes</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># AOF文件的名称</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfilename</span> <span style="color:#e6db74">&#34;appendonly.aof&#34;</span>
-</span></span></code></pre></div><p>记录频率也可以通过 redis.conf 配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 表示每执行一次写命令，立即记录到AOF文件</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">always </span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写命令执行完先放入AOF缓冲区，然后表示每隔1秒将缓冲区数据写到AOF文件，是默认方案</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">everysec </span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 写命令执行完先放入AOF缓冲区，由操作系统决定何时将缓冲区内容写回磁盘</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendfsync</span> <span style="color:#e6db74">no</span>
-</span></span></code></pre></div><p>配置项对比：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 是否开启AOF功能，默认是no</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendonly</span> <span class="s">yes</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># AOF文件的名称</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendfilename</span> <span class="s">&#34;appendonly.aof&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>记录频率也可以通过 redis.conf 配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 表示每执行一次写命令，立即记录到AOF文件</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendfsync</span> <span class="s">always </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 写命令执行完先放入AOF缓冲区，然后表示每隔1秒将缓冲区数据写到AOF文件，是默认方案</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendfsync</span> <span class="s">everysec </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 写命令执行完先放入AOF缓冲区，由操作系统决定何时将缓冲区内容写回磁盘</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendfsync</span> <span class="s">no</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置项对比：</p>
 <div class="table-wrapper"><table>
   <thead>
       <tr>
@@ -604,17 +650,43 @@ Redis 分布式缓存: 本文</p>
 <h4 id="文件重写">文件重写
 </h4><p>因为是记录命令，AOF 文件会比 RDB 大很多，而且 AOF 会记录对同一个 key 的多次写操作，但只有最后一次写操作才有意义。通过执行 <code>bgrewriteaof</code> 命令，可以让 AOF 文件执行重写功能，用最少的命令达到相同效果</p>
 <p>假设原先命令为：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>set num <span style="color:#ae81ff">123</span>
-</span></span><span style="display:flex;"><span>set name jack
-</span></span><span style="display:flex;"><span>set num <span style="color:#ae81ff">666</span>
-</span></span></code></pre></div><p>重写后：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mset name jack num <span style="color:#ae81ff">666</span>
-</span></span></code></pre></div><p>Redis 也会在触发阈值时自动重写 AOF 文件，在配置文件配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># AOF文件比上次文件 增长超过多少百分比则触发重写</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">auto-aof-rewrite-percentage</span> <span style="color:#e6db74">100</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># AOF文件体积最小多大以上才触发重写 </span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">auto-aof-rewrite-min-size</span> <span style="color:#e6db74">64mb </span>
-</span></span></code></pre></div><h3 id="rdb-与-aof-对比">RDB 与 AOF 对比
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">set</span> num <span class="m">123</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> name jack
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> num <span class="m">666</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>重写后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mset name jack num <span class="m">666</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Redis 也会在触发阈值时自动重写 AOF 文件，在配置文件配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># AOF文件比上次文件 增长超过多少百分比则触发重写</span>
+</span></span><span class="line"><span class="cl"><span class="na">auto-aof-rewrite-percentage</span> <span class="s">100</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># AOF文件体积最小多大以上才触发重写 </span>
+</span></span><span class="line"><span class="cl"><span class="na">auto-aof-rewrite-min-size</span> <span class="s">64mb </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="rdb-与-aof-对比">RDB 与 AOF 对比
 </h3><p>RDB 与 AOF 各有自己的优缺点，如果对数据安全性要求过高，在实际开发中往往会结合两者来使用</p>
 <div class="table-wrapper"><table>
   <thead>
@@ -678,47 +750,123 @@ Redis 分布式缓存: 本文</p>
 </h3><p>基于 CentOS7</p>
 <p>参考上图一共三个节点，部署在同一个机子，端口为 7001(master)、7002、7003</p>
 <p>首先创建目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /tmp
-</span></span><span style="display:flex;"><span>mkdir <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span>
-</span></span></code></pre></div><p>如更改配置，需恢复默认的 RDB 模式</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#75715e"># 开启RDB</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># save &#34;&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">3600 1</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">300 100</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">save</span> <span style="color:#e6db74">60 10000</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 关闭AOF</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">appendonly</span> <span style="color:#e6db74">no</span>
-</span></span></code></pre></div><p>拷贝配置文件到每个实例目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 方式一</span>
-</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7001</span>
-</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7002</span>
-</span></span><span style="display:flex;"><span>cp redis-6.2.4/redis.conf <span style="color:#ae81ff">7003</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 方式二</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -t -n <span style="color:#ae81ff">1</span> cp redis-6.2.4/redis.conf
-</span></span></code></pre></div><p>修改每个实例的端口，工作目录（端口修改，rdb 文件保存位置修改）</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7001/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7001\//g&#39;</span> 7001/redis.conf
-</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7002/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7002\//g&#39;</span> 7002/redis.conf
-</span></span><span style="display:flex;"><span>sed -i -e <span style="color:#e6db74">&#39;s/6379/7003/g&#39;</span> -e <span style="color:#e6db74">&#39;s/dir .\//dir \/tmp\/7003\//g&#39;</span> 7003/redis.conf
-</span></span></code></pre></div><p>修改 IP，每个目录都要改 (替换 ip_address)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 逐一执行</span>
-</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7001/redis.conf
-</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7002/redis.conf
-</span></span><span style="display:flex;"><span>sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> 7003/redis.conf
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者一键修改</span>
-</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -I<span style="color:#f92672">{}</span> -t sed -i <span style="color:#e6db74">&#39;1a replica-announce-ip ip_address&#39;</span> <span style="color:#f92672">{}</span>/redis.conf
-</span></span></code></pre></div><p>启动</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 第1个</span>
-</span></span><span style="display:flex;"><span>redis-server 7001/redis.conf
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 第2个</span>
-</span></span><span style="display:flex;"><span>redis-server 7002/redis.conf
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 第3个</span>
-</span></span><span style="display:flex;"><span>redis-server 7003/redis.conf
-</span></span></code></pre></div><p>停止</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>printf <span style="color:#e6db74">&#39;%s\n&#39;</span> <span style="color:#ae81ff">7001</span> <span style="color:#ae81ff">7002</span> <span style="color:#ae81ff">7003</span> | xargs -I<span style="color:#f92672">{}</span> -t redis-cli -p <span style="color:#f92672">{}</span> shutdown
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">mkdir <span class="m">7001</span> <span class="m">7002</span> <span class="m">7003</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如更改配置，需恢复默认的 RDB 模式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="c1"># 开启RDB</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># save &#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">3600 1</span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">300 100</span>
+</span></span><span class="line"><span class="cl"><span class="na">save</span> <span class="s">60 10000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭AOF</span>
+</span></span><span class="line"><span class="cl"><span class="na">appendonly</span> <span class="s">no</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>拷贝配置文件到每个实例目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 方式一</span>
+</span></span><span class="line"><span class="cl">cp redis-6.2.4/redis.conf <span class="m">7001</span>
+</span></span><span class="line"><span class="cl">cp redis-6.2.4/redis.conf <span class="m">7002</span>
+</span></span><span class="line"><span class="cl">cp redis-6.2.4/redis.conf <span class="m">7003</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 方式二</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="m">7001</span> <span class="m">7002</span> <span class="m">7003</span> <span class="p">|</span> xargs -t -n <span class="m">1</span> cp redis-6.2.4/redis.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改每个实例的端口，工作目录（端口修改，rdb 文件保存位置修改）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s/6379/7001/g&#39;</span> -e <span class="s1">&#39;s/dir .\//dir \/tmp\/7001\//g&#39;</span> 7001/redis.conf
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s/6379/7002/g&#39;</span> -e <span class="s1">&#39;s/dir .\//dir \/tmp\/7002\//g&#39;</span> 7002/redis.conf
+</span></span><span class="line"><span class="cl">sed -i -e <span class="s1">&#39;s/6379/7003/g&#39;</span> -e <span class="s1">&#39;s/dir .\//dir \/tmp\/7003\//g&#39;</span> 7003/redis.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改 IP，每个目录都要改 (替换 ip_address)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 逐一执行</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;1a replica-announce-ip ip_address&#39;</span> 7001/redis.conf
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;1a replica-announce-ip ip_address&#39;</span> 7002/redis.conf
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;1a replica-announce-ip ip_address&#39;</span> 7003/redis.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者一键修改</span>
+</span></span><span class="line"><span class="cl"><span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="m">7001</span> <span class="m">7002</span> <span class="m">7003</span> <span class="p">|</span> xargs -I<span class="o">{}</span> -t sed -i <span class="s1">&#39;1a replica-announce-ip ip_address&#39;</span> <span class="o">{}</span>/redis.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 第1个</span>
+</span></span><span class="line"><span class="cl">redis-server 7001/redis.conf
+</span></span><span class="line"><span class="cl"><span class="c1"># 第2个</span>
+</span></span><span class="line"><span class="cl">redis-server 7002/redis.conf
+</span></span><span class="line"><span class="cl"><span class="c1"># 第3个</span>
+</span></span><span class="line"><span class="cl">redis-server 7003/redis.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>停止</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="m">7001</span> <span class="m">7002</span> <span class="m">7003</span> <span class="p">|</span> xargs -I<span class="o">{}</span> -t redis-cli -p <span class="o">{}</span> shutdown
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

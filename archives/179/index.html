@@ -509,25 +509,57 @@
 <p>将这三个<code>proc_open</code>，<code>proc_get_status</code>和<code>putenv</code>函数从其中删除</p>
 <h3 id="composer">composer
 </h3><p>宝塔官方默认composer源为阿里云无需修改，其他版本可能需要</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -sS https://getcomposer.org/installer | php  
-</span></span><span style="display:flex;"><span>mv composer.phar /usr/local/bin/composer 
-</span></span><span style="display:flex;"><span>composer config -g repo.packagist composer https://mirrors.aliyun.com/composer <span style="color:#75715e"># 更换源为国内源，国外服务器可忽略此步骤</span>
-</span></span></code></pre></div><h2 id="部署">部署
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -sS https://getcomposer.org/installer <span class="p">|</span> php  
+</span></span><span class="line"><span class="cl">mv composer.phar /usr/local/bin/composer 
+</span></span><span class="line"><span class="cl">composer config -g repo.packagist composer https://mirrors.aliyun.com/composer <span class="c1"># 更换源为国内源，国外服务器可忽略此步骤</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="部署">部署
 </h2><p>新建一个网站，<code>PHP版本</code>记得选择<code>PHP-74</code></p>
 <p>进入网站根目录，点击<code>终端</code>，依次输入以下命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-basic" data-lang="basic"><span style="display:flex;"><span>git clone https:<span style="color:#f92672">//</span>github<span style="color:#f92672">.</span>com<span style="color:#f92672">/</span>WangNingkai<span style="color:#f92672">/</span>OLAINDEX<span style="color:#f92672">.</span>git tmp 
-</span></span><span style="display:flex;"><span>mv tmp<span style="color:#f92672">/.</span>git <span style="color:#f92672">.</span> 
-</span></span><span style="display:flex;"><span>rm <span style="color:#f92672">-</span>rf tmp 
-</span></span><span style="display:flex;"><span>git reset <span style="color:#f92672">--</span>hard 
-</span></span><span style="display:flex;"><span>composer install <span style="color:#f92672">-</span>vvv <span style="color:#960050;background-color:#1e0010">#</span> 这里确保已成功安装 composer <span style="color:#960050;background-color:#1e0010">，</span>如果报权限问题<span style="color:#960050;background-color:#1e0010">，</span>建议给予用户完整权限<span style="color:#960050;background-color:#1e0010">。</span>
-</span></span><span style="display:flex;"><span>chmod <span style="color:#f92672">-</span>R <span style="color:#ae81ff">777</span> storage 
-</span></span><span style="display:flex;"><span>chown <span style="color:#f92672">-</span>R www:www <span style="color:#f92672">*</span> <span style="color:#960050;background-color:#1e0010">#</span> 此处 www 根据服务器具体用户组而定
-</span></span><span style="display:flex;"><span>composer run install<span style="color:#f92672">-</span>app (此为自动安装<span style="color:#960050;background-color:#1e0010">，</span>默认sqlite存储数据)
-</span></span></code></pre></div><p>第五步忽略<code>fileinfo</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>composer install -vvv
-</span></span><span style="display:flex;"><span>改为
-</span></span><span style="display:flex;"><span>composer install -vvv --ignore-platform-req<span style="color:#f92672">=</span>ext-fileinfo --ignore-platform-req<span style="color:#f92672">=</span>ext-fileinfo --ignore-platform-req<span style="color:#f92672">=</span>ext-fileinfo --ignore-platform-req<span style="color:#f92672">=</span>ext-fileinfo
-</span></span></code></pre></div><p>安装完成后会出现管理员名称和密码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-basic" data-lang="basic"><span class="line"><span class="cl"><span class="vg">git</span><span class="w"> </span><span class="vg">clone</span><span class="w"> </span><span class="nl">https:</span><span class="o">//</span><span class="vg">github</span><span class="o">.</span><span class="vg">com</span><span class="o">/</span><span class="vg">WangNingkai</span><span class="o">/</span><span class="vg">OLAINDEX</span><span class="o">.</span><span class="vg">git</span><span class="w"> </span><span class="vg">tmp</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="vg">mv</span><span class="w"> </span><span class="vg">tmp</span><span class="o">/.</span><span class="vg">git</span><span class="w"> </span><span class="o">.</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="vg">rm</span><span class="w"> </span><span class="o">-</span><span class="vg">rf</span><span class="w"> </span><span class="vg">tmp</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="vg">git</span><span class="w"> </span><span class="vg">reset</span><span class="w"> </span><span class="o">--</span><span class="vg">hard</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="vg">composer</span><span class="w"> </span><span class="vg">install</span><span class="w"> </span><span class="o">-</span><span class="vg">vvv</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="vg">这里确保已成功安装</span><span class="w"> </span><span class="vg">composer</span><span class="w"> </span><span class="err">，</span><span class="vg">如果报权限问题</span><span class="err">，</span><span class="vg">建议给予用户完整权限</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="vg">chmod</span><span class="w"> </span><span class="o">-</span><span class="vg">R</span><span class="w"> </span><span class="il">777</span><span class="w"> </span><span class="vg">storage</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="vg">chown</span><span class="w"> </span><span class="o">-</span><span class="vg">R</span><span class="w"> </span><span class="nl">www:</span><span class="vg">www</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="vg">此处</span><span class="w"> </span><span class="vg">www</span><span class="w"> </span><span class="vg">根据服务器具体用户组而定</span>
+</span></span><span class="line"><span class="cl"><span class="vg">composer</span><span class="w"> </span><span class="vg">run</span><span class="w"> </span><span class="vg">install</span><span class="o">-</span><span class="vg">app</span><span class="w"> </span><span class="p">(</span><span class="vg">此为自动安装</span><span class="err">，</span><span class="vg">默认sqlite存储数据</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第五步忽略<code>fileinfo</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">composer install -vvv
+</span></span><span class="line"><span class="cl">改为
+</span></span><span class="line"><span class="cl">composer install -vvv --ignore-platform-req<span class="o">=</span>ext-fileinfo --ignore-platform-req<span class="o">=</span>ext-fileinfo --ignore-platform-req<span class="o">=</span>ext-fileinfo --ignore-platform-req<span class="o">=</span>ext-fileinfo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装完成后会出现管理员名称和密码</p>
 <h2 id="配置">配置
 </h2><p>在<code>网站</code>，点击域名，找到<code>网站目录</code>，将运行目录改为<code>/public</code>并保存</p>
 <p>点击伪静态，选择<code>laravel5</code>并保存</p>

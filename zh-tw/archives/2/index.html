@@ -497,19 +497,37 @@
 <p>對於許多網站而言，這可能並不重要。 但是，如果您運行一個多作者網站 ，則可能需要更改它。</p>
 <p>首先，進入 <code>網站根目錄/wp-content/themes/您目前使用的主題名稱/</code></p>
 <p>找到 functions.php 檔案並編輯，在末尾插入如下程式碼即可</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#75715e">// Limit media library access
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">add_filter</span>( <span style="color:#e6db74">&#39;ajax_query_attachments_args&#39;</span>, <span style="color:#e6db74">&#39;wpb_show_current_user_attachments&#39;</span> );
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">wpb_show_current_user_attachments</span>( $query ) {
-</span></span><span style="display:flex;"><span>    $user_id <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_current_user_id</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ( $user_id <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">current_user_can</span>(<span style="color:#e6db74">&#39;activate_plugins&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">current_user_can</span>(<span style="color:#e6db74">&#39;edit_others_posts
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span>) ) {
-</span></span><span style="display:flex;"><span>        $query[<span style="color:#e6db74">&#39;author&#39;</span>] <span style="color:#f92672">=</span> $user_id;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> $query;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="參考文章">參考文章
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="c1">// Limit media library access
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 
+</span></span><span class="line"><span class="cl"><span class="nx">add_filter</span><span class="p">(</span> <span class="s1">&#39;ajax_query_attachments_args&#39;</span><span class="p">,</span> <span class="s1">&#39;wpb_show_current_user_attachments&#39;</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nf">wpb_show_current_user_attachments</span><span class="p">(</span> <span class="nv">$query</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$user_id</span> <span class="o">=</span> <span class="nx">get_current_user_id</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="nv">$user_id</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">current_user_can</span><span class="p">(</span><span class="s1">&#39;activate_plugins&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">current_user_can</span><span class="p">(</span><span class="s1">&#39;edit_others_posts
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">$query</span><span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$user_id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nv">$query</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="參考文章">參考文章
 </h2><p>
 
 <a class="link" href="https://blog.csdn.net/cumohuo9136/article/details/108609313" 

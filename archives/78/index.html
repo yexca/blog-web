@@ -861,21 +861,42 @@
 <li>根据文件名查找文件</li>
 </ol>
 <p>使用 <code>-name</code> 和 <code>-iname</code> (忽略大小写) 以输入想要搜索的文件名，也可使用文件匹配字符 (* 和 ?)，例如</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /etc -iname <span style="color:#e6db74">&#39;*passwd*&#39;</span>
-</span></span></code></pre></div><p>在 /etc 目录下搜索包含 passwd 单词并忽略大小写的文件 (如不指定目录 (/etc) 将搜索当前文件夹)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /etc -iname <span class="s1">&#39;*passwd*&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在 /etc 目录下搜索包含 passwd 单词并忽略大小写的文件 (如不指定目录 (/etc) 将搜索当前文件夹)</p>
 <p>可使用 <code>-type</code> 选项以指定输出仅文件 (<code>-type f</code>) 或仅目录 (<code>-type d</code>)</p>
 <ol start="2">
 <li>根据文件大小查找文件</li>
 </ol>
 <p>通过 <code>-size</code> 选项和以 <code>+</code> 或 <code>-</code> 开头的数字查找相应范围，例如 <code>find /etc -size +10M</code> 查找 /etc 目录下大于 10MB 的文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /bigdata -size +500M -size -5G -exec du -sh <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\
-</span></span></span></code></pre></div><p>查找 /bigdata 目录下 500MB ~ 5GB 之间的文化，并针对每个文件运行 du 命令以查看文件大小</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /bigdata -size +500M -size -5G -exec du -sh <span class="o">{}</span> <span class="se">\
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>查找 /bigdata 目录下 500MB ~ 5GB 之间的文化，并针对每个文件运行 du 命令以查看文件大小</p>
 <ol start="3">
 <li>根据用户查找文件</li>
 </ol>
 <p>通过 <code>-user</code> 或 <code>-group</code> 以针对特定用户或组查找，还可使用 <code>-not</code> 和 <code>-or</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /home <span style="color:#ae81ff">\(</span> -user yexca -or -user lemon <span style="color:#ae81ff">\)</span> -ls
-</span></span></code></pre></div><p>查找 /home 目录下 yexca 和 lemon 所拥有的文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /home <span class="se">\(</span> -user yexca -or -user lemon <span class="se">\)</span> -ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查找 /home 目录下 yexca 和 lemon 所拥有的文件</p>
 <ol start="4">
 <li>根据权限查找文件</li>
 </ol>
@@ -889,36 +910,86 @@
 <ul>
 <li>查看 10 分钟内被更改的内容</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /etc -mmin -10
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /etc -mmin -10
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>查看三天内权限更改</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /bin /usr/bin -ctime -3
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /bin /usr/bin -ctime -3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>查看 300 多天未被访问的文件</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /var/www -atime +300
-</span></span></code></pre></div><ol start="6">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /var/www -atime +300
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="6">
 <li>在查找文件时使用 &rsquo;not&rsquo; 和 &lsquo;or&rsquo;</li>
 </ol>
 <p>通过使用 <code>-not</code> 或 <code>-or</code> 选项可以更好地搜索</p>
 <ul>
 <li>查找被 yexca 所有但不属于 yexca 组的文件</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /home -user yexca -not -group yexca -ls
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /home -user yexca -not -group yexca -ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>被 yexca 所有并且大于 1GB 的文件</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /home -user yexca -and -size +1G -ls
-</span></span></code></pre></div><ol start="7">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /home -user yexca -and -size +1G -ls
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
 <li>查找文件和执行命令</li>
 </ol>
 <p>通过使用 <code>-exec</code> 选项，可以在每一个找到的文件执行命令而不必确认，或使用 <code>-ok</code> 以确认是否执行该命令。两者语法相同</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span> -exec command <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span>
-</span></span><span style="display:flex;"><span>find <span style="color:#f92672">[</span>options<span style="color:#f92672">]</span> -ok command <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span>
-</span></span></code></pre></div><p>其中 <code>{}</code> 表示被找到的文件名，可多次使用。在命令末尾需要使用 <code>\;</code> 。例如</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find /etc -iname passwd -exec echo <span style="color:#e6db74">&#34;I found {}&#34;</span> <span style="color:#ae81ff">\;</span>
-</span></span></code></pre></div><p>查找名为 passwd 的文件并在 echo 的输出中包含该名称</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find <span class="o">[</span>options<span class="o">]</span> -exec <span class="nb">command</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></span><span class="line"><span class="cl">find <span class="o">[</span>options<span class="o">]</span> -ok <span class="nb">command</span> <span class="o">{}</span> <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>{}</code> 表示被找到的文件名，可多次使用。在命令末尾需要使用 <code>\;</code> 。例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find /etc -iname passwd -exec <span class="nb">echo</span> <span class="s2">&#34;I found {}&#34;</span> <span class="se">\;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查找名为 passwd 的文件并在 echo 的输出中包含该名称</p>
 <p>注：若了解更多，使用 <code>man find</code> 命令</p>
 <h4 id="523-使用-grep-命令在文件中搜索">5.2.3 使用 grep 命令在文件中搜索
 </h4><p>使用 grep 命令可以搜索包含某一文本 (搜索内容) 的文件。当搜索时，可以把包含文本的所有行打印，或只打印相关文件。grep 还可以搜索标准输出</p>
@@ -955,12 +1026,26 @@
 <ul>
 <li>在 /etc/sysconfig 目录递归搜索文本 root</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep -ri --color root /etc/sysconfig/
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -ri --color root /etc/sysconfig/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>从标准输出中搜索包含 inet 的行</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ip addr show | grep inet
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip addr show <span class="p">|</span> grep inet
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

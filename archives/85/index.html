@@ -559,12 +559,23 @@
 </ol>
 <p>输入 <code>mkpart</code> 命令，系统会提示输入分区名称，文件系统类型，然后是分区的开始和结束</p>
 <p>例如命名 <em>yexca-UDisk</em> ，文件类型为 <em>xfs</em> ，分区从 1MB 开始，到 123GB 结束：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>parted<span style="color:#f92672">)</span> mkpart
-</span></span><span style="display:flex;"><span>Partition name? <span style="color:#f92672">[]</span>? yexca-UDisk
-</span></span><span style="display:flex;"><span>File system type? <span style="color:#f92672">[</span>ext2<span style="color:#f92672">]</span>? xfs
-</span></span><span style="display:flex;"><span>Start? <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>End? 123GB
-</span></span></code></pre></div><ol start="7">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>parted<span class="o">)</span> mkpart
+</span></span><span class="line"><span class="cl">Partition name? <span class="o">[]</span>? yexca-UDisk
+</span></span><span class="line"><span class="cl">File system type? <span class="o">[</span>ext2<span class="o">]</span>? xfs
+</span></span><span class="line"><span class="cl">Start? <span class="m">1</span>
+</span></span><span class="line"><span class="cl">End? 123GB
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
 <li>检查分区是否正确创建</li>
 </ol>
 <p>单命令 <code>p</code> 列出所有分区</p>
@@ -576,11 +587,21 @@
 <ol start="9">
 <li>挂载文件系统</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
-</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载 /dev/sdb1 到 /mnt/tmp</span>
-</span></span><span style="display:flex;"><span>mount /dev/sdb1 /mnt/tmp
-</span></span></code></pre></div><ol start="10">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建挂载文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir /mnt/tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 挂载 /dev/sdb1 到 /mnt/tmp</span>
+</span></span><span class="line"><span class="cl">mount /dev/sdb1 /mnt/tmp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="10">
 <li>卸载文件系统</li>
 </ol>
 <p>使用命令 <code>umount /dev/sdb1</code></p>
@@ -588,8 +609,15 @@
 <p>默认情况下一般插入 USB 设备会自动挂载</p>
 </blockquote>
 <p>如果需要手动挂载，可在 /etc/fstab 添加一行</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/dev/sdb1    /mnt/tmp    xfs    defaults    <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">1</span>
-</span></span></code></pre></div><p>共六段</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/dev/sdb1    /mnt/tmp    xfs    defaults    <span class="m">0</span>  <span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>共六段</p>
 <ol>
 <li>
 <p>分区</p>
@@ -637,25 +665,52 @@
 <ol start="6">
 <li>更改完毕后，检查内核是否知道对分区表的更改</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grep sdb /proc/partitions
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果没有输出预料的结果，执行以下命令</span>
-</span></span><span style="display:flex;"><span>partprobe /dev/sdb
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 再次检查</span>
-</span></span><span style="display:flex;"><span>grep sdb /proc/partitions
-</span></span></code></pre></div><ol start="7">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep sdb /proc/partitions
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果没有输出预料的结果，执行以下命令</span>
+</span></span><span class="line"><span class="cl">partprobe /dev/sdb
+</span></span><span class="line"><span class="cl"><span class="c1"># 再次检查</span>
+</span></span><span class="line"><span class="cl">grep sdb /proc/partitions
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
 <li>创建文件系统</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext4 文件系统</span>
-</span></span><span style="display:flex;"><span>mkfs -t ext4 /dev/sdb1
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建交换区</span>
-</span></span><span style="display:flex;"><span>mkswap /dev/sdb2
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext2 文件系统 (默认值)</span>
-</span></span><span style="display:flex;"><span>mkfs /dev/sdb3
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建 VFAT 文件系统</span>
-</span></span><span style="display:flex;"><span>mkfs -t vfat /dev/sdb4
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使该分区称为 LVM 物理卷</span>
-</span></span><span style="display:flex;"><span>pvcreate /dev/sdb5
-</span></span></code></pre></div><h3 id="123-使用逻辑卷管理分区">12.3 使用逻辑卷管理分区
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建 ext4 文件系统</span>
+</span></span><span class="line"><span class="cl">mkfs -t ext4 /dev/sdb1
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建交换区</span>
+</span></span><span class="line"><span class="cl">mkswap /dev/sdb2
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 ext2 文件系统 (默认值)</span>
+</span></span><span class="line"><span class="cl">mkfs /dev/sdb3
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建 VFAT 文件系统</span>
+</span></span><span class="line"><span class="cl">mkfs -t vfat /dev/sdb4
+</span></span><span class="line"><span class="cl"><span class="c1"># 使该分区称为 LVM 物理卷</span>
+</span></span><span class="line"><span class="cl">pvcreate /dev/sdb5
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="123-使用逻辑卷管理分区">12.3 使用逻辑卷管理分区
 </h3><p>如果磁盘空间不足，恐怕只能将数据复制到另一个更大的磁盘中，但该过程需要停机且效率低下</p>
 <p>LVM (Logical Volume Management ，逻辑卷管理) 可采用灵活且高效的方式处理更改存储器的需求。通过使用 LVM ，可将物理磁盘分区添加到被称为 <em>卷组</em> 的空间池。逻辑卷根据需要从卷组分配空间</p>
 <h4 id="1231-检查现有的-lvm">12.3.1 检查现有的 LVM
@@ -693,24 +748,50 @@
 <ol start="4">
 <li>若分区为 400M ，可以使用 396M 空间 (以 4M 为单位)</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 从卷组部分空间创建一个逻辑卷，例如创建 1G 逻辑卷</span>
-</span></span><span style="display:flex;"><span>lvcreate -n name -L 1G myvg0
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看该逻辑卷是否存在</span>
-</span></span><span style="display:flex;"><span>ls /dev/mapper/myvg0*
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输出以下则创建成功</span>
-</span></span><span style="display:flex;"><span>/dev/mapper/myvg0-name
-</span></span></code></pre></div><ol start="5">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 从卷组部分空间创建一个逻辑卷，例如创建 1G 逻辑卷</span>
+</span></span><span class="line"><span class="cl">lvcreate -n name -L 1G myvg0
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看该逻辑卷是否存在</span>
+</span></span><span class="line"><span class="cl">ls /dev/mapper/myvg0*
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出以下则创建成功</span>
+</span></span><span class="line"><span class="cl">/dev/mapper/myvg0-name
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
 <li>放入文件系统并挂载</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建 ext4 文件系统</span>
-</span></span><span style="display:flex;"><span>mkfs -t ext4 /dev/mapper/myvg0-name
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
-</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载</span>
-</span></span><span style="display:flex;"><span>mount /dev/mapper/myvg0-name /mnt/tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查是否挂载成功</span>
-</span></span><span style="display:flex;"><span>df -h /mnt/tmp
-</span></span></code></pre></div><ol start="6">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建 ext4 文件系统</span>
+</span></span><span class="line"><span class="cl">mkfs -t ext4 /dev/mapper/myvg0-name
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建挂载文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir /mnt/tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 挂载</span>
+</span></span><span class="line"><span class="cl">mount /dev/mapper/myvg0-name /mnt/tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查是否挂载成功</span>
+</span></span><span class="line"><span class="cl">df -h /mnt/tmp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="6">
 <li>或者也可以写入 /etc/fstab 以自动挂载</li>
 </ol>
 <h4 id="1233-扩大-lvm-逻辑卷">12.3.3 扩大 LVM 逻辑卷
@@ -718,11 +799,21 @@
 <ol>
 <li>检查剩余空间</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 检查卷组可用空间</span>
-</span></span><span style="display:flex;"><span>vgdisplay myvg0
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查逻辑卷可用空间</span>
-</span></span><span style="display:flex;"><span>df -h /mnt/tmp
-</span></span></code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 检查卷组可用空间</span>
+</span></span><span class="line"><span class="cl">vgdisplay myvg0
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查逻辑卷可用空间</span>
+</span></span><span class="line"><span class="cl">df -h /mnt/tmp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>拓展逻辑卷</li>
 </ol>
 <p><code>lvextend -L +1G /dev/mapper/myvg0-name</code></p>
@@ -806,13 +897,25 @@
 </table></div>
 <p>输入 <code>man fs</code> 了解更多 Linux 文件系统相关信息</p>
 <h4 id="1242-启动交换区">12.4.2 启动交换区
-</h4><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查看交换分区数量</span>
-</span></span><span style="display:flex;"><span>free -m
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建交换分区</span>
-</span></span><span style="display:flex;"><span>mkswap /var/opt/myswap
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 启用交换分区</span>
-</span></span><span style="display:flex;"><span>swapon /var/opt/myswap
-</span></span></code></pre></div><p>如果在 /etc/fstab 添加了交换分区相关条目，如：</p>
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看交换分区数量</span>
+</span></span><span class="line"><span class="cl">free -m
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建交换分区</span>
+</span></span><span class="line"><span class="cl">mkswap /var/opt/myswap
+</span></span><span class="line"><span class="cl"><span class="c1"># 启用交换分区</span>
+</span></span><span class="line"><span class="cl">swapon /var/opt/myswap
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果在 /etc/fstab 添加了交换分区相关条目，如：</p>
 <p><code>/var/opt/myswap swap swap defaults 0 0</code></p>
 <p>可以使用 <code>swapon -a</code> 启用</p>
 <h4 id="1243-禁用交换区">12.4.3 禁用交换区
@@ -824,11 +927,21 @@
 </h4><p>同样在 12.2.3 已介绍</p>
 <h4 id="1246-以环回方式挂载磁盘镜像">12.4.6 以环回方式挂载磁盘镜像
 </h4><p>也就是将 ISO 镜像文件挂载</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建挂载文件夹</span>
-</span></span><span style="display:flex;"><span>mkdir /mnt/tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 挂载</span>
-</span></span><span style="display:flex;"><span>mount -o loop name.iso /mnt/tmp
-</span></span></code></pre></div><h4 id="1247-使用-umount-命令">12.4.7 使用 umount 命令
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建挂载文件夹</span>
+</span></span><span class="line"><span class="cl">mkdir /mnt/tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 挂载</span>
+</span></span><span class="line"><span class="cl">mount -o loop name.iso /mnt/tmp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="1247-使用-umount-命令">12.4.7 使用 umount 命令
 </h4><p>可以输入设备分区名或目录名</p>
 <p>设备分区名：<code>umount /dev/sdb1</code></p>
 <p>目录名：<code>umount /mnt/tmp</code></p>

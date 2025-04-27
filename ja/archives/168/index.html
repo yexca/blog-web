@@ -546,23 +546,52 @@
 <ol>
 <li>コードメソッド: 構成クラスで、新しい IRule（グローバル設定）を定義します。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> IRule <span style="color:#a6e22e">randomRule</span>(){
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> RandomRule();
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Bean</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">IRule</span><span class="w"> </span><span class="nf">randomRule</span><span class="p">(){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RandomRule</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>設定ファイル方式: orderServer application.yml ファイルで、ルールを変更するための新しい設定を追加します。</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">userService</span>: <span style="color:#75715e"># マイクロサービスの負荷分散ルールを設定します。ここでは userservice サービスです</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ribbon</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">NFLoadBalancerRuleClassName</span>: <span style="color:#ae81ff">com.netflix.loadbalancer.RandomRule</span> <span style="color:#75715e"># 負荷分散ルール</span>
-</span></span></code></pre></div><h3 id="遅延読み込み">遅延読み込み
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">userService</span><span class="p">:</span><span class="w"> </span><span class="c"># マイクロサービスの負荷分散ルールを設定します。ここでは userservice サービスです</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ribbon</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">NFLoadBalancerRuleClassName</span><span class="p">:</span><span class="w"> </span><span class="l">com.netflix.loadbalancer.RandomRule</span><span class="w"> </span><span class="c"># 負荷分散ルール</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="遅延読み込み">遅延読み込み
 </h3><p>Ribbon はデフォルトで遅延読み込みを使用します。つまり、初めてアクセスされたときにのみ LoadBalanceClient が作成され、要求時間が非常に長くなります。プロジェクトの開始時にハングリー読み込みが作成され、最初のアクセスの時間消費が短縮されます。ハングリー読み込みを有効にするには、次のように構成します。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">ribbon</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">eager-load</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">enabled</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">clients</span>: <span style="color:#ae81ff">userService</span> <span style="color:#75715e"># userService サービスのハングリーロードを指定します</span>
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">ribbon</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">eager-load</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">clients</span><span class="p">:</span><span class="w"> </span><span class="l">userService</span><span class="w"> </span><span class="c"># userService サービスのハングリーロードを指定します</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

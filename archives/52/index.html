@@ -569,8 +569,15 @@ releases
 <h2 id="修改下载保存位置">修改下载保存位置
 </h2><p>在 <code>C:\Users\%UserName%\AppData\Roaming</code> 新建一个文件夹并命名为 <code>yt-dlp</code>，然后进入新建的文件夹内，新建文件 <code>config.txt</code></p>
 <p>在文件内输入以下代码</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>-o <span style="color:#e6db74">&#39;C:/Users/%UserName%/Downloads/Video/%(title)s.%(ext)s&#39;</span>
-</span></span></code></pre></div><p>其中 <code>C:/Users/%UserName%/Downloads/Video/</code> 为下载目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-o <span class="s1">&#39;C:/Users/%UserName%/Downloads/Video/%(title)s.%(ext)s&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>C:/Users/%UserName%/Downloads/Video/</code> 为下载目录</p>
 <p><code>%(title)s.%(ext)s</code> 为保存文件名形式，此处为视频标题.视频拓展名</p>
 <h2 id="下载-1080p">下载 1080P
 </h2><p>因为 1080P 及以上视频是音视频分离的，所以需要先下载 ffmpeg</p>
@@ -606,22 +613,48 @@ Releases · BtbN/FFmpeg-Builds
 <h2 id="调用-aria2">调用 aria2
 </h2><p>在下载命令后加入 <code>--external-downloader aria2c --external-downloader-args &quot;-x 16  -k 1M&quot;</code> 即可</p>
 <h2 id="下载字幕">下载字幕
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>outube-dl --write-sub <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> // 这样会下载一个 vtt 格式的英文字幕和 mkv 格式的 1080p 视频下来
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl --write-sub --skip-download <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> // 下载单独的 vtt 字幕文件,而不会下载视频
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl --write-sub --all-subs <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> // 下载所有语言的字幕 <span style="color:#f92672">(</span>如果有的话<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl --write-auto-sub <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> // 下载自动生成的字幕 <span style="color:#f92672">(</span>YouTube only<span style="color:#f92672">)</span>
-</span></span></code></pre></div><h2 id="下载视频列表">下载视频列表
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>youtube-dl -f <span style="color:#f92672">[</span>format code<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>palylist_url<span style="color:#f92672">]</span> // 这种方式可以下载制定清晰度的 mp4 视频
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl <span style="color:#f92672">[</span>playlist_url<span style="color:#f92672">]</span> // 下载视频列表,这种方式下载的视频可能是 mkv 格式或者 webm 格式
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl -cit <span style="color:#f92672">[</span>playlist_url<span style="color:#f92672">]</span> // 下载视频列表,这种方式下载的视频可能是 mkv 格式或者 webm 格式
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>youtube-dl --yes-playlist <span style="color:#f92672">[</span>url<span style="color:#f92672">]</span> // 当链接为视频列表,则下载该列表视频,跟上面的一样,可能是 mkv 或者 webm 格式
-</span></span></code></pre></div><h2 id="可视化">可视化
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">outube-dl --write-sub <span class="o">[</span>url<span class="o">]</span> // 这样会下载一个 vtt 格式的英文字幕和 mkv 格式的 1080p 视频下来
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl --write-sub --skip-download <span class="o">[</span>url<span class="o">]</span> // 下载单独的 vtt 字幕文件,而不会下载视频
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl --write-sub --all-subs <span class="o">[</span>url<span class="o">]</span> // 下载所有语言的字幕 <span class="o">(</span>如果有的话<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl --write-auto-sub <span class="o">[</span>url<span class="o">]</span> // 下载自动生成的字幕 <span class="o">(</span>YouTube only<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="下载视频列表">下载视频列表
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">youtube-dl -f <span class="o">[</span>format code<span class="o">]</span> <span class="o">[</span>palylist_url<span class="o">]</span> // 这种方式可以下载制定清晰度的 mp4 视频
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl <span class="o">[</span>playlist_url<span class="o">]</span> // 下载视频列表,这种方式下载的视频可能是 mkv 格式或者 webm 格式
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl -cit <span class="o">[</span>playlist_url<span class="o">]</span> // 下载视频列表,这种方式下载的视频可能是 mkv 格式或者 webm 格式
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">youtube-dl --yes-playlist <span class="o">[</span>url<span class="o">]</span> // 当链接为视频列表,则下载该列表视频,跟上面的一样,可能是 mkv 或者 webm 格式
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="可视化">可视化
 </h2><p>
 
 <a class="link" href="https://github.com/jely2002/youtube-dl-gui/releases" 

@@ -524,18 +524,40 @@
 </ol>
 <p><em>位置参数</em> ，或 <em>命令行参数</em> ，名为 <code>$0</code>、<code>$1</code>、<code>$2</code>&hellip;<code>$n</code></p>
 <p>其中 <code>$0</code> 为被调用脚本的名称，而其他的则被赋予从命令行传递而来的参数值，例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;第一个参数是 </span>$1<span style="color:#e6db74"> ，第二个参数是 </span>$2<span style="color:#e6db74"> &#34;</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;该脚本名称为 </span>$0<span style="color:#e6db74"> &#34;</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;一共传入了 </span>$#<span style="color:#e6db74"> 个参数&#34;</span>
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;所有的参数为：</span>$@<span style="color:#e6db74"> &#34;</span>
-</span></span></code></pre></div><p>执行命令：<code>./myscript hello bye</code> ，运行结果为下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>第一个参数是 hello ，第二个参数是 bye
-</span></span><span style="display:flex;"><span>该脚本名称为 /home/yexca/tmp/myscript
-</span></span><span style="display:flex;"><span>一共传入了 <span style="color:#ae81ff">2</span> 个参数
-</span></span><span style="display:flex;"><span>所有的参数为：hello bye
-</span></span></code></pre></div><p>还有一个有意思的参数 <code>$?</code> 接受最后一条被执行的命令的退出状态，一般正常退出会返回 <code>0</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;第一个参数是 </span><span class="nv">$1</span><span class="s2"> ，第二个参数是 </span><span class="nv">$2</span><span class="s2"> &#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;该脚本名称为 </span><span class="nv">$0</span><span class="s2"> &#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;一共传入了 </span><span class="nv">$#</span><span class="s2"> 个参数&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;所有的参数为：</span><span class="nv">$@</span><span class="s2"> &#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行命令：<code>./myscript hello bye</code> ，运行结果为下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">第一个参数是 hello ，第二个参数是 bye
+</span></span><span class="line"><span class="cl">该脚本名称为 /home/yexca/tmp/myscript
+</span></span><span class="line"><span class="cl">一共传入了 <span class="m">2</span> 个参数
+</span></span><span class="line"><span class="cl">所有的参数为：hello bye
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>还有一个有意思的参数 <code>$?</code> 接受最后一条被执行的命令的退出状态，一般正常退出会返回 <code>0</code></p>
 <hr>
 <ol start="2">
 <li>
@@ -543,11 +565,21 @@
 </h5></li>
 </ol>
 <p>通过使用 <code>read</code> 命令读取用户输入</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>read -p <span style="color:#e6db74">&#34;请输入两个名词：&#34;</span> var1 var2
-</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;刚刚输入了 </span>$var1<span style="color:#e6db74"> 和 </span>$var2<span style="color:#e6db74">&#34;</span>
-</span></span></code></pre></div><hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;请输入两个名词：&#34;</span> var1 var2
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;刚刚输入了 </span><span class="nv">$var1</span><span class="s2"> 和 </span><span class="nv">$var2</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
 <ol start="3">
 <li>在 Bash 中进行参数扩展</li>
 </ol>
@@ -584,16 +616,31 @@
   </tbody>
 </table></div>
 <p>基于这些特性，可以有一些有用的应用，例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>myFileName<span style="color:#f92672">=</span>/home/yexca/myfile.txt
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># file 变为 myfile.txt</span>
-</span></span><span style="display:flex;"><span>file<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>myFileName##*/<span style="color:#e6db74">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># dir 变为 /home/yexca</span>
-</span></span><span style="display:flex;"><span>dir<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>myFileName%/*<span style="color:#e6db74">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># name 变为 myfile</span>
-</span></span><span style="display:flex;"><span>name<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>file%.*<span style="color:#e6db74">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># extension 变为 txt</span>
-</span></span><span style="display:flex;"><span>extension<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>file##*.<span style="color:#e6db74">}</span>
-</span></span></code></pre></div><h4 id="713-在-shell-脚本中执行算法">7.1.3 在 shell 脚本中执行算法
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">myFileName</span><span class="o">=</span>/home/yexca/myfile.txt
+</span></span><span class="line"><span class="cl"><span class="c1"># file 变为 myfile.txt</span>
+</span></span><span class="line"><span class="cl"><span class="nv">file</span><span class="o">=</span><span class="si">${</span><span class="nv">myFileName</span><span class="p">##*/</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dir 变为 /home/yexca</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dir</span><span class="o">=</span><span class="si">${</span><span class="nv">myFileName</span><span class="p">%/*</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># name 变为 myfile</span>
+</span></span><span class="line"><span class="cl"><span class="nv">name</span><span class="o">=</span><span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># extension 变为 txt</span>
+</span></span><span class="line"><span class="cl"><span class="nv">extension</span><span class="o">=</span><span class="si">${</span><span class="nv">file</span><span class="p">##*.</span><span class="si">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="713-在-shell-脚本中执行算法">7.1.3 在 shell 脚本中执行算法
 </h4><p>Bash 使用了非类型化变量，除非使用 declare 告诉 Bash，否则变量被视为字符串。在进行运算时会自动转为整数，不需要在赋值时指定类型</p>
 <p>可以使用内置 let 命令或外部 expr 命令或 bc 命令完成整数运算</p>
 <p>如：<code>let result=$num/16</code> ，或 <code>let num=$RANDOM</code></p>
@@ -607,24 +654,56 @@
 </h4><ol>
 <li>&ldquo;if&hellip;then&rdquo; 语句</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> %var -eq <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;The var is 1&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span></code></pre></div><p>如果比较数字，<code>-eq</code> 比较好，但若比较字符串值，等号 (<code>=</code>) 不失为一个更好的选择</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;hello&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span></code></pre></div><p>此外还有不等号 <code>!=</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> %var -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;The var is 1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果比较数字，<code>-eq</code> 比较好，但若比较字符串值，等号 (<code>=</code>) 不失为一个更好的选择</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$str</span> <span class="o">=</span> <span class="s2">&#34;hello&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;hello&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此外还有不等号 <code>!=</code></p>
 <p>通过使用 <code>elif</code> 语句，以提供更多的选择。使用 <code>else</code> 以代表其他情况</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$str<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -f <span style="color:#e6db74">&#34;</span>$str<span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;</span>$str<span style="color:#e6db74"> 是一个普通文件&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">elif</span> <span style="color:#f92672">[</span> -d <span style="color:#e6db74">&#34;</span>$str<span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;</span>$str<span style="color:#e6db74"> 是一个目录&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;???&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span></code></pre></div><p>以下是一些可使用的测试条件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$str</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2"> 是一个普通文件&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2"> 是一个目录&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;???&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以下是一些可使用的测试条件</p>
 <div class="table-wrapper"><table>
   <thead>
       <tr>
@@ -793,58 +872,124 @@
 <li>case 命令</li>
 </ol>
 <p>与 C 语言中的 switch 语句类似，用于选择。一般形式为</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;VAR&#34;</span> in
-</span></span><span style="display:flex;"><span>    Result1<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>        body
-</span></span><span style="display:flex;"><span>        ;;
-</span></span><span style="display:flex;"><span>    Result2 | Result3<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>        body
-</span></span><span style="display:flex;"><span>        ;;
-</span></span><span style="display:flex;"><span>    *<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>        body
-</span></span><span style="display:flex;"><span>        ;;
-</span></span><span style="display:flex;"><span>easc
-</span></span></code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">case</span> <span class="s2">&#34;VAR&#34;</span> in
+</span></span><span class="line"><span class="cl">    Result1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        body
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    Result2 <span class="p">|</span> Result3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        body
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    *<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        body
+</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">easc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>for&hellip;do 循环</li>
 </ol>
 <p>for 循环一般用于遍历一个列表</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> VAR in LIST
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    body
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者这样</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> VAR in LIST ; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    body
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span> 
-</span></span></code></pre></div><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> num in <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;The number is </span>$num<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者将命令输出作为列表</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> file in <span style="color:#e6db74">&#39;/bin/ls&#39;</span> ; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    echo $file
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><ol start="4">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> VAR in LIST
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    body
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者这样</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> VAR in LIST <span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    body
+</span></span><span class="line"><span class="cl"><span class="k">done</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> num in <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;The number is </span><span class="nv">$num</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者将命令输出作为列表</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> file in <span class="s1">&#39;/bin/ls&#39;</span> <span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$file</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>while&hellip;do 和 until&hellip;do 循环</li>
 </ol>
 <p>结构如下</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># while...do</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> condition
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    body
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># until...do</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">until</span> condition
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    body
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><h4 id="715-使用一些有用的文本操作程序">7.1.5 使用一些有用的文本操作程序
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># while...do</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> condition
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    body
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># until...do</span>
+</span></span><span class="line"><span class="cl"><span class="k">until</span> condition
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    body
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="715-使用一些有用的文本操作程序">7.1.5 使用一些有用的文本操作程序
 </h4><p>最常用的程序包括 grep、cut、tr、awk、sed。大部分程序都设计为使用标准输入和输出</p>
 <ol>
 <li>一般正则表达式分析器</li>
@@ -862,61 +1007,120 @@
 <li>转换或者删除字符</li>
 </ol>
 <p><code>tr</code> 命令是一个基于字符的转换器，可用于替换一个或一组字符，或者从文本行中删除一个字符</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 转换大写为小写</span>
-</span></span><span style="display:flex;"><span>FOO <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AbcDEF&#34;</span>
-</span></span><span style="display:flex;"><span>echo $FOO | tr <span style="color:#f92672">[</span>A-Z<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>a-z<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将该列表中文件名中空格转换为下划线</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> file in *; <span style="color:#66d9ef">do</span>
-</span></span><span style="display:flex;"><span>    f<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;echo $file | tr [:blank:] [_]&#39;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;</span>$file<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span>$f<span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span> <span style="color:#f92672">||</span> mv -i -- <span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#e6db74">&#34;</span>$f<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
-</span></span></code></pre></div><ol start="4">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 转换大写为小写</span>
+</span></span><span class="line"><span class="cl"><span class="nv">FOO</span> <span class="o">=</span> <span class="s2">&#34;AbcDEF&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$FOO</span> <span class="p">|</span> tr <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">[</span>a-z<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将该列表中文件名中空格转换为下划线</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> file in *<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">f</span><span class="o">=</span><span class="s1">&#39;echo $file | tr [:blank:] [_]&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">[</span><span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">||</span> mv -i -- <span class="s2">&#34;file&#34;</span> <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>流编辑器</li>
 </ol>
 <p><code>sed</code> 命令是一个简单的脚本编辑器，只能执行一些简单的编辑，比如删除文本匹配特定模式的行，使用一种模式的字符替换另一种模式的字符等</p>
 <p>过于复杂，请通过在线文档了解</p>
 <h4 id="716-使用简单的-shell-脚本">7.1.6 使用简单的 shell 脚本
 </h4><p>电话列表的例子</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e"># (@)/ph</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># A very simple telephone list</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Type &#34;ph new name number&#34; to add to the list, or</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># just type &#34;ph name&#34; to get a phone number</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>PHONELIST<span style="color:#f92672">=</span>~/.phonelist.txt
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># If no command line parameters ($#), there</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># is a problem, so ask what they&#39;re talking about.</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span>$# -lt 1<span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Whose phone number did you want? &#34;</span>
-</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Did you want to add a new phone number?</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span>$1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;new&#34;</span><span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    shift
-</span></span><span style="display:flex;"><span>    echo $*&gt;&gt; $PHONELIST
-</span></span><span style="display:flex;"><span>    echo $* added to database
-</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Nope. But does the file have anything in it yet?</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># This might be out first time using it, after all.</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span>! -s $PHONELIST<span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;No names in the phone list yet!&#34;</span>
-</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>    grep -i -q <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> $PHONELIST    <span style="color:#75715e"># Quietly search the file</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span>$? -ne 0<span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>    <span style="color:#75715e"># Did we find anything?</span>
-</span></span><span style="display:flex;"><span>        echo <span style="color:#e6db74">&#34;Sorry, that name was not found in the phone ist&#34;</span>
-</span></span><span style="display:flex;"><span>        exit <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        grep -i <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> $PHONELIST
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>exit <span style="color:#ae81ff">0</span>
-</span></span></code></pre></div><h3 id="72-小结">7.2 小结
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># (@)/ph</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># A very simple telephone list</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Type &#34;ph new name number&#34; to add to the list, or</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># just type &#34;ph name&#34; to get a phone number</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">PHONELIST</span><span class="o">=</span>~/.phonelist.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># If no command line parameters ($#), there</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># is a problem, so ask what they&#39;re talking about.</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span><span class="nv">$#</span> -lt 1<span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Whose phone number did you want? &#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Did you want to add a new phone number?</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span><span class="nv">$1</span> <span class="o">=</span> <span class="s2">&#34;new&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">shift</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$*</span>&gt;&gt; <span class="nv">$PHONELIST</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$*</span> added to database
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Nope. But does the file have anything in it yet?</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># This might be out first time using it, after all.</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span>! -s <span class="nv">$PHONELIST</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;No names in the phone list yet!&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    grep -i -q <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="nv">$PHONELIST</span>    <span class="c1"># Quietly search the file</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span><span class="nv">$?</span> -ne 0<span class="o">]</span><span class="p">;</span> <span class="k">then</span>    <span class="c1"># Did we find anything?</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Sorry, that name was not found in the phone ist&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        grep -i <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="nv">$PHONELIST</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span> <span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="72-小结">7.2 小结
 </h3><p>通过编写 shell 脚本，可以自动完成许多最常见的系统管理任务</p>
 <h1 id="heading">
 </h1>

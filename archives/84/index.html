@@ -485,9 +485,17 @@
 <h3 id="111-创建用户账户">11.1 创建用户账户
 </h3><p>每一个使用 Linux 系统的人都应该有一个单独的用户账户。通过拥有一个用户账户，可以提供用来完全存储文件的区域，以及调整用户界面 (GUI、路径、环境变量等) ，从而适合用户使用电脑的习惯</p>
 <p>可以通过 Cockpit 使用 GUI 创建账户，若没有安装：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install cockpit -y
-</span></span><span style="display:flex;"><span>systemctl enable --now cockpit.socket
-</span></span></code></pre></div><p>然后浏览器打开 <code>localhost:9090</code> 以操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install cockpit -y
+</span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> --now cockpit.socket
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后浏览器打开 <code>localhost:9090</code> 以操作</p>
 <h4 id="1111-使用-useradd-命令添加用户">11.1.1 使用 useradd 命令添加用户
 </h4><p>多数情况下使用 GUI 是比较麻烦的，所以可以使用 <code>useradd</code> 命令以添加用户 (root 权限) ，唯一必要的参数是用户的登录名，可用选项包括：</p>
 <div class="table-wrapper"><table>
@@ -561,10 +569,19 @@
   </tbody>
 </table></div>
 <p>一般情况使用：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># root 权限下</span>
-</span></span><span style="display:flex;"><span>useradd yexca
-</span></span><span style="display:flex;"><span>passwd yexca
-</span></span></code></pre></div><p>在创建 <code>yexca</code> 这个账户的过程中，<code>useradd</code> 命令完成了以下活动：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># root 权限下</span>
+</span></span><span class="line"><span class="cl">useradd yexca
+</span></span><span class="line"><span class="cl">passwd yexca
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在创建 <code>yexca</code> 这个账户的过程中，<code>useradd</code> 命令完成了以下活动：</p>
 <ol>
 <li>
 <p>读取 /etc/login.defs 和 /etc/default/useradd 文件，获取创建账户所使用的默认值</p>
@@ -595,20 +612,39 @@
 <h4 id="1112-设置用户默认值">11.1.2 设置用户默认值
 </h4><p><code>useradd</code> 命令通过读取 /etc/login.defs 和 /etc/default/useradd 文件确定默认值，所以可以修改文件以修改默认值</p>
 <p>在不同 Linux 系统中 login.defs 不同，以下仅部分</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>PASS_MAX_DAYS    <span style="color:#ae81ff">99999</span>
-</span></span><span style="display:flex;"><span>PASS_MIN_DAYS    <span style="color:#ae81ff">0</span>
-</span></span><span style="display:flex;"><span>PASS_MIN_LEN    <span style="color:#ae81ff">5</span>
-</span></span><span style="display:flex;"><span>PASS_WARN_AGE    <span style="color:#ae81ff">7</span>
-</span></span><span style="display:flex;"><span>UID_MIN    <span style="color:#ae81ff">1000</span>
-</span></span><span style="display:flex;"><span>UID_MAX    <span style="color:#ae81ff">60000</span>
-</span></span><span style="display:flex;"><span>SYS_UID_MIN    <span style="color:#ae81ff">200</span>
-</span></span><span style="display:flex;"><span>SYS_UID_MAX    <span style="color:#ae81ff">999</span>
-</span></span><span style="display:flex;"><span>GID_MIN    <span style="color:#ae81ff">1000</span>
-</span></span><span style="display:flex;"><span>GID_MAX    <span style="color:#ae81ff">60000</span>
-</span></span><span style="display:flex;"><span>SYS_GID_MIN    <span style="color:#ae81ff">201</span>
-</span></span><span style="display:flex;"><span>SYS_GID_MAX    <span style="color:#ae81ff">999</span>
-</span></span><span style="display:flex;"><span>CREATE_HOME    yes
-</span></span></code></pre></div><p>修改其他默认选项可以参阅 /etc/default/useradd 文件，可以通过 <code>useradd -D</code> 查看当前默认设置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">PASS_MAX_DAYS    <span class="m">99999</span>
+</span></span><span class="line"><span class="cl">PASS_MIN_DAYS    <span class="m">0</span>
+</span></span><span class="line"><span class="cl">PASS_MIN_LEN    <span class="m">5</span>
+</span></span><span class="line"><span class="cl">PASS_WARN_AGE    <span class="m">7</span>
+</span></span><span class="line"><span class="cl">UID_MIN    <span class="m">1000</span>
+</span></span><span class="line"><span class="cl">UID_MAX    <span class="m">60000</span>
+</span></span><span class="line"><span class="cl">SYS_UID_MIN    <span class="m">200</span>
+</span></span><span class="line"><span class="cl">SYS_UID_MAX    <span class="m">999</span>
+</span></span><span class="line"><span class="cl">GID_MIN    <span class="m">1000</span>
+</span></span><span class="line"><span class="cl">GID_MAX    <span class="m">60000</span>
+</span></span><span class="line"><span class="cl">SYS_GID_MIN    <span class="m">201</span>
+</span></span><span class="line"><span class="cl">SYS_GID_MAX    <span class="m">999</span>
+</span></span><span class="line"><span class="cl">CREATE_HOME    yes
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改其他默认选项可以参阅 /etc/default/useradd 文件，可以通过 <code>useradd -D</code> 查看当前默认设置</p>
 <p>也可以将 <code>-D</code> 与一些其他选项搭配使用以修改 /etc/default/useradd 文件</p>
 <ul>
 <li>
@@ -751,18 +787,35 @@
 <ol>
 <li>创建组协作目录 (设置 GID 位)</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建一个用于协作的组</span>
-</span></span><span style="display:flex;"><span>groupadd -g <span style="color:#ae81ff">301</span> cooperation
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 添加一些用户</span>
-</span></span><span style="display:flex;"><span>usermod -aG cooperation yexca
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建协作目录</span>
-</span></span><span style="display:flex;"><span>mkdir /mnt/co-tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将组 cooperation 分配给该目录</span>
-</span></span><span style="display:flex;"><span>chgrp cooperation /mnt/co-tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 更改目录权限</span>
-</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">2775</span> /mnt/co-tmp
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 此时如果查看该目录权限应该为 rwxrwsr-x</span>
-</span></span></code></pre></div><p>现在，若用户 yexca 在目录 /mnt/co-tmp 创建一个文件，该文件所属组为 cooperation，而不是 yexca</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建一个用于协作的组</span>
+</span></span><span class="line"><span class="cl">groupadd -g <span class="m">301</span> cooperation
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加一些用户</span>
+</span></span><span class="line"><span class="cl">usermod -aG cooperation yexca
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建协作目录</span>
+</span></span><span class="line"><span class="cl">mkdir /mnt/co-tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 将组 cooperation 分配给该目录</span>
+</span></span><span class="line"><span class="cl">chgrp cooperation /mnt/co-tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 更改目录权限</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">2775</span> /mnt/co-tmp
+</span></span><span class="line"><span class="cl"><span class="c1"># 此时如果查看该目录权限应该为 rwxrwsr-x</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>现在，若用户 yexca 在目录 /mnt/co-tmp 创建一个文件，该文件所属组为 cooperation，而不是 yexca</p>
 <ol start="2">
 <li>创建受限制的删除目录 (粘滞位)</li>
 </ol>

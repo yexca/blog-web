@@ -580,24 +580,77 @@ http://xlog.yexca.net
 <h2 id="docker">Docker
 </h2><p>自从接触了 Docker 以后，我几乎什么项目都会想着用 Docker 部署，毕竟是真好用啊</p>
 <p>系统为 Debian10，root 账号登录，首先更新</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt update
-</span></span></code></pre></div><p>安装软件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt install curl gpg
-</span></span></code></pre></div><p>更新 gpg</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-</span></span></code></pre></div><p>添加 docker 源</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   <span style="color:#e6db74">&#34;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   buster stable&#34;</span> | tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
-</span></span></code></pre></div><p>安装 docker</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>apt update
-</span></span><span style="display:flex;"><span>apt install docker-ce docker-ce-cli containerd.io docker-compose
-</span></span></code></pre></div><p>启动 docker</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl enable docker
-</span></span><span style="display:flex;"><span>systemctl start docker
-</span></span></code></pre></div><p>测试是否成功</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run --rm hello-world
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt update
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装软件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install curl gpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更新 gpg</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -fsSL https://download.docker.com/linux/debian/gpg <span class="p">|</span> gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加 docker 源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>   <span class="s2">&#34;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+</span></span></span><span class="line"><span class="cl"><span class="s2">   buster stable&#34;</span> <span class="p">|</span> tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装 docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt update
+</span></span><span class="line"><span class="cl">apt install docker-ce docker-ce-cli containerd.io docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启动 docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl <span class="nb">enable</span> docker
+</span></span><span class="line"><span class="cl">systemctl start docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>测试是否成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run --rm hello-world
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>此部分参考：
 
 <a class="link" href="https://blog.yexca.net/archives/102" 
@@ -618,20 +671,39 @@ SSH 公钥登录
  </p>
 <h2 id="nginx">Nginx
 </h2><p>这次和之前一样也是用 nginx-ui 项目，docker 部署，配置文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>version: <span style="color:#e6db74">&#39;3.1&#39;</span> 
-</span></span><span style="display:flex;"><span>services: 
-</span></span><span style="display:flex;"><span>  nginx-ui:
-</span></span><span style="display:flex;"><span>    restart: always
-</span></span><span style="display:flex;"><span>    image: uozi/nginx-ui:latest
-</span></span><span style="display:flex;"><span>    container_name: nginx_UI
-</span></span><span style="display:flex;"><span>    volumes:
-</span></span><span style="display:flex;"><span>      - /home/nginx_ui/nginx:/etc/nginx
-</span></span><span style="display:flex;"><span>      - /home/nginx_ui/nginx-ui:/etc/nginx-ui
-</span></span><span style="display:flex;"><span>      - /home/nginx_ui/www:/www
-</span></span><span style="display:flex;"><span>    ports:
-</span></span><span style="display:flex;"><span>      - 80:80
-</span></span><span style="display:flex;"><span>      - 443:443
-</span></span></code></pre></div><p>如果是 DNS 处启用 HTTPS 的话就不用配置证书了，不然一直访问异常</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">version: <span class="s1">&#39;3.1&#39;</span> 
+</span></span><span class="line"><span class="cl">services: 
+</span></span><span class="line"><span class="cl">  nginx-ui:
+</span></span><span class="line"><span class="cl">    restart: always
+</span></span><span class="line"><span class="cl">    image: uozi/nginx-ui:latest
+</span></span><span class="line"><span class="cl">    container_name: nginx_UI
+</span></span><span class="line"><span class="cl">    volumes:
+</span></span><span class="line"><span class="cl">      - /home/nginx_ui/nginx:/etc/nginx
+</span></span><span class="line"><span class="cl">      - /home/nginx_ui/nginx-ui:/etc/nginx-ui
+</span></span><span class="line"><span class="cl">      - /home/nginx_ui/www:/www
+</span></span><span class="line"><span class="cl">    ports:
+</span></span><span class="line"><span class="cl">      - 80:80
+</span></span><span class="line"><span class="cl">      - 443:443
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果是 DNS 处启用 HTTPS 的话就不用配置证书了，不然一直访问异常</p>
 <h2 id="个人介绍">个人介绍
 </h2><p>事实上在我将上一个服务器的网站全部变成 docker 部署之前就有想法，当时我特意将 Blog 域名从 yexca.xyz 改为 blog.yexca.xyz 就是为了空出域名，没想到都到了下一个服务器我才开始做</p>
 <blockquote>
@@ -758,17 +830,42 @@ Quantumult X
 </h3><p>可以通过命令配置或编辑配置文件</p>
 <h4 id="使用命令配置">使用命令配置
 </h4><p>运行命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rclone.exe config
-</span></span></code></pre></div><p>根据需求选择即可，Windows 下完成后配置文件生成在：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\%</span>USERNAME%<span style="color:#ae81ff">\A</span>ppData<span style="color:#ae81ff">\R</span>oaming<span style="color:#ae81ff">\r</span>clone
-</span></span></code></pre></div><h4 id="编辑配置文件">编辑配置文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rclone.exe config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据需求选择即可，Windows 下完成后配置文件生成在：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\%</span>USERNAME%<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\r</span>clone
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="编辑配置文件">编辑配置文件
 </h4><p>如上目录创建文件 <code>rclone.conf</code> 内容如下</p>
-<pre tabindex="0"><code class="language-conf" data-lang="conf">[name]
-type = 115
-uid = your_uid
-cid = your_cid
-seid = your_seid
-</code></pre><h3 id="windows-挂载测试">Windows 挂载测试
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[name]
+</span></span><span class="line"><span class="cl">type = 115
+</span></span><span class="line"><span class="cl">uid = your_uid
+</span></span><span class="line"><span class="cl">cid = your_cid
+</span></span><span class="line"><span class="cl">seid = your_seid
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="windows-挂载测试">Windows 挂载测试
 </h3><p>Windows 挂载需先安装 
 
 <a class="link" href="https://winfsp.dev/" 
@@ -779,53 +876,118 @@ seid = your_seid
 winfsp
 </a>
   (安装完成后重启一下)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.<span style="color:#ae81ff">\r</span>clone.exe mount -v --read-only --vfs-read-chunk-size<span style="color:#f92672">=</span>4M --buffer-size<span style="color:#f92672">=</span>32M --network-mode 115: X:
-</span></span></code></pre></div><p>按 <code>Ctrl+C</code> 结束挂载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">.<span class="se">\r</span>clone.exe mount -v --read-only --vfs-read-chunk-size<span class="o">=</span>4M --buffer-size<span class="o">=</span>32M --network-mode 115: X:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>按 <code>Ctrl+C</code> 结束挂载</p>
 <h3 id="linux-docker-挂载">Linux docker 挂载
 </h3><p>拉取镜像</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull gaoyb7/rclone:latest
-</span></span></code></pre></div><p>挂载</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run --rm <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /home/rclone/config:/config/rclone <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /home/rclone/data:/data:shared <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /etc/passwd:/etc/passwd:ro --volume /etc/group:/etc/group:ro <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    gaoyb7/rclone:latest <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    mount 115:/music /data/music --allow-other --allow-non-empty --vfs-cache-mode writes &amp;
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 上述命令仅最后一行为 Rclone 的命令，根据实际情况修改，格式如下</span>
-</span></span><span style="display:flex;"><span>rclone mount DriveName:Folder LocalFolder
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># DriveName   Rclone 挂载的名称</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Folder      云盘的路径</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># LocalFolder 挂载到本地的文件</span>
-</span></span></code></pre></div><h3 id="navidrome-配置">Navidrome 配置
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.0&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">navidrome</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">deluan/navidrome:latest</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8005:4533&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">unless-stopped</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">environment</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Optional: put your config options customization here. Examples:</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_SCANSCHEDULE</span>: <span style="color:#ae81ff">1h</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_LOGLEVEL</span>: <span style="color:#ae81ff">info  </span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_SESSIONTIMEOUT</span>: <span style="color:#ae81ff">24h</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_BASEURL</span>: <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_LASTFM_ENABLED</span>: <span style="color:#e6db74">&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_LASTFM_APIKEY</span>: <span style="color:#ae81ff">your_LASTFM_APIKEY</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_LASTFM_SECRET</span>: <span style="color:#ae81ff">your_LASTFM_SECRET</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_LASTFM_LANGUAGE</span>: <span style="color:#ae81ff">zh</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_SPOTIFY_ID</span>: <span style="color:#ae81ff">your_SPOTIFY_ID</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_SPOTIFY_SECRET</span>: <span style="color:#ae81ff">your_SPOTIFY_SECRET</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_ENABLESHARING</span>: <span style="color:#e6db74">&#34;true&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_UILOGINBACKGROUNDURL</span>: <span style="color:#e6db74">&#34;https://www.loliapi.com/acg&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e">#随机图片接口</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">ND_UIWELCOMEMESSAGE</span>: <span style="color:#e6db74">&#34;主界面会看到的话&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/navidrome/data:/data&#34;</span>
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/rclone/data/music:/music/115:ro&#34;</span>
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/navidrome/music:/music/server:ro&#34;</span>
-</span></span></code></pre></div><h2 id="blog">Blog
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull gaoyb7/rclone:latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>挂载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run --rm <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /home/rclone/config:/config/rclone <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /home/rclone/data:/data:shared <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /etc/passwd:/etc/passwd:ro --volume /etc/group:/etc/group:ro <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    gaoyb7/rclone:latest <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mount 115:/music /data/music --allow-other --allow-non-empty --vfs-cache-mode writes <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 上述命令仅最后一行为 Rclone 的命令，根据实际情况修改，格式如下</span>
+</span></span><span class="line"><span class="cl">rclone mount DriveName:Folder LocalFolder
+</span></span><span class="line"><span class="cl"><span class="c1"># DriveName   Rclone 挂载的名称</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Folder      云盘的路径</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># LocalFolder 挂载到本地的文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="navidrome-配置">Navidrome 配置
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3.0&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">navidrome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">deluan/navidrome:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;8005:4533&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Optional: put your config options customization here. Examples:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_SCANSCHEDULE</span><span class="p">:</span><span class="w"> </span><span class="l">1h</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_LOGLEVEL</span><span class="p">:</span><span class="w"> </span><span class="l">info  </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_SESSIONTIMEOUT</span><span class="p">:</span><span class="w"> </span><span class="l">24h</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_BASEURL</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_LASTFM_ENABLED</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_LASTFM_APIKEY</span><span class="p">:</span><span class="w"> </span><span class="l">your_LASTFM_APIKEY</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_LASTFM_SECRET</span><span class="p">:</span><span class="w"> </span><span class="l">your_LASTFM_SECRET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_LASTFM_LANGUAGE</span><span class="p">:</span><span class="w"> </span><span class="l">zh</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_SPOTIFY_ID</span><span class="p">:</span><span class="w"> </span><span class="l">your_SPOTIFY_ID</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_SPOTIFY_SECRET</span><span class="p">:</span><span class="w"> </span><span class="l">your_SPOTIFY_SECRET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_ENABLESHARING</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_UILOGINBACKGROUNDURL</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;https://www.loliapi.com/acg&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c">#随机图片接口</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ND_UIWELCOMEMESSAGE</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;主界面会看到的话&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;/home/navidrome/data:/data&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;/home/rclone/data/music:/music/115:ro&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;/home/navidrome/music:/music/server:ro&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="blog">Blog
 </h2><p>两个 Blog，均参考之前文章部署，部署出来应该也不会更新了</p>
 <h3 id="wordpress">Wordpress
 </h3><p>

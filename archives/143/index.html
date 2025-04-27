@@ -511,16 +511,36 @@
 官网
 </a>
  下载后解压，然后配置本地仓库，修改 <code>conf/setting.xml</code> 中的 <code>&lt;localRepository&gt;</code> 为一个指定目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 例如本地库在 D:\develop\maven_repo --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;localRepository&gt;</span>D:\develop\maven_repo<span style="color:#f92672">&lt;/localRepository&gt;</span>
-</span></span></code></pre></div><p>配置阿里云私服镜像，修改 <code>conf/setting.xml</code> 中的 <code>&lt;mirror&gt;</code> 标签，添加子标签</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;mirror&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>alimaven<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;name&gt;</span>aliyun maven<span style="color:#f92672">&lt;/name&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span style="color:#f92672">&lt;/url&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mirrorOf&gt;</span>central<span style="color:#f92672">&lt;/mirrorOf&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/mirror&gt;</span>
-</span></span></code></pre></div><p>配置环境变量：<code>MAVEN_HOME</code> 为 maven 解压目录，并将其 bin 目录加入 PATH 环境变量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- 例如本地库在 D:\develop\maven_repo --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;localRepository&gt;</span>D:\develop\maven_repo<span class="nt">&lt;/localRepository&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置阿里云私服镜像，修改 <code>conf/setting.xml</code> 中的 <code>&lt;mirror&gt;</code> 标签，添加子标签</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;mirror&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;id&gt;</span>alimaven<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;name&gt;</span>aliyun maven<span class="nt">&lt;/name&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;mirrorOf&gt;</span>central<span class="nt">&lt;/mirrorOf&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/mirror&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置环境变量：<code>MAVEN_HOME</code> 为 maven 解压目录，并将其 bin 目录加入 PATH 环境变量</p>
 <hr>
 <p>测试安装完成：在命令行输入 <code>mvn -v</code> 查看输出</p>
 <h2 id="依赖配置">依赖配置
@@ -532,15 +552,29 @@
 <li>定义坐标的 groupId, artifactId, version</li>
 <li>刷新配置，引入新加入的坐标</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 例如引入 logback --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    	<span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    	<span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    	<span style="color:#f92672">&lt;version&gt;</span>1.2.3<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- 例如引入 logback --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    	<span class="nt">&lt;groupId&gt;</span>ch.qos.logback<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    	<span class="nt">&lt;artifactId&gt;</span>logback-classic<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    	<span class="nt">&lt;version&gt;</span>1.2.3<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>可以到 
 
 <a class="link" href="https://mvnrepository.com/" 
@@ -561,19 +595,37 @@ https://mvnrepository.com/
 <p>当添加依赖时，若此包依赖其他包，将自动添加相关包</p>
 <hr>
 <p>当然，若某包的子包并不需要，可以排除依赖 (指主动断开依赖的资源，被排除的资源无需指定版本)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 例如排除某项目的 junit --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;groupId&gt;</span>com.yexca<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-project<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;exclusions&gt;</span>
-</span></span><span style="display:flex;"><span>    	<span style="color:#f92672">&lt;exclusion&gt;</span>
-</span></span><span style="display:flex;"><span>        	<span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/exclusion&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/exclusions&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><h2 id="依赖范围">依赖范围
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!-- 例如排除某项目的 junit --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;groupId&gt;</span>com.yexca<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>maven-project<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;exclusions&gt;</span>
+</span></span><span class="line"><span class="cl">    	<span class="nt">&lt;exclusion&gt;</span>
+</span></span><span class="line"><span class="cl">        	<span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/exclusion&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/exclusions&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="依赖范围">依赖范围
 </h2><p>依赖的 jar 包，默认可以在任何地方使用，可以通过 <code>&lt;scope&gt;...&lt;/scope&gt;</code> 设置其作用范围：</p>
 <ul>
 <li>主程序范围有效 (main 文件夹范围内)</li>
@@ -621,13 +673,25 @@ https://mvnrepository.com/
       </tr>
   </tbody>
 </table></div>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>4.10<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><h2 id="生命周期">生命周期
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;groupId&gt;</span>junit<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>4.10<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="生命周期">生命周期
 </h2><p>Maven 的生命周期就是为了对所有的 maven 项目构建过程进行抽象和统一</p>
 <p>Maven 中有 3 套相互独立的生命周期：</p>
 <ul>
@@ -684,14 +748,27 @@ https://mvnrepository.com/
 <h3 id="继承关系">继承关系
 </h3><p>创建一个父工程，将模块共有的依赖都提取到父工程进行配置，只要子类继承了父工程，依赖也会继承下来，这样就无需在各个子工程中进行配置了</p>
 <p>继承描述的是两个工程间的关系，与 java 中的继承相似，子工程可以继承父工程中的配置信息，常见于依赖关系的继承，可以简化依赖配置、统一管理依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--指定父工程--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;parent&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>...<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>...<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>...<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;relativePath&gt;</span>....<span style="color:#f92672">&lt;/relativePath&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/parent&gt;</span>
-</span></span></code></pre></div><p>如果是 JavaWeb 开发，可以让父工程继承 spring-boot-starter-parent，其他模块继承该父工程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!--指定父工程--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;parent&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>...<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>...<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>...<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;relativePath&gt;</span>....<span class="nt">&lt;/relativePath&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/parent&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果是 JavaWeb 开发，可以让父工程继承 spring-boot-starter-parent，其他模块继承该父工程</p>
 <blockquote>
 <p>一般情况下，在文件结构中，子工程为父工程子级</p>
 </blockquote>
@@ -699,18 +776,35 @@ https://mvnrepository.com/
 <ol>
 <li>父工程的打包方式为 pom</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;parent&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.7.5<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;relativePath/&gt;</span> <span style="color:#75715e">&lt;!-- lookup parent from repository --&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/parent&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;groupId&gt;</span>net.yexca<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;artifactId&gt;</span>tlias-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;packaging&gt;</span>pom<span style="color:#f92672">&lt;/packaging&gt;</span>
-</span></span></code></pre></div><p>Maven打包方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;parent&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-parent<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>2.7.5<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;relativePath/&gt;</span> <span class="c">&lt;!-- lookup parent from repository --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/parent&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;groupId&gt;</span>net.yexca<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;artifactId&gt;</span>tlias-parent<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;packaging&gt;</span>pom<span class="nt">&lt;/packaging&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Maven打包方式：</p>
 <ul>
 <li>jar：普通模块打包，SpringBoot 项目基本都是jar包 (内嵌 tomcat 运行)</li>
 <li>war：普通 web 程序打包，需要部署在外部的 tomcat 服务器中运行</li>
@@ -719,127 +813,272 @@ https://mvnrepository.com/
 <ol start="2">
 <li>子工程指定父工程</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;parent&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>net.yexca<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>tlias-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- 指定父工程的pom文件的相对位置(如果不指定，将从本地仓库/远程仓库查找该工程) --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;relativePath&gt;</span>../tlias-parent/pom.xml<span style="color:#f92672">&lt;/relativePath&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/parent&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- &lt;groupId&gt;net.yexca&lt;/groupId&gt; 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">-	因为自动继承父工程，可以省略
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;artifactId&gt;</span>tlias-utils<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;version&gt;</span>1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span></code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;parent&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>net.yexca<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>tlias-parent<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 指定父工程的pom文件的相对位置(如果不指定，将从本地仓库/远程仓库查找该工程) --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;relativePath&gt;</span>../tlias-parent/pom.xml<span class="nt">&lt;/relativePath&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/parent&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- &lt;groupId&gt;net.yexca&lt;/groupId&gt; 
+</span></span></span><span class="line"><span class="cl"><span class="c">-	因为自动继承父工程，可以省略
+</span></span></span><span class="line"><span class="cl"><span class="c">--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;artifactId&gt;</span>tlias-utils<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>父工程中配置共有依赖</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.18.24<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span></code></pre></div><h3 id="版本锁定">版本锁定
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;groupId&gt;</span>org.projectlombok<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;artifactId&gt;</span>lombok<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;version&gt;</span>1.18.24<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="版本锁定">版本锁定
 </h3><p>某依赖部分模块需要，部分模块不需要，可以在父级中管理依赖的 version，方便管理与修改</p>
 <p>可以通过 <code>&lt;dependencyManagement&gt;</code> 标签管理依赖版本</p>
 <p>父工程</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--统一管理依赖版本--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencyManagement&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!--JWT令牌--&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>0.9.1<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencyManagement&gt;</span>
-</span></span></code></pre></div><p>子工程</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!--JWT令牌--&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- &lt;version&gt;0.9.1&lt;/version&gt;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		- 因为父工程指定了版本，不需要填写
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		--&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!--统一管理依赖版本--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependencyManagement&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!--JWT令牌--&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>io.jsonwebtoken<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>jjwt<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>0.9.1<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependencies&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>子工程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!--JWT令牌--&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;groupId&gt;</span>io.jsonwebtoken<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;artifactId&gt;</span>jjwt<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!-- &lt;version&gt;0.9.1&lt;/version&gt;
+</span></span></span><span class="line"><span class="cl"><span class="c">		- 因为父工程指定了版本，不需要填写
+</span></span></span><span class="line"><span class="cl"><span class="c">		--&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>父工程的 <code>&lt;dependencyManagement&gt;</code> 配置只管理版本，不会将依赖引入子工程。只有在子工程引入才会引入，只是引入时无需指定版本号</p>
 <p>而 <code>&lt;dependencies&gt;</code> 会把依赖引入子工程</p>
 </blockquote>
 <h3 id="属性配置">属性配置
 </h3><p>也可以通过自定义属性及属性引用的形式，在父工程中将依赖的版本号进行集中管理维护</p>
 <p>自定义属性：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;properties&gt;</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#f92672">&lt;lombok.version&gt;</span>1.18.24<span style="color:#f92672">&lt;/lombok.version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/properties&gt;</span>
-</span></span></code></pre></div><p>引用属性：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>${lombok.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><p>于是可以在父工程中将所以的版本号，集中管理维护</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;properties&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;maven.compiler.source&gt;</span>11<span style="color:#f92672">&lt;/maven.compiler.source&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;maven.compiler.target&gt;</span>11<span style="color:#f92672">&lt;/maven.compiler.target&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;lombok.version&gt;</span>1.18.24<span style="color:#f92672">&lt;/lombok.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jjwt.version&gt;</span>0.9.1<span style="color:#f92672">&lt;/jjwt.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;aliyun.oss.version&gt;</span>3.15.1<span style="color:#f92672">&lt;/aliyun.oss.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jaxb.version&gt;</span>2.3.1<span style="color:#f92672">&lt;/jaxb.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;activation.version&gt;</span>1.1.1<span style="color:#f92672">&lt;/activation.version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;jaxb.runtime.version&gt;</span>2.3.3<span style="color:#f92672">&lt;/jaxb.runtime.version&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/properties&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.projectlombok<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>lombok<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>${lombok.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!--统一管理依赖版本--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencyManagement&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!--JWT令牌--&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>io.jsonwebtoken<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>jjwt<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${jjwt.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!--阿里云OSS--&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>com.aliyun.oss<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>aliyun-sdk-oss<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${aliyun.oss.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>javax.xml.bind<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>jaxb-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${jaxb.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>javax.activation<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>activation<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${activation.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- no more than 2.3.3--&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.glassfish.jaxb<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>jaxb-runtime<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;version&gt;</span>${jaxb.runtime.version}<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencyManagement&gt;</span>
-</span></span></code></pre></div><p>若想要修改依赖的版本，只需要在父工程的自定义属性，修改相应属性值即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;properties&gt;</span>
+</span></span><span class="line"><span class="cl">	<span class="nt">&lt;lombok.version&gt;</span>1.18.24<span class="nt">&lt;/lombok.version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>引用属性：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.projectlombok<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>lombok<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;version&gt;</span>${lombok.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>于是可以在父工程中将所以的版本号，集中管理维护</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;properties&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;maven.compiler.source&gt;</span>11<span class="nt">&lt;/maven.compiler.source&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;maven.compiler.target&gt;</span>11<span class="nt">&lt;/maven.compiler.target&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;lombok.version&gt;</span>1.18.24<span class="nt">&lt;/lombok.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;jjwt.version&gt;</span>0.9.1<span class="nt">&lt;/jjwt.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;aliyun.oss.version&gt;</span>3.15.1<span class="nt">&lt;/aliyun.oss.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;jaxb.version&gt;</span>2.3.1<span class="nt">&lt;/jaxb.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;activation.version&gt;</span>1.1.1<span class="nt">&lt;/activation.version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;jaxb.runtime.version&gt;</span>2.3.3<span class="nt">&lt;/jaxb.runtime.version&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/properties&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;groupId&gt;</span>org.projectlombok<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;artifactId&gt;</span>lombok<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;version&gt;</span>${lombok.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--统一管理依赖版本--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependencyManagement&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;dependencies&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!--JWT令牌--&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>io.jsonwebtoken<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>jjwt<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>${jjwt.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!--阿里云OSS--&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>com.aliyun.oss<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>aliyun-sdk-oss<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>${aliyun.oss.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>javax.xml.bind<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>jaxb-api<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>${jaxb.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>javax.activation<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>activation<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>${activation.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="c">&lt;!-- no more than 2.3.3--&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;groupId&gt;</span>org.glassfish.jaxb<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;artifactId&gt;</span>jaxb-runtime<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;version&gt;</span>${jaxb.runtime.version}<span class="nt">&lt;/version&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/dependencies&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>若想要修改依赖的版本，只需要在父工程的自定义属性，修改相应属性值即可</p>
 <h2 id="聚合">聚合
 </h2><p>若一个模块依赖另一个模块，打包该模块前需要先将其他模块 install 到本地仓库，然后再打包。如果依赖的模块很多，那么需要执行的操作过于繁琐</p>
 <p>通过 maven 的聚合就可以轻松实现项目的一键构建 (清理、编译、测试、打包、安装等)</p>
@@ -849,14 +1088,27 @@ https://mvnrepository.com/
 <li>**作用：**快速构建项目 (无需根据依赖关系手动构建，直接在聚合工程上构建即可)</li>
 </ul>
 <p>可以在聚合工程中通过 <code>&lt;modules&gt;</code> 设置当前聚合工程所包含的子模块的名称</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--聚合其他模块--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;modules&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- 工程路径 --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;module&gt;</span>../tlias-pojo<span style="color:#f92672">&lt;/module&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;module&gt;</span>../tlias-utils<span style="color:#f92672">&lt;/module&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;module&gt;</span>../tlias-web-management<span style="color:#f92672">&lt;/module&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/modules&gt;</span>
-</span></span></code></pre></div><p>之后进行编译、打包、安装操作只在聚合工程上即可，其他工程会自动同步操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!--聚合其他模块--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;modules&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- 工程路径 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;module&gt;</span>../tlias-pojo<span class="nt">&lt;/module&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;module&gt;</span>../tlias-utils<span class="nt">&lt;/module&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;module&gt;</span>../tlias-web-management<span class="nt">&lt;/module&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/modules&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>之后进行编译、打包、安装操作只在聚合工程上即可，其他工程会自动同步操作</p>
 <div class="table-wrapper"><table>
   <thead>
       <tr>
@@ -903,63 +1155,135 @@ https://mvnrepository.com/
 </ul>
 <h3 id="配置">配置
 </h3><p>设置私服的访问用户名与密码，在 Maven 安装目录的 <code>conf/settings.xml</code> 的 servers 配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;servers&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;server&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>maven-releases<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;username&gt;</span>admin<span style="color:#f92672">&lt;/username&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;password&gt;</span>admin<span style="color:#f92672">&lt;/password&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/server&gt;</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;server&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>maven-snapshots<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;username&gt;</span>admin<span style="color:#f92672">&lt;/username&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;password&gt;</span>admin<span style="color:#f92672">&lt;/password&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/server&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/servers&gt;</span>
-</span></span></code></pre></div><p>设置私服依赖下载的仓库组地址，文件同上，mirrors 与 profiles 标签</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;mirrors&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;mirror&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>maven-public<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;mirrorOf&gt;</span>*<span style="color:#f92672">&lt;/mirrorOf&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span style="color:#f92672">&lt;/url&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/mirror&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/mirrors&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;profiles&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;profile&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;id&gt;</span>allow-snapshots<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;activation&gt;</span>
-</span></span><span style="display:flex;"><span>        	<span style="color:#f92672">&lt;activeByDefault&gt;</span>true<span style="color:#f92672">&lt;/activeByDefault&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/activation&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;repositories&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;repository&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>maven-public<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span style="color:#f92672">&lt;/url&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;releases&gt;</span>
-</span></span><span style="display:flex;"><span>            	<span style="color:#f92672">&lt;enabled&gt;</span>true<span style="color:#f92672">&lt;/enabled&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/releases&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;snapshots&gt;</span>
-</span></span><span style="display:flex;"><span>            	<span style="color:#f92672">&lt;enabled&gt;</span>true<span style="color:#f92672">&lt;/enabled&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/snapshots&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/repository&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/repositories&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profile&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/profiles&gt;</span>
-</span></span></code></pre></div><p>pom 文件配置上传地址，在父工程中配置即可</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;distributionManagement&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- release版本的发布地址 --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;repository&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>maven-releases<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-releases/<span style="color:#f92672">&lt;/url&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/repository&gt;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">&lt;!-- snapshot版本的发布地址 --&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;snapshotRepository&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;id&gt;</span>maven-snapshots<span style="color:#f92672">&lt;/id&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-snapshots/<span style="color:#f92672">&lt;/url&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/snapshotRepository&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/distributionManagement&gt;</span>
-</span></span></code></pre></div><p>配置完成后，执行父工程的 deploy 生命周期即可将项目发布到私服仓库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;servers&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;server&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;id&gt;</span>maven-releases<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;username&gt;</span>admin<span class="nt">&lt;/username&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;password&gt;</span>admin<span class="nt">&lt;/password&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/server&gt;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;server&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;id&gt;</span>maven-snapshots<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;username&gt;</span>admin<span class="nt">&lt;/username&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;password&gt;</span>admin<span class="nt">&lt;/password&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/server&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/servers&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>设置私服依赖下载的仓库组地址，文件同上，mirrors 与 profiles 标签</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;mirrors&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;mirror&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;id&gt;</span>maven-public<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;mirrorOf&gt;</span>*<span class="nt">&lt;/mirrorOf&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/mirror&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/mirrors&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;profiles&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;profile&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;id&gt;</span>allow-snapshots<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;activation&gt;</span>
+</span></span><span class="line"><span class="cl">        	<span class="nt">&lt;activeByDefault&gt;</span>true<span class="nt">&lt;/activeByDefault&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/activation&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;repositories&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;repository&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;id&gt;</span>maven-public<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;releases&gt;</span>
+</span></span><span class="line"><span class="cl">            	<span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/releases&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;snapshots&gt;</span>
+</span></span><span class="line"><span class="cl">            	<span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&lt;/snapshots&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;/repository&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/repositories&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/profile&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/profiles&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>pom 文件配置上传地址，在父工程中配置即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;distributionManagement&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- release版本的发布地址 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;repository&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;id&gt;</span>maven-releases<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-releases/<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/repository&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c">&lt;!-- snapshot版本的发布地址 --&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;snapshotRepository&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;id&gt;</span>maven-snapshots<span class="nt">&lt;/id&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-snapshots/<span class="nt">&lt;/url&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/snapshotRepository&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/distributionManagement&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置完成后，执行父工程的 deploy 生命周期即可将项目发布到私服仓库</p>
 
 </section>
 

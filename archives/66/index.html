@@ -563,9 +563,23 @@ configuration - How to fix make error &ldquo;No rule to make target &lsquo;menuc
  使虚拟机连上网络，不过在最后文件修改只需要将<code>ONBOOT</code>后的值改为<code>yes</code>然后加俩DNS就行</p>
 <h3 id="安装git">安装git
 </h3><p>连上网后我先装了个git，使用<code>yum install git</code>即可，然后配置姓名与邮箱</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git config --global user.name <span style="color:#e6db74">&#34;Name&#34;</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git config --global user.email <span style="color:#e6db74">&#34;email@example.com&#34;</span>
-</span></span></code></pre></div><h3 id="传输文件">传输文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --global user.name <span class="s2">&#34;Name&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git config --global user.email <span class="s2">&#34;email@example.com&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="传输文件">传输文件
 </h3><p>继续使用<code>wget</code>下载Linux内核，尝试了三四次，几乎都是在50%左右下载失败而且速度很慢</p>
 <p>注：使用<code>wget -c URL</code>可实现断点续传</p>
 <p>然后就是<em>盒子</em>这个软件貌似支持直接拖拽传输，于是我在我的电脑下载好后直接托过去，失败，文件没有被传输过去，考虑到传输后的文件在<code>~/Downloads/</code>下，我使用的是root账户，于是我参考
@@ -582,13 +596,27 @@ Linux添加用户和管理员用户
 <h4 id="ssh-传输">SSH 传输
 </h4><p>然后我想到了通过SSH传输（因为我输入ftp发现没这个命令，懒得装了</p>
 <p>本地开启SSH连接，然后通过<code>scp</code>命令以使用SSH传输文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>scp username@servername:/path/filename ~/Downloads/
-</span></span></code></pre></div><p>首先是确定IP，在虚拟机中输入命令<code>ip route</code>得知IP为10.0.2.2</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">scp username@servername:/path/filename ~/Downloads/
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>首先是确定IP，在虚拟机中输入命令<code>ip route</code>得知IP为10.0.2.2</p>
 <p>然后使用scp命令传输</p>
 <h3 id="解压文件">解压文件
 </h3><p>使用<code>tar</code>命令解压文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tar -xzvf filename.tar.xz
-</span></span></code></pre></div><p>emm，非gzip压缩文件，那我不知道怎么解压啊</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -xzvf filename.tar.xz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>emm，非gzip压缩文件，那我不知道怎么解压啊</p>
 <h4 id="ssh-传输-1">SSH 传输
 </h4><p>还是使用SSH传输吧，在<code>scp</code>命令加上<code>-r</code>即可传输文件夹</p>
 <h3 id="开始尝试">开始尝试
@@ -609,36 +637,77 @@ Linux添加用户和管理员用户
 <ol>
 <li>curl</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">## 如果这里的URL指向的是一个文件可以直接下载到本地</span>
-</span></span><span style="display:flex;"><span>curl URL 
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## 显示全部信息</span>
-</span></span><span style="display:flex;"><span>curl -i URL 
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## 只显示头部信息</span>
-</span></span><span style="display:flex;"><span>curl -l URL 
-</span></span><span style="display:flex;"><span><span style="color:#75715e">## 显示get请求全过程解析</span>
-</span></span><span style="display:flex;"><span>curl -v URL 
-</span></span></code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 如果这里的URL指向的是一个文件可以直接下载到本地</span>
+</span></span><span class="line"><span class="cl">curl URL 
+</span></span><span class="line"><span class="cl"><span class="c1">## 显示全部信息</span>
+</span></span><span class="line"><span class="cl">curl -i URL 
+</span></span><span class="line"><span class="cl"><span class="c1">## 只显示头部信息</span>
+</span></span><span class="line"><span class="cl">curl -l URL 
+</span></span><span class="line"><span class="cl"><span class="c1">## 显示get请求全过程解析</span>
+</span></span><span class="line"><span class="cl">curl -v URL 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>wget</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget URL
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget URL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>POST请求</li>
 </ul>
 <ol>
 <li>curl</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">## 通过-d参数，把访问的参数放在里面</span>
-</span></span><span style="display:flex;"><span>curl -d <span style="color:#e6db74">&#34;param1=value1&amp;param2=value2&#34;</span> <span style="color:#e6db74">&#34;URL&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>curl -d<span style="color:#e6db74">&#39;param1=value1&amp;param2=value2&#39;</span> -X POST URL
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>curl -d <span style="color:#e6db74">&#39;param1=value1&#39;</span> -d <span style="color:#e6db74">&#39;param2=value2&#39;</span> -X POST  URL
-</span></span></code></pre></div><ol start="2">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 通过-d参数，把访问的参数放在里面</span>
+</span></span><span class="line"><span class="cl">curl -d <span class="s2">&#34;param1=value1&amp;param2=value2&#34;</span> <span class="s2">&#34;URL&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">curl -d<span class="s1">&#39;param1=value1&amp;param2=value2&#39;</span> -X POST URL
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">curl -d <span class="s1">&#39;param1=value1&#39;</span> -d <span class="s1">&#39;param2=value2&#39;</span> -X POST  URL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
 <li>wget</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">## 通过--post-data参数实现</span>
-</span></span><span style="display:flex;"><span>wget --post-data <span style="color:#e6db74">&#39;user=name&amp;passwd=passwd&#39;</span> URL
-</span></span></code></pre></div><h2 id="再次总结">再次总结
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 通过--post-data参数实现</span>
+</span></span><span class="line"><span class="cl">wget --post-data <span class="s1">&#39;user=name&amp;passwd=passwd&#39;</span> URL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="再次总结">再次总结
 </h2><p>有时候不能把某件事想的太复杂，往往很简单的事只思考而没实践就否认这种可能性是错误的，这次就是我一开始就把最后<em>再次尝试</em>部分否决才闹了这么一大圈~~（要不是流量卡的不行我才不会去试~~</p>
 <p>写到这时我想到了两句名言</p>
 <ol>

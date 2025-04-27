@@ -498,39 +498,102 @@ https://rclone.org/downloads/
 </a>
  </p>
 <p>下载完成后解压，解压完成后通过 cmd 进入该文件夹，然后运行</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rclone.exe authorize <span style="color:#e6db74">&#34;onedrive&#34;</span>
-</span></span></code></pre></div><p>在弹出的浏览器中登录并授权，授权完成后会打印 Token (大括号之间的，包括大括号)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rclone.exe authorize <span class="s2">&#34;onedrive&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在弹出的浏览器中登录并授权，授权完成后会打印 Token (大括号之间的，包括大括号)</p>
 <h3 id="获取配置文件">获取配置文件
 </h3><p>运行命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rclone.exe config
-</span></span></code></pre></div><p>根据需求选择即可，完成后配置文件生成在：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\%</span>USERNAME%<span style="color:#ae81ff">\A</span>ppData<span style="color:#ae81ff">\R</span>oaming<span style="color:#ae81ff">\r</span>clone
-</span></span></code></pre></div><h3 id="复制配置文件">复制配置文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rclone.exe config
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据需求选择即可，完成后配置文件生成在：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\%</span>USERNAME%<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\r</span>clone
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="复制配置文件">复制配置文件
 </h3><p>首先需要在服务器创建两个文件夹</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 该文件夹放配置文件</span>
-</span></span><span style="display:flex;"><span>/home/docker/rclone/config
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 该文件夹放数据，即 Onedrive 映射到的文件夹</span>
-</span></span><span style="display:flex;"><span>/home/docker/rclone/data
-</span></span></code></pre></div><p>然后将配置文件放到对应的文件夹</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 该文件夹放配置文件</span>
+</span></span><span class="line"><span class="cl">/home/docker/rclone/config
+</span></span><span class="line"><span class="cl"><span class="c1"># 该文件夹放数据，即 Onedrive 映射到的文件夹</span>
+</span></span><span class="line"><span class="cl">/home/docker/rclone/data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后将配置文件放到对应的文件夹</p>
 <h3 id="挂载目录">挂载目录
 </h3><p>运行命令以拉取镜像</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull rclone/rclone:latest
-</span></span></code></pre></div><p>挂载目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run --rm <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /root/rclone/config:/config/rclone <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /root/rclone/data:/data:shared <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --volume /etc/passwd:/etc/passwd:ro --volume /etc/group:/etc/group:ro <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    rclone/rclone <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    mount music:/ /data/music --allow-other --allow-non-empty --vfs-cache-mode writes &amp;
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 上述命令仅最后一行为 Rclone 的命令，根据实际情况修改，格式如下</span>
-</span></span><span style="display:flex;"><span>rclone mount DriveName:Folder LocalFolder
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># DriveName		Rclone 挂载的名称</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Folder		云盘的路径</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># LocalFolder	挂载到本地的文件</span>
-</span></span></code></pre></div><p>上述命令最后的 <code>&amp;</code> 表示后台运行，命令执行后会打印进程的 PID，如需关闭使用命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kill PID
-</span></span></code></pre></div><p>了解更多？访问：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull rclone/rclone:latest
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>挂载目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run --rm <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /root/rclone/config:/config/rclone <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /root/rclone/data:/data:shared <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --volume /etc/passwd:/etc/passwd:ro --volume /etc/group:/etc/group:ro <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --device /dev/fuse --cap-add SYS_ADMIN --security-opt apparmor:unconfined <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    rclone/rclone <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mount music:/ /data/music --allow-other --allow-non-empty --vfs-cache-mode writes <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 上述命令仅最后一行为 Rclone 的命令，根据实际情况修改，格式如下</span>
+</span></span><span class="line"><span class="cl">rclone mount DriveName:Folder LocalFolder
+</span></span><span class="line"><span class="cl"><span class="c1"># DriveName		Rclone 挂载的名称</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Folder		云盘的路径</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># LocalFolder	挂载到本地的文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上述命令最后的 <code>&amp;</code> 表示后台运行，命令执行后会打印进程的 PID，如需关闭使用命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">kill</span> PID
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>了解更多？访问：
 
 <a class="link" href="https://blog.yexca.net/archives/79" 
 
@@ -576,27 +639,58 @@ Linux上使用Rclone挂载OneDrive或GoogleDrive并设置开机自启
 <hr>
 <h2 id="部署-navidrome">部署 Navidrome
 </h2><p>采用 docker-compose，首先创建文件夹，例如</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/home/docker/navidrome
-</span></span></code></pre></div><p>创建文件 <code>docker-compose.yml</code> 并填入内容</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim docker-compose.yml
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输入内容</span>
-</span></span><span style="display:flex;"><span>version: <span style="color:#e6db74">&#34;3&#34;</span>
-</span></span><span style="display:flex;"><span>services:
-</span></span><span style="display:flex;"><span>  navidrome:
-</span></span><span style="display:flex;"><span>    image: deluan/navidrome:latest
-</span></span><span style="display:flex;"><span>    ports:
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;8001:4533&#34;</span>
-</span></span><span style="display:flex;"><span>    restart: unless-stopped
-</span></span><span style="display:flex;"><span>    environment:
-</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># Optional: put your config options customization here. Examples:</span>
-</span></span><span style="display:flex;"><span>      ND_SCANSCHEDULE: 1h
-</span></span><span style="display:flex;"><span>      ND_LOGLEVEL: info  
-</span></span><span style="display:flex;"><span>      ND_SESSIONTIMEOUT: 24h
-</span></span><span style="display:flex;"><span>      ND_BASEURL: <span style="color:#e6db74">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>    volumes:
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/docker/navidrome/data:/data&#34;</span>
-</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#34;/home/docker/rclone/data/music:/music:ro&#34;</span>
-</span></span></code></pre></div><p>查看更多变量：
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/home/docker/navidrome
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建文件 <code>docker-compose.yml</code> 并填入内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim docker-compose.yml
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入内容</span>
+</span></span><span class="line"><span class="cl">version: <span class="s2">&#34;3&#34;</span>
+</span></span><span class="line"><span class="cl">services:
+</span></span><span class="line"><span class="cl">  navidrome:
+</span></span><span class="line"><span class="cl">    image: deluan/navidrome:latest
+</span></span><span class="line"><span class="cl">    ports:
+</span></span><span class="line"><span class="cl">      - <span class="s2">&#34;8001:4533&#34;</span>
+</span></span><span class="line"><span class="cl">    restart: unless-stopped
+</span></span><span class="line"><span class="cl">    environment:
+</span></span><span class="line"><span class="cl">      <span class="c1"># Optional: put your config options customization here. Examples:</span>
+</span></span><span class="line"><span class="cl">      ND_SCANSCHEDULE: 1h
+</span></span><span class="line"><span class="cl">      ND_LOGLEVEL: info  
+</span></span><span class="line"><span class="cl">      ND_SESSIONTIMEOUT: 24h
+</span></span><span class="line"><span class="cl">      ND_BASEURL: <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    volumes:
+</span></span><span class="line"><span class="cl">      - <span class="s2">&#34;/home/docker/navidrome/data:/data&#34;</span>
+</span></span><span class="line"><span class="cl">      - <span class="s2">&#34;/home/docker/rclone/data/music:/music:ro&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看更多变量：
 
 <a class="link" href="https://www.navidrome.org/docs/usage/configuration-options/#environment-variables" 
 
@@ -607,8 +701,15 @@ Navidrome Configuration Options - Navidrome
 </a>
  </p>
 <p>然后运行命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
-</span></span></code></pre></div><p>访问 <code>IP:8001</code> 即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker-compose up -d
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问 <code>IP:8001</code> 即可</p>
 <hr>
 <p>参考资料：</p>
 <ul>

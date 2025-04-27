@@ -500,55 +500,167 @@ linux时钟相关命令<br>
 系统Kernel（内核）时钟的相关命令是timedatectl 或者 date；<br>
 硬件BIOS时钟相关命令是hwclock 或者 clock。</p>
 <h2 id="1在linux-gli界面输入data查看当前linux系统时间">1.在Linux GLI界面输入data查看当前Linux系统时间
-</h2><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>data
-</span></span></code></pre></div><p>输入hwclock –show查看硬件时间</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hwclock --show
-</span></span></code></pre></div><h2 id="2校准linux系统时间使用ntp服务时需要系统联网">2.校准Linux系统时间（使用ntp服务时需要系统联网）
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">data
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输入hwclock –show查看硬件时间</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hwclock --show
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="2校准linux系统时间使用ntp服务时需要系统联网">2.校准Linux系统时间（使用ntp服务时需要系统联网）
 </h2><ul>
 <li>CentOS 下安装配置ntp服务的步骤如下：</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装ntp服务的软件包</span>
-</span></span><span style="display:flex;"><span>sudo yum install ntp
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 将ntp服务设置为缺省启动</span>
-</span></span><span style="display:flex;"><span>sudo chkconfig ntp on
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 修改启动参数，增加-g -x参数，允许ntp服务在系统时间误差较大时也能正常工作</span>
-</span></span><span style="display:flex;"><span>sudo vi /etc/sysconfig/ntpd
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 启动ntp服务</span>
-</span></span><span style="display:flex;"><span>sudo service ntpd restart
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装ntp服务的软件包</span>
+</span></span><span class="line"><span class="cl">sudo yum install ntp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将ntp服务设置为缺省启动</span>
+</span></span><span class="line"><span class="cl">sudo chkconfig ntp on
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 修改启动参数，增加-g -x参数，允许ntp服务在系统时间误差较大时也能正常工作</span>
+</span></span><span class="line"><span class="cl">sudo vi /etc/sysconfig/ntpd
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动ntp服务</span>
+</span></span><span class="line"><span class="cl">sudo service ntpd restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>Ubuntu/Debian下安装配置ntp服务的步骤如下：</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 安装ntp服务的软件包</span>
-</span></span><span style="display:flex;"><span>sudo apt-get install ntp
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 修改启动参数，增加-g -x参数，允许ntp服务在系统时间误差较大时也能正常工作</span>
-</span></span><span style="display:flex;"><span>sudo vi /etc/default/ntp
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 启动ntp服务</span>
-</span></span><span style="display:flex;"><span>sudo service ntp restart
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装ntp服务的软件包</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install ntp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 修改启动参数，增加-g -x参数，允许ntp服务在系统时间误差较大时也能正常工作</span>
+</span></span><span class="line"><span class="cl">sudo vi /etc/default/ntp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动ntp服务</span>
+</span></span><span class="line"><span class="cl">sudo service ntp restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>将硬件时钟调整为与系统时钟一致</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hwclock --systohc --localtime <span style="color:#f92672">(</span>好像这个更有效<span style="color:#f92672">)</span>
-</span></span></code></pre></div><p># 或者</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>timedatectl set-local-rtc <span style="color:#ae81ff">1</span>   
-</span></span></code></pre></div><ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hwclock --systohc --localtime <span class="o">(</span>好像这个更有效<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p># 或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">timedatectl set-local-rtc <span class="m">1</span>   
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>最后将日期写入CMOS永久生效</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>clock -w
-</span></span></code></pre></div><p># 或者</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hwclock -w
-</span></span></code></pre></div><h2 id="3开启谷歌bbr加速">3.开启谷歌BBR加速
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clock -w
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p># 或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hwclock -w
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3开启谷歌bbr加速">3.开启谷歌BBR加速
 </h2><p>本文的系统要求为 Debian 9或更高版本的 Debian Linux，其它操作系统所知不详，不知是否适合本文的方法。</p>
 <p>注意，本文的配置参数不仅仅是启用Google BBR，还包括一系列网络参数的优化，直接拷贝执行使用即可。</p>
 <p>Google BBR 一键加速VPS服务器很简单，SSH登录VPS后，分别执行以下2个命令即可（鼠标选中高亮后，点鼠标右键复制粘贴到root用户的#后面，然后回车）。</p>
 <h3 id="命令1">命令1：
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://raw.githubusercontent.com/bannedbook/fanqiang/master/v2ss/server-cfg/sysctl.conf -O -&gt; /etc/sysctl.con
-</span></span></code></pre></div><blockquote>
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://raw.githubusercontent.com/bannedbook/fanqiang/master/v2ss/server-cfg/sysctl.conf -O -&gt; /etc/sysctl.con
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>如果提示 wget: command not found 的错误，这是因为你的系统wget没有安装，所以需要安先装 wget:<br>
 <code>&lt;strong&gt;apt-get install -y wget&lt;/strong&gt;</code></p>
 </blockquote>
 <h3 id="命令2">命令2：
-</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sysctl -p
-</span></span></code></pre></div><p>执行成功后大致会输出：（视个人情况而言）<br>
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sysctl -p
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行成功后大致会输出：（视个人情况而言）<br>
 <code>fs.file-max = 51200</code><br>
 <code>net.ipv4.conf.lo.accept_redirects = 0</code><br>
 <code>net.ipv4.conf.all.accept_redirects = 0</code><br>

@@ -493,74 +493,232 @@
 </h2><p>CentOS 系统下用 Docker 安装</p>
 <h3 id="环境">环境
 </h3><p>首先安装 yum-utils 以使用 yum-config-manager</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install -y yum-utils
-</span></span></code></pre></div><p>配置源</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 官方源</span>
-</span></span><span style="display:flex;"><span>yum-config-manager <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --add-repo <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    https://download.docker.com/linux/centos/docker-ce.repo
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 阿里云</span>
-</span></span><span style="display:flex;"><span>yum-config-manager <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --add-repo <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 清华大学</span>
-</span></span><span style="display:flex;"><span>yum-config-manager <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --add-repo <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo
-</span></span></code></pre></div><p>安装</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-</span></span></code></pre></div><p>配置 docker 镜像源</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim /etc/docker/daemon
-</span></span></code></pre></div><p>内容如下 (中科大镜像源)</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&#34;registry-mirrors&#34;</span>: [<span style="color:#e6db74">&#34;https://docker.mirrors.ustc.edu.cn&#34;</span>]
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>启动 docker</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl start docker
-</span></span></code></pre></div><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y yum-utils
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 官方源</span>
+</span></span><span class="line"><span class="cl">yum-config-manager <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --add-repo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 阿里云</span>
+</span></span><span class="line"><span class="cl">yum-config-manager <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --add-repo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 清华大学</span>
+</span></span><span class="line"><span class="cl">yum-config-manager <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --add-repo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置 docker 镜像源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/docker/daemon
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>内容如下 (中科大镜像源)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;https://docker.mirrors.ustc.edu.cn&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启动 docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start docker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>或者修改配置文件需要，重新加载配置文件，重启 docker 服务</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl daemon-reload
-</span></span><span style="display:flex;"><span>systemctl restart docker.service
-</span></span></code></pre></div></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload
+</span></span><span class="line"><span class="cl">systemctl restart docker.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div></blockquote>
 <p>安装 python</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install -y python36 epel-release python36-pip
-</span></span></code></pre></div><p>下载 docker-compose</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -L <span style="color:#e6db74">&#34;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-</span><span style="color:#66d9ef">$(</span>uname -s<span style="color:#66d9ef">)</span><span style="color:#e6db74">-</span><span style="color:#66d9ef">$(</span>uname -m<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> -o /usr/local/bin/docker-compose
-</span></span></code></pre></div><p>修改执行权限</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x /usr/local/bin/docker-compose
-</span></span></code></pre></div><p>安装 PyMySQL</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip3 install PyMySQL
-</span></span></code></pre></div><h3 id="部署区块链">部署区块链
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y python36 epel-release python36-pip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>下载 docker-compose</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -L <span class="s2">&#34;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&#34;</span> -o /usr/local/bin/docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改执行权限</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chmod +x /usr/local/bin/docker-compose
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装 PyMySQL</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip3 install PyMySQL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="部署区块链">部署区块链
 </h3><p>拉取部署脚本</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://osp-1257653870.cos.ap-guangzhou.myqcloud.com/WeBASE/releases/download/v1.5.5/webase-deploy.zip
-</span></span></code></pre></div><p>解压安装包</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>unzip webase-deploy.zip
-</span></span></code></pre></div><p>进入目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd webase-deploy
-</span></span></code></pre></div><p>修改配置文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim common.properties
-</span></span></code></pre></div><p>拉取镜像</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 deploy.py pullDockerAll
-</span></span></code></pre></div><p>拉取镜像时会提示输入超时时间，输入 30/60/120 任意一个即可</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://osp-1257653870.cos.ap-guangzhou.myqcloud.com/WeBASE/releases/download/v1.5.5/webase-deploy.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解压安装包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unzip webase-deploy.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>进入目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> webase-deploy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim common.properties
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>拉取镜像</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 deploy.py pullDockerAll
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>拉取镜像时会提示输入超时时间，输入 30/60/120 任意一个即可</p>
 <p>若拉取识别，可手动拉取相关镜像，例如 fiscoorg/fiscobcos:v2.9.1</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker pull fiscoorg/fiscobcos:v2.9.1
-</span></span></code></pre></div><p>部署</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 deploy.py installDockerAll
-</span></span></code></pre></div><p>看到 <code>deploy  has completed</code> 即为部署成功</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker pull fiscoorg/fiscobcos:v2.9.1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>部署</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 deploy.py installDockerAll
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看到 <code>deploy  has completed</code> 即为部署成功</p>
 <p>常用命令</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 一键部署</span>
-</span></span><span style="display:flex;"><span>部署并启动所有服务        python3 deploy.py installDockerAll
-</span></span><span style="display:flex;"><span>停止一键部署的所有服务    python3 deploy.py stopDockerAll
-</span></span><span style="display:flex;"><span>启动一键部署的所有服务    python3 deploy.py startDockerAll
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 节点的启停</span>
-</span></span><span style="display:flex;"><span>启动所有FISCO-BCOS节点:      python3 deploy.py startNode
-</span></span><span style="display:flex;"><span>停止所有FISCO-BCOS节点:      python3 deploy.py stopNode
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># WeBASE服务的启停</span>
-</span></span><span style="display:flex;"><span>启动所有WeBASE服务:      python3 deploy.py dockerStart
-</span></span><span style="display:flex;"><span>停止所有WeBASE服务:      python3 deploy.py dockerStop
-</span></span></code></pre></div><h2 id="java-环境部署">java 环境部署
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 一键部署</span>
+</span></span><span class="line"><span class="cl">部署并启动所有服务        python3 deploy.py installDockerAll
+</span></span><span class="line"><span class="cl">停止一键部署的所有服务    python3 deploy.py stopDockerAll
+</span></span><span class="line"><span class="cl">启动一键部署的所有服务    python3 deploy.py startDockerAll
+</span></span><span class="line"><span class="cl"><span class="c1"># 节点的启停</span>
+</span></span><span class="line"><span class="cl">启动所有FISCO-BCOS节点:      python3 deploy.py startNode
+</span></span><span class="line"><span class="cl">停止所有FISCO-BCOS节点:      python3 deploy.py stopNode
+</span></span><span class="line"><span class="cl"><span class="c1"># WeBASE服务的启停</span>
+</span></span><span class="line"><span class="cl">启动所有WeBASE服务:      python3 deploy.py dockerStart
+</span></span><span class="line"><span class="cl">停止所有WeBASE服务:      python3 deploy.py dockerStop
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="java-环境部署">java 环境部署
 </h2><p>不使用 docker 需要 java 环境，CentOS 需要用 Oracle JDK，从其
 
 <a class="link" href="https://www.oracle.com/java/technologies/downloads/#java8" 
@@ -571,84 +729,248 @@
 官网下载 JDK8
 </a>
   后解压，假设文件名为 <code>jdk-8u411-linux-x64.tar.gz</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tar -zxvf jdk-8u411-linux-x64.tar.gz
-</span></span></code></pre></div><p>解压后重命名</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mv jdk1.8.0_411 jdk-8u411
-</span></span></code></pre></div><p>配置环境变量，修改文件 <code>vim /etc/profile</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export JAVA_HOME<span style="color:#f92672">=</span>/home/yexca/software/jdk-8u411
-</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$JAVA_HOME/bin:$PATH
-</span></span><span style="display:flex;"><span>export CLASSPATH<span style="color:#f92672">=</span>.:$JAVA_HOME/lib/dt.jar:$JAVA_HOMR/lib/tools.jar
-</span></span></code></pre></div><p>生效</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>source /etc/profile
-</span></span></code></pre></div><p>查询</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>java -version
-</span></span></code></pre></div><h3 id="数据库">数据库
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -zxvf jdk-8u411-linux-x64.tar.gz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解压后重命名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mv jdk1.8.0_411 jdk-8u411
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置环境变量，修改文件 <code>vim /etc/profile</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/home/yexca/software/jdk-8u411
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">CLASSPATH</span><span class="o">=</span>.:<span class="nv">$JAVA_HOME</span>/lib/dt.jar:<span class="nv">$JAVA_HOMR</span>/lib/tools.jar
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>生效</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">source</span> /etc/profile
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查询</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">java -version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="数据库">数据库
 </h3><p>不使用 docker 需要数据库，安装 MariaDB，首先创建 repo 文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim /etc/yum.repos.d/mariadb.repo
-</span></span></code></pre></div><p>文件内容如下，使用阿里云镜像源</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># MariaDB 11.2 CentOS repository list - created 2024-04-30 03:16 UTC</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># https://mariadb.org/download/</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>mariadb<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>name <span style="color:#f92672">=</span> MariaDB
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># baseurl = https://rpm.mariadb.org/11.2/centos/$releasever/$basearch</span>
-</span></span><span style="display:flex;"><span>baseurl <span style="color:#f92672">=</span> https://mirrors.aliyun.com/mariadb/yum/11.2/centos/$releasever/$basearch
-</span></span><span style="display:flex;"><span>module_hotfixes <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB</span>
-</span></span><span style="display:flex;"><span>gpgkey <span style="color:#f92672">=</span> https://mirrors.aliyun.com/mariadb/yum/RPM-GPG-KEY-MariaDB
-</span></span><span style="display:flex;"><span>gpgcheck <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</span></span></code></pre></div><p>清除缓存</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum clean all
-</span></span><span style="display:flex;"><span>yum makecache all
-</span></span></code></pre></div><p>安装</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>yum install -y MariaDB-server MariaDB-client
-</span></span></code></pre></div><p>启动服务</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl start mariadb.service
-</span></span></code></pre></div><p>配置</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mariadb-secure-installation
-</span></span></code></pre></div><h3 id="部署区块链-1">部署区块链
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/yum.repos.d/mariadb.repo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>文件内容如下，使用阿里云镜像源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># MariaDB 11.2 CentOS repository list - created 2024-04-30 03:16 UTC</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://mariadb.org/download/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>mariadb<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">name</span> <span class="o">=</span> MariaDB
+</span></span><span class="line"><span class="cl"><span class="c1"># rpm.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># baseurl = https://rpm.mariadb.org/11.2/centos/$releasever/$basearch</span>
+</span></span><span class="line"><span class="cl"><span class="nv">baseurl</span> <span class="o">=</span> https://mirrors.aliyun.com/mariadb/yum/11.2/centos/<span class="nv">$releasever</span>/<span class="nv">$basearch</span>
+</span></span><span class="line"><span class="cl"><span class="nv">module_hotfixes</span> <span class="o">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># gpgkey = https://rpm.mariadb.org/RPM-GPG-KEY-MariaDB</span>
+</span></span><span class="line"><span class="cl"><span class="nv">gpgkey</span> <span class="o">=</span> https://mirrors.aliyun.com/mariadb/yum/RPM-GPG-KEY-MariaDB
+</span></span><span class="line"><span class="cl"><span class="nv">gpgcheck</span> <span class="o">=</span> <span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>清除缓存</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum clean all
+</span></span><span class="line"><span class="cl">yum makecache all
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y MariaDB-server MariaDB-client
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启动服务</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl start mariadb.service
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mariadb-secure-installation
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="部署区块链-1">部署区块链
 </h3><p>拉取安装包</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>wget https://osp-1257653870.cos.ap-guangzhou.myqcloud.com/WeBASE/releases/download/v1.5.5/webase-deploy.zip
-</span></span></code></pre></div><p>解压</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>unzip webase-deploy.zip
-</span></span></code></pre></div><p>进入目录</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd webase-deploy
-</span></span></code></pre></div><p>修改配置文件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>vim common.properties
-</span></span></code></pre></div><p>部署</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 deploy.py installAll
-</span></span></code></pre></div><p>启停操作</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 一键部署</span>
-</span></span><span style="display:flex;"><span>部署并启动所有服务        python3 deploy.py installAll
-</span></span><span style="display:flex;"><span>停止一键部署的所有服务    python3 deploy.py stopAll
-</span></span><span style="display:flex;"><span>启动一键部署的所有服务    python3 deploy.py startAll
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 各子服务启停</span>
-</span></span><span style="display:flex;"><span>启动FISCO-BCOS节点:      python3 deploy.py startNode
-</span></span><span style="display:flex;"><span>停止FISCO-BCOS节点:      python3 deploy.py stopNode
-</span></span><span style="display:flex;"><span>启动WeBASE-Web:          python3 deploy.py startWeb
-</span></span><span style="display:flex;"><span>停止WeBASE-Web:          python3 deploy.py stopWeb
-</span></span><span style="display:flex;"><span>启动WeBASE-Node-Manager: python3 deploy.py startManager
-</span></span><span style="display:flex;"><span>停止WeBASE-Node-Manager: python3 deploy.py stopManager
-</span></span><span style="display:flex;"><span>启动WeBASE-Sign:        python3 deploy.py startSign
-</span></span><span style="display:flex;"><span>停止WeBASE-Sign:        python3 deploy.py stopSign
-</span></span><span style="display:flex;"><span>启动WeBASE-Front:        python3 deploy.py startFront
-</span></span><span style="display:flex;"><span>停止WeBASE-Front:        python3 deploy.py stopFront
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 可视化部署</span>
-</span></span><span style="display:flex;"><span>部署并启动可视化部署的所有服务  python3 deploy.py installWeBASE
-</span></span><span style="display:flex;"><span>停止可视化部署的所有服务  python3 deploy.py stopWeBASE
-</span></span><span style="display:flex;"><span>启动可视化部署的所有服务  python3 deploy.py startWeBASE
-</span></span></code></pre></div><h2 id="访问">访问
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://osp-1257653870.cos.ap-guangzhou.myqcloud.com/WeBASE/releases/download/v1.5.5/webase-deploy.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解压</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unzip webase-deploy.zip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>进入目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> webase-deploy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim common.properties
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>部署</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 deploy.py installAll
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>启停操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 一键部署</span>
+</span></span><span class="line"><span class="cl">部署并启动所有服务        python3 deploy.py installAll
+</span></span><span class="line"><span class="cl">停止一键部署的所有服务    python3 deploy.py stopAll
+</span></span><span class="line"><span class="cl">启动一键部署的所有服务    python3 deploy.py startAll
+</span></span><span class="line"><span class="cl"><span class="c1"># 各子服务启停</span>
+</span></span><span class="line"><span class="cl">启动FISCO-BCOS节点:      python3 deploy.py startNode
+</span></span><span class="line"><span class="cl">停止FISCO-BCOS节点:      python3 deploy.py stopNode
+</span></span><span class="line"><span class="cl">启动WeBASE-Web:          python3 deploy.py startWeb
+</span></span><span class="line"><span class="cl">停止WeBASE-Web:          python3 deploy.py stopWeb
+</span></span><span class="line"><span class="cl">启动WeBASE-Node-Manager: python3 deploy.py startManager
+</span></span><span class="line"><span class="cl">停止WeBASE-Node-Manager: python3 deploy.py stopManager
+</span></span><span class="line"><span class="cl">启动WeBASE-Sign:        python3 deploy.py startSign
+</span></span><span class="line"><span class="cl">停止WeBASE-Sign:        python3 deploy.py stopSign
+</span></span><span class="line"><span class="cl">启动WeBASE-Front:        python3 deploy.py startFront
+</span></span><span class="line"><span class="cl">停止WeBASE-Front:        python3 deploy.py stopFront
+</span></span><span class="line"><span class="cl"><span class="c1"># 可视化部署</span>
+</span></span><span class="line"><span class="cl">部署并启动可视化部署的所有服务  python3 deploy.py installWeBASE
+</span></span><span class="line"><span class="cl">停止可视化部署的所有服务  python3 deploy.py stopWeBASE
+</span></span><span class="line"><span class="cl">启动可视化部署的所有服务  python3 deploy.py startWeBASE
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="访问">访问
 </h2><p>根据配置项 <code>web.port=5000</code> 确定访问端口 (默认为 5000) 访问管理后台</p>
 <p>防火墙</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 查询开放的端口</span>
-</span></span><span style="display:flex;"><span>firewall-cmd --zone<span style="color:#f92672">=</span>public --list-ports
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开放端口 --permanent为永久开放</span>
-</span></span><span style="display:flex;"><span>firewall-cmd --zone<span style="color:#f92672">=</span>public --add-port<span style="color:#f92672">=</span>5000/tcp --permanent
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 重启防火墙</span>
-</span></span><span style="display:flex;"><span>firewall-cmd --reload
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查询是否开放</span>
-</span></span><span style="display:flex;"><span>firewall-cmd --zone<span style="color:#f92672">=</span>public --query-port<span style="color:#f92672">=</span>5000/tcp
-</span></span></code></pre></div><h2 id="智能合约">智能合约
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查询开放的端口</span>
+</span></span><span class="line"><span class="cl">firewall-cmd --zone<span class="o">=</span>public --list-ports
+</span></span><span class="line"><span class="cl"><span class="c1"># 开放端口 --permanent为永久开放</span>
+</span></span><span class="line"><span class="cl">firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>5000/tcp --permanent
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启防火墙</span>
+</span></span><span class="line"><span class="cl">firewall-cmd --reload
+</span></span><span class="line"><span class="cl"><span class="c1"># 查询是否开放</span>
+</span></span><span class="line"><span class="cl">firewall-cmd --zone<span class="o">=</span>public --query-port<span class="o">=</span>5000/tcp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="智能合约">智能合约
 </h2><blockquote>
 <p>2025-03-13: 我也不知道这边写的是啥了</p>
 </blockquote>

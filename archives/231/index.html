@@ -455,7 +455,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 3 分钟
+                    阅读时长: 4 分钟
                 </time>
             </div>
         
@@ -623,149 +623,322 @@ https://blog.yexca.net/archives/235
 <h2 id="dsl-聚合语句">DSL 聚合语句
 </h2><h3 id="bucket">bucket
 </h3><p>统计所有数据中酒店的品牌有几种，即按品牌对数据分组</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#960050;background-color:#1e0010">bucket</span> <span style="color:#960050;background-color:#1e0010">term</span>
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel/_search</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#75715e">// 设置size为0，结果中不包含文档，只包含聚合结果
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;brandAgg&#34;</span>: { <span style="color:#75715e">// 聚合名称
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#f92672">&#34;terms&#34;</span>: { <span style="color:#75715e">// 聚合类型
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;brand&#34;</span>, <span style="color:#75715e">// 参与聚合字段
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">20</span> <span style="color:#75715e">// 获取的聚合结果数量
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="聚合结果排序">聚合结果排序
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">#</span> <span class="err">bucket</span> <span class="err">term</span>
+</span></span><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel/_search</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// 设置size为0，结果中不包含文档，只包含聚合结果
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;brandAgg&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// 聚合名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// 聚合类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;brand&#34;</span><span class="p">,</span> <span class="c1">// 参与聚合字段
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">20</span> <span class="c1">// 获取的聚合结果数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="聚合结果排序">聚合结果排序
 </h3><p>默认情况下，bucket 聚合会统计 bucket 内的文档数量，记为 count，并且按 count 降序排序。通过指定 order 属性，自定义聚合的排序方式</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel/_search</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;brandAgg&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;terms&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;brand&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">20</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;order&#34;</span>: { <span style="color:#75715e">// 排序
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          <span style="color:#f92672">&#34;_count&#34;</span>: <span style="color:#e6db74">&#34;asc&#34;</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="限定聚合范围">限定聚合范围
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel/_search</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;brandAgg&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;brand&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// 排序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nt">&#34;_count&#34;</span><span class="p">:</span> <span class="s2">&#34;asc&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="限定聚合范围">限定聚合范围
 </h3><p>默认情况下会对索引库所有文档聚合，但实际使用时，用户会输入搜索条件，因此聚合必须是对搜索结果的聚合，聚合就必须要添加限定条件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#960050;background-color:#1e0010">bucket</span> <span style="color:#960050;background-color:#1e0010">query</span>
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel/_search</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;range&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;price&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;lte&#34;</span>: <span style="color:#ae81ff">200</span> <span style="color:#75715e">// 只对价格小于200的文档聚合
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  },
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;brandAggQuery&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;terms&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;brand&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">20</span>
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="metric">Metric
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">#</span> <span class="err">bucket</span> <span class="err">query</span>
+</span></span><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel/_search</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;query&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;range&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;price&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;lte&#34;</span><span class="p">:</span> <span class="mi">200</span> <span class="c1">// 只对价格小于200的文档聚合
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;brandAggQuery&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;brand&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="metric">Metric
 </h3><p>上述 bucket 聚合按品牌分组，现在要获取每个品牌用户评分的 min、max、avg</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#960050;background-color:#1e0010">metric</span>
-</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel/_search</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;brandAgg&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;terms&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;brand&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">20</span>
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;aggs&#34;</span>: { <span style="color:#75715e">// bucket的子聚合，对分组后每个组运算
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#f92672">&#34;scoreStats&#34;</span>: { <span style="color:#75715e">// 聚合名称
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          <span style="color:#f92672">&#34;stats&#34;</span>: { <span style="color:#75715e">// 聚合类型
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;score&#34;</span> <span style="color:#75715e">// 聚合字段
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          }
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>根据平均值排序</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">GET</span> <span style="color:#960050;background-color:#1e0010">/hotel/_search</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">0</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;brandAgg&#34;</span>: {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;terms&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;brand&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">20</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;order&#34;</span>: {
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;scoreStats.avg&#34;</span>: <span style="color:#e6db74">&#34;desc&#34;</span> <span style="color:#75715e">// 平均值降序
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        }
-</span></span><span style="display:flex;"><span>      },
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;aggs&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;scoreStats&#34;</span>: {
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;stats&#34;</span>: {
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;field&#34;</span>: <span style="color:#e6db74">&#34;score&#34;</span>
-</span></span><span style="display:flex;"><span>          }
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="restapi-聚合">RestAPI 聚合
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">#</span> <span class="err">metric</span>
+</span></span><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel/_search</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;brandAgg&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;brand&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// bucket的子聚合，对分组后每个组运算
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nt">&#34;scoreStats&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// 聚合名称
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="nt">&#34;stats&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="c1">// 聚合类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;score&#34;</span> <span class="c1">// 聚合字段
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据平均值排序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">GET</span> <span class="err">/hotel/_search</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;brandAgg&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;terms&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;brand&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;size&#34;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;order&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;scoreStats.avg&#34;</span><span class="p">:</span> <span class="s2">&#34;desc&#34;</span> <span class="c1">// 平均值降序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;aggs&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;scoreStats&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nt">&#34;stats&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nt">&#34;field&#34;</span><span class="p">:</span> <span class="s2">&#34;score&#34;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="restapi-聚合">RestAPI 聚合
 </h2><h3 id="语法">语法
 </h3><p>聚合条件与 query 同级，因此使用 <code>request.source()</code> 指定聚合条件</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testAggTerm</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">size</span>(0);
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">aggregation</span>(
-</span></span><span style="display:flex;"><span>            AggregationBuilders
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">terms</span>(<span style="color:#e6db74">&#34;brandAgg&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;brand&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">size</span>(20)
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>响应处理</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testAggTerm</span>() <span style="color:#66d9ef">throws</span> IOException {
-</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">size</span>(0);
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">aggregation</span>(
-</span></span><span style="display:flex;"><span>            AggregationBuilders
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">terms</span>(<span style="color:#e6db74">&#34;brandAgg&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;brand&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">size</span>(20)
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 解析聚合结果</span>
-</span></span><span style="display:flex;"><span>    Aggregations aggregations <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getAggregations</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 按名称获取聚合结果</span>
-</span></span><span style="display:flex;"><span>    Terms term <span style="color:#f92672">=</span> aggregations.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;brandAgg&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 获取bucket</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Terms.<span style="color:#a6e22e">Bucket</span><span style="color:#f92672">&gt;</span> buckets <span style="color:#f92672">=</span> term.<span style="color:#a6e22e">getBuckets</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 遍历</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Terms.<span style="color:#a6e22e">Bucket</span> bucket : buckets) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取key</span>
-</span></span><span style="display:flex;"><span>        String name <span style="color:#f92672">=</span> bucket.<span style="color:#a6e22e">getKeyAsString</span>();
-</span></span><span style="display:flex;"><span>        System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(name);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="实例需求">实例需求
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAggTerm</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">SearchRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SearchRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">size</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">aggregation</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AggregationBuilders</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">terms</span><span class="p">(</span><span class="s">&#34;brandAgg&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">field</span><span class="p">(</span><span class="s">&#34;brand&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">size</span><span class="p">(</span><span class="n">20</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">SearchResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>响应处理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">testAggTerm</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">SearchRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SearchRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">size</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">aggregation</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AggregationBuilders</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">terms</span><span class="p">(</span><span class="s">&#34;brandAgg&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">field</span><span class="p">(</span><span class="s">&#34;brand&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">size</span><span class="p">(</span><span class="n">20</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">SearchResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 解析聚合结果</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Aggregations</span><span class="w"> </span><span class="n">aggregations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="na">getAggregations</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 按名称获取聚合结果</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Terms</span><span class="w"> </span><span class="n">term</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aggregations</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&#34;brandAgg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 获取bucket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Terms</span><span class="p">.</span><span class="na">Bucket</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buckets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">term</span><span class="p">.</span><span class="na">getBuckets</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 遍历</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Terms</span><span class="p">.</span><span class="na">Bucket</span><span class="w"> </span><span class="n">bucket</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">buckets</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="na">getKeyAsString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="实例需求">实例需求
 </h3><p>前端页面的城市、星级、品牌都是固定供选择的，不会随着搜索输入而改变</p>
 <p>但是假如搜索 &ldquo;东方明珠&rdquo;，那城市只能是上海，不应该显示其他城市</p>
 <p>也就是可供选择的城市等应该随着搜索输入的内容改变，为此，前端需要根据内容请求可选城市，假设接口如下：</p>
@@ -776,74 +949,152 @@ https://blog.yexca.net/archives/235
 <li>返回值类型：<code>Map&lt;String, List&lt;String&gt;&gt;</code></li>
 </ul>
 <p>Controller</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@PostMapping</span>(<span style="color:#e6db74">&#34;/filters&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Map<span style="color:#f92672">&lt;</span>String, List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">getFilters</span>(<span style="color:#a6e22e">@RequestBody</span> RequestParams params){
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> hotelService.<span style="color:#a6e22e">getFilters</span>(params);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Service</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Map<span style="color:#f92672">&lt;</span>String, List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">getFilters</span>(RequestParams params) {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// request</span>
-</span></span><span style="display:flex;"><span>    SearchRequest request <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SearchRequest(<span style="color:#e6db74">&#34;hotel&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// DSL</span>
-</span></span><span style="display:flex;"><span>    basicQuery(params, request);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 设置size</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">size</span>(0);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 聚合</span>
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">aggregation</span>(
-</span></span><span style="display:flex;"><span>            AggregationBuilders
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">terms</span>(<span style="color:#e6db74">&#34;brandAgg&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;brand&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">size</span>(100)
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">aggregation</span>(
-</span></span><span style="display:flex;"><span>            AggregationBuilders
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">terms</span>(<span style="color:#e6db74">&#34;cityAgg&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;city&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">size</span>(100)
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    request.<span style="color:#a6e22e">source</span>().<span style="color:#a6e22e">aggregation</span>(
-</span></span><span style="display:flex;"><span>            AggregationBuilders
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">terms</span>(<span style="color:#e6db74">&#34;starAgg&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">field</span>(<span style="color:#e6db74">&#34;starName&#34;</span>)
-</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">size</span>(100)
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 请求</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
-</span></span><span style="display:flex;"><span>        SearchResponse response <span style="color:#f92672">=</span> client.<span style="color:#a6e22e">search</span>(request, RequestOptions.<span style="color:#a6e22e">DEFAULT</span>);
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 解析响应</span>
-</span></span><span style="display:flex;"><span>        Map<span style="color:#f92672">&lt;</span>String, List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">&lt;&gt;</span>();
-</span></span><span style="display:flex;"><span>        Aggregations aggregations <span style="color:#f92672">=</span> response.<span style="color:#a6e22e">getAggregations</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 品牌</span>
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> brandList <span style="color:#f92672">=</span> getAggName(aggregations, <span style="color:#e6db74">&#34;brandAgg&#34;</span>);
-</span></span><span style="display:flex;"><span>        result.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;品牌&#34;</span>, brandList);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 城市</span>
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> cityList <span style="color:#f92672">=</span> getAggName(aggregations, <span style="color:#e6db74">&#34;cityAgg&#34;</span>);
-</span></span><span style="display:flex;"><span>        result.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;城市&#34;</span>, cityList);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 星级</span>
-</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> starList <span style="color:#f92672">=</span> getAggName(aggregations, <span style="color:#e6db74">&#34;starAgg&#34;</span>);
-</span></span><span style="display:flex;"><span>        result.<span style="color:#a6e22e">put</span>(<span style="color:#e6db74">&#34;星级&#34;</span>, starList);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result;
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getAggName</span>(Aggregations aggregations, String name) {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 获取品牌</span>
-</span></span><span style="display:flex;"><span>    Terms brand <span style="color:#f92672">=</span> aggregations.<span style="color:#a6e22e">get</span>(name);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 获取bucket</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> Terms.<span style="color:#a6e22e">Bucket</span><span style="color:#f92672">&gt;</span> buckets <span style="color:#f92672">=</span> brand.<span style="color:#a6e22e">getBuckets</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 遍历</span>
-</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> brandList <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;</span>();
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Terms.<span style="color:#a6e22e">Bucket</span> bucket : buckets) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取key</span>
-</span></span><span style="display:flex;"><span>        String key <span style="color:#f92672">=</span> bucket.<span style="color:#a6e22e">getKeyAsString</span>();
-</span></span><span style="display:flex;"><span>        brandList.<span style="color:#a6e22e">add</span>(key);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> brandList;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&#34;/filters&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nf">getFilters</span><span class="p">(</span><span class="nd">@RequestBody</span><span class="w"> </span><span class="n">RequestParams</span><span class="w"> </span><span class="n">params</span><span class="p">){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">hotelService</span><span class="p">.</span><span class="na">getFilters</span><span class="p">(</span><span class="n">params</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Service</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nf">getFilters</span><span class="p">(</span><span class="n">RequestParams</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">SearchRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SearchRequest</span><span class="p">(</span><span class="s">&#34;hotel&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// DSL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">basicQuery</span><span class="p">(</span><span class="n">params</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 设置size</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">size</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 聚合</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">aggregation</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AggregationBuilders</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">terms</span><span class="p">(</span><span class="s">&#34;brandAgg&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">field</span><span class="p">(</span><span class="s">&#34;brand&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">size</span><span class="p">(</span><span class="n">100</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">aggregation</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AggregationBuilders</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">terms</span><span class="p">(</span><span class="s">&#34;cityAgg&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">field</span><span class="p">(</span><span class="s">&#34;city&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">size</span><span class="p">(</span><span class="n">100</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">request</span><span class="p">.</span><span class="na">source</span><span class="p">().</span><span class="na">aggregation</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">AggregationBuilders</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">terms</span><span class="p">(</span><span class="s">&#34;starAgg&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">field</span><span class="p">(</span><span class="s">&#34;starName&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">size</span><span class="p">(</span><span class="n">100</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 请求</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">SearchResponse</span><span class="w"> </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">search</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">RequestOptions</span><span class="p">.</span><span class="na">DEFAULT</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 解析响应</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Aggregations</span><span class="w"> </span><span class="n">aggregations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="p">.</span><span class="na">getAggregations</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 品牌</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">brandList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getAggName</span><span class="p">(</span><span class="n">aggregations</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;brandAgg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&#34;品牌&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">brandList</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 城市</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cityList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getAggName</span><span class="p">(</span><span class="n">aggregations</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;cityAgg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&#34;城市&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">cityList</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 星级</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">starList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getAggName</span><span class="p">(</span><span class="n">aggregations</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;starAgg&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">result</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&#34;星级&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">starList</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">IOException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RuntimeException</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">getAggName</span><span class="p">(</span><span class="n">Aggregations</span><span class="w"> </span><span class="n">aggregations</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 获取品牌</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Terms</span><span class="w"> </span><span class="n">brand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aggregations</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">name</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 获取bucket</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Terms</span><span class="p">.</span><span class="na">Bucket</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buckets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brand</span><span class="p">.</span><span class="na">getBuckets</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">// 遍历</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">brandList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Terms</span><span class="p">.</span><span class="na">Bucket</span><span class="w"> </span><span class="n">bucket</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">buckets</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="na">getKeyAsString</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">brandList</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">key</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">brandList</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 

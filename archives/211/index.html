@@ -550,22 +550,43 @@ https://www.pixiv.net/artworks/83273073
 ></p>
 <h2 id="配置">配置
 </h2><p>因为基于我现有数据库开发，所以几乎没有自定义程度，数据库建表语句为</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> pic (
-</span></span><span style="display:flex;"><span>    ID varchar(<span style="color:#ae81ff">99</span>),
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">唯一标识</span>
-</span></span><span style="display:flex;"><span>    name varchar(<span style="color:#ae81ff">255</span>),
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">画师昵称</span>
-</span></span><span style="display:flex;"><span>    downloadedDate datetime,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">下载</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">更新时间</span>
-</span></span><span style="display:flex;"><span>    lastDownloadID varchar(<span style="color:#ae81ff">255</span>),
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">最新作品</span>ID
-</span></span><span style="display:flex;"><span>    platform varchar(<span style="color:#ae81ff">50</span>),
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">平台</span>
-</span></span><span style="display:flex;"><span>    url varchar(<span style="color:#ae81ff">255</span>),
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">#</span> <span style="color:#960050;background-color:#1e0010">链接</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(ID)
-</span></span><span style="display:flex;"><span>)ENGINE<span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>utf8mb4;
-</span></span></code></pre></div><p>然后因为 API 的使用需要登陆并且不可以用账号密码登录，根据 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pic</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ID</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">99</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">唯一标识</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">画师昵称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">downloadedDate</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">下载</span><span class="o">/</span><span class="err">更新时间</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">lastDownloadID</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">最新作品</span><span class="n">ID</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">platform</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">平台</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">url</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">#</span><span class="w"> </span><span class="err">链接</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="n">ID</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后因为 API 的使用需要登陆并且不可以用账号密码登录，根据 
 
 <a class="link" href="https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362" 
 
@@ -577,11 +598,25 @@ https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362
   获取 Auth Token 后使用</p>
 <p>背景图片我并没有上传到 git 仓库，路径为 <code>app\resources\images\background.png</code></p>
 <p>然后是需要安装 Python，安装依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install -r requirements.txt
-</span></span></code></pre></div><h2 id="使用">使用
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install -r requirements.txt
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="使用">使用
 </h2><p>运行程序</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python main.py
-</span></span></code></pre></div><p>在 Pixiv 验证界面 和 设置 界面完成相关配置后返回首页</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python main.py
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在 Pixiv 验证界面 和 设置 界面完成相关配置后返回首页</p>
 <p>填入画师 ID <strong>或者</strong> 某一作品的 ID 就会自动爬取该画师全部作品了</p>
 <h2 id="结尾">结尾
 </h2><p>我其实都觉得自己都不去使用它，这算是我开发经历的一小步吧</p>

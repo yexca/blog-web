@@ -500,33 +500,70 @@
 </ul>
 <h2 id="简单入门">简单入门
 </h2><p>创建项目，引入依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#75715e">&lt;!--网关--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-gateway<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!--nacos服务发现依赖--&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>com.alibaba.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span></code></pre></div><p>编写基础配置和路由规则</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">server</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">10010</span> <span style="color:#75715e"># 网关端口</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">application</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">gateway</span> <span style="color:#75715e"># 服务名称</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">nacos</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">server-addr</span>: <span style="color:#ae81ff">localhost:8848</span> <span style="color:#75715e"># nacos地址</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gateway</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">routes</span>: <span style="color:#75715e"># 网关路由配置</span>
-</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">user-service</span> <span style="color:#75715e"># 路由id，自定义，只要唯一即可</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#75715e"># uri: http://127.0.0.1:8081 # 路由的目标地址 http就是固定地址</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">uri</span>: <span style="color:#ae81ff">lb://userService</span> <span style="color:#75715e"># 路由的目标地址 lb就是负载均衡，后面跟服务名称</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">predicates</span>: <span style="color:#75715e"># 路由断言，也就是判断请求是否符合路由规则的条件</span>
-</span></span><span style="display:flex;"><span>            - <span style="color:#ae81ff">Path=/user/**</span> <span style="color:#75715e"># 这个是按照路径匹配，只要以/user/开头就符合要求</span>
-</span></span></code></pre></div><p>然后访问 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="c">&lt;!--网关--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-gateway<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!--nacos服务发现依赖--&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;groupId&gt;</span>com.alibaba.cloud<span class="nt">&lt;/groupId&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;artifactId&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="nt">&lt;/artifactId&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编写基础配置和路由规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">server</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">10010</span><span class="w"> </span><span class="c"># 网关端口</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">application</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">gateway</span><span class="w"> </span><span class="c"># 服务名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nacos</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">server-addr</span><span class="p">:</span><span class="w"> </span><span class="l">localhost:8848</span><span class="w"> </span><span class="c"># nacos地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w"> </span><span class="c"># 网关路由配置</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service</span><span class="w"> </span><span class="c"># 路由id，自定义，只要唯一即可</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># uri: http://127.0.0.1:8081 # 路由的目标地址 http就是固定地址</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://userService</span><span class="w"> </span><span class="c"># 路由的目标地址 lb就是负载均衡，后面跟服务名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> </span><span class="c"># 路由断言，也就是判断请求是否符合路由规则的条件</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="l">Path=/user/**</span><span class="w"> </span><span class="c"># 这个是按照路径匹配，只要以/user/开头就符合要求</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后访问 
 
 <a class="link" href="localhost:10010/user/1" 
 
@@ -668,48 +705,107 @@ https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway/gatew
 <h3 id="请求头过滤器">请求头过滤器
 </h3><p>以请求头过滤器为例，给所有进入 userService 的请求添加一个请求头：Hello=World</p>
 <p>在 gateway 中修改 application.yml，添加路由过滤</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gateway</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">routes</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">user-service </span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uri</span>: <span style="color:#ae81ff">lb://userservice </span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">predicates</span>: 
-</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">Path=/user/** </span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">filters</span>: <span style="color:#75715e"># 过滤器</span>
-</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">AddRequestHeader=Hello, World</span> <span style="color:#75715e"># 添加请求头</span>
-</span></span></code></pre></div><p>然后可以修改 Controller 测试</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@GetMapping</span>(<span style="color:#e6db74">&#34;/{id}&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> User <span style="color:#a6e22e">queryById</span>(<span style="color:#a6e22e">@PathVariable</span>(<span style="color:#e6db74">&#34;id&#34;</span>) Long id, <span style="color:#a6e22e">@RequestHeader</span>(<span style="color:#e6db74">&#34;Hello&#34;</span>) String hello) {
-</span></span><span style="display:flex;"><span>    System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(hello);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> userService.<span style="color:#a6e22e">queryById</span>(id);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="默认过滤器">默认过滤器
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://userservice </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">Path=/user/** </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">filters</span><span class="p">:</span><span class="w"> </span><span class="c"># 过滤器</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">AddRequestHeader=Hello, World</span><span class="w"> </span><span class="c"># 添加请求头</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后可以修改 Controller 测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&#34;/{id}&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="nf">queryById</span><span class="p">(</span><span class="nd">@PathVariable</span><span class="p">(</span><span class="s">&#34;id&#34;</span><span class="p">)</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="nd">@RequestHeader</span><span class="p">(</span><span class="s">&#34;Hello&#34;</span><span class="p">)</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">hello</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">userService</span><span class="p">.</span><span class="na">queryById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="默认过滤器">默认过滤器
 </h3><p>如果要对所有的路由都生效，则可以将过滤器工厂写到default下</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gateway</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">routes</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">user-service </span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uri</span>: <span style="color:#ae81ff">lb://userservice </span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">predicates</span>: 
-</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">Path=/user/**</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">default-filters</span>: <span style="color:#75715e"># 默认过滤项</span>
-</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">AddRequestHeader=Hello, World</span>
-</span></span></code></pre></div><h2 id="全局过滤器">全局过滤器
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">routes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">user-service </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">uri</span><span class="p">:</span><span class="w"> </span><span class="l">lb://userservice </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">predicates</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">Path=/user/**</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">default-filters</span><span class="p">:</span><span class="w"> </span><span class="c"># 默认过滤项</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AddRequestHeader=Hello, World</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="全局过滤器">全局过滤器
 </h2><p>网关提供了 31 种过滤器，但每一种过滤器的作用都是固定的。如果我们希望拦截请求，做自己的业务逻辑则没办法实现</p>
 <p>而全局过滤器的作用也是处理一切进入网关的请求和微服务响应，与 GatewayFilter 的作用一样。区别在于 GatewayFilter 通过配置定义，处理逻辑是固定的；而 GlobalFilter 的逻辑需要自己写代码实现，定义方式是实现GlobalFilter接口</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GlobalFilter</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     *  处理当前请求，有必要的话通过{@link GatewayFilterChain}将请求交给下一个过滤器处理
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     *
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param exchange 请求上下文，里面可以获取Request、Response等信息
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param chain 用来把请求委托给下一个过滤器 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return {@code Mono&lt;Void&gt;} 返回标示当前过滤器业务结束
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
-</span></span><span style="display:flex;"><span>    Mono<span style="color:#f92672">&lt;</span>Void<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">filter</span>(ServerWebExchange exchange, GatewayFilterChain chain);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>在filter中编写自定义逻辑，可以实现下列功能：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">GlobalFilter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *  处理当前请求，有必要的话通过{@link GatewayFilterChain}将请求交给下一个过滤器处理
+</span></span></span><span class="line"><span class="cl"><span class="cm">     *
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param exchange 请求上下文，里面可以获取Request、Response等信息
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @param chain 用来把请求委托给下一个过滤器 
+</span></span></span><span class="line"><span class="cl"><span class="cm">     * @return {@code Mono&lt;Void&gt;} 返回标示当前过滤器业务结束
+</span></span></span><span class="line"><span class="cl"><span class="cm">     */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">ServerWebExchange</span><span class="w"> </span><span class="n">exchange</span><span class="p">,</span><span class="w"> </span><span class="n">GatewayFilterChain</span><span class="w"> </span><span class="n">chain</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在filter中编写自定义逻辑，可以实现下列功能：</p>
 <ul>
 <li>登录状态判断</li>
 <li>权限校验</li>
@@ -727,27 +823,53 @@ https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway/gatew
 </ul>
 <p>如果同时满足则放行，否则拦截</p>
 <p>首先在 gateway 中定义一个过滤器：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Order</span>(<span style="color:#f92672">-</span>1) <span style="color:#75715e">// 优先处理</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorizeFilter</span> <span style="color:#66d9ef">implements</span> GlobalFilter {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Mono<span style="color:#f92672">&lt;</span>Void<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">filter</span>(ServerWebExchange exchange, GatewayFilterChain chain) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取请求参数</span>
-</span></span><span style="display:flex;"><span>        MultiValueMap<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> params <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequest</span>().<span style="color:#a6e22e">getQueryParams</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取AuthorizeFilter参数，此处约定第一个为认证参数</span>
-</span></span><span style="display:flex;"><span>        String authorize <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getFirst</span>(<span style="color:#e6db74">&#34;AuthorizeFilter&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 检验</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#34;admin&#34;</span>.<span style="color:#a6e22e">equals</span>(authorize)){
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 放行</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> chain.<span style="color:#a6e22e">filter</span>(exchange);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 拦截，禁止访问</span>
-</span></span><span style="display:flex;"><span>        exchange.<span style="color:#a6e22e">getResponse</span>().<span style="color:#a6e22e">setStatusCode</span>(HttpStatus.<span style="color:#a6e22e">FORBIDDEN</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 结束处理</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> exchange.<span style="color:#a6e22e">getResponse</span>().<span style="color:#a6e22e">setComplete</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="过滤器执行顺序">过滤器执行顺序
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Order</span><span class="p">(</span><span class="o">-</span><span class="n">1</span><span class="p">)</span><span class="w"> </span><span class="c1">// 优先处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Component</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AuthorizeFilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">GlobalFilter</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">ServerWebExchange</span><span class="w"> </span><span class="n">exchange</span><span class="p">,</span><span class="w"> </span><span class="n">GatewayFilterChain</span><span class="w"> </span><span class="n">chain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取请求参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">MultiValueMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exchange</span><span class="p">.</span><span class="na">getRequest</span><span class="p">().</span><span class="na">getQueryParams</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取AuthorizeFilter参数，此处约定第一个为认证参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">authorize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="p">.</span><span class="na">getFirst</span><span class="p">(</span><span class="s">&#34;AuthorizeFilter&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 检验</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">authorize</span><span class="p">)){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// 放行</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">chain</span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="n">exchange</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 拦截，禁止访问</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">exchange</span><span class="p">.</span><span class="na">getResponse</span><span class="p">().</span><span class="na">setStatusCode</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">FORBIDDEN</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 结束处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">exchange</span><span class="p">.</span><span class="na">getResponse</span><span class="p">().</span><span class="na">setComplete</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="过滤器执行顺序">过滤器执行顺序
 </h3><p>请求进入网关会碰到三类过滤器：当前路由的过滤器、DefaultFilter、GlobalFilter</p>
 <p>请求路由后，会将当前路由过滤器和 DefaultFilter、GlobalFilter，合并到一个过滤器链（集合）中，排序后依次执行每个过滤器</p>
 <p>每个过滤器都有 int 类型的 order 值，order 值越小，优先级越高，执行顺序越靠前</p>
@@ -755,53 +877,108 @@ https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway/gatew
 <p>GlobalFilter 通过实现 Ordered 接口，或者添加 @Order 注解来指定 order 值，由我们自己指定</p>
 <p>当过滤器的order值一样时，会按照 defaultFilter &gt; 路由过滤器 &gt; GlobalFilter的顺序执行</p>
 <p>其中通过实现接口指定 order 值：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">//@Order(-1) // 优先处理</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Component</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AuthorizeFilter</span> <span style="color:#66d9ef">implements</span> GlobalFilter, Ordered {
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Mono<span style="color:#f92672">&lt;</span>Void<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">filter</span>(ServerWebExchange exchange, GatewayFilterChain chain) {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取请求参数</span>
-</span></span><span style="display:flex;"><span>        MultiValueMap<span style="color:#f92672">&lt;</span>String, String<span style="color:#f92672">&gt;</span> params <span style="color:#f92672">=</span> exchange.<span style="color:#a6e22e">getRequest</span>().<span style="color:#a6e22e">getQueryParams</span>();
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 获取AuthorizeFilter参数，此处约定第一个为认证参数</span>
-</span></span><span style="display:flex;"><span>        String authorize <span style="color:#f92672">=</span> params.<span style="color:#a6e22e">getFirst</span>(<span style="color:#e6db74">&#34;AuthorizeFilter&#34;</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 检验</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(<span style="color:#e6db74">&#34;admin&#34;</span>.<span style="color:#a6e22e">equals</span>(authorize)){
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 放行</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> chain.<span style="color:#a6e22e">filter</span>(exchange);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 拦截，禁止访问</span>
-</span></span><span style="display:flex;"><span>        exchange.<span style="color:#a6e22e">getResponse</span>().<span style="color:#a6e22e">setStatusCode</span>(HttpStatus.<span style="color:#a6e22e">FORBIDDEN</span>);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// 结束处理</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> exchange.<span style="color:#a6e22e">getResponse</span>().<span style="color:#a6e22e">setComplete</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getOrder</span>() {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>1;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="跨域问题">跨域问题
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//@Order(-1) // 优先处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@Component</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">AuthorizeFilter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">GlobalFilter</span><span class="p">,</span><span class="w"> </span><span class="n">Ordered</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">ServerWebExchange</span><span class="w"> </span><span class="n">exchange</span><span class="p">,</span><span class="w"> </span><span class="n">GatewayFilterChain</span><span class="w"> </span><span class="n">chain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取请求参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">MultiValueMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exchange</span><span class="p">.</span><span class="na">getRequest</span><span class="p">().</span><span class="na">getQueryParams</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 获取AuthorizeFilter参数，此处约定第一个为认证参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">authorize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">params</span><span class="p">.</span><span class="na">getFirst</span><span class="p">(</span><span class="s">&#34;AuthorizeFilter&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 检验</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="s">&#34;admin&#34;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">authorize</span><span class="p">)){</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c1">// 放行</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">chain</span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="n">exchange</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 拦截，禁止访问</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">exchange</span><span class="p">.</span><span class="na">getResponse</span><span class="p">().</span><span class="na">setStatusCode</span><span class="p">(</span><span class="n">HttpStatus</span><span class="p">.</span><span class="na">FORBIDDEN</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 结束处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">exchange</span><span class="p">.</span><span class="na">getResponse</span><span class="p">().</span><span class="na">setComplete</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="跨域问题">跨域问题
 </h2><p>同域为协议相同、 IP 或域名相同、端口相同</p>
 <p>跨域问题：浏览器禁止请求的发起者与服务端发生跨域 ajax 请求，请求被浏览器拦截的问题，解决方案便是 CORS</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">spring</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">cloud</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gateway</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">globalcors</span>: <span style="color:#75715e"># 全局的跨域处理</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">add-to-simple-url-handler-mapping</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 解决options请求被拦截问题</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">corsConfigurations</span>:
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#39;[/**]&#39;</span>:
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">allowedOrigins</span>: <span style="color:#75715e"># 允许哪些网站的跨域请求 </span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;http://localhost:8090&#34;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">allowedMethods</span>: <span style="color:#75715e"># 允许的跨域ajax的请求方式</span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;GET&#34;</span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;POST&#34;</span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;DELETE&#34;</span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;PUT&#34;</span>
-</span></span><span style="display:flex;"><span>              - <span style="color:#e6db74">&#34;OPTIONS&#34;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">allowedHeaders</span>: <span style="color:#e6db74">&#34;*&#34;</span> <span style="color:#75715e"># 允许在请求中携带的头信息</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">allowCredentials</span>: <span style="color:#66d9ef">true</span> <span style="color:#75715e"># 是否允许携带cookie</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">maxAge</span>: <span style="color:#ae81ff">360000</span> <span style="color:#75715e"># 这次跨域检测的有效期</span>
-</span></span></code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">spring</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">cloud</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">gateway</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">globalcors</span><span class="p">:</span><span class="w"> </span><span class="c"># 全局的跨域处理</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">add-to-simple-url-handler-mapping</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># 解决options请求被拦截问题</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">corsConfigurations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">&#39;[/**]&#39;</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedOrigins</span><span class="p">:</span><span class="w"> </span><span class="c"># 允许哪些网站的跨域请求 </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;http://localhost:8090&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedMethods</span><span class="p">:</span><span class="w"> </span><span class="c"># 允许的跨域ajax的请求方式</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;GET&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;POST&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;DELETE&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;PUT&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="s2">&#34;OPTIONS&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowedHeaders</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;*&#34;</span><span class="w"> </span><span class="c"># 允许在请求中携带的头信息</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">allowCredentials</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># 是否允许携带cookie</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">maxAge</span><span class="p">:</span><span class="w"> </span><span class="m">360000</span><span class="w"> </span><span class="c"># 这次跨域检测的有效期</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 </section>
 
 
