@@ -1,1057 +1,242 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include &lt;stdio.h&gt; // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf(&#34;空栈&#34;); return -1; } printf(&#34;弹栈元素：%d\\n&#34;,a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n">
-<title>数据结构 栈代码</title>
-
-<link rel='canonical' href='https://blog.yexca.net/archives/17/'>
-
-<link rel="stylesheet" href="/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css"><meta property='og:title' content="数据结构 栈代码">
-<meta property='og:description' content="顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include &lt;stdio.h&gt; // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf(&#34;空栈&#34;); return -1; } printf(&#34;弹栈元素：%d\\n&#34;,a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n">
-<meta property='og:url' content='https://blog.yexca.net/archives/17/'>
-<meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='数据结构' /><meta property='article:published_time' content='2021-11-21T22:19:04&#43;08:00'/><meta property='article:modified_time' content='2021-11-21T22:19:04&#43;08:00'/>
-<meta name="twitter:site" content="@yexcano">
-    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="数据结构 栈代码">
-<meta name="twitter:description" content="顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include &lt;stdio.h&gt; // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf(&#34;空栈&#34;); return -1; } printf(&#34;弹栈元素：%d\\n&#34;,a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n">
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-
-
-
-
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.yexca.net\/archives\/17\/"
-    },
-    "headline": "数据结构 栈代码",
-    "name": "yexca'Blog",
-    "author": {
-      "@type": "Person",
-      "name": "yexca"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "yexca'Blog"
-    },
-    "datePublished": "2021-11-21",
-    "dateModified": "2021-11-21",
-    "inLanguage": "zh-cn",
-    "description": "yexca 的技术与生活博客，记录编程学习与生活随想。"
-  }
-  </script>
-
-
-<link rel="alternate" hreflang="x-default" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-CN" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-TW" href="https://blog.yexca.net/zh-tw/" />
-<link rel="alternate" hreflang="ja" href="https://blog.yexca.net/ja/" />
-<link rel="alternate" hreflang="en" href="https://blog.yexca.net/en/" />
-
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
-            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
-        </div>
-    </header><ol class="menu-social">
-            
-                <li>
-                    <a 
-                        href='https://github.com/yexca'
-                        target="_blank"
-                        title="0GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='mailto:yexca@duck.com'
-                        target="_blank"
-                        title="1Mail"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://t.me/yexca'
-                        target="_blank"
-                        title="2Telegram"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
-                        
-                    </a>
-                </li>
-            
-
-            <li>
-                <a 
-                    href="/feed.xml" 
-                    target="_blank" 
-                    title="RSS" 
-                    rel="me"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="5" cy="19" r="1" />
-  <path d="M4 4a16 16 0 0 1 16 16" />
-  <path d="M4 11a9 9 0 0 1 9 9" />
-</svg>
-
-
-
-                </a>
-            </li>
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/background/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                
-                <span>背景</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>链接</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-        <li class="menu-bottom-section">
-            <ol class="menu">
-                    
-                        <li id="i18n-switch">  
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M4 5h7" />
-  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
-  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
-  <path d="M12 20l4 -9l4 9" />
-  <path d="M19.1 18h-6.2" />
-</svg>
-
-
-
-                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
-                                
-                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
-                                
-                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
-                                
-                                    <option value="https://blog.yexca.net/en/" >English</option>
-                                
-                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
-                                
-                            </select>
-                        </li>
-                    
-                
-
-                
-                    <li id="dark-mode-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <span>暗色模式</span>
-                    </li>
-                
-            </ol>
-        </li>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#顺序栈-数组实现">顺序栈 (数组实现)</a></li>
-    <li><a href="#链栈">链栈</a></li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" >
-                技术学习
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/archives/17/">数据结构 栈代码</a>
-        </h2>
-    
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">2021-11-21 22:19 &#43;0800</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 2 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-    
-        <footer class="post-tags">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 7v3l9 9l7 -7l-9 -9h-3a2 2 0 0 0 -2 2"></path>
-                <path d="M9 8h-0.01"></path>
-            </svg>
-            
-                <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">数据结构</a>
-            
-        </footer>
-    
-
-    
-        <footer class="article-translations">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M4 5h7" />
-  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
-  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
-  <path d="M12 20l4 -9l4 9" />
-  <path d="M19.1 18h-6.2" />
-</svg>
-
-
-
-            <div>
-                
-                    <a href="https://blog.yexca.net/zh-tw/archives/17/" class="link">繁體中文</a>
-                
-            </div>
-        </footer>
-    
-
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <h2 id="顺序栈-数组实现">顺序栈 (数组实现)
-</h2><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="c1">// 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">push</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">a</span><span class="p">,</span><span class="kt">int</span> <span class="n">top</span><span class="p">,</span><span class="kt">int</span> <span class="n">elem</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">a</span><span class="p">[</span><span class="o">++</span><span class="n">top</span><span class="p">]</span><span class="o">=</span><span class="n">elem</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">top</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 数据元素出栈
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">pop</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span> <span class="n">a</span><span class="p">,</span><span class="kt">int</span> <span class="n">top</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">top</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;空栈&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;弹栈元素：%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">a</span><span class="p">[</span><span class="n">top</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span><span class="o">--</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">top</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">top</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">push</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">push</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">push</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">push</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">pop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">pop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">pop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">pop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">top</span> <span class="o">=</span> <span class="nf">pop</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出结果：</p>
-<p>弹栈元素：4<br>
-弹栈元素：3<br>
-弹栈元素：2<br>
-弹栈元素：1<br>
-空栈</p>
-<h2 id="链栈">链栈
-</h2><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">lineStack</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">data</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">lineStack</span> <span class="o">*</span> <span class="n">next</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">lineStack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// stack 为当前的链栈，a 表示入栈元素
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lineStack</span><span class="o">*</span> <span class="nf">push</span><span class="p">(</span><span class="n">lineStack</span> <span class="o">*</span> <span class="n">stack</span><span class="p">,</span><span class="kt">int</span> <span class="n">a</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 创建存储新元素的节点
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">lineStack</span> <span class="o">*</span> <span class="n">line</span><span class="o">=</span><span class="p">(</span><span class="n">lineStack</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">lineStack</span><span class="p">));</span>
-</span></span><span class="line"><span class="cl">    <span class="n">line</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">=</span><span class="n">a</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 新节点与头节点建立逻辑关系
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">line</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">=</span><span class="n">stack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// 更新头指针的指向
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">stack</span><span class="o">=</span><span class="n">line</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">stack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 栈顶元素出链栈的实现函数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lineStack</span> <span class="o">*</span> <span class="nf">pop</span><span class="p">(</span><span class="n">lineStack</span> <span class="o">*</span> <span class="n">stack</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">stack</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 声明一个新指针指向栈顶节点
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">lineStack</span> <span class="o">*</span> <span class="n">p</span><span class="o">=</span><span class="n">stack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">// 更新头指针
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">stack</span><span class="o">=</span><span class="n">stack</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;出栈元素：%d &#34;</span><span class="p">,</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">stack</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl">        <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;新栈顶元素：%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">stack</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span>
-</span></span><span class="line"><span class="cl">        <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;栈已空</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">free</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;栈内没有元素&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">stack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">stack</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">lineStack</span> <span class="o">*</span> <span class="n">stack</span><span class="o">=</span><span class="nb">NULL</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stack</span><span class="o">=</span><span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>输出结果：</p>
-<p>出栈元素：4 新栈顶元素：3<br>
-出栈元素：3 新栈顶元素：2<br>
-出栈元素：2 新栈顶元素：1<br>
-出栈元素：1 栈已空<br>
-栈内没有元素</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
-    </section>
-    </footer>
-
-
-    
-        <link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
-            ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
-                defer
-                >
-            </script><script>
-    window.addEventListener("DOMContentLoaded", () => {
-	const mainArticleElement = document.querySelector(".main-article");
-        renderMathInElement(mainArticleElement, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true }
-            ],
-            ignoredClasses: ["gist"]
-        });})
-</script>
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/archives/16/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">数据结构 顺序表代码</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/15/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">数据结构 链表代码</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/14/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">C 数据结构代码</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
-        el: '#tcomment',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2021 - 
-        
-        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
-    </section>
-    
-    <section class="powerby">
-        
-
-        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>
-
-        <img src="https://count.getloli.com/@yexca"/>
-
-        <p>Visits Since 2025-02-28</p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script>
-    function secondToDate(second) {
-        if (!second) {
-            return 0;
-        }
-        var time = new Array(0, 0, 0, 0, 0);
-        if (second >= 365 * 24 * 3600) {
-            time[0] = parseInt(second / (365 * 24 * 3600));
-            second %= 365 * 24 * 3600;
-        }
-        if (second >= 24 * 3600) {
-            time[1] = parseInt(second / (24 * 3600));
-            second %= 24 * 3600;
-        }
-        if (second >= 3600) {
-            time[2] = parseInt(second / 3600);
-            second %= 3600;
-        }
-        if (second >= 60) {
-            time[3] = parseInt(second / 60);
-            second %= 60;
-        }
-        if (second > 0) {
-            time[4] = second;
-        }
-        return time;
-    }</script>
-<script type="text/javascript" language="javascript">
-    function setTime() {
-        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
-        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
-        currentTime = secondToDate((timestamp - create_time));
-        currentTimeHtml = 'This blog has been running for ' + currentTime[0] + ' years ' + currentTime[1] + ' days '
-                + currentTime[2] + ' hours ' + currentTime[3] + ' minutes ' + currentTime[4]
-                + ' seconds';
-        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
-    }    setInterval(setTime, 1000);
-</script>
-
-
-    </body>
-</html>
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include <stdio.h> // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf("空栈"); return -1; } printf("弹栈元素：%d\\n",a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n'><title>数据结构 栈代码</title>
+<link rel=canonical href=https://blog.yexca.net/archives/17/><link rel=stylesheet href=/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css><meta property='og:title' content="数据结构 栈代码"><meta property='og:description' content='顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include <stdio.h> // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf("空栈"); return -1; } printf("弹栈元素：%d\\n",a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n'><meta property='og:url' content='https://blog.yexca.net/archives/17/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='数据结构'><meta property='article:published_time' content='2021-11-21T22:19:04+08:00'><meta property='article:modified_time' content='2021-11-21T22:19:04+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="数据结构 栈代码"><meta name=twitter:description content='顺序栈 (数组实现) 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 #include <stdio.h> // 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置 int push(int* a,int top,int elem) { a[++top]=elem; return top; } // 数据元素出栈 int pop(int * a,int top) { if (top==-1) { printf("空栈"); return -1; } printf("弹栈元素：%d\\n",a[top]); top--; return top; } int main(void) { int a[100]; int top=-1; top = push(a, top, 1); top = push(a, top, 2); top = push(a, top, 3); top = push(a, top, 4); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); top = pop(a, top); return 0; } 输出结果：\n'><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/archives\/17\/"},"headline":"数据结构 栈代码","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2021-11-21","dateModified":"2021-11-21","inLanguage":"zh-cn","description":"yexca 的技术与生活博客，记录编程学习与生活随想。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>yexca'Blog</a></h1><h2 class=site-description>把这个不美好的世界，编程您所期望的样子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=0GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:yexca@duck.com target=_blank title=1Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=2Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>主页</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>关于</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/ selected>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#顺序栈-数组实现>顺序栈 (数组实现)</a></li><li><a href=#链栈>链栈</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/>技术学习</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/archives/17/>数据结构 栈代码</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2021-11-21 22:19 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 2 分钟</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">数据结构</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/zh-tw/archives/17/ class=link>繁體中文</a></div></footer></div></header><section class=article-content><h2 id=顺序栈-数组实现>顺序栈 (数组实现)</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1>// 元素 elem 进栈，a 为数组，top 值为当前栈的栈顶位置
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=nf>push</span><span class=p>(</span><span class=kt>int</span><span class=o>*</span> <span class=n>a</span><span class=p>,</span><span class=kt>int</span> <span class=n>top</span><span class=p>,</span><span class=kt>int</span> <span class=n>elem</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>a</span><span class=p>[</span><span class=o>++</span><span class=n>top</span><span class=p>]</span><span class=o>=</span><span class=n>elem</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>top</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 数据元素出栈
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>int</span> <span class=nf>pop</span><span class=p>(</span><span class=kt>int</span> <span class=o>*</span> <span class=n>a</span><span class=p>,</span><span class=kt>int</span> <span class=n>top</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>top</span><span class=o>==-</span><span class=mi>1</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;空栈&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;弹栈元素：%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span><span class=n>a</span><span class=p>[</span><span class=n>top</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span><span class=o>--</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>top</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>a</span><span class=p>[</span><span class=mi>100</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>top</span><span class=o>=-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>push</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>push</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>,</span> <span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>push</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>,</span> <span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>push</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>,</span> <span class=mi>4</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>pop</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>pop</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>pop</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>pop</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>top</span> <span class=o>=</span> <span class=nf>pop</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>top</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>输出结果：</p><p>弹栈元素：4<br>弹栈元素：3<br>弹栈元素：2<br>弹栈元素：1<br>空栈</p><h2 id=链栈>链栈</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=k>typedef</span> <span class=k>struct</span> <span class=n>lineStack</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>data</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>struct</span> <span class=n>lineStack</span> <span class=o>*</span> <span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span><span class=n>lineStack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// stack 为当前的链栈，a 表示入栈元素
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>lineStack</span><span class=o>*</span> <span class=nf>push</span><span class=p>(</span><span class=n>lineStack</span> <span class=o>*</span> <span class=n>stack</span><span class=p>,</span><span class=kt>int</span> <span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 创建存储新元素的节点
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>lineStack</span> <span class=o>*</span> <span class=n>line</span><span class=o>=</span><span class=p>(</span><span class=n>lineStack</span><span class=o>*</span><span class=p>)</span><span class=nf>malloc</span><span class=p>(</span><span class=k>sizeof</span><span class=p>(</span><span class=n>lineStack</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=n>line</span><span class=o>-&gt;</span><span class=n>data</span><span class=o>=</span><span class=n>a</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 新节点与头节点建立逻辑关系
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>line</span><span class=o>-&gt;</span><span class=n>next</span><span class=o>=</span><span class=n>stack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 更新头指针的指向
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>stack</span><span class=o>=</span><span class=n>line</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>stack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 栈顶元素出链栈的实现函数
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>lineStack</span> <span class=o>*</span> <span class=nf>pop</span><span class=p>(</span><span class=n>lineStack</span> <span class=o>*</span> <span class=n>stack</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>stack</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 声明一个新指针指向栈顶节点
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>lineStack</span> <span class=o>*</span> <span class=n>p</span><span class=o>=</span><span class=n>stack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 更新头指针
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=n>stack</span><span class=o>=</span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>next</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;出栈元素：%d &#34;</span><span class=p>,</span><span class=n>p</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>stack</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;新栈顶元素：%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span><span class=n>stack</span><span class=o>-&gt;</span><span class=n>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;栈已空</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nf>free</span><span class=p>(</span><span class=n>p</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;栈内没有元素&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>stack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>stack</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>lineStack</span> <span class=o>*</span> <span class=n>stack</span><span class=o>=</span><span class=nb>NULL</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>push</span><span class=p>(</span><span class=n>stack</span><span class=p>,</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>push</span><span class=p>(</span><span class=n>stack</span><span class=p>,</span> <span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>push</span><span class=p>(</span><span class=n>stack</span><span class=p>,</span> <span class=mi>3</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>push</span><span class=p>(</span><span class=n>stack</span><span class=p>,</span> <span class=mi>4</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>pop</span><span class=p>(</span><span class=n>stack</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>pop</span><span class=p>(</span><span class=n>stack</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>pop</span><span class=p>(</span><span class=n>stack</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>pop</span><span class=p>(</span><span class=n>stack</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>stack</span><span class=o>=</span><span class=nf>pop</span><span class=p>(</span><span class=n>stack</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>输出结果：</p><p>出栈元素：4 新栈顶元素：3<br>出栈元素：3 新栈顶元素：2<br>出栈元素：2 新栈顶元素：1<br>出栈元素：1 栈已空<br>栈内没有元素</p></section><footer class=article-footer><section class=article-tags><a href=/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>数据结构</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".main-article");renderMathInElement(e,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/archives/16/><div class=article-details><h2 class=article-title>数据结构 顺序表代码</h2></div></a></article><article><a href=/archives/15/><div class=article-details><h2 class=article-title>数据结构 链表代码</h2></div></a></article><article><a href=/archives/14/><div class=article-details><h2 class=article-title>C 数据结构代码</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2025 <a href=https://lit.link/yexca target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 构建 <span>|</span>
+主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

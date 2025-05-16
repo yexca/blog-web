@@ -1,1473 +1,279 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n">
-<title>Linux 学习 第七章 编写简单的 shell 脚本</title>
-
-<link rel='canonical' href='https://blog.yexca.net/archives/81/'>
-
-<link rel="stylesheet" href="/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css"><meta property='og:title' content="Linux 学习 第七章 编写简单的 shell 脚本">
-<meta property='og:description' content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n">
-<meta property='og:url' content='https://blog.yexca.net/archives/81/'>
-<meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='读书笔记' /><meta property='article:published_time' content='2022-12-05T20:47:43&#43;08:00'/><meta property='article:modified_time' content='2022-12-05T20:47:43&#43;08:00'/>
-<meta name="twitter:site" content="@yexcano">
-    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Linux 学习 第七章 编写简单的 shell 脚本">
-<meta name="twitter:description" content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n">
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-
-
-
-
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.yexca.net\/archives\/81\/"
-    },
-    "headline": "Linux 学习 第七章 编写简单的 shell 脚本",
-    "name": "yexca'Blog",
-    "author": {
-      "@type": "Person",
-      "name": "yexca"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "yexca'Blog"
-    },
-    "datePublished": "2022-12-05",
-    "dateModified": "2022-12-05",
-    "inLanguage": "zh-cn",
-    "description": "yexca 的技术与生活博客，记录编程学习与生活随想。"
-  }
-  </script>
-
-
-<link rel="alternate" hreflang="x-default" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-CN" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-TW" href="https://blog.yexca.net/zh-tw/" />
-<link rel="alternate" hreflang="ja" href="https://blog.yexca.net/ja/" />
-<link rel="alternate" hreflang="en" href="https://blog.yexca.net/en/" />
-
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
-            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
-        </div>
-    </header><ol class="menu-social">
-            
-                <li>
-                    <a 
-                        href='https://github.com/yexca'
-                        target="_blank"
-                        title="0GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='mailto:yexca@duck.com'
-                        target="_blank"
-                        title="1Mail"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://t.me/yexca'
-                        target="_blank"
-                        title="2Telegram"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
-                        
-                    </a>
-                </li>
-            
-
-            <li>
-                <a 
-                    href="/feed.xml" 
-                    target="_blank" 
-                    title="RSS" 
-                    rel="me"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="5" cy="19" r="1" />
-  <path d="M4 4a16 16 0 0 1 16 16" />
-  <path d="M4 11a9 9 0 0 1 9 9" />
-</svg>
-
-
-
-                </a>
-            </li>
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/background/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                
-                <span>背景</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>链接</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-        <li class="menu-bottom-section">
-            <ol class="menu">
-                    
-                        <li id="i18n-switch">  
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M4 5h7" />
-  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
-  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
-  <path d="M12 20l4 -9l4 9" />
-  <path d="M19.1 18h-6.2" />
-</svg>
-
-
-
-                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
-                                
-                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
-                                
-                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
-                                
-                                    <option value="https://blog.yexca.net/en/" >English</option>
-                                
-                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
-                                
-                            </select>
-                        </li>
-                    
-                
-
-                
-                    <li id="dark-mode-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <span>暗色模式</span>
-                    </li>
-                
-            </ol>
-        </li>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#第七章-编写简单的-shell-脚本">第七章 编写简单的 shell 脚本</a>
-      <ul>
-        <li><a href="#71-理解-shell-脚本">7.1 理解 shell 脚本</a></li>
-        <li><a href="#72-小结">7.2 小结</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" >
-                技术学习
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/archives/81/">Linux 学习 第七章 编写简单的 shell 脚本</a>
-        </h2>
-    
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">2022-12-05 20:47 &#43;0800</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 7 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-    
-        <footer class="post-tags">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 7v3l9 9l7 -7l-9 -9h-3a2 2 0 0 0 -2 2"></path>
-                <path d="M9 8h-0.01"></path>
-            </svg>
-            
-                <a href="/tags/linux/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">Linux</a>
-            
-                <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">读书笔记</a>
-            
-        </footer>
-    
-
-    
-
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <h2 id="第七章-编写简单的-shell-脚本">第七章 编写简单的 shell 脚本
-</h2><p>如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务</p>
-<h3 id="71-理解-shell-脚本">7.1 理解 shell 脚本
-</h3><p>shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行</p>
-<blockquote>
-<p>类似于 Windows 中的批处理文件 (.bat)</p>
-</blockquote>
-<h4 id="711-执行和调试-shell-脚本">7.1.1 执行和调试 shell 脚本
-</h4><p>shell 脚本的主要优点是可以在任何文本编辑器中打开以查看脚本的内容，最大的缺点是大型或复杂的 shell 脚本的执行通常比编译后的程序要慢。可以通过两种基本的方法执行 shell 脚本</p>
-<ol>
-<li>
-<p>将脚本名称作为 shell 的一个参数，例如：<code>bash myscript</code></p>
-</li>
-<li>
-<p>在 shell 脚本第一行添加解释器名称 (<code>#!/bin/bash</code>)，给该文件添加执行权限后 (<code>chmod +x myscript</code>)，通过在命令行输入脚本的路径运行，例如 (<code>./myscript.sh</code>)</p>
-</li>
-</ol>
-<p>在执行时跟在脚本名称后面的为命令行参数</p>
-<blockquote>
-<p>注释为 <code>#</code></p>
-<p>可以在脚本开头添加 <code>set-x</code> 以使用 <code>$ bash -x myscript</code> 显示正在执行的命令</p>
-</blockquote>
-<h4 id="712-理解-shell-变量">7.1.2 理解 shell 变量
-</h4><p>shell 变量中的变量名称是大小写敏感的，注意定义时等号 (<code>=</code>) 左右无空格，例如</p>
-<p><code>NAME=value</code></p>
-<p>可以为变量分配常量，例如文本、数字及下划线</p>
-<p>也可为变量赋值一个命令，例如：<code>MYDATE=$(date)</code> 以将 date 命令的输出分配给变量 MYDATE</p>
-<p>这样每次使用变量 MYDATE 将运行一次 date 命令并将结果赋值给 MYDATE 。可以将命令放在引号 <code>'</code> 中以获得赋值时命令的运行结果</p>
-<hr>
-<p>特殊的 shell 字符：美元符号 (<code>$</code>)、引号 (<code>'</code>)、星号 (<code>*</code>)、感叹号 (<code>!</code>) 等</p>
-<p>如果想在命令行输出显示 <code>$HOME</code> 需要转义 <code>$</code>，可使用 <code>echo '$HOME'</code> 或 <code>echo \$HOME</code> ，即：</p>
-<p>如果想要 shell 从字面上解释单个字符，使用反斜杠 <code>\</code></p>
-<p>如果想从字面上解释一组字符，则使用单引号 (<code>'</code>) 包围这些字符</p>
-<p>如果想从字面上解释一部分字符，使用双引号 (<code>&quot;</code>) 包围一组文本，其中美元符号 (<code>$</code>)、引号 (<code>'</code>) 和感叹号 (<code>!</code>) 将被解释，而其他字符 (例如星号 <code>*</code>) 则不会被解释</p>
-<blockquote>
-<p>为变量赋值直接使用变量名，而引用变量，即需要获取变量值时需要在变量名前加美元符号 (<code>$</code>)</p>
-<p>例如将某变量的值赋值给新变量：<code>newVar=&quot;$oldVar&quot;</code></p>
-</blockquote>
-<hr>
-<ol>
-<li>
-<h5 id="特殊的-shell-位置参数">特殊的 shell 位置参数
-</h5></li>
-</ol>
-<p><em>位置参数</em> ，或 <em>命令行参数</em> ，名为 <code>$0</code>、<code>$1</code>、<code>$2</code>&hellip;<code>$n</code></p>
-<p>其中 <code>$0</code> 为被调用脚本的名称，而其他的则被赋予从命令行传递而来的参数值，例如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;第一个参数是 </span><span class="nv">$1</span><span class="s2"> ，第二个参数是 </span><span class="nv">$2</span><span class="s2"> &#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;该脚本名称为 </span><span class="nv">$0</span><span class="s2"> &#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;一共传入了 </span><span class="nv">$#</span><span class="s2"> 个参数&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;所有的参数为：</span><span class="nv">$@</span><span class="s2"> &#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>执行命令：<code>./myscript hello bye</code> ，运行结果为下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">第一个参数是 hello ，第二个参数是 bye
-</span></span><span class="line"><span class="cl">该脚本名称为 /home/yexca/tmp/myscript
-</span></span><span class="line"><span class="cl">一共传入了 <span class="m">2</span> 个参数
-</span></span><span class="line"><span class="cl">所有的参数为：hello bye
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>还有一个有意思的参数 <code>$?</code> 接受最后一条被执行的命令的退出状态，一般正常退出会返回 <code>0</code></p>
-<hr>
-<ol start="2">
-<li>
-<h5 id="读取参数">读取参数
-</h5></li>
-</ol>
-<p>通过使用 <code>read</code> 命令读取用户输入</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="nb">read</span> -p <span class="s2">&#34;请输入两个名词：&#34;</span> var1 var2
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;刚刚输入了 </span><span class="nv">$var1</span><span class="s2"> 和 </span><span class="nv">$var2</span><span class="s2">&#34;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><hr>
-<ol start="3">
-<li>在 Bash 中进行参数扩展</li>
-</ol>
-<p>想获取一个变量的值，需要在变量名前加美元符号 (<code>$</code>) ，例如 <code>$var</code> ，这其实是 <code>${var}</code> 的简写</p>
-<p>Bash 有一些规则可以以不同方式扩展参数值，以下为比较常用的，以 <code>${var}</code> 为例</p>
-<div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>示例</th>
-          <th>描述</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>${var:-value}</td>
-          <td>如果变量未设置或为空，在将其扩展为 value</td>
-      </tr>
-      <tr>
-          <td>${var#pattern}</td>
-          <td>从 var 的值的 <em>前面</em> 开始砍掉与 pattern 最 <em>短</em>  的匹配项</td>
-      </tr>
-      <tr>
-          <td>${var##pattern}</td>
-          <td>从 var 的值的 <em>前面</em> 开始砍掉与 pattern 最 <em>长</em> 的匹配项</td>
-      </tr>
-      <tr>
-          <td>${var%pattern}</td>
-          <td>从 var 的值的 <em>末尾</em> 开始砍掉与 pattern 最 <em>短</em> 的匹配项</td>
-      </tr>
-      <tr>
-          <td>${var%%pattern}</td>
-          <td>从 var 的值的 <em>末尾</em> 开始砍掉与 pattern 最 <em>长</em> 的匹配项</td>
-      </tr>
-  </tbody>
-</table></div>
-<p>基于这些特性，可以有一些有用的应用，例如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">myFileName</span><span class="o">=</span>/home/yexca/myfile.txt
-</span></span><span class="line"><span class="cl"><span class="c1"># file 变为 myfile.txt</span>
-</span></span><span class="line"><span class="cl"><span class="nv">file</span><span class="o">=</span><span class="si">${</span><span class="nv">myFileName</span><span class="p">##*/</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># dir 变为 /home/yexca</span>
-</span></span><span class="line"><span class="cl"><span class="nv">dir</span><span class="o">=</span><span class="si">${</span><span class="nv">myFileName</span><span class="p">%/*</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># name 变为 myfile</span>
-</span></span><span class="line"><span class="cl"><span class="nv">name</span><span class="o">=</span><span class="si">${</span><span class="nv">file</span><span class="p">%.*</span><span class="si">}</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># extension 变为 txt</span>
-</span></span><span class="line"><span class="cl"><span class="nv">extension</span><span class="o">=</span><span class="si">${</span><span class="nv">file</span><span class="p">##*.</span><span class="si">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="713-在-shell-脚本中执行算法">7.1.3 在 shell 脚本中执行算法
-</h4><p>Bash 使用了非类型化变量，除非使用 declare 告诉 Bash，否则变量被视为字符串。在进行运算时会自动转为整数，不需要在赋值时指定类型</p>
-<p>可以使用内置 let 命令或外部 expr 命令或 bc 命令完成整数运算</p>
-<p>如：<code>let result=$num/16</code> ，或 <code>let num=$RANDOM</code></p>
-<p>同时也有自增运算符，<code>i++</code> 和 <code>++i</code></p>
-<blockquote>
-<p>let 命令要求每个操作数与数学运算符之间不能存在空格</p>
-<p>expr 命令则要求每个操作数和数字运算符之间存在空格</p>
-<p>而 bc 命令对空格没有要求，可以完成浮点运算</p>
-</blockquote>
-<h4 id="714-在-shell-脚本中使用编程结构">7.1.4 在 shell 脚本中使用编程结构
-</h4><ol>
-<li>&ldquo;if&hellip;then&rdquo; 语句</li>
-</ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> %var -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;The var is 1&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>如果比较数字，<code>-eq</code> 比较好，但若比较字符串值，等号 (<code>=</code>) 不失为一个更好的选择</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$str</span> <span class="o">=</span> <span class="s2">&#34;hello&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;hello&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>此外还有不等号 <code>!=</code></p>
-<p>通过使用 <code>elif</code> 语句，以提供更多的选择。使用 <code>else</code> 以代表其他情况</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$str</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2"> 是一个普通文件&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2">&#34;</span><span class="o">]</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$str</span><span class="s2"> 是一个目录&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">else</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;???&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>以下是一些可使用的测试条件</p>
-<div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>运算符</th>
-          <th>测试的内容</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>-a file</td>
-          <td>文件是否存在，与 -e 相同</td>
-      </tr>
-      <tr>
-          <td>-b file</td>
-          <td>文件是否为一个专用设备</td>
-      </tr>
-      <tr>
-          <td>-c file</td>
-          <td>文件是否是特殊字符或字符设备。用来识别串行线路和终端设备</td>
-      </tr>
-      <tr>
-          <td>-d file</td>
-          <td>文件是否是一个目录</td>
-      </tr>
-      <tr>
-          <td>-e file</td>
-          <td>文件是否存在，与 -a 相同</td>
-      </tr>
-      <tr>
-          <td>-f file</td>
-          <td>文件是否存在，是否为普通文件 (不是目录、套接字、管道、链接或设备文件)</td>
-      </tr>
-      <tr>
-          <td>-g file</td>
-          <td>文件是否设置了 SGID 位</td>
-      </tr>
-      <tr>
-          <td>-h file</td>
-          <td>文件是否设置了一个符号链接，与 -L 相同</td>
-      </tr>
-      <tr>
-          <td>-k file</td>
-          <td>文件是否设置了粘滞位</td>
-      </tr>
-      <tr>
-          <td>-L file</td>
-          <td>文件是否设置了一个符号链接，与 -h 相同</td>
-      </tr>
-      <tr>
-          <td>-n string</td>
-          <td>字符串的长度是否大于 0 字节</td>
-      </tr>
-      <tr>
-          <td>-O file</td>
-          <td>是否拥有该文件</td>
-      </tr>
-      <tr>
-          <td>-p file</td>
-          <td>文件是否为命名管道</td>
-      </tr>
-      <tr>
-          <td>-r file</td>
-          <td>文件是否可读</td>
-      </tr>
-      <tr>
-          <td>-s file</td>
-          <td>文件是否存在，并且大于 0 字节</td>
-      </tr>
-      <tr>
-          <td>-S file</td>
-          <td>文件是否存在，并且为套接字</td>
-      </tr>
-      <tr>
-          <td>-t file</td>
-          <td>文件是否为连接到终端的描述符</td>
-      </tr>
-      <tr>
-          <td>-u file</td>
-          <td>文件是否设置了 SUID 位</td>
-      </tr>
-      <tr>
-          <td>-w file</td>
-          <td>文件是否可写</td>
-      </tr>
-      <tr>
-          <td>-x file</td>
-          <td>文件是否可执行</td>
-      </tr>
-      <tr>
-          <td>-z string</td>
-          <td>字符串的长度是否为 0 字节</td>
-      </tr>
-  </tbody>
-</table></div>
-<p>以下为两个变量之间比较</p>
-<div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>运算符</th>
-          <th>测试的内容</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>expr1 -a expr2</td>
-          <td>俩表达式是否都为真</td>
-      </tr>
-      <tr>
-          <td>expr1 -o expr2</td>
-          <td>有一个为真</td>
-      </tr>
-      <tr>
-          <td>file1 -nt file2</td>
-          <td>第一个文件是否比第二个文件新 (使用修改时间戳)</td>
-      </tr>
-      <tr>
-          <td>file1 -ot file2</td>
-          <td>第一个文件是否比第二个文件旧 (使用修改时间戳)</td>
-      </tr>
-      <tr>
-          <td>file1 -ef file2</td>
-          <td>两个文件是否通过一个链接相关联 (硬链接或符号链接)</td>
-      </tr>
-      <tr>
-          <td>var1 = var2</td>
-          <td>第一个变量是否等于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -eq var2</td>
-          <td>第一个变量是否等于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -ge var2</td>
-          <td>第一个变量是否大于等于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -gt var2</td>
-          <td>第一个变量是否大于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -le var2</td>
-          <td>第一个变量是否小于等于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -lt var2</td>
-          <td>第一个变量是否小于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 != var2</td>
-          <td>第一个变量是否不等于第二个变量</td>
-      </tr>
-      <tr>
-          <td>var1 -ne var2</td>
-          <td>第一个变量是否不等于第二个变量</td>
-      </tr>
-  </tbody>
-</table></div>
-<p>此外还可以把测试运算符与 <code>&amp;&amp;</code> 和 <code>||</code> 组合成类似于 C 语言中的三元运算符</p>
-<p>C：<code>a&gt;b ? a : b</code></p>
-<p>Shell：<code>[$a -gt $b] &amp;&amp; $a || $b</code></p>
-<p>也可单独使用。例如
-<code>[$a -eq $b] &amp;&amp; $a</code> 为若 a 等于 b，则返回 a 的值</p>
-<p><code>[-d &quot;$dirName&quot;] || mkdir &quot;$dirName&quot;</code> 为若 <code>$dirName</code> 路径不存在，则执行命令 <code>mkdir &quot;$dirName&quot;</code></p>
-<hr>
-<ol start="2">
-<li>case 命令</li>
-</ol>
-<p>与 C 语言中的 switch 语句类似，用于选择。一般形式为</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">case</span> <span class="s2">&#34;VAR&#34;</span> in
-</span></span><span class="line"><span class="cl">    Result1<span class="o">)</span>
-</span></span><span class="line"><span class="cl">        body
-</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
-</span></span><span class="line"><span class="cl">    Result2 <span class="p">|</span> Result3<span class="o">)</span>
-</span></span><span class="line"><span class="cl">        body
-</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
-</span></span><span class="line"><span class="cl">    *<span class="o">)</span>
-</span></span><span class="line"><span class="cl">        body
-</span></span><span class="line"><span class="cl">        <span class="p">;;</span>
-</span></span><span class="line"><span class="cl">easc
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="3">
-<li>for&hellip;do 循环</li>
-</ol>
-<p>for 循环一般用于遍历一个列表</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> VAR in LIST
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">    body
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 或者这样</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">for</span> VAR in LIST <span class="p">;</span> <span class="k">do</span>
-</span></span><span class="line"><span class="cl">    body
-</span></span><span class="line"><span class="cl"><span class="k">done</span> 
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>例如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> num in <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span>
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;The number is </span><span class="nv">$num</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 或者将命令输出作为列表</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">for</span> file in <span class="s1">&#39;/bin/ls&#39;</span> <span class="p">;</span> <span class="k">do</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$file</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="4">
-<li>while&hellip;do 和 until&hellip;do 循环</li>
-</ol>
-<p>结构如下</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># while...do</span>
-</span></span><span class="line"><span class="cl"><span class="k">while</span> condition
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">    body
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># until...do</span>
-</span></span><span class="line"><span class="cl"><span class="k">until</span> condition
-</span></span><span class="line"><span class="cl"><span class="k">do</span>
-</span></span><span class="line"><span class="cl">    body
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="715-使用一些有用的文本操作程序">7.1.5 使用一些有用的文本操作程序
-</h4><p>最常用的程序包括 grep、cut、tr、awk、sed。大部分程序都设计为使用标准输入和输出</p>
-<ol>
-<li>一般正则表达式分析器</li>
-</ol>
-<p>也就是 <code>grep</code> ，是一种查找文件或文本模式的方法。可以当成一个有用的搜索工具</p>
-<p>格式 <code>grep 要查找的内容 输入</code></p>
-<p>通过查看 <code>man grep</code> 以了解更多</p>
-<ol start="2">
-<li>删除文本的行段</li>
-</ol>
-<p><code>cut</code> 命令可以从文本或文件中提取字段。例如</p>
-<p><code>grep /home /etc/passwd | cut -d':' -f6 -</code></p>
-<p>首先 <code>grep</code> 命令从 /etc/passwd 文件获取包含 <code>/home</code> 的行，然后传入 <code>cut</code> 命令，<code>cut</code> 命令将这些行以 <code>:</code> 分割，然后取第六段 (<code>-f6</code>)</p>
-<ol start="3">
-<li>转换或者删除字符</li>
-</ol>
-<p><code>tr</code> 命令是一个基于字符的转换器，可用于替换一个或一组字符，或者从文本行中删除一个字符</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 转换大写为小写</span>
-</span></span><span class="line"><span class="cl"><span class="nv">FOO</span> <span class="o">=</span> <span class="s2">&#34;AbcDEF&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$FOO</span> <span class="p">|</span> tr <span class="o">[</span>A-Z<span class="o">]</span> <span class="o">[</span>a-z<span class="o">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 将该列表中文件名中空格转换为下划线</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> file in *<span class="p">;</span> <span class="k">do</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">f</span><span class="o">=</span><span class="s1">&#39;echo $file | tr [:blank:] [_]&#39;</span>
-</span></span><span class="line"><span class="cl">    <span class="o">[</span><span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span><span class="o">]</span> <span class="o">||</span> mv -i -- <span class="s2">&#34;file&#34;</span> <span class="s2">&#34;</span><span class="nv">$f</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><ol start="4">
-<li>流编辑器</li>
-</ol>
-<p><code>sed</code> 命令是一个简单的脚本编辑器，只能执行一些简单的编辑，比如删除文本匹配特定模式的行，使用一种模式的字符替换另一种模式的字符等</p>
-<p>过于复杂，请通过在线文档了解</p>
-<h4 id="716-使用简单的-shell-脚本">7.1.6 使用简单的 shell 脚本
-</h4><p>电话列表的例子</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># (@)/ph</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># A very simple telephone list</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Type &#34;ph new name number&#34; to add to the list, or</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># just type &#34;ph name&#34; to get a phone number</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">PHONELIST</span><span class="o">=</span>~/.phonelist.txt
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># If no command line parameters ($#), there</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># is a problem, so ask what they&#39;re talking about.</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span><span class="nv">$#</span> -lt 1<span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Whose phone number did you want? &#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Did you want to add a new phone number?</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span><span class="nv">$1</span> <span class="o">=</span> <span class="s2">&#34;new&#34;</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">shift</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$*</span>&gt;&gt; <span class="nv">$PHONELIST</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="nv">$*</span> added to database
-</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Nope. But does the file have anything in it yet?</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># This might be out first time using it, after all.</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span>! -s <span class="nv">$PHONELIST</span><span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;No names in the phone list yet!&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl"><span class="k">else</span>
-</span></span><span class="line"><span class="cl">    grep -i -q <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="nv">$PHONELIST</span>    <span class="c1"># Quietly search the file</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span><span class="nv">$?</span> -ne 0<span class="o">]</span><span class="p">;</span> <span class="k">then</span>    <span class="c1"># Did we find anything?</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Sorry, that name was not found in the phone ist&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">exit</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span>
-</span></span><span class="line"><span class="cl">        grep -i <span class="s2">&#34;</span><span class="nv">$*</span><span class="s2">&#34;</span> <span class="nv">$PHONELIST</span>
-</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
-</span></span><span class="line"><span class="cl"><span class="nb">exit</span> <span class="m">0</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="72-小结">7.2 小结
-</h3><p>通过编写 shell 脚本，可以自动完成许多最常见的系统管理任务</p>
-<h1 id="heading">
-</h1>
-</section>
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/linux/">Linux</a>
-        
-            <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
-    </section>
-    </footer>
-
-
-    
-        <link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
-            ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
-                defer
-                >
-            </script><script>
-    window.addEventListener("DOMContentLoaded", () => {
-	const mainArticleElement = document.querySelector(".main-article");
-        renderMathInElement(mainArticleElement, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true }
-            ],
-            ignoredClasses: ["gist"]
-        });})
-</script>
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/archives/79/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Linux 学习 第六章 管理运行中的进程</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/78/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Linux 学习 第五章 使用文本文件</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/75/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Linux 学习 第四章 在文件系统中移动</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/69/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Linux 学习 第三章 使用 shell</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/80/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">欧姆社漫画数字电路读后</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
-        el: '#tcomment',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2021 - 
-        
-        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
-    </section>
-    
-    <section class="powerby">
-        
-
-        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>
-
-        <img src="https://count.getloli.com/@yexca"/>
-
-        <p>Visits Since 2025-02-28</p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script>
-    function secondToDate(second) {
-        if (!second) {
-            return 0;
-        }
-        var time = new Array(0, 0, 0, 0, 0);
-        if (second >= 365 * 24 * 3600) {
-            time[0] = parseInt(second / (365 * 24 * 3600));
-            second %= 365 * 24 * 3600;
-        }
-        if (second >= 24 * 3600) {
-            time[1] = parseInt(second / (24 * 3600));
-            second %= 24 * 3600;
-        }
-        if (second >= 3600) {
-            time[2] = parseInt(second / 3600);
-            second %= 3600;
-        }
-        if (second >= 60) {
-            time[3] = parseInt(second / 60);
-            second %= 60;
-        }
-        if (second > 0) {
-            time[4] = second;
-        }
-        return time;
-    }</script>
-<script type="text/javascript" language="javascript">
-    function setTime() {
-        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
-        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
-        currentTime = secondToDate((timestamp - create_time));
-        currentTimeHtml = 'This blog has been running for ' + currentTime[0] + ' years ' + currentTime[1] + ' days '
-                + currentTime[2] + ' hours ' + currentTime[3] + ' minutes ' + currentTime[4]
-                + ' seconds';
-        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
-    }    setInterval(setTime, 1000);
-</script>
-
-
-    </body>
-</html>
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n"><title>Linux 学习 第七章 编写简单的 shell 脚本</title>
+<link rel=canonical href=https://blog.yexca.net/archives/81/><link rel=stylesheet href=/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css><meta property='og:title' content="Linux 学习 第七章 编写简单的 shell 脚本"><meta property='og:description' content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n"><meta property='og:url' content='https://blog.yexca.net/archives/81/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Linux'><meta property='article:tag' content='读书笔记'><meta property='article:published_time' content='2022-12-05T20:47:43+08:00'><meta property='article:modified_time' content='2022-12-05T20:47:43+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Linux 学习 第七章 编写简单的 shell 脚本"><meta name=twitter:description content="第七章 编写简单的 shell 脚本 如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务\n7.1 理解 shell 脚本 shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/archives\/81\/"},"headline":"Linux 学习 第七章 编写简单的 shell 脚本","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2022-12-05","dateModified":"2022-12-05","inLanguage":"zh-cn","description":"yexca 的技术与生活博客，记录编程学习与生活随想。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>yexca'Blog</a></h1><h2 class=site-description>把这个不美好的世界，编程您所期望的样子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=0GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:yexca@duck.com target=_blank title=1Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=2Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>主页</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>关于</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/ selected>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#第七章-编写简单的-shell-脚本>第七章 编写简单的 shell 脚本</a><ul><li><a href=#71-理解-shell-脚本>7.1 理解 shell 脚本</a></li><li><a href=#72-小结>7.2 小结</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/>技术学习</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/archives/81/>Linux 学习 第七章 编写简单的 shell 脚本</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2022-12-05 20:47 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 7 分钟</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/tags/linux/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Linux</a>
+<a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">读书笔记</a></footer></div></header><section class=article-content><h2 id=第七章-编写简单的-shell-脚本>第七章 编写简单的 shell 脚本</h2><p>如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务</p><h3 id=71-理解-shell-脚本>7.1 理解 shell 脚本</h3><p>shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行</p><blockquote><p>类似于 Windows 中的批处理文件 (.bat)</p></blockquote><h4 id=711-执行和调试-shell-脚本>7.1.1 执行和调试 shell 脚本</h4><p>shell 脚本的主要优点是可以在任何文本编辑器中打开以查看脚本的内容，最大的缺点是大型或复杂的 shell 脚本的执行通常比编译后的程序要慢。可以通过两种基本的方法执行 shell 脚本</p><ol><li><p>将脚本名称作为 shell 的一个参数，例如：<code>bash myscript</code></p></li><li><p>在 shell 脚本第一行添加解释器名称 (<code>#!/bin/bash</code>)，给该文件添加执行权限后 (<code>chmod +x myscript</code>)，通过在命令行输入脚本的路径运行，例如 (<code>./myscript.sh</code>)</p></li></ol><p>在执行时跟在脚本名称后面的为命令行参数</p><blockquote><p>注释为 <code>#</code></p><p>可以在脚本开头添加 <code>set-x</code> 以使用 <code>$ bash -x myscript</code> 显示正在执行的命令</p></blockquote><h4 id=712-理解-shell-变量>7.1.2 理解 shell 变量</h4><p>shell 变量中的变量名称是大小写敏感的，注意定义时等号 (<code>=</code>) 左右无空格，例如</p><p><code>NAME=value</code></p><p>可以为变量分配常量，例如文本、数字及下划线</p><p>也可为变量赋值一个命令，例如：<code>MYDATE=$(date)</code> 以将 date 命令的输出分配给变量 MYDATE</p><p>这样每次使用变量 MYDATE 将运行一次 date 命令并将结果赋值给 MYDATE 。可以将命令放在引号 <code>'</code> 中以获得赋值时命令的运行结果</p><hr><p>特殊的 shell 字符：美元符号 (<code>$</code>)、引号 (<code>'</code>)、星号 (<code>*</code>)、感叹号 (<code>!</code>) 等</p><p>如果想在命令行输出显示 <code>$HOME</code> 需要转义 <code>$</code>，可使用 <code>echo '$HOME'</code> 或 <code>echo \$HOME</code> ，即：</p><p>如果想要 shell 从字面上解释单个字符，使用反斜杠 <code>\</code></p><p>如果想从字面上解释一组字符，则使用单引号 (<code>'</code>) 包围这些字符</p><p>如果想从字面上解释一部分字符，使用双引号 (<code>"</code>) 包围一组文本，其中美元符号 (<code>$</code>)、引号 (<code>'</code>) 和感叹号 (<code>!</code>) 将被解释，而其他字符 (例如星号 <code>*</code>) 则不会被解释</p><blockquote><p>为变量赋值直接使用变量名，而引用变量，即需要获取变量值时需要在变量名前加美元符号 (<code>$</code>)</p><p>例如将某变量的值赋值给新变量：<code>newVar="$oldVar"</code></p></blockquote><hr><ol><li><h5 id=特殊的-shell-位置参数>特殊的 shell 位置参数</h5></li></ol><p><em>位置参数</em> ，或 <em>命令行参数</em> ，名为 <code>$0</code>、<code>$1</code>、<code>$2</code>&mldr;<code>$n</code></p><p>其中 <code>$0</code> 为被调用脚本的名称，而其他的则被赋予从命令行传递而来的参数值，例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;第一个参数是 </span><span class=nv>$1</span><span class=s2> ，第二个参数是 </span><span class=nv>$2</span><span class=s2> &#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;该脚本名称为 </span><span class=nv>$0</span><span class=s2> &#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;一共传入了 </span><span class=nv>$#</span><span class=s2> 个参数&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;所有的参数为：</span><span class=nv>$@</span><span class=s2> &#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>执行命令：<code>./myscript hello bye</code> ，运行结果为下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>第一个参数是 hello ，第二个参数是 bye
+</span></span><span class=line><span class=cl>该脚本名称为 /home/yexca/tmp/myscript
+</span></span><span class=line><span class=cl>一共传入了 <span class=m>2</span> 个参数
+</span></span><span class=line><span class=cl>所有的参数为：hello bye
+</span></span></code></pre></td></tr></table></div></div><p>还有一个有意思的参数 <code>$?</code> 接受最后一条被执行的命令的退出状态，一般正常退出会返回 <code>0</code></p><hr><ol start=2><li><h5 id=读取参数>读取参数</h5></li></ol><p>通过使用 <code>read</code> 命令读取用户输入</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nb>read</span> -p <span class=s2>&#34;请输入两个名词：&#34;</span> var1 var2
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;刚刚输入了 </span><span class=nv>$var1</span><span class=s2> 和 </span><span class=nv>$var2</span><span class=s2>&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><ol start=3><li>在 Bash 中进行参数扩展</li></ol><p>想获取一个变量的值，需要在变量名前加美元符号 (<code>$</code>) ，例如 <code>$var</code> ，这其实是 <code>${var}</code> 的简写</p><p>Bash 有一些规则可以以不同方式扩展参数值，以下为比较常用的，以 <code>${var}</code> 为例</p><div class=table-wrapper><table><thead><tr><th>示例</th><th>描述</th></tr></thead><tbody><tr><td>${var:-value}</td><td>如果变量未设置或为空，在将其扩展为 value</td></tr><tr><td>${var#pattern}</td><td>从 var 的值的 <em>前面</em> 开始砍掉与 pattern 最 <em>短</em>  的匹配项</td></tr><tr><td>${var##pattern}</td><td>从 var 的值的 <em>前面</em> 开始砍掉与 pattern 最 <em>长</em> 的匹配项</td></tr><tr><td>${var%pattern}</td><td>从 var 的值的 <em>末尾</em> 开始砍掉与 pattern 最 <em>短</em> 的匹配项</td></tr><tr><td>${var%%pattern}</td><td>从 var 的值的 <em>末尾</em> 开始砍掉与 pattern 最 <em>长</em> 的匹配项</td></tr></tbody></table></div><p>基于这些特性，可以有一些有用的应用，例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>myFileName</span><span class=o>=</span>/home/yexca/myfile.txt
+</span></span><span class=line><span class=cl><span class=c1># file 变为 myfile.txt</span>
+</span></span><span class=line><span class=cl><span class=nv>file</span><span class=o>=</span><span class=si>${</span><span class=nv>myFileName</span><span class=p>##*/</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># dir 变为 /home/yexca</span>
+</span></span><span class=line><span class=cl><span class=nv>dir</span><span class=o>=</span><span class=si>${</span><span class=nv>myFileName</span><span class=p>%/*</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># name 变为 myfile</span>
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span><span class=si>${</span><span class=nv>file</span><span class=p>%.*</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># extension 变为 txt</span>
+</span></span><span class=line><span class=cl><span class=nv>extension</span><span class=o>=</span><span class=si>${</span><span class=nv>file</span><span class=p>##*.</span><span class=si>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=713-在-shell-脚本中执行算法>7.1.3 在 shell 脚本中执行算法</h4><p>Bash 使用了非类型化变量，除非使用 declare 告诉 Bash，否则变量被视为字符串。在进行运算时会自动转为整数，不需要在赋值时指定类型</p><p>可以使用内置 let 命令或外部 expr 命令或 bc 命令完成整数运算</p><p>如：<code>let result=$num/16</code> ，或 <code>let num=$RANDOM</code></p><p>同时也有自增运算符，<code>i++</code> 和 <code>++i</code></p><blockquote><p>let 命令要求每个操作数与数学运算符之间不能存在空格</p><p>expr 命令则要求每个操作数和数字运算符之间存在空格</p><p>而 bc 命令对空格没有要求，可以完成浮点运算</p></blockquote><h4 id=714-在-shell-脚本中使用编程结构>7.1.4 在 shell 脚本中使用编程结构</h4><ol><li>&ldquo;if&mldr;then&rdquo; 语句</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> %var -eq <span class=m>1</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;The var is 1&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>如果比较数字，<code>-eq</code> 比较好，但若比较字符串值，等号 (<code>=</code>) 不失为一个更好的选择</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$str</span> <span class=o>=</span> <span class=s2>&#34;hello&#34;</span><span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>此外还有不等号 <code>!=</code></p><p>通过使用 <code>elif</code> 语句，以提供更多的选择。使用 <code>else</code> 以代表其他情况</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>$str</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2>&#34;</span><span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2> 是一个普通文件&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>elif</span> <span class=o>[</span> -d <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2>&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2> 是一个目录&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;???&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>以下是一些可使用的测试条件</p><div class=table-wrapper><table><thead><tr><th>运算符</th><th>测试的内容</th></tr></thead><tbody><tr><td>-a file</td><td>文件是否存在，与 -e 相同</td></tr><tr><td>-b file</td><td>文件是否为一个专用设备</td></tr><tr><td>-c file</td><td>文件是否是特殊字符或字符设备。用来识别串行线路和终端设备</td></tr><tr><td>-d file</td><td>文件是否是一个目录</td></tr><tr><td>-e file</td><td>文件是否存在，与 -a 相同</td></tr><tr><td>-f file</td><td>文件是否存在，是否为普通文件 (不是目录、套接字、管道、链接或设备文件)</td></tr><tr><td>-g file</td><td>文件是否设置了 SGID 位</td></tr><tr><td>-h file</td><td>文件是否设置了一个符号链接，与 -L 相同</td></tr><tr><td>-k file</td><td>文件是否设置了粘滞位</td></tr><tr><td>-L file</td><td>文件是否设置了一个符号链接，与 -h 相同</td></tr><tr><td>-n string</td><td>字符串的长度是否大于 0 字节</td></tr><tr><td>-O file</td><td>是否拥有该文件</td></tr><tr><td>-p file</td><td>文件是否为命名管道</td></tr><tr><td>-r file</td><td>文件是否可读</td></tr><tr><td>-s file</td><td>文件是否存在，并且大于 0 字节</td></tr><tr><td>-S file</td><td>文件是否存在，并且为套接字</td></tr><tr><td>-t file</td><td>文件是否为连接到终端的描述符</td></tr><tr><td>-u file</td><td>文件是否设置了 SUID 位</td></tr><tr><td>-w file</td><td>文件是否可写</td></tr><tr><td>-x file</td><td>文件是否可执行</td></tr><tr><td>-z string</td><td>字符串的长度是否为 0 字节</td></tr></tbody></table></div><p>以下为两个变量之间比较</p><div class=table-wrapper><table><thead><tr><th>运算符</th><th>测试的内容</th></tr></thead><tbody><tr><td>expr1 -a expr2</td><td>俩表达式是否都为真</td></tr><tr><td>expr1 -o expr2</td><td>有一个为真</td></tr><tr><td>file1 -nt file2</td><td>第一个文件是否比第二个文件新 (使用修改时间戳)</td></tr><tr><td>file1 -ot file2</td><td>第一个文件是否比第二个文件旧 (使用修改时间戳)</td></tr><tr><td>file1 -ef file2</td><td>两个文件是否通过一个链接相关联 (硬链接或符号链接)</td></tr><tr><td>var1 = var2</td><td>第一个变量是否等于第二个变量</td></tr><tr><td>var1 -eq var2</td><td>第一个变量是否等于第二个变量</td></tr><tr><td>var1 -ge var2</td><td>第一个变量是否大于等于第二个变量</td></tr><tr><td>var1 -gt var2</td><td>第一个变量是否大于第二个变量</td></tr><tr><td>var1 -le var2</td><td>第一个变量是否小于等于第二个变量</td></tr><tr><td>var1 -lt var2</td><td>第一个变量是否小于第二个变量</td></tr><tr><td>var1 != var2</td><td>第一个变量是否不等于第二个变量</td></tr><tr><td>var1 -ne var2</td><td>第一个变量是否不等于第二个变量</td></tr></tbody></table></div><p>此外还可以把测试运算符与 <code>&&</code> 和 <code>||</code> 组合成类似于 C 语言中的三元运算符</p><p>C：<code>a>b ? a : b</code></p><p>Shell：<code>[$a -gt $b] && $a || $b</code></p><p>也可单独使用。例如
+<code>[$a -eq $b] && $a</code> 为若 a 等于 b，则返回 a 的值</p><p><code>[-d "$dirName"] || mkdir "$dirName"</code> 为若 <code>$dirName</code> 路径不存在，则执行命令 <code>mkdir "$dirName"</code></p><hr><ol start=2><li>case 命令</li></ol><p>与 C 语言中的 switch 语句类似，用于选择。一般形式为</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>case</span> <span class=s2>&#34;VAR&#34;</span> in
+</span></span><span class=line><span class=cl>    Result1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    Result2 <span class=p>|</span> Result3<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    *<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>easc
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>for&mldr;do 循环</li></ol><p>for 循环一般用于遍历一个列表</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> VAR in LIST
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 或者这样</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> VAR in LIST <span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span> 
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> num in <span class=m>0</span> <span class=m>1</span> <span class=m>2</span> <span class=m>3</span> <span class=m>4</span>
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;The number is </span><span class=nv>$num</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 或者将命令输出作为列表</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> file in <span class=s1>&#39;/bin/ls&#39;</span> <span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=nv>$file</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=4><li>while&mldr;do 和 until&mldr;do 循环</li></ol><p>结构如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># while...do</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> condition
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># until...do</span>
+</span></span><span class=line><span class=cl><span class=k>until</span> condition
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=715-使用一些有用的文本操作程序>7.1.5 使用一些有用的文本操作程序</h4><p>最常用的程序包括 grep、cut、tr、awk、sed。大部分程序都设计为使用标准输入和输出</p><ol><li>一般正则表达式分析器</li></ol><p>也就是 <code>grep</code> ，是一种查找文件或文本模式的方法。可以当成一个有用的搜索工具</p><p>格式 <code>grep 要查找的内容 输入</code></p><p>通过查看 <code>man grep</code> 以了解更多</p><ol start=2><li>删除文本的行段</li></ol><p><code>cut</code> 命令可以从文本或文件中提取字段。例如</p><p><code>grep /home /etc/passwd | cut -d':' -f6 -</code></p><p>首先 <code>grep</code> 命令从 /etc/passwd 文件获取包含 <code>/home</code> 的行，然后传入 <code>cut</code> 命令，<code>cut</code> 命令将这些行以 <code>:</code> 分割，然后取第六段 (<code>-f6</code>)</p><ol start=3><li>转换或者删除字符</li></ol><p><code>tr</code> 命令是一个基于字符的转换器，可用于替换一个或一组字符，或者从文本行中删除一个字符</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 转换大写为小写</span>
+</span></span><span class=line><span class=cl><span class=nv>FOO</span> <span class=o>=</span> <span class=s2>&#34;AbcDEF&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$FOO</span> <span class=p>|</span> tr <span class=o>[</span>A-Z<span class=o>]</span> <span class=o>[</span>a-z<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 将该列表中文件名中空格转换为下划线</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> file in *<span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nv>f</span><span class=o>=</span><span class=s1>&#39;echo $file | tr [:blank:] [_]&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=o>[</span><span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;</span><span class=nv>$f</span><span class=s2>&#34;</span><span class=o>]</span> <span class=o>||</span> mv -i -- <span class=s2>&#34;file&#34;</span> <span class=s2>&#34;</span><span class=nv>$f</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=4><li>流编辑器</li></ol><p><code>sed</code> 命令是一个简单的脚本编辑器，只能执行一些简单的编辑，比如删除文本匹配特定模式的行，使用一种模式的字符替换另一种模式的字符等</p><p>过于复杂，请通过在线文档了解</p><h4 id=716-使用简单的-shell-脚本>7.1.6 使用简单的 shell 脚本</h4><p>电话列表的例子</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># (@)/ph</span>
+</span></span><span class=line><span class=cl><span class=c1># A very simple telephone list</span>
+</span></span><span class=line><span class=cl><span class=c1># Type &#34;ph new name number&#34; to add to the list, or</span>
+</span></span><span class=line><span class=cl><span class=c1># just type &#34;ph name&#34; to get a phone number</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>PHONELIST</span><span class=o>=</span>~/.phonelist.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># If no command line parameters ($#), there</span>
+</span></span><span class=line><span class=cl><span class=c1># is a problem, so ask what they&#39;re talking about.</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span><span class=nv>$#</span> -lt 1<span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;Whose phone number did you want? &#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Did you want to add a new phone number?</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span><span class=nv>$1</span> <span class=o>=</span> <span class=s2>&#34;new&#34;</span><span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=nv>$*</span>&gt;&gt; <span class=nv>$PHONELIST</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=nv>$*</span> added to database
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Nope. But does the file have anything in it yet?</span>
+</span></span><span class=line><span class=cl><span class=c1># This might be out first time using it, after all.</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span>! -s <span class=nv>$PHONELIST</span><span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;No names in the phone list yet!&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    grep -i -q <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span> <span class=nv>$PHONELIST</span>    <span class=c1># Quietly search the file</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span><span class=nv>$?</span> -ne 0<span class=o>]</span><span class=p>;</span> <span class=k>then</span>    <span class=c1># Did we find anything?</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;Sorry, that name was not found in the phone ist&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        grep -i <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span> <span class=nv>$PHONELIST</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span> <span class=m>0</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=72-小结>7.2 小结</h3><p>通过编写 shell 脚本，可以自动完成许多最常见的系统管理任务</p><h1 id=heading></h1></section><footer class=article-footer><section class=article-tags><a href=/tags/linux/>Linux</a>
+<a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".main-article");renderMathInElement(e,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/archives/79/><div class=article-details><h2 class=article-title>Linux 学习 第六章 管理运行中的进程</h2></div></a></article><article><a href=/archives/78/><div class=article-details><h2 class=article-title>Linux 学习 第五章 使用文本文件</h2></div></a></article><article><a href=/archives/75/><div class=article-details><h2 class=article-title>Linux 学习 第四章 在文件系统中移动</h2></div></a></article><article><a href=/archives/69/><div class=article-details><h2 class=article-title>Linux 学习 第三章 使用 shell</h2></div></a></article><article><a href=/archives/80/><div class=article-details><h2 class=article-title>欧姆社漫画数字电路读后</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2025 <a href=https://lit.link/yexca target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 构建 <span>|</span>
+主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

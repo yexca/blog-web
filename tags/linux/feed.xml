@@ -1,537 +1,356 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-    <channel>
-        <title>Linux on yexca&#39;Blog</title>
-        <link>https://blog.yexca.net/tags/linux/</link>
-        <description>Recent content in Linux on yexca&#39;Blog</description>
-        <generator>Hugo -- gohugo.io</generator>
-        <language>zh-cn</language>
-        <copyright>yexca</copyright>
-        <lastBuildDate>Sun, 28 Jan 2024 14:25:58 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/tags/linux/feed.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Fedora 开机启动运行脚本</title>
-        <link>https://blog.yexca.net/archives/149/</link>
-        <pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/149/</guid>
-        <description>&lt;h2 id=&#34;引言&#34;&gt;引言
-&lt;/h2&gt;&lt;p&gt;千万不要把死循环放进去啊！！！使用 systemd 方式&lt;/p&gt;
-&lt;h2 id=&#34;新建脚本&#34;&gt;新建脚本
-&lt;/h2&gt;&lt;p&gt;在此文件中写入您的脚本&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vi /etc/rc.d/rc.local
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;赋予执行权限&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;chmod +x /etc/rc.d/rc.local
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;编辑启动状态&#34;&gt;编辑启动状态
-&lt;/h2&gt;&lt;p&gt;编辑文件&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vi /usr/lib/systemd/system/rc-local.service
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;在最后一行加入 &lt;em&gt;[Install]&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#  This file is part of systemd.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#  systemd is free software; you can redistribute it and/or modify it&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#  under the terms of the GNU Lesser General Public License as published by&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#  the Free Software Foundation; either version 2.1 of the License, or&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#  (at your option) any later version.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# This unit gets pulled automatically into multi-user.target by&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# systemd-rc-local-generator if /etc/rc.d/rc.local is executable.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Unit&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Description&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/etc/rc.d/rc.local Compatibility
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ConditionFileIsExecutable&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/etc/rc.d/rc.local
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;After&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;network.target
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Service&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;Type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;forking
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;ExecStart&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/etc/rc.d/rc.local start
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;TimeoutSec&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;RemainAfterExit&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;yes
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;SysVStartPriority&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;99&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Install&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;WantedBy&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;multi-user.target
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;然后使用 systemd 开机自启动&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 Index</title>
-        <link>https://blog.yexca.net/archives/129/</link>
-        <pubDate>Sat, 21 Oct 2023 14:18:15 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/129/</guid>
-        <description>&lt;p&gt;此文章写于 2022.12，由于多种原因未发布&lt;/p&gt;
-&lt;p&gt;该系列文章为我阅读《Linux 系统管理、服务器设置、安全、云数据中心》所书写相关笔记&lt;/p&gt;
-&lt;h2 id=&#34;第一部分入门&#34;&gt;第一部分：入门
-&lt;/h2&gt;&lt;p&gt;这部分没有记录文章&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第十二章 管理磁盘和文件系统</title>
-        <link>https://blog.yexca.net/archives/85/</link>
-        <pubDate>Tue, 03 Jan 2023 13:37:48 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/85/</guid>
-        <description>&lt;h2 id=&#34;第十二章-管理磁盘和文件系统&#34;&gt;第十二章 管理磁盘和文件系统
-&lt;/h2&gt;&lt;h3 id=&#34;121-了解磁盘存储器&#34;&gt;12.1 了解磁盘存储器
-&lt;/h3&gt;&lt;p&gt;在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第十一章 获取用户账户</title>
-        <link>https://blog.yexca.net/archives/84/</link>
-        <pubDate>Mon, 02 Jan 2023 12:29:03 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/84/</guid>
-        <description>&lt;h2 id=&#34;第十一章-获取用户账户&#34;&gt;第十一章 获取用户账户
-&lt;/h2&gt;&lt;p&gt;用户账户保持了使用系统的人与运行在系统中的进程之间的边界，而组是一种将系统的权限一次性分配给多个用户的方法&lt;/p&gt;
-&lt;h3 id=&#34;111-创建用户账户&#34;&gt;11.1 创建用户账户
-&lt;/h3&gt;&lt;p&gt;每一个使用 Linux 系统的人都应该有一个单独的用户账户。通过拥有一个用户账户，可以提供用来完全存储文件的区域，以及调整用户界面 (GUI、路径、环境变量等) ，从而适合用户使用电脑的习惯&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第十章 获取和管理软件</title>
-        <link>https://blog.yexca.net/archives/83/</link>
-        <pubDate>Thu, 08 Dec 2022 16:35:57 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/83/</guid>
-        <description>&lt;h2 id=&#34;第十章-获取和管理软件&#34;&gt;第十章 获取和管理软件
-&lt;/h2&gt;&lt;h3 id=&#34;101-在桌面管理软件&#34;&gt;10.1 在桌面管理软件
-&lt;/h3&gt;&lt;p&gt;通过软件与 GUI 管理&lt;/p&gt;
-&lt;h3 id=&#34;102-超越-software-窗口&#34;&gt;10.2 超越 Software 窗口
-&lt;/h3&gt;&lt;p&gt;Software 中能检索到的软件有限&lt;/p&gt;
-&lt;h3 id=&#34;103-了解-linux-rpm-和-deb-软件包&#34;&gt;10.3 了解 Linux RPM 和 DEB 软件包
-&lt;/h3&gt;&lt;p&gt;软件包称为 tarball (压缩包)，包含可执行文件 (命令)、文档、配置文件以及库&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第八、九章 学习系统管理与安装 Linux</title>
-        <link>https://blog.yexca.net/archives/82/</link>
-        <pubDate>Wed, 07 Dec 2022 16:29:05 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/82/</guid>
-        <description>&lt;h2 id=&#34;第八章-学习系统管理&#34;&gt;第八章 学习系统管理
-&lt;/h2&gt;&lt;h3 id=&#34;81-理解系统管理&#34;&gt;8.1 理解系统管理
-&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;su 命令 &amp;mdash; 以 root 用户身份打开一个 shell&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;sudo 命令 &amp;mdash; 普通用户通过此命令运行其他命令时，该才会被赋予 root 权限&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;82-使用图形化管理工具&#34;&gt;8.2 使用图形化管理工具
-&lt;/h3&gt;&lt;p&gt;Cockpit 是基于浏览器的系统管理工具&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第七章 编写简单的 shell 脚本</title>
-        <link>https://blog.yexca.net/archives/81/</link>
-        <pubDate>Mon, 05 Dec 2022 20:47:43 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/81/</guid>
-        <description>&lt;h2 id=&#34;第七章-编写简单的-shell-脚本&#34;&gt;第七章 编写简单的 shell 脚本
-&lt;/h2&gt;&lt;p&gt;如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务&lt;/p&gt;
-&lt;h3 id=&#34;71-理解-shell-脚本&#34;&gt;7.1 理解 shell 脚本
-&lt;/h3&gt;&lt;p&gt;shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第六章 管理运行中的进程</title>
-        <link>https://blog.yexca.net/archives/79/</link>
-        <pubDate>Sat, 03 Dec 2022 15:07:03 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/79/</guid>
-        <description>&lt;h2 id=&#34;第六章-管理运行中的进程&#34;&gt;第六章 管理运行中的进程
-&lt;/h2&gt;&lt;p&gt;Linux 是一种多用户的操作系统，也是一种多任务系统。多任务意味着可以同时运行多个程序，运行程序的实例通常被称为进程&lt;/p&gt;
-&lt;p&gt;可通过 shell 启动、暂停、停止或杀死进程，还可将进程放到后台以及带到前台&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第五章 使用文本文件</title>
-        <link>https://blog.yexca.net/archives/78/</link>
-        <pubDate>Sat, 19 Nov 2022 21:07:03 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/78/</guid>
-        <description>&lt;h2 id=&#34;第五章-使用文本文件&#34;&gt;第五章 使用文本文件
-&lt;/h2&gt;&lt;p&gt;Linux 的大多数配置通过编辑纯文本文件完成。无论是修改 /etc 目录的文件配置本地服务，还是编辑 Ansible 目录文件配置主机的集合，纯文本文件仍然在这些任务中普遍使用&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第四章 在文件系统中移动</title>
-        <link>https://blog.yexca.net/archives/75/</link>
-        <pubDate>Sun, 25 Sep 2022 20:35:02 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/75/</guid>
-        <description>&lt;h2 id=&#34;第四章-在文件系统中移动&#34;&gt;第四章 在文件系统中移动
-&lt;/h2&gt;&lt;p&gt;Linux 文件系统存储了计算机上所有的信息&lt;/p&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;目录&lt;/th&gt;
-          &lt;th&gt;描述&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/bin&lt;/td&gt;
-          &lt;td&gt;包含常见的 Linux 用户命令，比如 ls、sort、date 和 chmod&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/boot&lt;/td&gt;
-          &lt;td&gt;包含可启动的 Linux 内核、最初的 RAM 盘和启动加载程序的配置文件 (GRUB)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/dev&lt;/td&gt;
-          &lt;td&gt;包含用来表示系统中设备访问点的文件。这些设备包括终端设备 (tty*) 、硬盘驱动器 (hd* 或 sd*) 、RAM (ram*) 以及 CD-ROM (cd*) 。用户可以直接通过这些设备文件访问相应的设备；然而，应用程序通常会对最终用户隐藏实际的设备名称&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/etc&lt;/td&gt;
-          &lt;td&gt;包含管理配置文件。其中大多数文件都是纯文本文件，只要用户拥有适当的权限，就可以使用任何文本编辑器编辑这些配置文件&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/home&lt;/td&gt;
-          &lt;td&gt;包含分配给每个带有登录账号的普通用户的目录 (root 用户是一个例外，使用 /root 作为主目录)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/media&lt;/td&gt;
-          &lt;td&gt;为自动挂载设备 (特别是可移动介质) 提供了一个标准位置。如果介质有一个卷名，那么一般来说使用该卷名作为挂载点&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/lib&lt;/td&gt;
-          &lt;td&gt;包含 /bin 和 /sbin 目录中的应用程序启动系统所需的共享库&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/mnt&lt;/td&gt;
-          &lt;td&gt;在该目录被标准的 /media 目录取代之前，/mnt 目录是许多设备常见的挂载点。一些可启动的 Linux 系统仍使用该目录来挂载硬盘分区和远程文件系统。此外很多人也在使用该目录临时挂载那些不需要永久挂载的本地或远程文件系统&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/misc&lt;/td&gt;
-          &lt;td&gt;该目录有时用来根据请求自动挂载文件系统&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/opt&lt;/td&gt;
-          &lt;td&gt;用来存储附加应用程序软件的目录结构&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/proc&lt;/td&gt;
-          &lt;td&gt;包含关于系统资源的信息&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/root&lt;/td&gt;
-          &lt;td&gt;表示 root 用户的主目录。因安全原因，没有位于 /home&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/sbin&lt;/td&gt;
-          &lt;td&gt;包含管理命令和守护进程&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/sys&lt;/td&gt;
-          &lt;td&gt;包含用于调优块存储和管理 cgroups 的参数&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/tmp&lt;/td&gt;
-          &lt;td&gt;包含应用程序使用的临时文件&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/usr&lt;/td&gt;
-          &lt;td&gt;包含用户文档、游戏、图形文件 (X11) 、库 (lib) 以及其他不需要在启动过程中使用的命令和文件。/usr 目录中的文件在安装完毕就不可更改。理论上来讲，/usr 可以采用只读方式挂载&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;/var&lt;/td&gt;
-          &lt;td&gt;包含不同应用程序所使用的数据目录。尤其可以在该目录中放置作为 FTP 服务器 (/var/ftp) 或 Web 服务器 (/var/www) 共享的文件。还包含所有的系统日至文件 (/var/log) 以及假脱机文件 (/var/spool，如 mail、cups 和 news) 。/var 目录所包含的目录和文件经常被修改。在服务器计算机上，通常会创建一个 /var 目录作为一个单独的文本系统，使用一个易于拓展的文件系统&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id=&#34;41-使用基本的文件系统命令&#34;&gt;4.1 使用基本的文件系统命令
-&lt;/h3&gt;&lt;p&gt;&lt;code&gt;cd&lt;/code&gt; 、&lt;code&gt;pwd&lt;/code&gt; 、&lt;code&gt;mkdir&lt;/code&gt; 、&lt;code&gt;rmdir&lt;/code&gt; 、&lt;code&gt;ls&lt;/code&gt; 、&lt;code&gt;touch&lt;/code&gt;&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>SSH 公钥登录</title>
-        <link>https://blog.yexca.net/archives/70/</link>
-        <pubDate>Mon, 12 Sep 2022 19:24:25 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/70/</guid>
-        <description>&lt;h2 id=&#34;引言&#34;&gt;引言
-&lt;/h2&gt;&lt;p&gt;每次连接机子都要输入密码属实有点麻烦 &lt;del&gt;(因为我忘了&lt;/del&gt;&lt;/p&gt;
-&lt;h2 id=&#34;oneclick&#34;&gt;OneClick
-&lt;/h2&gt;&lt;p&gt;如果自己的电脑没有公钥需要先生成，一般在 &lt;code&gt;~/.ssh/id_rsa.pub&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-keygen
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;然后在自己的电脑上运行下个命令&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-copy-id username@RemoteIP
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;其中 &lt;code&gt;username&lt;/code&gt; 替换为要登录的账户，&lt;code&gt;RemoteIP&lt;/code&gt; 替换为要登录的 IP 地址&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 学习 第三章 使用 shell</title>
-        <link>https://blog.yexca.net/archives/69/</link>
-        <pubDate>Mon, 12 Sep 2022 15:04:10 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/69/</guid>
-        <description>&lt;h2 id=&#34;第三章-使用-shell&#34;&gt;第三章 使用 shell
-&lt;/h2&gt;&lt;p&gt;本章介绍的 Linux shell 称为 Bash shell，其全称为 Bourne Again shell。还有其他的 shell，例如在 BSD UNIX 用户中流行的 C shell (csh) ，以及在 UNIX System V 用户中非常流行的 Korn shel (ksh) ，Ubuntu 默认启动 Dash shell (速度比 Bash快) ，还有 Tcsh shell (一种改进的 C shell) 和 Ash shell (与 Bourne shell 非常相似)&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 下 bin 目录</title>
-        <link>https://blog.yexca.net/archives/60/</link>
-        <pubDate>Wed, 31 Aug 2022 00:27:09 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/60/</guid>
-        <description>&lt;h2 id=&#34;引言&#34;&gt;引言
-&lt;/h2&gt;&lt;p&gt;事实上命令文件放在哪都可自行决定，也就是自己想放哪就放哪，这些目录不过是约定，不过遵守约定会更好啦，毕竟没有人会想要自己的电脑一团糟吧，尤其是Linux&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 添加用户和管理员用户</title>
-        <link>https://blog.yexca.net/archives/41/</link>
-        <pubDate>Mon, 16 May 2022 15:29:21 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/41/</guid>
-        <description>&lt;blockquote&gt;
-&lt;p&gt;该文章由 
-
-&lt;a class=&#34;link&#34; href=&#34;https://blog.hiyoung.xyz/&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on yexca'Blog</title><link>https://blog.yexca.net/tags/linux/</link><description>Recent content in Linux on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>yexca</copyright><lastBuildDate>Sun, 28 Jan 2024 14:25:58 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/tags/linux/feed.xml" rel="self" type="application/rss+xml"/><item><title>Fedora 开机启动运行脚本</title><link>https://blog.yexca.net/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/archives/149/</guid><description>&lt;h2 id="引言">引言
+&lt;/h2>&lt;p>千万不要把死循环放进去啊！！！使用 systemd 方式&lt;/p>
+&lt;h2 id="新建脚本">新建脚本
+&lt;/h2>&lt;p>在此文件中写入您的脚本&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vi /etc/rc.d/rc.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>赋予执行权限&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chmod +x /etc/rc.d/rc.local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="编辑启动状态">编辑启动状态
+&lt;/h2>&lt;p>编辑文件&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vi /usr/lib/systemd/system/rc-local.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在最后一行加入 &lt;em>[Install]&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file is part of systemd.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># systemd is free software; you can redistribute it and/or modify it&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># under the terms of the GNU Lesser General Public License as published by&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># the Free Software Foundation; either version 2.1 of the License, or&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># (at your option) any later version.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This unit gets pulled automatically into multi-user.target by&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># systemd-rc-local-generator if /etc/rc.d/rc.local is executable.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Unit&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Description&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local Compatibility
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ConditionFileIsExecutable&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">After&lt;/span>&lt;span class="o">=&lt;/span>network.target
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Service&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Type&lt;/span>&lt;span class="o">=&lt;/span>forking
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ExecStart&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TimeoutSec&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">RemainAfterExit&lt;/span>&lt;span class="o">=&lt;/span>yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SysVStartPriority&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">99&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Install&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">WantedBy&lt;/span>&lt;span class="o">=&lt;/span>multi-user.target
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后使用 systemd 开机自启动&lt;/p></description></item><item><title>Linux 学习 Index</title><link>https://blog.yexca.net/archives/129/</link><pubDate>Sat, 21 Oct 2023 14:18:15 +0800</pubDate><guid>https://blog.yexca.net/archives/129/</guid><description>&lt;p>此文章写于 2022.12，由于多种原因未发布&lt;/p>
+&lt;p>该系列文章为我阅读《Linux 系统管理、服务器设置、安全、云数据中心》所书写相关笔记&lt;/p>
+&lt;h2 id="第一部分入门">第一部分：入门
+&lt;/h2>&lt;p>这部分没有记录文章&lt;/p></description></item><item><title>Linux 学习 第十二章 管理磁盘和文件系统</title><link>https://blog.yexca.net/archives/85/</link><pubDate>Tue, 03 Jan 2023 13:37:48 +0800</pubDate><guid>https://blog.yexca.net/archives/85/</guid><description>&lt;h2 id="第十二章-管理磁盘和文件系统">第十二章 管理磁盘和文件系统
+&lt;/h2>&lt;h3 id="121-了解磁盘存储器">12.1 了解磁盘存储器
+&lt;/h3>&lt;p>在大多数现代操作系统中，数据存储器的基本工作原理都是相同的。磁盘用作永久存储器，而 RAM (Random Access Memory，随机存储器) 和交换区则用作临时存储器。例如，当运行一条命令时，该命令将从硬盘复制到 RAM，以便计算机处理器 (CPU) 可以更快地访问该命令&lt;/p></description></item><item><title>Linux 学习 第十一章 获取用户账户</title><link>https://blog.yexca.net/archives/84/</link><pubDate>Mon, 02 Jan 2023 12:29:03 +0800</pubDate><guid>https://blog.yexca.net/archives/84/</guid><description>&lt;h2 id="第十一章-获取用户账户">第十一章 获取用户账户
+&lt;/h2>&lt;p>用户账户保持了使用系统的人与运行在系统中的进程之间的边界，而组是一种将系统的权限一次性分配给多个用户的方法&lt;/p>
+&lt;h3 id="111-创建用户账户">11.1 创建用户账户
+&lt;/h3>&lt;p>每一个使用 Linux 系统的人都应该有一个单独的用户账户。通过拥有一个用户账户，可以提供用来完全存储文件的区域，以及调整用户界面 (GUI、路径、环境变量等) ，从而适合用户使用电脑的习惯&lt;/p></description></item><item><title>Linux 学习 第十章 获取和管理软件</title><link>https://blog.yexca.net/archives/83/</link><pubDate>Thu, 08 Dec 2022 16:35:57 +0800</pubDate><guid>https://blog.yexca.net/archives/83/</guid><description>&lt;h2 id="第十章-获取和管理软件">第十章 获取和管理软件
+&lt;/h2>&lt;h3 id="101-在桌面管理软件">10.1 在桌面管理软件
+&lt;/h3>&lt;p>通过软件与 GUI 管理&lt;/p>
+&lt;h3 id="102-超越-software-窗口">10.2 超越 Software 窗口
+&lt;/h3>&lt;p>Software 中能检索到的软件有限&lt;/p>
+&lt;h3 id="103-了解-linux-rpm-和-deb-软件包">10.3 了解 Linux RPM 和 DEB 软件包
+&lt;/h3>&lt;p>软件包称为 tarball (压缩包)，包含可执行文件 (命令)、文档、配置文件以及库&lt;/p></description></item><item><title>Linux 学习 第八、九章 学习系统管理与安装 Linux</title><link>https://blog.yexca.net/archives/82/</link><pubDate>Wed, 07 Dec 2022 16:29:05 +0800</pubDate><guid>https://blog.yexca.net/archives/82/</guid><description>&lt;h2 id="第八章-学习系统管理">第八章 学习系统管理
+&lt;/h2>&lt;h3 id="81-理解系统管理">8.1 理解系统管理
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>su 命令 &amp;mdash; 以 root 用户身份打开一个 shell&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>sudo 命令 &amp;mdash; 普通用户通过此命令运行其他命令时，该才会被赋予 root 权限&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="82-使用图形化管理工具">8.2 使用图形化管理工具
+&lt;/h3>&lt;p>Cockpit 是基于浏览器的系统管理工具&lt;/p></description></item><item><title>Linux 学习 第七章 编写简单的 shell 脚本</title><link>https://blog.yexca.net/archives/81/</link><pubDate>Mon, 05 Dec 2022 20:47:43 +0800</pubDate><guid>https://blog.yexca.net/archives/81/</guid><description>&lt;h2 id="第七章-编写简单的-shell-脚本">第七章 编写简单的 shell 脚本
+&lt;/h2>&lt;p>如果需要反复执行某一任务，而该任务又需要输入大量的命令行，那么可以通过写入 shell 脚本以实现一条命令完成所有任务&lt;/p>
+&lt;h3 id="71-理解-shell-脚本">7.1 理解 shell 脚本
+&lt;/h3>&lt;p>shell 脚本是一组包含命令、函数、变量或其他可以通过 shell 使用的功能。这些项目被输入一个纯文本文件中，而该文件可以作为一条命令来运行&lt;/p></description></item><item><title>Linux 学习 第六章 管理运行中的进程</title><link>https://blog.yexca.net/archives/79/</link><pubDate>Sat, 03 Dec 2022 15:07:03 +0800</pubDate><guid>https://blog.yexca.net/archives/79/</guid><description>&lt;h2 id="第六章-管理运行中的进程">第六章 管理运行中的进程
+&lt;/h2>&lt;p>Linux 是一种多用户的操作系统，也是一种多任务系统。多任务意味着可以同时运行多个程序，运行程序的实例通常被称为进程&lt;/p>
+&lt;p>可通过 shell 启动、暂停、停止或杀死进程，还可将进程放到后台以及带到前台&lt;/p></description></item><item><title>Linux 学习 第五章 使用文本文件</title><link>https://blog.yexca.net/archives/78/</link><pubDate>Sat, 19 Nov 2022 21:07:03 +0800</pubDate><guid>https://blog.yexca.net/archives/78/</guid><description>&lt;h2 id="第五章-使用文本文件">第五章 使用文本文件
+&lt;/h2>&lt;p>Linux 的大多数配置通过编辑纯文本文件完成。无论是修改 /etc 目录的文件配置本地服务，还是编辑 Ansible 目录文件配置主机的集合，纯文本文件仍然在这些任务中普遍使用&lt;/p></description></item><item><title>Linux 学习 第四章 在文件系统中移动</title><link>https://blog.yexca.net/archives/75/</link><pubDate>Sun, 25 Sep 2022 20:35:02 +0800</pubDate><guid>https://blog.yexca.net/archives/75/</guid><description>&lt;h2 id="第四章-在文件系统中移动">第四章 在文件系统中移动
+&lt;/h2>&lt;p>Linux 文件系统存储了计算机上所有的信息&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>目录&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>/bin&lt;/td>
+&lt;td>包含常见的 Linux 用户命令，比如 ls、sort、date 和 chmod&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/boot&lt;/td>
+&lt;td>包含可启动的 Linux 内核、最初的 RAM 盘和启动加载程序的配置文件 (GRUB)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/dev&lt;/td>
+&lt;td>包含用来表示系统中设备访问点的文件。这些设备包括终端设备 (tty*) 、硬盘驱动器 (hd* 或 sd*) 、RAM (ram*) 以及 CD-ROM (cd*) 。用户可以直接通过这些设备文件访问相应的设备；然而，应用程序通常会对最终用户隐藏实际的设备名称&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/etc&lt;/td>
+&lt;td>包含管理配置文件。其中大多数文件都是纯文本文件，只要用户拥有适当的权限，就可以使用任何文本编辑器编辑这些配置文件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/home&lt;/td>
+&lt;td>包含分配给每个带有登录账号的普通用户的目录 (root 用户是一个例外，使用 /root 作为主目录)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/media&lt;/td>
+&lt;td>为自动挂载设备 (特别是可移动介质) 提供了一个标准位置。如果介质有一个卷名，那么一般来说使用该卷名作为挂载点&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/lib&lt;/td>
+&lt;td>包含 /bin 和 /sbin 目录中的应用程序启动系统所需的共享库&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/mnt&lt;/td>
+&lt;td>在该目录被标准的 /media 目录取代之前，/mnt 目录是许多设备常见的挂载点。一些可启动的 Linux 系统仍使用该目录来挂载硬盘分区和远程文件系统。此外很多人也在使用该目录临时挂载那些不需要永久挂载的本地或远程文件系统&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/misc&lt;/td>
+&lt;td>该目录有时用来根据请求自动挂载文件系统&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/opt&lt;/td>
+&lt;td>用来存储附加应用程序软件的目录结构&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/proc&lt;/td>
+&lt;td>包含关于系统资源的信息&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/root&lt;/td>
+&lt;td>表示 root 用户的主目录。因安全原因，没有位于 /home&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/sbin&lt;/td>
+&lt;td>包含管理命令和守护进程&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/sys&lt;/td>
+&lt;td>包含用于调优块存储和管理 cgroups 的参数&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/tmp&lt;/td>
+&lt;td>包含应用程序使用的临时文件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/usr&lt;/td>
+&lt;td>包含用户文档、游戏、图形文件 (X11) 、库 (lib) 以及其他不需要在启动过程中使用的命令和文件。/usr 目录中的文件在安装完毕就不可更改。理论上来讲，/usr 可以采用只读方式挂载&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>/var&lt;/td>
+&lt;td>包含不同应用程序所使用的数据目录。尤其可以在该目录中放置作为 FTP 服务器 (/var/ftp) 或 Web 服务器 (/var/www) 共享的文件。还包含所有的系统日至文件 (/var/log) 以及假脱机文件 (/var/spool，如 mail、cups 和 news) 。/var 目录所包含的目录和文件经常被修改。在服务器计算机上，通常会创建一个 /var 目录作为一个单独的文本系统，使用一个易于拓展的文件系统&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="41-使用基本的文件系统命令">4.1 使用基本的文件系统命令
+&lt;/h3>&lt;p>&lt;code>cd&lt;/code> 、&lt;code>pwd&lt;/code> 、&lt;code>mkdir&lt;/code> 、&lt;code>rmdir&lt;/code> 、&lt;code>ls&lt;/code> 、&lt;code>touch&lt;/code>&lt;/p></description></item><item><title>SSH 公钥登录</title><link>https://blog.yexca.net/archives/70/</link><pubDate>Mon, 12 Sep 2022 19:24:25 +0800</pubDate><guid>https://blog.yexca.net/archives/70/</guid><description>&lt;h2 id="引言">引言
+&lt;/h2>&lt;p>每次连接机子都要输入密码属实有点麻烦 &lt;del>(因为我忘了&lt;/del>&lt;/p>
+&lt;h2 id="oneclick">OneClick
+&lt;/h2>&lt;p>如果自己的电脑没有公钥需要先生成，一般在 &lt;code>~/.ssh/id_rsa.pub&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh-keygen
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后在自己的电脑上运行下个命令&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh-copy-id username@RemoteIP
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中 &lt;code>username&lt;/code> 替换为要登录的账户，&lt;code>RemoteIP&lt;/code> 替换为要登录的 IP 地址&lt;/p></description></item><item><title>Linux 学习 第三章 使用 shell</title><link>https://blog.yexca.net/archives/69/</link><pubDate>Mon, 12 Sep 2022 15:04:10 +0800</pubDate><guid>https://blog.yexca.net/archives/69/</guid><description>&lt;h2 id="第三章-使用-shell">第三章 使用 shell
+&lt;/h2>&lt;p>本章介绍的 Linux shell 称为 Bash shell，其全称为 Bourne Again shell。还有其他的 shell，例如在 BSD UNIX 用户中流行的 C shell (csh) ，以及在 UNIX System V 用户中非常流行的 Korn shel (ksh) ，Ubuntu 默认启动 Dash shell (速度比 Bash快) ，还有 Tcsh shell (一种改进的 C shell) 和 Ash shell (与 Bourne shell 非常相似)&lt;/p></description></item><item><title>Linux 下 bin 目录</title><link>https://blog.yexca.net/archives/60/</link><pubDate>Wed, 31 Aug 2022 00:27:09 +0800</pubDate><guid>https://blog.yexca.net/archives/60/</guid><description>&lt;h2 id="引言">引言
+&lt;/h2>&lt;p>事实上命令文件放在哪都可自行决定，也就是自己想放哪就放哪，这些目录不过是约定，不过遵守约定会更好啦，毕竟没有人会想要自己的电脑一团糟吧，尤其是Linux&lt;/p></description></item><item><title>Linux 添加用户和管理员用户</title><link>https://blog.yexca.net/archives/41/</link><pubDate>Mon, 16 May 2022 15:29:21 +0800</pubDate><guid>https://blog.yexca.net/archives/41/</guid><description>&lt;blockquote>
+&lt;p>该文章由
+&lt;a class="link" href="https://blog.hiyoung.xyz/"
+target="_blank" rel="noopener"
+>
 Hiyoung
-&lt;/a&gt;
-  编写&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&#34;添加管理员用户&#34;&gt;&lt;strong&gt;添加管理员用户：&lt;/strong&gt;
-&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;1、新建用户，这里新建一个temp_test的用户&lt;/strong&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;passwd temp_test&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;3、将sudoers文件的权限修改成可编辑&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;chmod -v u+w /etc/sudoers&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;4、使用vim编辑sudoers文件&lt;/strong&gt;&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Liunx 随手笔记</title>
-        <link>https://blog.yexca.net/archives/40/</link>
-        <pubDate>Sat, 30 Apr 2022 04:24:07 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/40/</guid>
-        <description>&lt;blockquote&gt;
-&lt;p&gt;该文章由 
-
-&lt;a class=&#34;link&#34; href=&#34;https://blog.hiyoung.xyz/&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+编写&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="添加管理员用户">&lt;strong>添加管理员用户：&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>1、新建用户，这里新建一个temp_test的用户&lt;/strong>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>passwd temp_test&lt;/p>
+&lt;p>&lt;strong>3、将sudoers文件的权限修改成可编辑&lt;/strong>&lt;/p>
+&lt;p>chmod -v u+w /etc/sudoers&lt;/p>
+&lt;p>&lt;strong>4、使用vim编辑sudoers文件&lt;/strong>&lt;/p></description></item><item><title>Liunx 随手笔记</title><link>https://blog.yexca.net/archives/40/</link><pubDate>Sat, 30 Apr 2022 04:24:07 +0800</pubDate><guid>https://blog.yexca.net/archives/40/</guid><description>&lt;blockquote>
+&lt;p>该文章由
+&lt;a class="link" href="https://blog.hiyoung.xyz/"
+target="_blank" rel="noopener"
+>
 Hiyoung
-&lt;/a&gt;
-  编写&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;Linux不会自动创建不存在的文件夹,使用”mv”命令时需要注意文件夹是否存在,否则会将文件重命名。&lt;/li&gt;
-&lt;li&gt;为文件创建硬链接实际上是为文件创建了额外的名字部分(数据部分未改动),类似于C语言中创建了一个指针指向该文件。&lt;/li&gt;
-&lt;li&gt;为文件创建符号链接类似于WIN中的快捷方式,在使用”ls -li”命令中可以比较直观的看出区别。硬链接字节数和源文件一样，而符号链接字节数不同。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/Liunx%e9%9a%8f%e6%89%8b%e7%ac%94%e8%ae%b0_1.5y3s10ifdko0.jpg&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;img&#34;
-	
-	
-&gt;&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>系统学习 Linux 笔记</title>
-        <link>https://blog.yexca.net/archives/38/</link>
-        <pubDate>Tue, 19 Apr 2022 02:53:27 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/38/</guid>
-        <description>&lt;blockquote&gt;
-&lt;p&gt;该文章由 
-
-&lt;a class=&#34;link&#34; href=&#34;https://blog.hiyoung.xyz/&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+编写&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>Linux不会自动创建不存在的文件夹,使用”mv”命令时需要注意文件夹是否存在,否则会将文件重命名。&lt;/li>
+&lt;li>为文件创建硬链接实际上是为文件创建了额外的名字部分(数据部分未改动),类似于C语言中创建了一个指针指向该文件。&lt;/li>
+&lt;li>为文件创建符号链接类似于WIN中的快捷方式,在使用”ls -li”命令中可以比较直观的看出区别。硬链接字节数和源文件一样，而符号链接字节数不同。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/Liunx%e9%9a%8f%e6%89%8b%e7%ac%94%e8%ae%b0_1.5y3s10ifdko0.jpg"
+loading="lazy"
+alt="img"
+>&lt;/p></description></item><item><title>系统学习 Linux 笔记</title><link>https://blog.yexca.net/archives/38/</link><pubDate>Tue, 19 Apr 2022 02:53:27 +0800</pubDate><guid>https://blog.yexca.net/archives/38/</guid><description>&lt;blockquote>
+&lt;p>该文章由
+&lt;a class="link" href="https://blog.hiyoung.xyz/"
+target="_blank" rel="noopener"
+>
 Hiyoung
-&lt;/a&gt;
-  编写&lt;/p&gt;
-&lt;p&gt;其文章: 
-
-&lt;a class=&#34;link&#34; href=&#34;https://blog.hiyoung.xyz/2022/08/01/84a03702e5a9/&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+编写&lt;/p>
+&lt;p>其文章:
+&lt;a class="link" href="https://blog.hiyoung.xyz/2022/08/01/84a03702e5a9/"
+target="_blank" rel="noopener"
+>
 https://blog.hiyoung.xyz/2022/08/01/84a03702e5a9/
-&lt;/a&gt;
- &lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;（参考视频：
-
-&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1WY4y1H7d3?p=1&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>（参考视频：
+&lt;a class="link" href="https://www.bilibili.com/video/BV1WY4y1H7d3?p=1"
+target="_blank" rel="noopener"
+>
 https://www.bilibili.com/video/BV1WY4y1H7d3?p=1
-&lt;/a&gt;
- ）&lt;/p&gt;
-&lt;h2 id=&#34;一基础篇&#34;&gt;一、基础篇
-&lt;/h2&gt;&lt;h3 id=&#34;11-linux文件系统目录结构&#34;&gt;1.1 Linux文件系统目录结构
-&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://www.runoob.com/wp-content/uploads/2014/06/d0c50-linux2bfile2bsystem2bhierarchy.jpg&#34;
-	
-	
-	
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Linux文件系统目录结构&#34;
-	
-	
-&gt;
-
-
-&lt;a class=&#34;link&#34; href=&#34;https://www.runoob.com/linux/linux-system-contents.html&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+）&lt;/p>
+&lt;h2 id="一基础篇">一、基础篇
+&lt;/h2>&lt;h3 id="11-linux文件系统目录结构">1.1 Linux文件系统目录结构
+&lt;/h3>&lt;p>&lt;img src="https://www.runoob.com/wp-content/uploads/2014/06/d0c50-linux2bfile2bsystem2bhierarchy.jpg"
+loading="lazy"
+alt="Linux文件系统目录结构"
+>
+&lt;a class="link" href="https://www.runoob.com/linux/linux-system-contents.html"
+target="_blank" rel="noopener"
+>
 来源：菜鸟教程
-&lt;/a&gt;
- &lt;/p&gt;
-&lt;p&gt;图中小箭头表示该文件实际位置在别处&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;/bin：&lt;/strong&gt;
-bin 是 Binaries (二进制文件) 的缩写, 这个目录存放着最经常使用的命令。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/boot：&lt;/strong&gt;&lt;br&gt;
-这里存放的是启动 Linux 时使用的一些核心文件，包括一些连接文件以及镜像文件。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/dev ：&lt;/strong&gt;&lt;br&gt;
-dev 是 Device(设备) 的缩写, 该目录下存放的是 Linux 的外部设备，在 Linux 中访问设备的方式和访问文件的方式是相同的。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/etc：&lt;/strong&gt;&lt;br&gt;
-etc 是 Etcetera(等等) 的缩写,这个目录用来存放所有的系统管理所需要的配置文件和子目录。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/home&lt;/strong&gt;：&lt;br&gt;
-用户的主目录，在 Linux 中，每个用户都有一个自己的目录，一般该目录名是以用户的账号命名的，如上图中的 alice、bob 和 eve。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/lib&lt;/strong&gt;：&lt;br&gt;
-lib 是 Library(库) 的缩写这个目录里存放着系统最基本的动态连接共享库，其作用类似于 Windows 里的 DLL 文件。几乎所有的应用程序都需要用到这些共享库。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/lost+found&lt;/strong&gt;：&lt;br&gt;
-这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/media&lt;/strong&gt;：&lt;br&gt;
-linux 系统会自动识别一些设备，例如U盘、光驱等等，当识别后，Linux 会把识别的设备挂载到这个目录下。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/mnt&lt;/strong&gt;：&lt;br&gt;
-系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将光驱挂载在 /mnt/ 上，然后进入该目录就可以查看光驱里的内容了。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/opt&lt;/strong&gt;：&lt;br&gt;
-opt 是 optional(可选) 的缩写，这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/proc&lt;/strong&gt;：&lt;br&gt;
-proc 是 Processes(进程) 的缩写，/proc 是一种伪文件系统（也即虚拟文件系统），存储的是当前内核运行状态的一系列特殊文件，这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。&lt;br&gt;
-这个目录的内容不在硬盘上而是在内存里，我们也可以直接修改里面的某些文件，比如可以通过下面的命令来屏蔽主机的ping命令，使别人无法ping你的机器：echo 1 &amp;gt; /proc/sys/net/ipv4/icmp_echo_ignore_all&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/root&lt;/strong&gt;：&lt;br&gt;
-该目录为系统管理员，也称作超级权限者的用户主目录。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/sbin&lt;/strong&gt;：&lt;br&gt;
-s 就是 Super User 的意思，是 Superuser Binaries (超级用户的二进制文件) 的缩写，这里存放的是系统管理员使用的系统管理程序。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/selinux&lt;/strong&gt;：&lt;br&gt;
-这个目录是 Redhat/CentOS 所特有的目录，Selinux 是一个安全机制，类似于 windows 的防火墙，但是这套机制比较复杂，这个目录就是存放selinux相关的文件的。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/srv&lt;/strong&gt;：&lt;br&gt;
-该目录存放一些服务启动之后需要提取的数据。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/sys&lt;/strong&gt;：这是 Linux2.6 内核的一个很大的变化。该目录下安装了 2.6 内核中新出现的一个文件系统 sysfs 。sysfs 文件系统集成了下面3种文件系统的信息：针对进程信息的 proc 文件系统、针对设备的 devfs 文件系统以及针对伪终端的 devpts 文件系统。该文件系统是内核设备树的一个直观反映。当一个内核对象被创建的时候，对应的文件和目录也在内核对象子系统中被创建。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/tmp&lt;/strong&gt;：&lt;br&gt;
-tmp 是 temporary(临时) 的缩写这个目录是用来存放一些临时文件的。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/usr&lt;/strong&gt;：&lt;br&gt;
-usr 是 unix shared resources(共享资源) 的缩写，这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于 windows 下的 program files 目录。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/usr/bin：&lt;/strong&gt;&lt;br&gt;
-系统用户使用的应用程序。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/usr/sbin：&lt;/strong&gt;&lt;br&gt;
-超级用户使用的比较高级的管理程序和系统守护程序。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/usr/src：&lt;/strong&gt;&lt;br&gt;
-内核源代码默认的放置目录。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/var&lt;/strong&gt;：&lt;br&gt;
-var 是 variable(变量) 的缩写，这个目录中存放着在不断扩充着的东西，我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;/run&lt;/strong&gt;：&lt;br&gt;
-是一个临时文件系统，存储系统启动以来的信息。当系统重启时，这个目录下的文件应该被删掉或清除。如果你的系统上有 /var/run 目录，应该让它指向 run。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;12-文件基本属性&#34;&gt;1.2 文件基本属性
-&lt;/h3&gt;&lt;h4 id=&#34;121-基本属性&#34;&gt;1.2.1 基本属性
-&lt;/h4&gt;&lt;p&gt;在 Linux 中第一个字符代表这个文件是目录、文件或链接文件等等。&lt;/p&gt;</description>
-        </item>
-        <item>
-        <title>Linux 服务器（网络相关）</title>
-        <link>https://blog.yexca.net/archives/19/</link>
-        <pubDate>Fri, 14 Jan 2022 01:30:54 +0800</pubDate>
-        
-        <guid>https://blog.yexca.net/archives/19/</guid>
-        <description>&lt;blockquote&gt;
-&lt;p&gt;该文章由 
-
-&lt;a class=&#34;link&#34; href=&#34;https://blog.hiyoung.xyz/&#34; 
-
-
-   target=&#34;_blank&#34; rel=&#34;noopener&#34;
-&gt;
+&lt;/a>
+&lt;/p>
+&lt;p>图中小箭头表示该文件实际位置在别处&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>/bin：&lt;/strong>
+bin 是 Binaries (二进制文件) 的缩写, 这个目录存放着最经常使用的命令。&lt;/li>
+&lt;li>&lt;strong>/boot：&lt;/strong>&lt;br>
+这里存放的是启动 Linux 时使用的一些核心文件，包括一些连接文件以及镜像文件。&lt;/li>
+&lt;li>&lt;strong>/dev ：&lt;/strong>&lt;br>
+dev 是 Device(设备) 的缩写, 该目录下存放的是 Linux 的外部设备，在 Linux 中访问设备的方式和访问文件的方式是相同的。&lt;/li>
+&lt;li>&lt;strong>/etc：&lt;/strong>&lt;br>
+etc 是 Etcetera(等等) 的缩写,这个目录用来存放所有的系统管理所需要的配置文件和子目录。&lt;/li>
+&lt;li>&lt;strong>/home&lt;/strong>：&lt;br>
+用户的主目录，在 Linux 中，每个用户都有一个自己的目录，一般该目录名是以用户的账号命名的，如上图中的 alice、bob 和 eve。&lt;/li>
+&lt;li>&lt;strong>/lib&lt;/strong>：&lt;br>
+lib 是 Library(库) 的缩写这个目录里存放着系统最基本的动态连接共享库，其作用类似于 Windows 里的 DLL 文件。几乎所有的应用程序都需要用到这些共享库。&lt;/li>
+&lt;li>&lt;strong>/lost+found&lt;/strong>：&lt;br>
+这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。&lt;/li>
+&lt;li>&lt;strong>/media&lt;/strong>：&lt;br>
+linux 系统会自动识别一些设备，例如U盘、光驱等等，当识别后，Linux 会把识别的设备挂载到这个目录下。&lt;/li>
+&lt;li>&lt;strong>/mnt&lt;/strong>：&lt;br>
+系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将光驱挂载在 /mnt/ 上，然后进入该目录就可以查看光驱里的内容了。&lt;/li>
+&lt;li>&lt;strong>/opt&lt;/strong>：&lt;br>
+opt 是 optional(可选) 的缩写，这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。&lt;/li>
+&lt;li>&lt;strong>/proc&lt;/strong>：&lt;br>
+proc 是 Processes(进程) 的缩写，/proc 是一种伪文件系统（也即虚拟文件系统），存储的是当前内核运行状态的一系列特殊文件，这个目录是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息。&lt;br>
+这个目录的内容不在硬盘上而是在内存里，我们也可以直接修改里面的某些文件，比如可以通过下面的命令来屏蔽主机的ping命令，使别人无法ping你的机器：echo 1 &amp;gt; /proc/sys/net/ipv4/icmp_echo_ignore_all&lt;/li>
+&lt;li>&lt;strong>/root&lt;/strong>：&lt;br>
+该目录为系统管理员，也称作超级权限者的用户主目录。&lt;/li>
+&lt;li>&lt;strong>/sbin&lt;/strong>：&lt;br>
+s 就是 Super User 的意思，是 Superuser Binaries (超级用户的二进制文件) 的缩写，这里存放的是系统管理员使用的系统管理程序。&lt;/li>
+&lt;li>&lt;strong>/selinux&lt;/strong>：&lt;br>
+这个目录是 Redhat/CentOS 所特有的目录，Selinux 是一个安全机制，类似于 windows 的防火墙，但是这套机制比较复杂，这个目录就是存放selinux相关的文件的。&lt;/li>
+&lt;li>&lt;strong>/srv&lt;/strong>：&lt;br>
+该目录存放一些服务启动之后需要提取的数据。&lt;/li>
+&lt;li>&lt;strong>/sys&lt;/strong>：这是 Linux2.6 内核的一个很大的变化。该目录下安装了 2.6 内核中新出现的一个文件系统 sysfs 。sysfs 文件系统集成了下面3种文件系统的信息：针对进程信息的 proc 文件系统、针对设备的 devfs 文件系统以及针对伪终端的 devpts 文件系统。该文件系统是内核设备树的一个直观反映。当一个内核对象被创建的时候，对应的文件和目录也在内核对象子系统中被创建。&lt;/li>
+&lt;li>&lt;strong>/tmp&lt;/strong>：&lt;br>
+tmp 是 temporary(临时) 的缩写这个目录是用来存放一些临时文件的。&lt;/li>
+&lt;li>&lt;strong>/usr&lt;/strong>：&lt;br>
+usr 是 unix shared resources(共享资源) 的缩写，这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似于 windows 下的 program files 目录。&lt;/li>
+&lt;li>&lt;strong>/usr/bin：&lt;/strong>&lt;br>
+系统用户使用的应用程序。&lt;/li>
+&lt;li>&lt;strong>/usr/sbin：&lt;/strong>&lt;br>
+超级用户使用的比较高级的管理程序和系统守护程序。&lt;/li>
+&lt;li>&lt;strong>/usr/src：&lt;/strong>&lt;br>
+内核源代码默认的放置目录。&lt;/li>
+&lt;li>&lt;strong>/var&lt;/strong>：&lt;br>
+var 是 variable(变量) 的缩写，这个目录中存放着在不断扩充着的东西，我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件。&lt;/li>
+&lt;li>&lt;strong>/run&lt;/strong>：&lt;br>
+是一个临时文件系统，存储系统启动以来的信息。当系统重启时，这个目录下的文件应该被删掉或清除。如果你的系统上有 /var/run 目录，应该让它指向 run。&lt;/li>
+&lt;/ul>
+&lt;h3 id="12-文件基本属性">1.2 文件基本属性
+&lt;/h3>&lt;h4 id="121-基本属性">1.2.1 基本属性
+&lt;/h4>&lt;p>在 Linux 中第一个字符代表这个文件是目录、文件或链接文件等等。&lt;/p></description></item><item><title>Linux 服务器（网络相关）</title><link>https://blog.yexca.net/archives/19/</link><pubDate>Fri, 14 Jan 2022 01:30:54 +0800</pubDate><guid>https://blog.yexca.net/archives/19/</guid><description>&lt;blockquote>
+&lt;p>该文章由
+&lt;a class="link" href="https://blog.hiyoung.xyz/"
+target="_blank" rel="noopener"
+>
 Hiyoung
-&lt;/a&gt;
-  编写&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;背景知识：&lt;/p&gt;
-&lt;p&gt;linux时钟概述&lt;br&gt;
-linux系统有两个时钟：一个是硬件时钟，即BIOS时间；另一个是系统时钟，是linux系统Kernel（内核）时间。&lt;br&gt;
-在linux系统上程序运行时读取的时间都是系统Kernel（内核）时间。&lt;br&gt;
-每次Linux启动时，系统Kernel（内核）会先去读取硬件时钟的设置（但是此时的硬件时间不一定是准确的），然后系统时钟就会独立于硬件继续运作。&lt;br&gt;
-综上所述，所以想要永久修改linux时间并使得时间准确，就需要永久修改硬件时间，不然每次重新启动linux时，系统时间又变回之前的硬件时间。&lt;br&gt;
-linux时钟相关命令&lt;br&gt;
-系统Kernel（内核）时钟的相关命令是timedatectl 或者 date；&lt;br&gt;
-硬件BIOS时钟相关命令是hwclock 或者 clock。&lt;/p&gt;</description>
-        </item>
-        
-    </channel>
-</rss>
+&lt;/a>
+编写&lt;/p>
+&lt;/blockquote>
+&lt;p>背景知识：&lt;/p>
+&lt;p>linux时钟概述&lt;br>
+linux系统有两个时钟：一个是硬件时钟，即BIOS时间；另一个是系统时钟，是linux系统Kernel（内核）时间。&lt;br>
+在linux系统上程序运行时读取的时间都是系统Kernel（内核）时间。&lt;br>
+每次Linux启动时，系统Kernel（内核）会先去读取硬件时钟的设置（但是此时的硬件时间不一定是准确的），然后系统时钟就会独立于硬件继续运作。&lt;br>
+综上所述，所以想要永久修改linux时间并使得时间准确，就需要永久修改硬件时间，不然每次重新启动linux时，系统时间又变回之前的硬件时间。&lt;br>
+linux时钟相关命令&lt;br>
+系统Kernel（内核）时钟的相关命令是timedatectl 或者 date；&lt;br>
+硬件BIOS时钟相关命令是hwclock 或者 clock。&lt;/p></description></item></channel></rss>

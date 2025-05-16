@@ -1,1524 +1,526 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34;&gt; &lt;title&gt;v-html&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;div id=&#34;app&#34;&gt; &lt;div v-html=&#34;link&#34;&gt;&lt;/div&gt; &lt;/div&gt; &lt;script src=&#34;js/vue.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;&lt;a href=&#34;https://yexca.net/&#34;&gt;yexca&lt;/a&gt;&#39; } }) &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style=&quot;display:none;&quot; 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n">
-<title>Vue 学习</title>
-
-<link rel='canonical' href='https://blog.yexca.net/archives/196/'>
-
-<link rel="stylesheet" href="/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css"><meta property='og:title' content="Vue 学习">
-<meta property='og:description' content="Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34;&gt; &lt;title&gt;v-html&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;div id=&#34;app&#34;&gt; &lt;div v-html=&#34;link&#34;&gt;&lt;/div&gt; &lt;/div&gt; &lt;script src=&#34;js/vue.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;&lt;a href=&#34;https://yexca.net/&#34;&gt;yexca&lt;/a&gt;&#39; } }) &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style=&quot;display:none;&quot; 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n">
-<meta property='og:url' content='https://blog.yexca.net/archives/196/'>
-<meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='前端技术' /><meta property='article:tag' content='Vue' /><meta property='article:published_time' content='2024-11-15T20:48:29&#43;08:00'/><meta property='article:modified_time' content='2024-11-15T20:48:29&#43;08:00'/>
-<meta name="twitter:site" content="@yexcano">
-    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="Vue 学习">
-<meta name="twitter:description" content="Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 &lt;html&gt; &lt;head&gt; &lt;meta charset=&#34;utf-8&#34;&gt; &lt;title&gt;v-html&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;div id=&#34;app&#34;&gt; &lt;div v-html=&#34;link&#34;&gt;&lt;/div&gt; &lt;/div&gt; &lt;script src=&#34;js/vue.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;&lt;a href=&#34;https://yexca.net/&#34;&gt;yexca&lt;/a&gt;&#39; } }) &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style=&quot;display:none;&quot; 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n">
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-
-
-
-
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.yexca.net\/archives\/196\/"
-    },
-    "headline": "Vue 学习",
-    "name": "yexca'Blog",
-    "author": {
-      "@type": "Person",
-      "name": "yexca"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "yexca'Blog"
-    },
-    "datePublished": "2024-11-15",
-    "dateModified": "2024-11-15",
-    "inLanguage": "zh-cn",
-    "description": "yexca 的技术与生活博客，记录编程学习与生活随想。"
-  }
-  </script>
-
-
-<link rel="alternate" hreflang="x-default" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-CN" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-TW" href="https://blog.yexca.net/zh-tw/" />
-<link rel="alternate" hreflang="ja" href="https://blog.yexca.net/ja/" />
-<link rel="alternate" hreflang="en" href="https://blog.yexca.net/en/" />
-
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
-            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
-        </div>
-    </header><ol class="menu-social">
-            
-                <li>
-                    <a 
-                        href='https://github.com/yexca'
-                        target="_blank"
-                        title="0GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='mailto:yexca@duck.com'
-                        target="_blank"
-                        title="1Mail"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://t.me/yexca'
-                        target="_blank"
-                        title="2Telegram"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
-                        
-                    </a>
-                </li>
-            
-
-            <li>
-                <a 
-                    href="/feed.xml" 
-                    target="_blank" 
-                    title="RSS" 
-                    rel="me"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="5" cy="19" r="1" />
-  <path d="M4 4a16 16 0 0 1 16 16" />
-  <path d="M4 11a9 9 0 0 1 9 9" />
-</svg>
-
-
-
-                </a>
-            </li>
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/background/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                
-                <span>背景</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>链接</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-        <li class="menu-bottom-section">
-            <ol class="menu">
-                    
-                        <li id="i18n-switch">  
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M4 5h7" />
-  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
-  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
-  <path d="M12 20l4 -9l4 9" />
-  <path d="M19.1 18h-6.2" />
-</svg>
-
-
-
-                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
-                                
-                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
-                                
-                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
-                                
-                                    <option value="https://blog.yexca.net/en/" >English</option>
-                                
-                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
-                                
-                            </select>
-                        </li>
-                    
-                
-
-                
-                    <li id="dark-mode-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <span>暗色模式</span>
-                    </li>
-                
-            </ol>
-        </li>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#vue-指令">Vue 指令</a></li>
-    <li><a href="#v-html">v-html</a></li>
-    <li><a href="#v-show-与-v-if">v-show 与 v-if</a></li>
-    <li><a href="#v-else-与-v-else-if">v-else 与 v-else-if</a></li>
-    <li><a href="#v-on">v-on</a>
-      <ul>
-        <li><a href="#语法一">语法一</a></li>
-        <li><a href="#语法二">语法二</a></li>
-        <li><a href="#调用传参">调用传参</a></li>
-      </ul>
-    </li>
-    <li><a href="#v-bind">v-bind</a></li>
-    <li><a href="#v-for">v-for</a></li>
-    <li><a href="#v-model">v-model</a></li>
-    <li><a href="#指令修饰符">指令修饰符</a></li>
-    <li><a href="#计算属性">计算属性</a></li>
-    <li><a href="#vue-生命周期">Vue 生命周期</a></li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" >
-                技术学习
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/archives/196/">Vue 学习</a>
-        </h2>
-    
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">2024-11-15 20:48 &#43;0800</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 4 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-    
-        <footer class="post-tags">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 7v3l9 9l7 -7l-9 -9h-3a2 2 0 0 0 -2 2"></path>
-                <path d="M9 8h-0.01"></path>
-            </svg>
-            
-                <a href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">前端技术</a>
-            
-                <a href="/tags/vue/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">Vue</a>
-            
-        </footer>
-    
-
-    
-
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <h2 id="vue-指令">Vue 指令
-</h2><p>Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 <code>v-</code> 前缀的特殊标签属性</p>
-<h2 id="v-html">v-html
-</h2><p>用于设置元素的 innerHTML</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-html<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-html</span><span class="o">=</span><span class="s">&#34;link&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">                <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                    <span class="nx">link</span><span class="o">:</span><span class="s1">&#39;&lt;a href=&#34;https://yexca.net/&#34;&gt;yexca&lt;/a&gt;&#39;</span>
-</span></span><span class="line"><span class="cl">                <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="p">})</span>
-</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="v-show-与-v-if">v-show 与 v-if
-</h2><div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>\</th>
-          <th>v-show</th>
-          <th>v-if</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>作用</td>
-          <td>控制元素显示隐藏</td>
-          <td>控制元素显示隐藏 (条件渲染)</td>
-      </tr>
-      <tr>
-          <td>语法</td>
-          <td>v-show=&ldquo;表达式&rdquo;</td>
-          <td>v-if=&ldquo;表达式&rdquo;</td>
-      </tr>
-      <tr>
-          <td>表达式值</td>
-          <td>ture 显示，false 隐藏</td>
-          <td>ture 显示，false 隐藏</td>
-      </tr>
-      <tr>
-          <td>隐藏说明</td>
-          <td>通过控制属性 <code>style=&quot;display:none;&quot;</code></td>
-          <td>直接删除或创建元素</td>
-      </tr>
-      <tr>
-          <td>场景</td>
-          <td>频繁切换</td>
-          <td>不频繁切换</td>
-      </tr>
-  </tbody>
-</table></div>
-<h2 id="v-else-与-v-else-if">v-else 与 v-else-if
-</h2><p>用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-else and v-else-if<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;gender === 1&#34;</span><span class="p">&gt;</span>性别：男<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-else</span><span class="p">&gt;</span>性别：女<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">hr</span> <span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-if</span><span class="o">=</span><span class="s">&#34;score &gt;= 90&#34;</span><span class="p">&gt;</span>成绩判定 A<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-else-if</span><span class="o">=</span><span class="s">&#34;score &gt;= 70&#34;</span><span class="p">&gt;</span>成绩判定 B<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-else-if</span><span class="o">=</span><span class="s">&#34;score &gt;= 60&#34;</span><span class="p">&gt;</span>成绩判定 C<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-else</span><span class="p">&gt;</span>成绩判定 D<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">gender</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">score</span><span class="o">:</span> <span class="mi">89</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="v-on">v-on
-</h2><p>用于注册事件 = 添加监听 + 提供处理逻辑</p>
-<h3 id="语法一">语法一
-</h3><p>v-on:事件名=&ldquo;内联语句&rdquo;</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-on 1<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="na">v-on:click</span><span class="o">=</span><span class="s">&#34;count1--&#34;</span><span class="p">&gt;</span>-<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>{{count1}} <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="c">&lt;!-- v-on: 可以替换为 @ --&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;count1++&#34;</span><span class="p">&gt;</span>+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">hr</span> <span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="na">v-on:mouseenter</span><span class="o">=</span><span class="s">&#34;count2--&#34;</span><span class="p">&gt;</span>-<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>{{count2}}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="na">v-on:mouseenter</span><span class="o">=</span><span class="s">&#34;count2++&#34;</span><span class="p">&gt;</span>+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">count1</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">count2</span><span class="o">:</span> <span class="mi">2</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="语法二">语法二
-</h3><p>v-on:事件名=&ldquo;methods中的函数名&rdquo;</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-on 2<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;fun&#34;</span><span class="p">&gt;</span>切换显示隐藏<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">p</span> <span class="na">v-show</span><span class="o">=</span><span class="s">&#34;isShow&#34;</span><span class="p">&gt;</span>hello yexca<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">isShow</span><span class="o">:</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl">				<span class="p">},</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">fun</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">						<span class="c1">// this 始终指向当前实例
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>						<span class="k">this</span><span class="p">.</span><span class="nx">isShow</span> <span class="o">=</span> <span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">isShow</span>
-</span></span><span class="line"><span class="cl">					<span class="p">}</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="调用传参">调用传参
-</h3><p>直接上案例</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-on 3<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">.</span><span class="nc">box</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">				<span class="k">border-style</span><span class="p">:</span> <span class="kc">solid</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">				<span class="k">border-color</span><span class="p">:</span> <span class="kc">aqua</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">				<span class="k">padding</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">				<span class="k">margin</span><span class="p">:</span> <span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">				<span class="k">width</span><span class="p">:</span> <span class="mi">200</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">}</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;box&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>自动售货机<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;fun(5)&#34;</span><span class="p">&gt;</span>可乐5元<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;fun(10)&#34;</span><span class="p">&gt;</span>咖啡10元<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">div</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;padding-left: 20px;&#34;</span><span class="p">&gt;</span>余额：{{balance}}<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;../js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">balance</span><span class="o">:</span> <span class="mi">900</span>
-</span></span><span class="line"><span class="cl">				<span class="p">},</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">fun</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">						<span class="k">this</span><span class="p">.</span><span class="nx">balance</span> <span class="o">-=</span> <span class="nx">a</span>
-</span></span><span class="line"><span class="cl">					<span class="p">}</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="v-bind">v-bind
-</h2><p>用于动态的设置 html 的标签属性，如 src、url、title 等</p>
-<p>语法：v-bind:属性名=&ldquo;表达式&rdquo;</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-bind<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="nt">img</span><span class="p">{</span>
-</span></span><span class="line"><span class="cl">				<span class="k">width</span><span class="p">:</span> <span class="mi">400</span><span class="kt">px</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">}</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="c">&lt;!-- v-bind 可以省略 --&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">img</span> <span class="na">v-bind:src</span><span class="o">=</span><span class="s">&#34;imgURL&#34;</span> <span class="na">:title</span><span class="o">=</span><span class="s">&#34;imgTitle&#34;</span> <span class="na">:alt</span><span class="o">=</span><span class="s">&#34;imgAlt&#34;</span> <span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;../js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">imgURL</span><span class="o">:</span> <span class="s1">&#39;../img/01.jpg&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">imgTitle</span><span class="o">:</span> <span class="s1">&#39;warma&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">imgAlt</span><span class="o">:</span> <span class="s1">&#39;warma&#39;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="v-for">v-for
-</h2><p>基于数据循环，多次渲染整个元素</p>
-<p>语法：v-for=&quot;(item, index) in 数组&quot;</p>
-<p>item：每一项，index：下标</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-for<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>fruit shop<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="c">&lt;!-- 当 index 不需要时可以省略 --&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">&lt;</span><span class="nt">li</span> <span class="na">v-for</span><span class="o">=</span><span class="s">&#34;item in list&#34;</span><span class="p">&gt;</span>{{ item }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">&lt;</span><span class="nt">li</span> <span class="na">v-for</span><span class="o">=</span><span class="s">&#34;(item,index) in list&#34;</span><span class="p">&gt;</span>{{ index }}<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;../js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">list</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;watermelon&#39;</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>为便于 Vue 进行列表项的正确排序复用，需要给元素添加唯一标识，即 key 属性</p>
-<p>key 的值只能是字符串或数字类型，且必须具有唯一性</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">li</span> <span class="na">v-for</span><span class="o">=</span><span class="s">&#34;(item, index) in list&#34;</span> <span class="na">:key</span><span class="o">=</span><span class="s">&#34;item.id&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><blockquote>
-<p>推荐使用 id 作为 key，不推荐使用 index 作为 key (会变化，不对应)</p>
-</blockquote>
-<h2 id="v-model">v-model
-</h2><p>给表单元素使用，实现双向数据绑定，以可以快速获取或设置表单元素内容</p>
-<p>双向数据绑定即视图变化，数据自动更新</p>
-<p>语法：v-model=&lsquo;变量&rsquo;</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>v-model<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;app&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			username: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;username&#34;</span><span class="p">/&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">			password: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">v-model</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="p">/&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;login&#34;</span><span class="p">&gt;</span>登录<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">&#34;reset&#34;</span><span class="p">&gt;</span>重置<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;../js/vue.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">			<span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#app&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">				<span class="p">},</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">login</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">						<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">password</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">					<span class="p">},</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">reset</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">						<span class="k">this</span><span class="p">.</span><span class="nx">username</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">						<span class="k">this</span><span class="p">.</span><span class="nx">password</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">					<span class="p">}</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">})</span>
-</span></span><span class="line"><span class="cl">		<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="指令修饰符">指令修饰符
-</h2><p>通过 <code>.</code> 指明一些指令后缀，不同后缀封装了不同的处理操作</p>
-<p>按键修饰符</p>
-<p>@keyup.enter 键盘回车监听</p>
-<p>v-model 修饰符</p>
-<p>v-model.trim 去除首尾空格</p>
-<p>v-model.number 转数字</p>
-<p>事件修饰符</p>
-<p>@事件名.stop 阻止冒泡</p>
-<p>@事件名.prevent 阻止默认行为</p>
-<h2 id="计算属性">计算属性
-</h2><p>基于现有的数据，计算出来的新属性。依赖的数据变化，自动重新计算</p>
-<h2 id="vue-生命周期">Vue 生命周期
-</h2><p>生命周期指一个对象从创建到销毁的整个过程</p>
-<p>Vue 生命周期有 8 个阶段，每触发一个生命周期事件，会自动执行一个生命周期方法 (钩子)</p>
-<div class="table-wrapper"><table>
-  <thead>
-      <tr>
-          <th>状态</th>
-          <th>阶段周期</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>beforeCreate</td>
-          <td>创建前</td>
-      </tr>
-      <tr>
-          <td>created</td>
-          <td>创建后</td>
-      </tr>
-      <tr>
-          <td>beforeMount</td>
-          <td>载入前</td>
-      </tr>
-      <tr>
-          <td>mounted</td>
-          <td>挂载完成</td>
-      </tr>
-      <tr>
-          <td>beforeUpdate</td>
-          <td>更新前</td>
-      </tr>
-      <tr>
-          <td>updated</td>
-          <td>更新后</td>
-      </tr>
-      <tr>
-          <td>beforeDestroy</td>
-          <td>销毁前</td>
-      </tr>
-      <tr>
-          <td>destroyed</td>
-          <td>销毁后</td>
-      </tr>
-  </tbody>
-</table></div>
-<p>其中 <code>mounted</code> 较为常用，指 Vue 初始化成功，HTML 渲染成功。(发送请求到服务端，加载数据)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Vue</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s2">&#34;#app&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">mounted</span><span class="p">(){</span>
-</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Vue 挂载完成，发送请求获取数据&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
-</section>
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/">前端技术</a>
-        
-            <a href="/tags/vue/">Vue</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
-    </section>
-    </footer>
-
-
-    
-        <link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
-            ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
-                defer
-                >
-            </script><script>
-    window.addEventListener("DOMContentLoaded", () => {
-	const mainArticleElement = document.querySelector(".main-article");
-        renderMathInElement(mainArticleElement, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true }
-            ],
-            ignoredClasses: ["gist"]
-        });})
-</script>
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/archives/173/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">简单Vue项目</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/195/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">HTML 学习三 - 网页布局</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/174/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">ElementUI</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/167/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">CSS 盒子模型</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/166/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">CSS 背景属性</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
-        el: '#tcomment',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2021 - 
-        
-        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
-    </section>
-    
-    <section class="powerby">
-        
-
-        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>
-
-        <img src="https://count.getloli.com/@yexca"/>
-
-        <p>Visits Since 2025-02-28</p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script>
-    function secondToDate(second) {
-        if (!second) {
-            return 0;
-        }
-        var time = new Array(0, 0, 0, 0, 0);
-        if (second >= 365 * 24 * 3600) {
-            time[0] = parseInt(second / (365 * 24 * 3600));
-            second %= 365 * 24 * 3600;
-        }
-        if (second >= 24 * 3600) {
-            time[1] = parseInt(second / (24 * 3600));
-            second %= 24 * 3600;
-        }
-        if (second >= 3600) {
-            time[2] = parseInt(second / 3600);
-            second %= 3600;
-        }
-        if (second >= 60) {
-            time[3] = parseInt(second / 60);
-            second %= 60;
-        }
-        if (second > 0) {
-            time[4] = second;
-        }
-        return time;
-    }</script>
-<script type="text/javascript" language="javascript">
-    function setTime() {
-        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
-        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
-        currentTime = secondToDate((timestamp - create_time));
-        currentTimeHtml = 'This blog has been running for ' + currentTime[0] + ' years ' + currentTime[1] + ' days '
-                + currentTime[2] + ' hours ' + currentTime[3] + ' minutes ' + currentTime[4]
-                + ' seconds';
-        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
-    }    setInterval(setTime, 1000);
-</script>
-
-
-    </body>
-</html>
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 <html> <head> <meta charset="utf-8"> <title>v-html</title> </head> <body> <div id="app"> <div v-html="link"></div> </div> <script src="js/vue.js"></script> <script> const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;<a href="https://yexca.net/">yexca</a>&#39; } }) </script> </body> </html> v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style="display:none;" 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n'><title>Vue 学习</title>
+<link rel=canonical href=https://blog.yexca.net/archives/196/><link rel=stylesheet href=/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css><meta property='og:title' content="Vue 学习"><meta property='og:description' content='Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 <html> <head> <meta charset="utf-8"> <title>v-html</title> </head> <body> <div id="app"> <div v-html="link"></div> </div> <script src="js/vue.js"></script> <script> const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;<a href="https://yexca.net/">yexca</a>&#39; } }) </script> </body> </html> v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style="display:none;" 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n'><meta property='og:url' content='https://blog.yexca.net/archives/196/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='前端技术'><meta property='article:tag' content='Vue'><meta property='article:published_time' content='2024-11-15T20:48:29+08:00'><meta property='article:modified_time' content='2024-11-15T20:48:29+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Vue 学习"><meta name=twitter:description content='Vue 指令 Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 v- 前缀的特殊标签属性\nv-html 用于设置元素的 innerHTML\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 <html> <head> <meta charset="utf-8"> <title>v-html</title> </head> <body> <div id="app"> <div v-html="link"></div> </div> <script src="js/vue.js"></script> <script> const app = new Vue({ el: &#39;#app&#39;, data: { link:&#39;<a href="https://yexca.net/">yexca</a>&#39; } }) </script> </body> </html> v-show 与 v-if \\ v-show v-if 作用 控制元素显示隐藏 控制元素显示隐藏 (条件渲染) 语法 v-show=&ldquo;表达式&rdquo; v-if=&ldquo;表达式&rdquo; 表达式值 ture 显示，false 隐藏 ture 显示，false 隐藏 隐藏说明 通过控制属性 style="display:none;" 直接删除或创建元素 场景 频繁切换 不频繁切换 v-else 与 v-else-if 用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用\n'><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/archives\/196\/"},"headline":"Vue 学习","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2024-11-15","dateModified":"2024-11-15","inLanguage":"zh-cn","description":"yexca 的技术与生活博客，记录编程学习与生活随想。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>yexca'Blog</a></h1><h2 class=site-description>把这个不美好的世界，编程您所期望的样子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=0GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:yexca@duck.com target=_blank title=1Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=2Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>主页</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>关于</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/ selected>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#vue-指令>Vue 指令</a></li><li><a href=#v-html>v-html</a></li><li><a href=#v-show-与-v-if>v-show 与 v-if</a></li><li><a href=#v-else-与-v-else-if>v-else 与 v-else-if</a></li><li><a href=#v-on>v-on</a><ul><li><a href=#语法一>语法一</a></li><li><a href=#语法二>语法二</a></li><li><a href=#调用传参>调用传参</a></li></ul></li><li><a href=#v-bind>v-bind</a></li><li><a href=#v-for>v-for</a></li><li><a href=#v-model>v-model</a></li><li><a href=#指令修饰符>指令修饰符</a></li><li><a href=#计算属性>计算属性</a></li><li><a href=#vue-生命周期>Vue 生命周期</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/>技术学习</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/archives/196/>Vue 学习</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2024-11-15 20:48 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 4 分钟</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">前端技术</a>
+<a href=/tags/vue/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Vue</a></footer></div></header><section class=article-content><h2 id=vue-指令>Vue 指令</h2><p>Vue 会根据不同的指令，针对标签实现不同的功能，指令为带有 <code>v-</code> 前缀的特殊标签属性</p><h2 id=v-html>v-html</h2><p>用于设置元素的 innerHTML</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-html<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>&lt;</span><span class=nt>div</span> <span class=na>v-html</span><span class=o>=</span><span class=s>&#34;link&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>                <span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>link</span><span class=o>:</span><span class=s1>&#39;&lt;a href=&#34;https://yexca.net/&#34;&gt;yexca&lt;/a&gt;&#39;</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=p>})</span>
+</span></span><span class=line><span class=cl>        <span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=v-show-与-v-if>v-show 与 v-if</h2><div class=table-wrapper><table><thead><tr><th>\</th><th>v-show</th><th>v-if</th></tr></thead><tbody><tr><td>作用</td><td>控制元素显示隐藏</td><td>控制元素显示隐藏 (条件渲染)</td></tr><tr><td>语法</td><td>v-show=&ldquo;表达式&rdquo;</td><td>v-if=&ldquo;表达式&rdquo;</td></tr><tr><td>表达式值</td><td>ture 显示，false 隐藏</td><td>ture 显示，false 隐藏</td></tr><tr><td>隐藏说明</td><td>通过控制属性 <code>style="display:none;"</code></td><td>直接删除或创建元素</td></tr><tr><td>场景</td><td>频繁切换</td><td>不频繁切换</td></tr></tbody></table></div><h2 id=v-else-与-v-else-if>v-else 与 v-else-if</h2><p>用于辅助 v-if 进行渲染，需要紧挨着 v-if 一起使用</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-else and v-else-if<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-if</span><span class=o>=</span><span class=s>&#34;gender === 1&#34;</span><span class=p>&gt;</span>性别：男<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-else</span><span class=p>&gt;</span>性别：女<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>hr</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-if</span><span class=o>=</span><span class=s>&#34;score &gt;= 90&#34;</span><span class=p>&gt;</span>成绩判定 A<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-else-if</span><span class=o>=</span><span class=s>&#34;score &gt;= 70&#34;</span><span class=p>&gt;</span>成绩判定 B<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-else-if</span><span class=o>=</span><span class=s>&#34;score &gt;= 60&#34;</span><span class=p>&gt;</span>成绩判定 C<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-else</span><span class=p>&gt;</span>成绩判定 D<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>gender</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>					<span class=nx>score</span><span class=o>:</span> <span class=mi>89</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=v-on>v-on</h2><p>用于注册事件 = 添加监听 + 提供处理逻辑</p><h3 id=语法一>语法一</h3><p>v-on:事件名=&ldquo;内联语句&rdquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-on 1<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=na>v-on:click</span><span class=o>=</span><span class=s>&#34;count1--&#34;</span><span class=p>&gt;</span>-<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>span</span><span class=p>&gt;</span>{{count1}} <span class=p>&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=c>&lt;!-- v-on: 可以替换为 @ --&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;count1++&#34;</span><span class=p>&gt;</span>+<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>hr</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=na>v-on:mouseenter</span><span class=o>=</span><span class=s>&#34;count2--&#34;</span><span class=p>&gt;</span>-<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>span</span><span class=p>&gt;</span>{{count2}}<span class=p>&lt;/</span><span class=nt>span</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=na>v-on:mouseenter</span><span class=o>=</span><span class=s>&#34;count2++&#34;</span><span class=p>&gt;</span>+<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>count1</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>					<span class=nx>count2</span><span class=o>:</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=语法二>语法二</h3><p>v-on:事件名=&ldquo;methods中的函数名&rdquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-on 2<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;fun&#34;</span><span class=p>&gt;</span>切换显示隐藏<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>p</span> <span class=na>v-show</span><span class=o>=</span><span class=s>&#34;isShow&#34;</span><span class=p>&gt;</span>hello yexca<span class=p>&lt;/</span><span class=nt>p</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s2>&#34;#app&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>isShow</span><span class=o>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl>				<span class=p>},</span>
+</span></span><span class=line><span class=cl>				<span class=nx>methods</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>fun</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>						<span class=c1>// this 始终指向当前实例
+</span></span></span><span class=line><span class=cl><span class=c1></span>						<span class=k>this</span><span class=p>.</span><span class=nx>isShow</span> <span class=o>=</span> <span class=o>!</span><span class=k>this</span><span class=p>.</span><span class=nx>isShow</span>
+</span></span><span class=line><span class=cl>					<span class=p>}</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=调用传参>调用传参</h3><p>直接上案例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-on 3<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>.</span><span class=nc>box</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=k>border-style</span><span class=p>:</span> <span class=kc>solid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>				<span class=k>border-color</span><span class=p>:</span> <span class=kc>aqua</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>				<span class=k>padding</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>				<span class=k>margin</span><span class=p>:</span> <span class=mi>10</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>				<span class=k>width</span><span class=p>:</span> <span class=mi>200</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;box&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=p>&lt;</span><span class=nt>h3</span><span class=p>&gt;</span>自动售货机<span class=p>&lt;/</span><span class=nt>h3</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;fun(5)&#34;</span><span class=p>&gt;</span>可乐5元<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;fun(10)&#34;</span><span class=p>&gt;</span>咖啡10元<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>div</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;padding-left: 20px;&#34;</span><span class=p>&gt;</span>余额：{{balance}}<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;../js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s2>&#34;#app&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>balance</span><span class=o>:</span> <span class=mi>900</span>
+</span></span><span class=line><span class=cl>				<span class=p>},</span>
+</span></span><span class=line><span class=cl>				<span class=nx>methods</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>fun</span><span class=p>(</span><span class=nx>a</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>						<span class=k>this</span><span class=p>.</span><span class=nx>balance</span> <span class=o>-=</span> <span class=nx>a</span>
+</span></span><span class=line><span class=cl>					<span class=p>}</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=v-bind>v-bind</h2><p>用于动态的设置 html 的标签属性，如 src、url、title 等</p><p>语法：v-bind:属性名=&ldquo;表达式&rdquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-bind<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=nt>img</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=k>width</span><span class=p>:</span> <span class=mi>400</span><span class=kt>px</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>style</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=c>&lt;!-- v-bind 可以省略 --&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>img</span> <span class=na>v-bind:src</span><span class=o>=</span><span class=s>&#34;imgURL&#34;</span> <span class=na>:title</span><span class=o>=</span><span class=s>&#34;imgTitle&#34;</span> <span class=na>:alt</span><span class=o>=</span><span class=s>&#34;imgAlt&#34;</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;../js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>imgURL</span><span class=o>:</span> <span class=s1>&#39;../img/01.jpg&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>					<span class=nx>imgTitle</span><span class=o>:</span> <span class=s1>&#39;warma&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>					<span class=nx>imgAlt</span><span class=o>:</span> <span class=s1>&#39;warma&#39;</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=v-for>v-for</h2><p>基于数据循环，多次渲染整个元素</p><p>语法：v-for="(item, index) in 数组"</p><p>item：每一项，index：下标</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-for<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>h3</span><span class=p>&gt;</span>fruit shop<span class=p>&lt;/</span><span class=nt>h3</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>ul</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=c>&lt;!-- 当 index 不需要时可以省略 --&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=p>&lt;</span><span class=nt>li</span> <span class=na>v-for</span><span class=o>=</span><span class=s>&#34;item in list&#34;</span><span class=p>&gt;</span>{{ item }}<span class=p>&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;/</span><span class=nt>ul</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>ul</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>				<span class=p>&lt;</span><span class=nt>li</span> <span class=na>v-for</span><span class=o>=</span><span class=s>&#34;(item,index) in list&#34;</span><span class=p>&gt;</span>{{ index }}<span class=p>&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;/</span><span class=nt>ul</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;../js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>list</span><span class=o>:</span> <span class=p>[</span><span class=s1>&#39;apple&#39;</span><span class=p>,</span> <span class=s1>&#39;banana&#39;</span><span class=p>,</span> <span class=s1>&#39;watermelon&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>为便于 Vue 进行列表项的正确排序复用，需要给元素添加唯一标识，即 key 属性</p><p>key 的值只能是字符串或数字类型，且必须具有唯一性</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>li</span> <span class=na>v-for</span><span class=o>=</span><span class=s>&#34;(item, index) in list&#34;</span> <span class=na>:key</span><span class=o>=</span><span class=s>&#34;item.id&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>li</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>推荐使用 id 作为 key，不推荐使用 index 作为 key (会变化，不对应)</p></blockquote><h2 id=v-model>v-model</h2><p>给表单元素使用，实现双向数据绑定，以可以快速获取或设置表单元素内容</p><p>双向数据绑定即视图变化，数据自动更新</p><p>语法：v-model=&lsquo;变量&rsquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>charset</span><span class=o>=</span><span class=s>&#34;utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>v-model<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>div</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;app&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			username: <span class=p>&lt;</span><span class=nt>input</span> <span class=na>type</span><span class=o>=</span><span class=s>&#34;text&#34;</span> <span class=na>v-model</span><span class=o>=</span><span class=s>&#34;username&#34;</span><span class=p>/&gt;&lt;</span><span class=nt>br</span> <span class=p>/&gt;&lt;</span><span class=nt>br</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>			password: <span class=p>&lt;</span><span class=nt>input</span> <span class=na>type</span><span class=o>=</span><span class=s>&#34;password&#34;</span> <span class=na>v-model</span><span class=o>=</span><span class=s>&#34;password&#34;</span> <span class=p>/&gt;&lt;</span><span class=nt>br</span> <span class=p>/&gt;&lt;</span><span class=nt>br</span> <span class=p>/&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;login&#34;</span><span class=p>&gt;</span>登录<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=p>&lt;</span><span class=nt>button</span> <span class=err>@</span><span class=na>click</span><span class=o>=</span><span class=s>&#34;reset&#34;</span><span class=p>&gt;</span>重置<span class=p>&lt;/</span><span class=nt>button</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;../js/vue.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>			<span class=kr>const</span> <span class=nx>app</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Vue</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>				<span class=nx>el</span><span class=o>:</span> <span class=s1>&#39;#app&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>				<span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>username</span><span class=o>:</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>					<span class=nx>password</span><span class=o>:</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>				<span class=p>},</span>
+</span></span><span class=line><span class=cl>				<span class=nx>methods</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>login</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>						<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=nx>username</span><span class=p>,</span> <span class=k>this</span><span class=p>.</span><span class=nx>password</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>					<span class=p>},</span>
+</span></span><span class=line><span class=cl>					<span class=nx>reset</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>						<span class=k>this</span><span class=p>.</span><span class=nx>username</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>						<span class=k>this</span><span class=p>.</span><span class=nx>password</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>					<span class=p>}</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>})</span>
+</span></span><span class=line><span class=cl>		<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=指令修饰符>指令修饰符</h2><p>通过 <code>.</code> 指明一些指令后缀，不同后缀封装了不同的处理操作</p><p>按键修饰符</p><p>@keyup.enter 键盘回车监听</p><p>v-model 修饰符</p><p>v-model.trim 去除首尾空格</p><p>v-model.number 转数字</p><p>事件修饰符</p><p>@事件名.stop 阻止冒泡</p><p>@事件名.prevent 阻止默认行为</p><h2 id=计算属性>计算属性</h2><p>基于现有的数据，计算出来的新属性。依赖的数据变化，自动重新计算</p><h2 id=vue-生命周期>Vue 生命周期</h2><p>生命周期指一个对象从创建到销毁的整个过程</p><p>Vue 生命周期有 8 个阶段，每触发一个生命周期事件，会自动执行一个生命周期方法 (钩子)</p><div class=table-wrapper><table><thead><tr><th>状态</th><th>阶段周期</th></tr></thead><tbody><tr><td>beforeCreate</td><td>创建前</td></tr><tr><td>created</td><td>创建后</td></tr><tr><td>beforeMount</td><td>载入前</td></tr><tr><td>mounted</td><td>挂载完成</td></tr><tr><td>beforeUpdate</td><td>更新前</td></tr><tr><td>updated</td><td>更新后</td></tr><tr><td>beforeDestroy</td><td>销毁前</td></tr><tr><td>destroyed</td><td>销毁后</td></tr></tbody></table></div><p>其中 <code>mounted</code> 较为常用，指 Vue 初始化成功，HTML 渲染成功。(发送请求到服务端，加载数据)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=k>new</span> <span class=nx>Vue</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>    <span class=nx>el</span><span class=o>:</span> <span class=s2>&#34;#app&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>data</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>mounted</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;Vue 挂载完成，发送请求获取数据&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nx>methods</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/>前端技术</a>
+<a href=/tags/vue/>Vue</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".main-article");renderMathInElement(e,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/archives/173/><div class=article-details><h2 class=article-title>简单Vue项目</h2></div></a></article><article><a href=/archives/195/><div class=article-details><h2 class=article-title>HTML 学习三 - 网页布局</h2></div></a></article><article><a href=/archives/174/><div class=article-details><h2 class=article-title>ElementUI</h2></div></a></article><article><a href=/archives/167/><div class=article-details><h2 class=article-title>CSS 盒子模型</h2></div></a></article><article><a href=/archives/166/><div class=article-details><h2 class=article-title>CSS 背景属性</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2025 <a href=https://lit.link/yexca target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 构建 <span>|</span>
+主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

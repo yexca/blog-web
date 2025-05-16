@@ -1,1223 +1,396 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n">
-<title>生成器模式</title>
-
-<link rel='canonical' href='https://blog.yexca.net/archives/112/'>
-
-<link rel="stylesheet" href="/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css"><meta property='og:title' content="生成器模式">
-<meta property='og:description' content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n">
-<meta property='og:url' content='https://blog.yexca.net/archives/112/'>
-<meta property='og:site_name' content='yexca&#39;Blog'>
-<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='设计模式' /><meta property='article:tag' content='对象创建型模式' /><meta property='article:published_time' content='2023-06-01T23:33:17&#43;08:00'/><meta property='article:modified_time' content='2023-06-01T23:33:17&#43;08:00'/>
-<meta name="twitter:site" content="@yexcano">
-    <meta name="twitter:creator" content="@yexcano"><meta name="twitter:title" content="生成器模式">
-<meta name="twitter:description" content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n">
-    <link rel="shortcut icon" href="/favicon.ico" />
-
-
-
-
-
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https:\/\/blog.yexca.net\/archives\/112\/"
-    },
-    "headline": "生成器模式",
-    "name": "yexca'Blog",
-    "author": {
-      "@type": "Person",
-      "name": "yexca"
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": "yexca'Blog"
-    },
-    "datePublished": "2023-06-01",
-    "dateModified": "2023-06-01",
-    "inLanguage": "zh-cn",
-    "description": "yexca 的技术与生活博客，记录编程学习与生活随想。"
-  }
-  </script>
-
-
-<link rel="alternate" hreflang="x-default" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-CN" href="https://blog.yexca.net/" />
-<link rel="alternate" hreflang="zh-TW" href="https://blog.yexca.net/zh-tw/" />
-<link rel="alternate" hreflang="ja" href="https://blog.yexca.net/ja/" />
-<link rel="alternate" hreflang="en" href="https://blog.yexca.net/en/" />
-
-    </head>
-    <body class="
-    article-page
-    ">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.documentElement.dataset.scheme = 'dark';
-        } else {
-            document.documentElement.dataset.scheme = 'light';
-        }
-    })();
-</script>
-<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header>
-        
-            
-            <figure class="site-avatar">
-                <a href="/">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu16531030078560657968.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-                </a>
-                
-            </figure>
-            
-        
-        
-        <div class="site-meta">
-            <h1 class="site-name"><a href="/">yexca&#39;Blog</a></h1>
-            <h2 class="site-description">把这个不美好的世界，编程您所期望的样子吧！</h2>
-        </div>
-    </header><ol class="menu-social">
-            
-                <li>
-                    <a 
-                        href='https://github.com/yexca'
-                        target="_blank"
-                        title="0GitHub"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-</svg>
-
-
-
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='mailto:yexca@duck.com'
-                        target="_blank"
-                        title="1Mail"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
-                        
-                    </a>
-                </li>
-            
-                <li>
-                    <a 
-                        href='https://t.me/yexca'
-                        target="_blank"
-                        title="2Telegram"
-                        rel="me"
-                    >
-                        
-                        
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" /></svg>
-                        
-                    </a>
-                </li>
-            
-
-            <li>
-                <a 
-                    href="/feed.xml" 
-                    target="_blank" 
-                    title="RSS" 
-                    rel="me"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="5" cy="19" r="1" />
-  <path d="M4 4a16 16 0 0 1 16 16" />
-  <path d="M4 11a9 9 0 0 1 9 9" />
-</svg>
-
-
-
-                </a>
-            </li>
-        </ol><ol class="menu" id="main-menu">
-        
-        
-        
-        <li >
-            <a href='/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>主页</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/archives/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>归档</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/search/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>搜索</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/background/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                
-                <span>背景</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/links/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
-  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
-</svg>
-
-
-
-                
-                <span>链接</span>
-            </a>
-        </li>
-        
-        
-        <li >
-            <a href='/about/' >
-                
-                
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>关于</span>
-            </a>
-        </li>
-        
-        <li class="menu-bottom-section">
-            <ol class="menu">
-                    
-                        <li id="i18n-switch">  
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-  <path d="M4 5h7" />
-  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
-  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
-  <path d="M12 20l4 -9l4 9" />
-  <path d="M19.1 18h-6.2" />
-</svg>
-
-
-
-                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
-                                
-                                    <option value="https://blog.yexca.net/" selected>简体中文</option>
-                                
-                                    <option value="https://blog.yexca.net/zh-tw/" >繁體中文</option>
-                                
-                                    <option value="https://blog.yexca.net/en/" >English</option>
-                                
-                                    <option value="https://blog.yexca.net/ja/" >日本語</option>
-                                
-                            </select>
-                        </li>
-                    
-                
-
-                
-                    <li id="dark-mode-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                        <span>暗色模式</span>
-                    </li>
-                
-            </ol>
-        </li>
-    </ol>
-</aside>
-
-    <aside class="sidebar right-sidebar sticky">
-        
-            
-                
-    <section class="widget archives">
-        <div class="widget-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
-        </div>
-        <h2 class="widget-title section-title">目录</h2>
-        
-        <div class="widget--toc">
-            <nav id="TableOfContents">
-  <ul>
-    <li><a href="#意图">意图</a></li>
-    <li><a href="#结构">结构</a></li>
-    <li><a href="#适用性">适用性</a></li>
-    <li><a href="#例子-1">例子 1</a>
-      <ul>
-        <li><a href="#java">Java</a></li>
-        <li><a href="#c">C++</a></li>
-      </ul>
-    </li>
-    <li><a href="#例子-2">例子 2</a></li>
-  </ul>
-</nav>
-        </div>
-    </section>
-
-            
-        
-    </aside>
-
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-    <header class="article-category">
-        
-            <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/" >
-                技术学习
-            </a>
-        
-    </header>
-    
-
-    <div class="article-title-wrapper">
-        <h2 class="article-title">
-            <a href="/archives/112/">生成器模式</a>
-        </h2>
-    
-        
-    </div>
-
-    
-    
-    
-    
-    <footer class="article-time">
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
-  <circle cx="18" cy="18" r="4" />
-  <path d="M15 3v4" />
-  <path d="M7 3v4" />
-  <path d="M3 11h16" />
-  <path d="M18 16.496v1.504l1 1" />
-</svg>
-                <time class="article-time--published">2023-06-01 23:33 &#43;0800</time>
-            </div>
-        
-
-        
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <polyline points="12 7 12 12 15 15" />
-</svg>
-
-
-
-                <time class="article-time--reading">
-                    阅读时长: 3 分钟
-                </time>
-            </div>
-        
-    </footer>
-    
-
-    
-    
-        <footer class="post-tags">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M4 7v3l9 9l7 -7l-9 -9h-3a2 2 0 0 0 -2 2"></path>
-                <path d="M9 8h-0.01"></path>
-            </svg>
-            
-                <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">设计模式</a>
-            
-                <a href="/tags/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" target="_blank" class="tag badge badge-secondary post-meta-detail-tag">对象创建型模式</a>
-            
-        </footer>
-    
-
-    
-
-</div>
-
-</header>
-
-    <section class="article-content">
-    
-    
-    <p>Builder Pattern 对象创建型模式</p>
-<h2 id="意图">意图
-</h2><p>将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示</p>
-<h2 id="结构">结构
-</h2><p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/03-%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/%e7%94%9f%e6%88%90%e5%99%a8%e6%a8%a1%e5%bc%8f.52btnuzz5780.webp"
-	
-	
-	
-	loading="lazy"
-	
-		alt="img"
-	
-	
-></p>
-<p>其中：</p>
-<ul>
-<li>Builder 为创建一个 Product 对象的各个部件指定抽象接口</li>
-<li>ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口</li>
-<li>Director 构造一个使用 Builder 接口的对象</li>
-<li>Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口</li>
-</ul>
-<h2 id="适用性">适用性
-</h2><p>Builder 模式适用于：</p>
-<ul>
-<li>当创建复杂对象的算法应该独立于该对象的组成部分以及它们的装配方式</li>
-<li>当构建过程必须允许被构造的对象有不同的表示时</li>
-</ul>
-<h2 id="例子-1">例子 1
-</h2><p>某快餐厅主要制作并出售儿童套餐，一般包括主餐（各类比萨）、饮料和玩具，其餐品种类可能不同，但其制作过程相同。前台服务员（Waiter）调度厨师制作套餐。现采用生成器模式实现制作过程。类图如下</p>
-<p><img src="https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/03-%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/%e7%94%9f%e6%88%90%e5%99%a8%e6%a8%a1%e5%bc%8f-%e4%be%8b%e5%ad%90.nluxs2rxunk.webp"
-	
-	
-	
-	loading="lazy"
-	
-		alt="生成器模式-例子"
-	
-	
-></p>
-<h3 id="java">Java
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">class</span> <span class="nc">Pizza</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">parts</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setParts</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">parts</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parts</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">parts</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PizzaBuilder</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="n">Pizza</span><span class="w"> </span><span class="n">pizza</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Pizza</span><span class="w"> </span><span class="nf">getPizza</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">pizza</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">createNewPizza</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">pizza</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Pizza</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">buildParts</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">HawaiianPizzaBuilder</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">PizzaBuilder</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">buildParts</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">pizza</span><span class="p">.</span><span class="na">setParts</span><span class="p">(</span><span class="s">&#34;cross + mild + ham&amp;pineapp1e&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">SpicyPizzaBuilder</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">PizzaBuilder</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">buildParts</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">pizza</span><span class="p">.</span><span class="na">setParts</span><span class="p">(</span><span class="s">&#34;panbaked + hot + pepperoni&amp;salami&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Waiter</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">PizzaBuilder</span><span class="w"> </span><span class="n">pizzaBuilder</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPizzaBuilder</span><span class="p">(</span><span class="n">PizzaBuilder</span><span class="w"> </span><span class="n">pizzaBuilder</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="cm">/*设置构建器*/</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">pizzaBuilder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pizzaBuilder</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Pizza</span><span class="w"> </span><span class="nf">getPizza</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">pizzaBuilder</span><span class="p">.</span><span class="na">getPizza</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">construct</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* 构建 */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">pizzaBuilder</span><span class="p">.</span><span class="na">createNewPizza</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">pizzaBuilder</span><span class="p">.</span><span class="na">buildParts</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">FastFoodOrdering</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Waiter</span><span class="w"> </span><span class="n">waiter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Waiter</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">PizzaBuilder</span><span class="w"> </span><span class="n">hawaiian_pizzabuilder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HawaiianPizzaBuilder</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">waiter</span><span class="p">.</span><span class="na">setPizzaBuilder</span><span class="p">(</span><span class="n">hawaiian_pizzabuilder</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">waiter</span><span class="p">.</span><span class="na">construct</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;pizza：&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">waiter</span><span class="p">.</span><span class="na">getPizza</span><span class="p">());</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c1">// 输出：pizza：cross + mild + ham&amp;pineapp1e</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="c">C++
-</h3><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Pizza</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="n">parts</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">setParts</span><span class="p">(</span><span class="n">string</span> <span class="n">parts</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">parts</span> <span class="o">=</span> <span class="n">parts</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">string</span> <span class="nf">getParts</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">parts</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">PizzaBuilder</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">protected</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Pizza</span> <span class="o">*</span><span class="n">pizza</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Pizza</span> <span class="o">*</span><span class="n">getPizza</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">pizza</span><span class="p">;</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">createNewPizza</span><span class="p">()</span> <span class="p">{</span> <span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pizza</span><span class="p">();</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">buildParts</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">HawaiianPizzaBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PizzaBuilder</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">buildParts</span><span class="p">()</span> <span class="p">{</span> <span class="n">pizza</span><span class="o">-&gt;</span><span class="n">setParts</span><span class="p">(</span><span class="s">&#34;cross + mild + ham&amp;pineapple&#34;</span><span class="p">);</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">SpicyPizzaBuilder</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PizzaBuilder</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">buildParts</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pizza</span><span class="o">-&gt;</span><span class="n">setParts</span><span class="p">(</span><span class="s">&#34;pan baked + hot + pepperoni&amp;salami&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Waiter</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">PizzaBuilder</span> <span class="o">*</span><span class="n">pizzaBuilder</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">setPizzaBuilder</span><span class="p">(</span><span class="n">PizzaBuilder</span> <span class="o">*</span><span class="n">pizzaBuilder</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="cm">/* 设置构建器 */</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="o">-&gt;</span><span class="n">pizzaBuilder</span> <span class="o">=</span> <span class="n">pizzaBuilder</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Pizza</span> <span class="o">*</span><span class="nf">getPizza</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">pizzaBuilder</span><span class="o">-&gt;</span><span class="n">getPizza</span><span class="p">();</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="nf">construct</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pizzaBuilder</span><span class="o">-&gt;</span><span class="n">createNewPizza</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pizzaBuilder</span><span class="o">-&gt;</span><span class="n">buildParts</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">};</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Waiter</span> <span class="o">*</span><span class="n">waiter</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Waiter</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">PizzaBuilder</span> <span class="o">*</span><span class="n">hawaiian_pizzabuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HawaiianPizzaBuilder</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">waiter</span><span class="o">-&gt;</span><span class="n">setPizzaBuilder</span><span class="p">(</span><span class="n">hawaiian_pizzabuilder</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="n">waiter</span><span class="o">-&gt;</span><span class="n">construct</span><span class="p">();</span>
-</span></span><span class="line"><span class="cl">    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;pizza: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">waiter</span><span class="o">-&gt;</span><span class="n">getPizza</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getParts</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// 程序的输出结果为：
-</span></span></span><span class="line"><span class="cl"><span class="c1">// pizza：cross + mild + ham*pineapple
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="例子-2">例子 2
-</h2><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.*</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Director</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Director</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Builder</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Builder1</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">d</span><span class="p">.</span><span class="na">Construct</span><span class="p">(</span><span class="n">b1</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Product</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">b1</span><span class="p">.</span><span class="na">getResult</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p1</span><span class="p">.</span><span class="na">show</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Product</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">part</span><span class="p">){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">parts</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">part</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">show</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&#34;The information of product:&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">parts</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; &#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Builder</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BuildPart</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getResult</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Builder1</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Builder</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Product</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BuildPart</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;A1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;A2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;C&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getResult</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Builder2</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Builder</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Product</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">BuildPart</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;B1&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;B2&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">p</span><span class="p">.</span><span class="na">Add</span><span class="p">(</span><span class="s">&#34;C&#34;</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Product</span><span class="w"> </span><span class="nf">getResult</span><span class="p">(){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">p</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">class</span> <span class="nc">Director</span><span class="p">{</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Construct</span><span class="p">(</span><span class="n">Builder</span><span class="w"> </span><span class="n">builder</span><span class="p">){</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">builder</span><span class="p">.</span><span class="na">BuildPart</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div>
-</section>
-
-
-    <footer class="article-footer">
-    
-    <section class="article-tags">
-        
-            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
-        
-            <a href="/tags/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/">对象创建型模式</a>
-        
-    </section>
-
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span>
-    </section>
-    </footer>
-
-
-    
-        <link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
-            ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
-                defer
-                >
-            </script><script>
-    window.addEventListener("DOMContentLoaded", () => {
-	const mainArticleElement = document.querySelector(".main-article");
-        renderMathInElement(mainArticleElement, {
-            delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true }
-            ],
-            ignoredClasses: ["gist"]
-        });})
-</script>
-
-    
-</article>
-
-    
-
-    
-
-<aside class="related-content--wrapper">
-    <h2 class="section-title">相关文章</h2>
-    <div class="related-content">
-        <div class="flex article-list--tile">
-            
-                
-<article class="">
-    <a href="/archives/111/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">工厂模式</h2>
-        </div>
-    </a>
-</article>
-
-            
-                
-<article class="">
-    <a href="/archives/108/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">设计模式 引</h2>
-        </div>
-    </a>
-</article>
-
-            
-        </div>
-    </div>
-</aside>
-
-     
-    
-        
-    <script src="//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js"></script>
-<div id="tcomment"></div>
-<style>
-    .twikoo {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-    :root[data-scheme="dark"] {
-        --twikoo-body-text-color-main: rgba(255, 255, 255, 0.9);
-        --twikoo-body-text-color: rgba(255, 255, 255, 0.7);
-    }
-    .twikoo .el-input-group__prepend,
-    .twikoo .tk-action-icon,
-    .twikoo .tk-submit-action-icon,
-    .twikoo .tk-time,
-    .twikoo .tk-comments-no,
-    .twikoo .tk-comments-count {
-        color: var(--twikoo-body-text-color);
-    }
-    .twikoo .el-input__inner,
-    .twikoo .el-textarea__inner,
-    .twikoo .tk-preview-container,
-    .twikoo .tk-content,
-    .twikoo .tk-nick,
-    .twikoo .tk-send {
-        color: var(--twikoo-body-text-color-main);
-    }
-    .twikoo .el-button{
-        color: var(--twikoo-body-text-color)!important;
-    }
-    .twikoo .el-input__count {
-        color: var(--twikoo-body-text-color) !important;
-    }
-    .OwO .OwO-body {
-        background-color: var(--body-background) !important;
-        color: var(--body-text-color) !important;
-    }
-</style><script>
-    twikoo.init({
-        envId: 'https:\/\/twikoo-jade-one.vercel.app\/',
-        el: '#tcomment',})
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2021 - 
-        
-        2025 <a href="https://lit.link/yexca" target="_blank" class="link" rel="noopener"> yexca </a>
-    </section>
-    
-    <section class="powerby">
-        
-
-        <p><span id="htmer_time" style="color: var(--themecolor);"></span></p>
-
-        <img src="https://count.getloli.com/@yexca"/>
-
-        <p>Visits Since 2025-02-28</p>使用 <a href="https://gohugo.io/" target="_blank" class="link" rel="noopener">Hugo</a> 构建 <span>|</span>
-        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" class="link" rel="noopener" data-version="3.29.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" class="link" rel="noopener">Jimmy</a> 设计
-    </section>
-</footer>
-
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
-                
-                >
-            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-<script>
-    function secondToDate(second) {
-        if (!second) {
-            return 0;
-        }
-        var time = new Array(0, 0, 0, 0, 0);
-        if (second >= 365 * 24 * 3600) {
-            time[0] = parseInt(second / (365 * 24 * 3600));
-            second %= 365 * 24 * 3600;
-        }
-        if (second >= 24 * 3600) {
-            time[1] = parseInt(second / (24 * 3600));
-            second %= 24 * 3600;
-        }
-        if (second >= 3600) {
-            time[2] = parseInt(second / 3600);
-            second %= 3600;
-        }
-        if (second >= 60) {
-            time[3] = parseInt(second / 60);
-            second %= 60;
-        }
-        if (second > 0) {
-            time[4] = second;
-        }
-        return time;
-    }</script>
-<script type="text/javascript" language="javascript">
-    function setTime() {
-        var create_time = Math.round(new Date(Date.UTC(2021, 10, 06, 14, 15, 19)).getTime() / 1000);
-        var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
-        currentTime = secondToDate((timestamp - create_time));
-        currentTimeHtml = 'This blog has been running for ' + currentTime[0] + ' years ' + currentTime[1] + ' days '
-                + currentTime[2] + ' hours ' + currentTime[3] + ' minutes ' + currentTime[4]
-                + ' seconds';
-        document.getElementById("htmer_time").innerHTML = currentTimeHtml;
-    }    setInterval(setTime, 1000);
-</script>
-
-
-    </body>
-</html>
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n"><title>生成器模式</title>
+<link rel=canonical href=https://blog.yexca.net/archives/112/><link rel=stylesheet href=/scss/style.min.a8d8040d8e301f410bb85ede0f2b8772493cf2cae9747e718ff9d07ae7a61d11.css><meta property='og:title' content="生成器模式"><meta property='og:description' content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n"><meta property='og:url' content='https://blog.yexca.net/archives/112/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='设计模式'><meta property='article:tag' content='对象创建型模式'><meta property='article:published_time' content='2023-06-01T23:33:17+08:00'><meta property='article:modified_time' content='2023-06-01T23:33:17+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="生成器模式"><meta name=twitter:description content="Builder Pattern 对象创建型模式\n意图 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示\n结构 其中：\nBuilder 为创建一个 Product 对象的各个部件指定抽象接口 ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口 Director 构造一个使用 Builder 接口的对象 Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口 适用性 Builder 模式适用于：\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/archives\/112\/"},"headline":"生成器模式","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2023-06-01","dateModified":"2023-06-01","inLanguage":"zh-cn","description":"yexca 的技术与生活博客，记录编程学习与生活随想。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>yexca'Blog</a></h1><h2 class=site-description>把这个不美好的世界，编程您所期望的样子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=0GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:yexca@duck.com target=_blank title=1Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=2Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>主页</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>关于</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/ selected>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#意图>意图</a></li><li><a href=#结构>结构</a></li><li><a href=#适用性>适用性</a></li><li><a href=#例子-1>例子 1</a><ul><li><a href=#java>Java</a></li><li><a href=#c>C++</a></li></ul></li><li><a href=#例子-2>例子 2</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/categories/%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0/>技术学习</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/archives/112/>生成器模式</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2023-06-01 23:33 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 3 分钟</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">设计模式</a>
+<a href=/tags/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">对象创建型模式</a></footer></div></header><section class=article-content><p>Builder Pattern 对象创建型模式</p><h2 id=意图>意图</h2><p>将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示</p><h2 id=结构>结构</h2><p><img src=https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/03-%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/%e7%94%9f%e6%88%90%e5%99%a8%e6%a8%a1%e5%bc%8f.52btnuzz5780.webp loading=lazy alt=img></p><p>其中：</p><ul><li>Builder 为创建一个 Product 对象的各个部件指定抽象接口</li><li>ConcreteBuilder 实现 Builder 的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，提供一个检索产品的接口</li><li>Director 构造一个使用 Builder 接口的对象</li><li>Product 表示被构建的复杂对象。ConcreteBuilder 创建该产品的内部表示并定义它的装配过程。包含定义组成组件的类，包括将这些组件装配成最终产品的接口</li></ul><h2 id=适用性>适用性</h2><p>Builder 模式适用于：</p><ul><li>当创建复杂对象的算法应该独立于该对象的组成部分以及它们的装配方式</li><li>当构建过程必须允许被构造的对象有不同的表示时</li></ul><h2 id=例子-1>例子 1</h2><p>某快餐厅主要制作并出售儿童套餐，一般包括主餐（各类比萨）、饮料和玩具，其餐品种类可能不同，但其制作过程相同。前台服务员（Waiter）调度厨师制作套餐。现采用生成器模式实现制作过程。类图如下</p><p><img src=https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/03-%e8%ae%be%e8%ae%a1%e6%a8%a1%e5%bc%8f/%e7%94%9f%e6%88%90%e5%99%a8%e6%a8%a1%e5%bc%8f-%e4%be%8b%e5%ad%90.nluxs2rxunk.webp loading=lazy alt=生成器模式-例子></p><h3 id=java>Java</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>class</span> <span class=nc>Pizza</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>parts</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setParts</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>parts</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>parts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>parts</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>toString</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>parts</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>PizzaBuilder</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>protected</span><span class=w> </span><span class=n>Pizza</span><span class=w> </span><span class=n>pizza</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Pizza</span><span class=w> </span><span class=nf>getPizza</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>pizza</span><span class=p>;</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>createNewPizza</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=n>pizza</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Pizza</span><span class=p>();</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>buildParts</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>HawaiianPizzaBuilder</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>PizzaBuilder</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>buildParts</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>pizza</span><span class=p>.</span><span class=na>setParts</span><span class=p>(</span><span class=s>&#34;cross + mild + ham&amp;pineapp1e&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>SpicyPizzaBuilder</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>PizzaBuilder</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>buildParts</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>pizza</span><span class=p>.</span><span class=na>setParts</span><span class=p>(</span><span class=s>&#34;panbaked + hot + pepperoni&amp;salami&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>Waiter</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>PizzaBuilder</span><span class=w> </span><span class=n>pizzaBuilder</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setPizzaBuilder</span><span class=p>(</span><span class=n>PizzaBuilder</span><span class=w> </span><span class=n>pizzaBuilder</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=cm>/*设置构建器*/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>pizzaBuilder</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>pizzaBuilder</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Pizza</span><span class=w> </span><span class=nf>getPizza</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=k>return</span><span class=w> </span><span class=n>pizzaBuilder</span><span class=p>.</span><span class=na>getPizza</span><span class=p>();</span><span class=w> </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>construct</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w> </span><span class=cm>/* 构建 */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>pizzaBuilder</span><span class=p>.</span><span class=na>createNewPizza</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>pizzaBuilder</span><span class=p>.</span><span class=na>buildParts</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>FastFoodOrdering</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Waiter</span><span class=w> </span><span class=n>waiter</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Waiter</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>PizzaBuilder</span><span class=w> </span><span class=n>hawaiian_pizzabuilder</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HawaiianPizzaBuilder</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>waiter</span><span class=p>.</span><span class=na>setPizzaBuilder</span><span class=p>(</span><span class=n>hawaiian_pizzabuilder</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>waiter</span><span class=p>.</span><span class=na>construct</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;pizza：&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>waiter</span><span class=p>.</span><span class=na>getPizza</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 输出：pizza：cross + mild + ham&amp;pineapp1e</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=c>C++</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c++ data-lang=c++><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;iostream&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>using</span> <span class=k>namespace</span> <span class=n>std</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Pizza</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>string</span> <span class=n>parts</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=n>setParts</span><span class=p>(</span><span class=n>string</span> <span class=n>parts</span><span class=p>)</span> <span class=p>{</span> <span class=k>this</span><span class=o>-&gt;</span><span class=n>parts</span> <span class=o>=</span> <span class=n>parts</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>string</span> <span class=nf>getParts</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=n>parts</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>PizzaBuilder</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>protected</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Pizza</span> <span class=o>*</span><span class=n>pizza</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>Pizza</span> <span class=o>*</span><span class=n>getPizza</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=n>pizza</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>createNewPizza</span><span class=p>()</span> <span class=p>{</span> <span class=n>pizza</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Pizza</span><span class=p>();</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>virtual</span> <span class=kt>void</span> <span class=nf>buildParts</span><span class=p>()</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>HawaiianPizzaBuilder</span> <span class=o>:</span> <span class=k>public</span> <span class=n>PizzaBuilder</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=n>buildParts</span><span class=p>()</span> <span class=p>{</span> <span class=n>pizza</span><span class=o>-&gt;</span><span class=n>setParts</span><span class=p>(</span><span class=s>&#34;cross + mild + ham&amp;pineapple&#34;</span><span class=p>);</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>SpicyPizzaBuilder</span> <span class=o>:</span> <span class=k>public</span> <span class=n>PizzaBuilder</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=n>buildParts</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>pizza</span><span class=o>-&gt;</span><span class=n>setParts</span><span class=p>(</span><span class=s>&#34;pan baked + hot + pepperoni&amp;salami&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Waiter</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl><span class=k>private</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>PizzaBuilder</span> <span class=o>*</span><span class=n>pizzaBuilder</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=n>setPizzaBuilder</span><span class=p>(</span><span class=n>PizzaBuilder</span> <span class=o>*</span><span class=n>pizzaBuilder</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span> <span class=cm>/* 设置构建器 */</span>
+</span></span><span class=line><span class=cl>        <span class=k>this</span><span class=o>-&gt;</span><span class=n>pizzaBuilder</span> <span class=o>=</span> <span class=n>pizzaBuilder</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>Pizza</span> <span class=o>*</span><span class=nf>getPizza</span><span class=p>()</span> <span class=p>{</span> <span class=k>return</span> <span class=n>pizzaBuilder</span><span class=o>-&gt;</span><span class=n>getPizza</span><span class=p>();</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=kt>void</span> <span class=nf>construct</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>pizzaBuilder</span><span class=o>-&gt;</span><span class=n>createNewPizza</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=n>pizzaBuilder</span><span class=o>-&gt;</span><span class=n>buildParts</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>Waiter</span> <span class=o>*</span><span class=n>waiter</span> <span class=o>=</span> <span class=k>new</span> <span class=n>Waiter</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>PizzaBuilder</span> <span class=o>*</span><span class=n>hawaiian_pizzabuilder</span> <span class=o>=</span> <span class=k>new</span> <span class=n>HawaiianPizzaBuilder</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>waiter</span><span class=o>-&gt;</span><span class=n>setPizzaBuilder</span><span class=p>(</span><span class=n>hawaiian_pizzabuilder</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>waiter</span><span class=o>-&gt;</span><span class=n>construct</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=n>cout</span> <span class=o>&lt;&lt;</span> <span class=s>&#34;pizza: &#34;</span> <span class=o>&lt;&lt;</span> <span class=n>waiter</span><span class=o>-&gt;</span><span class=n>getPizza</span><span class=p>()</span><span class=o>-&gt;</span><span class=n>getParts</span><span class=p>()</span> <span class=o>&lt;&lt;</span> <span class=n>endl</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 程序的输出结果为：
+</span></span></span><span class=line><span class=cl><span class=c1>// pizza：cross + mild + ham*pineapple
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=例子-2>例子 2</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=nn>java.util.*</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Main</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Director</span><span class=w> </span><span class=n>d</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Director</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Builder</span><span class=w> </span><span class=n>b1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Builder1</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>d</span><span class=p>.</span><span class=na>Construct</span><span class=p>(</span><span class=n>b1</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Product</span><span class=w> </span><span class=n>p1</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>b1</span><span class=p>.</span><span class=na>getResult</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p1</span><span class=p>.</span><span class=na>show</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>Product</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>parts</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Add</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>part</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>parts</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=n>part</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>show</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;The information of product:&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>s</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>parts</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>print</span><span class=p>(</span><span class=n>s</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34; &#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>abstract</span><span class=w> </span><span class=kd>class</span> <span class=nc>Builder</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>BuildPart</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>abstract</span><span class=w> </span><span class=n>Product</span><span class=w> </span><span class=nf>getResult</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>Builder1</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Builder</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Product</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Product</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>BuildPart</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;A1&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;A2&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;C&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Product</span><span class=w> </span><span class=nf>getResult</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>p</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>Builder2</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Builder</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Product</span><span class=w> </span><span class=n>p</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Product</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>BuildPart</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;B1&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;B2&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>p</span><span class=p>.</span><span class=na>Add</span><span class=p>(</span><span class=s>&#34;C&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Product</span><span class=w> </span><span class=nf>getResult</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>p</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>class</span> <span class=nc>Director</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>Construct</span><span class=p>(</span><span class=n>Builder</span><span class=w> </span><span class=n>builder</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>builder</span><span class=p>.</span><span class=na>BuildPart</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/>设计模式</a>
+<a href=/tags/%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/>对象创建型模式</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css integrity=sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js integrity=sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8 crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous defer></script><script>window.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector(".main-article");renderMathInElement(e,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredClasses:["gist"]})})</script></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/archives/111/><div class=article-details><h2 class=article-title>工厂模式</h2></div></a></article><article><a href=/archives/108/><div class=article-details><h2 class=article-title>设计模式 引</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2025 <a href=https://lit.link/yexca target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 构建 <span>|</span>
+主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
