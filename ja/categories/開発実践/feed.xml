@@ -1,6 +1,974 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>開発実践 on yexca'Blog</title><link>https://blog.yexca.net/ja/categories/%E9%96%8B%E7%99%BA%E5%AE%9F%E8%B7%B5/</link><description>Recent content in 開発実践 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Sun, 05 Jan 2025 16:19:36 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/categories/%E9%96%8B%E7%99%BA%E5%AE%9F%E8%B7%B5/feed.xml" rel="self" type="application/rss+xml"/><item><title>すりガラス効果</title><link>https://blog.yexca.net/ja/archives/212/</link><pubDate>Sun, 05 Jan 2025 16:19:36 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/212/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>開発実践 on yexca'Blog</title><link>https://blog.yexca.net/ja/categories/%E9%96%8B%E7%99%BA%E5%AE%9F%E8%B7%B5/</link><description>Recent content in 開発実践 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Sun, 18 May 2025 16:20:33 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/categories/%E9%96%8B%E7%99%BA%E5%AE%9F%E8%B7%B5/feed.xml" rel="self" type="application/rss+xml"/><item><title>Pixiv ダウンローダー再構築記：グチャグチャから混乱の理解へ</title><link>https://blog.yexca.net/ja/archives/248/</link><pubDate>Sun, 18 May 2025 16:20:33 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/248/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong>　この記事は ChatGPT によって翻訳されました。また、このソフトウェアは中国語簡体字のみです。　
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>元々はちょっとしたものを適当に書くつもりで、二三日で飽きる予定だった（いつも大体そう）。でもバグらずに動いてくれることで時間めっちゃ節約できたし、どんどん使いやすくなっていった。&lt;/p></description></item><item><title>DevOps を取り入れて：ブログの構築とデプロイを GitHub に任せた話</title><link>https://blog.yexca.net/ja/archives/247/</link><pubDate>Fri, 16 May 2025 18:14:06 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/247/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>最近、自分が次に何をやるか、何を学ぶかって考えてる時に、やたら目に入ってきたのが「DevOps」って言葉。最初ちょっとググったら、載ってる技術スタックはだいたい知ってるやつばっかで、「あーこれは全栈エンジニアみたいなもんか」って思ってた（まぁ実際ちょっと似てる気もする）&lt;/p></description></item><item><title>自分の名前で検索されるために：小さなブログの SEO 調査実践記</title><link>https://blog.yexca.net/ja/archives/246/</link><pubDate>Sun, 27 Apr 2025 17:38:16 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/246/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじまり">はじまり
+&lt;/h2>&lt;p>また自己紹介のタイミングで、ふと思い出したのが自分のブログだった。&lt;/p></description></item><item><title>WeBASE を使って FISCO BCOS ブロックチェーンをデプロイする</title><link>https://blog.yexca.net/ja/archives/241/</link><pubDate>Thu, 13 Mar 2025 01:08:02 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/241/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>この記事は 2024-04-29 に書いたやつで、あとでちょっと修正したけど、結局完成してなかったみたい。しかももう関連ファイルも全部削除しちゃってる。まあ、いいや。&lt;/p></description></item><item><title>国際化に対応したフォント設定</title><link>https://blog.yexca.net/ja/archives/240/</link><pubDate>Mon, 10 Mar 2025 23:56:56 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/240/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>ブログを国際化してからは他言語の投稿なんてほぼ見てなかったんだけど、&lt;br>
+ある日ネットサーフィン中に「おっ、いい感じの日本語フォントじゃん？」ってのを見つけて、「これは導入するしかない！」ってなった。&lt;br>
+でもその時に他の言語フォントを見てみたら……ひどすぎて笑った。&lt;/p></description></item><item><title>すりガラス効果</title><link>https://blog.yexca.net/ja/archives/212/</link><pubDate>Sun, 05 Jan 2025 16:19:36 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/212/</guid><description>&lt;blockquote>
 &lt;p>この記事の一部は機械翻訳を使ったよ&lt;/p>
 &lt;/blockquote>
 &lt;h2 id="まえがき">まえがき
-&lt;/h2>&lt;p>今日は最近設計した半透明、すりガラスと丸みを帯びた角についてまとめようと思っていたけど、突然2023年12月01日何かを作ったことを思い出したので、それも一緒に再編成しようと思う&lt;/p></description></item><item><title>ブログ実行時間</title><link>https://blog.yexca.net/ja/archives/172/</link><pubDate>Tue, 14 May 2024 11:08:25 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/172/</guid><description>&lt;h2 id="導入">導入
-&lt;/h2>&lt;p>卒業論文は面倒くさいな、この記事はいつか書いたのでしょうか。ファイルは 2023-11-30 に作成されたけど、2022.09.18 に変更されて、わからなくて、ショックを受けた&lt;/p></description></item></channel></rss>
+&lt;/h2>&lt;p>今日は最近設計した半透明、すりガラスと丸みを帯びた角についてまとめようと思っていたけど、突然2023年12月01日何かを作ったことを思い出したので、それも一緒に再編成しようと思う&lt;/p></description></item><item><title>Pixiv ダウンローダー</title><link>https://blog.yexca.net/ja/archives/211/</link><pubDate>Fri, 03 Jan 2025 20:05:44 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/211/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>2025-05-18 更新&lt;br>
+SQLite版も書いた。もうデータベース設定しなくていい：
+&lt;a class="link" href="https://blog.yexca.net/archives/248"
+>
+https://blog.yexca.net/archives/248
+&lt;/a>
+&lt;/p></description></item><item><title>Hugo でブログの多言語対応をする</title><link>https://blog.yexca.net/ja/archives/209/</link><pubDate>Fri, 27 Dec 2024 23:11:45 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/209/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>情報を読む機会が増えると、他言語で記事を書きたくなることってあるよね（最近の作品はだいたい多言語対応だし）。&lt;br>
+それに、卒論で多言語対応を入れて以来、自分が作るツールやデザインもいつのまにか多言語対応を意識するようになってきた。&lt;/p></description></item><item><title>ブログ実行時間</title><link>https://blog.yexca.net/ja/archives/172/</link><pubDate>Tue, 14 May 2024 11:08:25 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/172/</guid><description>&lt;h2 id="導入">導入
+&lt;/h2>&lt;p>卒業論文は面倒くさいな、この記事はいつか書いたのでしょうか。ファイルは 2023-11-30 に作成されたけど、2022.09.18 に変更されて、わからなくて、ショックを受けた&lt;/p></description></item><item><title>Docker で H5 イメージを作成・プッシュする</title><link>https://blog.yexca.net/ja/archives/141/</link><pubDate>Tue, 09 Jan 2024 21:50:25 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/141/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>新しいディレクトリを作成し、Web ファイルを &lt;code>./dict&lt;/code> に配置する。&lt;/p></description></item><item><title>hvdb 登録監視ツール</title><link>https://blog.yexca.net/ja/archives/133/</link><pubDate>Sat, 02 Dec 2023 21:23:01 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/133/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>いつからか（正確な時期は忘れたけど）ASMR が好きになって、音声作品にも触れるようになった。&lt;br>
+でも価格が結構高いので、自然とネットで探すようになって、このサイトを知った。&lt;br>
+ただし、このサイトはログインしないと詳細が見られず、しかも登録は年に数回の不定期オープン。&lt;/p></description></item><item><title>個人音楽サイトの構築</title><link>https://blog.yexca.net/ja/archives/105/</link><pubDate>Tue, 02 May 2023 02:27:39 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/105/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>Rclone を使って OneDrive 上の音楽ファイルをマウントし、Navidrome を使って音楽サイトを構築。Docker でデプロイする。&lt;/p></description></item><item><title>サーバーでの Docker デプロイ記録</title><link>https://blog.yexca.net/ja/archives/102/</link><pubDate>Tue, 04 Apr 2023 22:31:45 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/102/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>思いつきから完全に実現するまで、なんと3ヶ月かかった（主に怠けすぎただけ）&lt;/p></description></item><item><title>Gitサーバーの構築と指定ディレクトリへの同期</title><link>https://blog.yexca.net/ja/archives/57/</link><pubDate>Sat, 13 Aug 2022 10:28:50 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/57/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>Gitを使えば、友人とのコード管理や同期が簡単になります。特に静的サイトが好きな筆者にとっては、GitでWebファイルを同期できるのは非常に便利です。&lt;/p></description></item><item><title>Github Pages でのサイト構築と独自ドメインの設定</title><link>https://blog.yexca.net/ja/archives/44/</link><pubDate>Sat, 28 May 2022 15:30:43 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/44/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は ChatGPT によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>最近 Github Pages を使って個人ページを作りました（今は削除済み）。この記事では Github Pages でのサイト構築方法および独自ドメインの設定について記録します。&lt;/p></description></item></channel></rss>

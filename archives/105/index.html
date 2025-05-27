@@ -13,7 +13,7 @@
 <time class=article-time--published>2023-05-02 02:27 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
 <time class=article-time--reading>阅读时长: 2 分钟</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
 <a href=/tags/docker/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Docker</a>
-<a href=/tags/%E9%9F%B3%E4%B9%90/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">音乐</a></footer></div></header><section class=article-content><p>使用 Rclone 挂载 Onedrive 歌曲文件，Navidrome 搭建网站，采用 docker 部署</p><h2 id=rclone>Rclone</h2><p>首先需要在 Windows 系统上运行获取配置，然后再在服务器上安装并挂载文件</p><h3 id=获取-token>获取 Token</h3><p>在 Windows 电脑上下载 Rclone，下载地址：
+<a href=/tags/%E9%9F%B3%E4%B9%90/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">音乐</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/ja/archives/105/ class=link>日本語</a></div></footer></div></header><section class=article-content><p>使用 Rclone 挂载 Onedrive 歌曲文件，Navidrome 搭建网站，采用 docker 部署</p><h2 id=rclone>Rclone</h2><p>首先需要在 Windows 系统上运行获取配置，然后再在服务器上安装并挂载文件</p><h3 id=获取-token>获取 Token</h3><p>在 Windows 电脑上下载 Rclone，下载地址：
 <a class=link href=https://rclone.org/downloads/ target=_blank rel=noopener>https://rclone.org/downloads/</a></p><p>下载完成后解压，解压完成后通过 cmd 进入该文件夹，然后运行</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>rclone.exe authorize <span class=s2>&#34;onedrive&#34;</span>
 </span></span></code></pre></td></tr></table></div></div><p>在弹出的浏览器中登录并授权，授权完成后会打印 Token (大括号之间的，包括大括号)</p><h3 id=获取配置文件>获取配置文件</h3><p>运行命令</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
@@ -51,9 +51,9 @@
 </span></span></span><span class=line><span class=cl><span class=se></span>    mount music:/ /data/music --allow-other --allow-non-empty --vfs-cache-mode writes <span class=p>&amp;</span>
 </span></span><span class=line><span class=cl><span class=c1># 上述命令仅最后一行为 Rclone 的命令，根据实际情况修改，格式如下</span>
 </span></span><span class=line><span class=cl>rclone mount DriveName:Folder LocalFolder
-</span></span><span class=line><span class=cl><span class=c1># DriveName		Rclone 挂载的名称</span>
-</span></span><span class=line><span class=cl><span class=c1># Folder		云盘的路径</span>
-</span></span><span class=line><span class=cl><span class=c1># LocalFolder	挂载到本地的文件</span>
+</span></span><span class=line><span class=cl><span class=c1># DriveName    Rclone 挂载的名称</span>
+</span></span><span class=line><span class=cl><span class=c1># Folder    云盘的路径</span>
+</span></span><span class=line><span class=cl><span class=c1># LocalFolder 挂载到本地的文件</span>
 </span></span></code></pre></td></tr></table></div></div><p>上述命令最后的 <code>&</code> 表示后台运行，命令执行后会打印进程的 PID，如需关闭使用命令</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>kill</span> PID
 </span></span></code></pre></td></tr></table></div></div><p>了解更多？访问：
