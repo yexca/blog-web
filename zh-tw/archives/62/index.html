@@ -1,0 +1,286 @@
+<!doctype html><html lang=zh-tw dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 本文由 Gemini-3-flash 翻譯 該文章由 Hiyoung 編寫\n"><title>Aria2+AriaNG 配置使用</title>
+<link rel=canonical href=https://blog.yexca.net/zh-tw/archives/62/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Aria2+AriaNG 配置使用"><meta property='og:description' content="📢 本文由 Gemini-3-flash 翻譯 該文章由 Hiyoung 編寫\n"><meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/62/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Aria2'><meta property='article:tag' content='下載工具'><meta property='article:published_time' content='2022-09-01T23:06:38+08:00'><meta property='article:modified_time' content='2022-09-01T23:06:38+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Aria2+AriaNG 配置使用"><meta name=twitter:description content="📢 本文由 Gemini-3-flash 翻譯 該文章由 Hiyoung 編寫\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/zh-tw\/archives\/62\/"},"headline":"Aria2\u002bAriaNG 配置使用","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2022-09-01","dateModified":"2022-09-01","inLanguage":"zh-tw","description":"yexca 的技術與生活部落格，紀錄程式學習與日常隨筆。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切換選單>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh-tw/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/zh-tw>yexca'Blog</a></h1><h2 class=site-description>把這個不美好的世界，編程您所期望的樣子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/zh-tw/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh-tw/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首頁</span></a></li><li><a href=/zh-tw/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>檔案</span></a></li><li><a href=/zh-tw/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜尋</span></a></li><li><a href=/zh-tw/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/zh-tw/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>連結</span></a></li><li><a href=/zh-tw/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>關於</span></a></li><li><a href=/zh-tw/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>支持</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/ selected>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>夜晚模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目錄</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#下載-aria2ariang-最新安裝包>下載 Aria2+AriaNG 最新安裝包</a></li><li><a href=#新增設定檔>新增設定檔</a><ul><li><a href=#修改設定檔>修改設定檔</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/zh-tw/categories/%E5%AF%A6%E4%BD%9C%E7%B6%93%E9%A9%97/>實作經驗</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/zh-tw/archives/62/>Aria2+AriaNG 配置使用</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2022-09-01 23:06 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>閱讀時間: 5 分鐘</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/zh-tw/tags/aria2/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Aria2</a>
+<a href=/zh-tw/tags/%E4%B8%8B%E8%BC%89%E5%B7%A5%E5%85%B7/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">下載工具</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/62/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/en/archives/62/ class=link>English</a>
+<a href=https://blog.yexca.net/ja/archives/62/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> 本文由 Gemini-3-flash 翻譯</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p>該文章由
+<a class=link href=https://blog.hiyoung.icu/ target=_blank rel=noopener>Hiyoung
+</a>編寫</p><p>其文章:
+<a class=link href=https://blog.hiyoung.icu/2022/09/01/906d191f9a59/ target=_blank rel=noopener>https://blog.hiyoung.icu/2022/09/01/906d191f9a59/</a></p></blockquote><p>Aria2 是 Linux 下的一個下載工具，這裡介紹 Windows 下的安裝與設定，官方 Aria2 沒有 GUI 介面，所以配合 AriaNG 直接在 Web 介面進行操作。</p><p>AriaNg 是一個讓 aria2 更容易使用的現代 Web 前端。AriaNg 使用純 html & javascript 開發，所以它不需要任何編譯器或執行環境。</p><h2 id=下載-aria2ariang-最新安裝包>下載 Aria2+AriaNG 最新安裝包</h2><p>首先先在官網下載安裝包</p><ul><li><strong><a class=link href=https://github.com/aria2/aria2/releases/ target=_blank rel=noopener>Aria2 的 Github 地址</a></strong></li></ul><p>– <strong><a class=link href=https://aria2.github.io/ target=_blank rel=noopener>Aria2 官方文件</a></strong></p><ul><li><strong><a class=link href=https://github.com/mayswind/AriaNg/releases target=_blank rel=noopener>AriaNG 的 Github 地址</a></strong></li></ul><p>– <strong><a class=link href=http://ariang.mayswind.net/zh_Hans/ target=_blank rel=noopener>AriaNG 官方文件</a></strong></p><p>Aria2 選擇對應的作業系統下載壓縮檔即可，AriaNG 解壓縮後放在 Aria2 資料夾即可。</p><p>AriaNg 現在提供三種版本：標準版、單檔案版和 AriaNg Native。</p><blockquote><p>標準版適合在 Web 伺服器中部署，提供資源快取和按需載入的功能。</p><p>單檔案版適合本地使用，您下載後只要在瀏覽器中打開唯一的 html 檔案即可。</p><p>AriaNg Native 同樣適合本地使用，並且不需要使用瀏覽器。</p></blockquote><h2 id=新增設定檔>新增設定檔</h2><p>將檔案解壓縮至該目錄下後，你需要再新建立 4 個空檔案 (可以先建一個空 txt 檔案然後修改副檔名)：</p><ul><li><strong>Aria2.log （日誌檔案）</strong></li><li><strong>aria2.session （用於記錄下載歷史，以便斷點續傳）</strong></li><li><strong>aria2.conf （設定檔）</strong></li><li><strong>HideRun.vbs （隱藏 cmd 視窗執行時用到的）</strong></li></ul><h3 id=修改設定檔>修改設定檔</h3><ol><li>打開剛才建立的 aria2.conf 空檔案，將以下內容填入（用記事本打開即可）</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1>## &#39;#&#39;開頭為註解內容, 選項都有相應的註解說明, 根據需要修改 ##</span>
+</span></span><span class=line><span class=cl><span class=c1>## 被註解的選項填寫的是預設值, 建議在需要修改時再取消註解  ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 檔案儲存相關 ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 檔案的儲存路徑(可使用絕對路徑或相對路徑), 預設: 當前啟動位置</span>
+</span></span><span class=line><span class=cl><span class=n>dir</span><span class=o>=</span><span class=n>E</span><span class=p>:</span>\<span class=n>Aria2Download</span>
+</span></span><span class=line><span class=cl><span class=c1># 日誌檔案的儲存路徑</span>
+</span></span><span class=line><span class=cl><span class=nb>log</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>Aria2</span><span class=o>.</span><span class=n>log</span>
+</span></span><span class=line><span class=cl><span class=c1># 啟用磁碟快取, 0為停用快取, 需1.16以上版本, 預設:16M</span>
+</span></span><span class=line><span class=cl><span class=c1>#disk-cache=32M</span>
+</span></span><span class=line><span class=cl><span class=c1># 檔案預先分配方式, 能有效降低磁碟碎片, 預設:prealloc</span>
+</span></span><span class=line><span class=cl><span class=c1># 預先分配所需時間: none &lt; falloc ? trunc &lt; prealloc</span>
+</span></span><span class=line><span class=cl><span class=c1># falloc和trunc則需要檔案系統和核心支援</span>
+</span></span><span class=line><span class=cl><span class=c1># NTFS建議使用falloc, EXT3/4建議trunc, MAC 下需要註解此項</span>
+</span></span><span class=line><span class=cl><span class=c1>#file-allocation=none</span>
+</span></span><span class=line><span class=cl><span class=c1># 斷點續傳</span>
+</span></span><span class=line><span class=cl><span class=k>continue</span><span class=o>=</span><span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 下載連線相關 ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 最大同時下載任務數, 執行時可修改, 預設:5</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-concurrent-downloads=5</span>
+</span></span><span class=line><span class=cl><span class=c1># 同一伺服器連線數, 新增時可指定, 預設:1</span>
+</span></span><span class=line><span class=cl><span class=nb>max</span><span class=o>-</span><span class=n>connection</span><span class=o>-</span><span class=n>per</span><span class=o>-</span><span class=n>server</span><span class=o>=</span><span class=mi>5</span>
+</span></span><span class=line><span class=cl><span class=c1># 最小檔案分片大小, 新增時可指定, 取值範圍1M -1024M, 預設:20M</span>
+</span></span><span class=line><span class=cl><span class=c1># 假定size=10M, 檔案為20MiB 則使用兩個來源下載; 檔案為15MiB 則使用一個來源下載</span>
+</span></span><span class=line><span class=cl><span class=nb>min</span><span class=o>-</span><span class=n>split</span><span class=o>-</span><span class=n>size</span><span class=o>=</span><span class=mi>10</span><span class=n>M</span>
+</span></span><span class=line><span class=cl><span class=c1># 單個任務最大執行緒數, 新增時可指定, 預設:5</span>
+</span></span><span class=line><span class=cl><span class=c1>#split=5</span>
+</span></span><span class=line><span class=cl><span class=c1># 整體下載速度限制, 執行時可修改, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-overall-download-limit=0</span>
+</span></span><span class=line><span class=cl><span class=c1># 單個任務下載速度限制, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-download-limit=0</span>
+</span></span><span class=line><span class=cl><span class=c1># 整體上傳速度限制, 執行時可修改, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-overall-upload-limit=0</span>
+</span></span><span class=line><span class=cl><span class=c1># 單個任務上傳速度限制, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-upload-limit=0</span>
+</span></span><span class=line><span class=cl><span class=c1># 停用IPv6, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=c1>#disable-ipv6=true</span>
+</span></span><span class=line><span class=cl><span class=c1># 連線逾時時間, 預設:60</span>
+</span></span><span class=line><span class=cl><span class=c1>#timeout=60</span>
+</span></span><span class=line><span class=cl><span class=c1># 最大重試次數, 設定為0表示不限制重試次數, 預設:5</span>
+</span></span><span class=line><span class=cl><span class=c1>#max-tries=5</span>
+</span></span><span class=line><span class=cl><span class=c1># 設定重試等待的秒數, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#retry-wait=0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 進度儲存相關 ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 從工作階段檔案中讀取下載任務</span>
+</span></span><span class=line><span class=cl><span class=n>input</span><span class=o>-</span><span class=n>file</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>aria2</span><span class=o>.</span><span class=n>session</span>
+</span></span><span class=line><span class=cl><span class=c1># 在Aria2退出時儲存`錯誤/未完成`的下載任務到工作階段檔案</span>
+</span></span><span class=line><span class=cl><span class=n>save</span><span class=o>-</span><span class=n>session</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>aria2</span><span class=o>.</span><span class=n>session</span>
+</span></span><span class=line><span class=cl><span class=c1># 定時儲存工作階段, 0為退出時才儲存, 需1.16.1以上版本, 預設:0</span>
+</span></span><span class=line><span class=cl><span class=c1>#save-session-interval=60</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## RPC相關設定 ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 啟用RPC, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=n>enable</span><span class=o>-</span><span class=n>rpc</span><span class=o>=</span><span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=c1># 允許所有來源, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=n>rpc</span><span class=o>-</span><span class=n>allow</span><span class=o>-</span><span class=n>origin</span><span class=o>-</span><span class=n>all</span><span class=o>=</span><span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=c1># 允許非外部存取, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=n>rpc</span><span class=o>-</span><span class=n>listen</span><span class=o>-</span><span class=n>all</span><span class=o>=</span><span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=c1># 事件輪詢方式, 取值:[epoll, kqueue, port, poll, select], 不同系統預設值不同</span>
+</span></span><span class=line><span class=cl><span class=c1>#event-poll=select</span>
+</span></span><span class=line><span class=cl><span class=c1># RPC監聽通訊埠, 通訊埠被佔用時可以修改, 預設:6800</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-listen-port=6800</span>
+</span></span><span class=line><span class=cl><span class=c1># 設定的RPC授權權杖, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 選項</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-secret=&lt;TOKEN&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># 設定的RPC存取用戶名, 此選項新版已廢棄, 建議改用 --rpc-secret 選項</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-user=&lt;USER&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># 設定的RPC存取密碼, 此選項新版已廢棄, 建議改用 --rpc-secret 選項</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-passwd=&lt;PASSWD&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># 是否啟用 RPC 服務的 SSL/TLS 加密,</span>
+</span></span><span class=line><span class=cl><span class=c1># 啟用加密後 RPC 服務需要使用 https 或者 wss 協定連線</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-secure=true</span>
+</span></span><span class=line><span class=cl><span class=c1># 在 RPC 服務中啟用 SSL/TLS 加密時的憑證檔案,</span>
+</span></span><span class=line><span class=cl><span class=c1># 使用 PEM 格式時，您必須通過 --rpc-private-key 指定私鑰</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-certificate=/path/to/certificate.pem</span>
+</span></span><span class=line><span class=cl><span class=c1># 在 RPC 服務中啟用 SSL/TLS 加密時的私鑰檔案</span>
+</span></span><span class=line><span class=cl><span class=c1>#rpc-private-key=/path/to/certificate.key</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## BT/PT下載相關 ##</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 當下載的是一個種子(以.torrent結尾)時, 自動開始BT任務, 預設:true</span>
+</span></span><span class=line><span class=cl><span class=c1>#follow-torrent=true</span>
+</span></span><span class=line><span class=cl><span class=c1># BT監聽通訊埠, 當通訊埠被封鎖時使用, 預設:6881-6999</span>
+</span></span><span class=line><span class=cl><span class=n>listen</span><span class=o>-</span><span class=n>port</span><span class=o>=</span><span class=mi>51413</span>
+</span></span><span class=line><span class=cl><span class=c1># 單個種子最大連線數, 預設:55</span>
+</span></span><span class=line><span class=cl><span class=c1>#bt-max-peers=55</span>
+</span></span><span class=line><span class=cl><span class=c1># 打開DHT功能, PT需要停用, 預設:true</span>
+</span></span><span class=line><span class=cl><span class=n>enable</span><span class=o>-</span><span class=n>dht</span><span class=o>=</span><span class=bp>false</span>
+</span></span><span class=line><span class=cl><span class=c1># 打開IPv6 DHT功能, PT需要停用</span>
+</span></span><span class=line><span class=cl><span class=c1>#enable-dht6=false</span>
+</span></span><span class=line><span class=cl><span class=c1># DHT網路監聽通訊埠, 預設:6881-6999</span>
+</span></span><span class=line><span class=cl><span class=c1>#dht-listen-port=6881-6999</span>
+</span></span><span class=line><span class=cl><span class=c1># 本地節點查找, PT需要停用, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=c1>#bt-enable-lpd=false</span>
+</span></span><span class=line><span class=cl><span class=c1># 種子交換, PT需要停用, 預設:true</span>
+</span></span><span class=line><span class=cl><span class=n>enable</span><span class=o>-</span><span class=n>peer</span><span class=o>-</span><span class=n>exchange</span><span class=o>=</span><span class=bp>false</span>
+</span></span><span class=line><span class=cl><span class=c1># 每個種子限速, 對少種的PT很有用, 預設:50K</span>
+</span></span><span class=line><span class=cl><span class=c1>#bt-request-peer-speed-limit=50K</span>
+</span></span><span class=line><span class=cl><span class=c1># 用戶端偽裝, PT需要</span>
+</span></span><span class=line><span class=cl><span class=n>peer</span><span class=o>-</span><span class=n>id</span><span class=o>-</span><span class=n>prefix</span><span class=o>=-</span><span class=n>TR2770</span><span class=o>-</span>
+</span></span><span class=line><span class=cl><span class=n>user</span><span class=o>-</span><span class=n>agent</span><span class=o>=</span><span class=n>Transmission</span><span class=o>/</span><span class=mf>2.77</span>
+</span></span><span class=line><span class=cl><span class=c1># 當種子的分享率達到這個數時, 自動停止做種, 0為一直做種, 預設:1.0</span>
+</span></span><span class=line><span class=cl><span class=nb>seed</span><span class=o>-</span><span class=n>ratio</span><span class=o>=</span><span class=mf>0.7</span>
+</span></span><span class=line><span class=cl><span class=c1># 強制儲存工作階段, 即使任務已經完成, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=c1># 較新的版本開啟後會在任務完成後依然保留.aria2檔案</span>
+</span></span><span class=line><span class=cl><span class=c1>#force-save=false</span>
+</span></span><span class=line><span class=cl><span class=c1># BT校驗相關, 預設:true</span>
+</span></span><span class=line><span class=cl><span class=c1>#bt-hash-check-seed=true</span>
+</span></span><span class=line><span class=cl><span class=c1># 繼續之前的BT任務時, 無需再次校驗, 預設:false</span>
+</span></span><span class=line><span class=cl><span class=n>bt</span><span class=o>-</span><span class=nb>seed</span><span class=o>-</span><span class=n>unverified</span><span class=o>=</span><span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=c1># 儲存磁力連結元數據為種子檔案(.torrent檔案), 預設:false</span>
+</span></span><span class=line><span class=cl><span class=n>bt</span><span class=o>-</span><span class=n>save</span><span class=o>-</span><span class=n>metadata</span><span class=o>=</span><span class=bp>true</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>注意：你需要將下面四行的內容修改為你自己對應的檔案位置</strong>：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># 檔案的儲存路徑(可使用絕對路徑或相對路徑), 預設: 當前啟動位置</span>
+</span></span><span class=line><span class=cl><span class=n>dir</span><span class=o>=</span><span class=n>E</span><span class=p>:</span>\<span class=n>Aria2Download</span>
+</span></span><span class=line><span class=cl><span class=c1># 日志檔案的儲存路徑</span>
+</span></span><span class=line><span class=cl><span class=nb>log</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>Aria2</span><span class=o>.</span><span class=n>log</span>
+</span></span><span class=line><span class=cl><span class=c1># 從工作階段檔案中讀取下載任務</span>
+</span></span><span class=line><span class=cl><span class=n>input</span><span class=o>-</span><span class=n>file</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>aria2</span><span class=o>.</span><span class=n>session</span>
+</span></span><span class=line><span class=cl><span class=c1># 在Aria2退出時儲存`錯誤/未完成`的下載任務到工作階段檔案</span>
+</span></span><span class=line><span class=cl><span class=n>save</span><span class=o>-</span><span class=n>session</span><span class=o>=</span><span class=n>D</span><span class=p>:</span>\<span class=n>aria2</span><span class=o>-</span><span class=mf>1.36</span><span class=o>.</span><span class=mi>0</span><span class=o>-</span><span class=n>win</span><span class=o>-</span><span class=mi>64</span><span class=n>bit</span><span class=o>-</span><span class=n>build1</span>\<span class=n>aria2</span><span class=o>.</span><span class=n>session</span>
+</span></span></code></pre></td></tr></table></div></div><p>最後兩行的內容是儲存下載歷史的，如果有時 Aria2 不能啟動的話，清空裡面的內容就可以了。</p><ol start=2><li>修改 HideRun.vbs 檔案</li></ol><p>打開 HideRun.vbs 檔案，向其中新增</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>CreateObject(&#34;WScript.Shell&#34;).Run &#34;aria2c.exe --conf-path=aria2.conf&#34;,0
+</span></span></code></pre></td></tr></table></div></div><p>接下來點擊執行 HideRun.vbs 檔案，（注意一定是 HideRun.vbs 檔案而不是那個執行檔！！），如果沒有報錯的話可以直接跳過下面這段：</p><p>注意一下，這裡也可以在檔案前新增具體的檔案目錄前綴，但是前綴的檔案目錄中一定不要有空格。</p><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>CreateObject</span><span class=p>(</span><span class=s2>&#34;WScript.Shell&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>Run</span> <span class=s2>&#34;C:\Users\he ne\Downloads</span><span class=se>\a</span><span class=s2>ria2c.exe --conf-path=aria2.conf&#34;</span><span class=p>,</span><span class=mi>0</span>
+</span></span></code></pre></td></tr></table></div></div><p>但是由於 <code>he ne</code> 這一資料夾裡面包含空格，就導致了系統不辨識，類似的常見錯誤位置還多見於：<code>D:\Program Files (x86)</code>，這裡也是存在空格的，解決方式就是將這一前綴去除即可（但需要該 vbs 檔案位於該 aria2 資料夾下）。</p><ol start=3><li>打開 index.html</li></ol><p><img src=https://cdn.statically.io/gh/hiyoung3937/img_hiyoung@master/bolg/Aria2+AriaNG%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8_1.1ohxweqn3ayo.jpg loading=lazy alt=img></p><p>打開裡面的 index.html 檔案，如果顯示 「已連線」，則表明搭建成功。</p><ol start=4><li>新增開機自啟動</li></ol><p>建立 HideRun.vbs 檔案的捷徑，放入 Windows 的開機自啟動目錄即可：</p><p>在執行視窗中輸入：<code>shell:startup</code></p><p>這裡便會打開自啟動目錄資料夾，然後將該捷徑拖入即可。</p><hr><p>參考文章：</p><p><a class=link href=https://www.higgs.xyz/archives/7/ target=_blank rel=noopener>Aria2+AriaNG 配置指南（Win10 篇）</a></p><p><a class=link href=http://ariang.mayswind.net/zh_Hans/ target=_blank rel=noopener>AriaNG 文檔</a></p></section><footer class=article-footer><section class=article-tags><a href=/zh-tw/tags/aria2/>Aria2</a>
+<a href=/zh-tw/tags/%E4%B8%8B%E8%BC%89%E5%B7%A5%E5%85%B7/>下載工具</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相關文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh-tw/archives/11/><div class=article-details><h2 class=article-title>微博影片下載</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 建立 <span>|</span>
+主題 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 設計</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
