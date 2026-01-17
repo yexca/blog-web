@@ -1,0 +1,465 @@
+<!doctype html><html lang=zh-tw dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 本文由 gemini-3-flash-preview 翻譯 Maven 是一款用於管理和建置 Java 專案的工具\n"><title>Maven 學習</title>
+<link rel=canonical href=https://blog.yexca.net/zh-tw/archives/143/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Maven 學習"><meta property='og:description' content="📢 本文由 gemini-3-flash-preview 翻譯 Maven 是一款用於管理和建置 Java 專案的工具\n"><meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/143/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Maven'><meta property='article:tag' content='專案管理'><meta property='article:published_time' content='2024-01-13T23:58:42+08:00'><meta property='article:modified_time' content='2024-01-13T23:58:42+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Maven 學習"><meta name=twitter:description content="📢 本文由 gemini-3-flash-preview 翻譯 Maven 是一款用於管理和建置 Java 專案的工具\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/zh-tw\/archives\/143\/"},"headline":"Maven 學習","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2024-01-13","dateModified":"2024-01-13","inLanguage":"zh-tw","description":"yexca 的技術與生活部落格，紀錄程式學習與日常隨筆。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切換選單>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh-tw/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/zh-tw>yexca'Blog</a></h1><h2 class=site-description>把這個不美好的世界，編程您所期望的樣子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/zh-tw/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh-tw/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首頁</span></a></li><li><a href=/zh-tw/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>檔案</span></a></li><li><a href=/zh-tw/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜尋</span></a></li><li><a href=/zh-tw/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/zh-tw/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>連結</span></a></li><li><a href=/zh-tw/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>關於</span></a></li><li><a href=/zh-tw/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>支持</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/ selected>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>夜晚模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目錄</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#安裝>安裝</a></li><li><a href=#相依性配置>相依性配置</a></li><li><a href=#相依性傳遞>相依性傳遞</a></li><li><a href=#相依性範圍>相依性範圍</a></li><li><a href=#生命周期>生命周期</a><ul><li><a href=#clean>clean</a></li><li><a href=#default>default</a></li><li><a href=#site>site</a></li></ul></li><li><a href=#分模組設計>分模組設計</a></li><li><a href=#繼承>繼承</a><ul><li><a href=#繼承關係>繼承關係</a></li><li><a href=#版本鎖定>版本鎖定</a></li><li><a href=#屬性設定>屬性設定</a></li></ul></li><li><a href=#聚合>聚合</a></li><li><a href=#私服>私服</a><ul><li><a href=#私服存放庫與專案版本>私服存放庫與專案版本</a></li><li><a href=#設定>設定</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/zh-tw/categories/%E6%8A%80%E8%A1%93%E5%AD%B8%E7%BF%92/>技術學習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/zh-tw/archives/143/>Maven 學習</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2024-01-13 23:58 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>閱讀時間: 7 分鐘</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/zh-tw/tags/maven/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Maven</a>
+<a href=/zh-tw/tags/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">專案管理</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/143/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/en/archives/143/ class=link>English</a>
+<a href=https://blog.yexca.net/ja/archives/143/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> 本文由 gemini-3-flash-preview 翻譯</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><p>Maven 是一款用於管理和建置 Java 專案的工具</p><p>Maven 可以方便快捷地管理專案相依的資源 (Jar 檔)，避免版本衝突問題；提供標準、統一的專案結構；標準跨平台的自動化專案建置方式</p><h2 id=安裝>安裝</h2><p>在
+<a class=link href=https://maven.apache.org/download.cgi target=_blank rel=noopener>官網
+</a>下載後解壓，然後設定本地存放庫，修改 <code>conf/setting.xml</code> 中的 <code>&lt;localRepository></code> 為一個指定目錄</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 例如本地庫在 D:\develop\maven_repo --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;localRepository&gt;</span>D:\develop\maven_repo<span class=nt>&lt;/localRepository&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>設定阿里雲私服鏡像，修改 <code>conf/setting.xml</code> 中的 <code>&lt;mirror></code> 標籤，新增子標籤</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;mirror&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>alimaven<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>aliyun maven<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mirrorOf&gt;</span>central<span class=nt>&lt;/mirrorOf&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirror&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>設定環境變數：<code>MAVEN_HOME</code> 為 Maven 解壓目錄，並將其 bin 目錄加入 PATH 環境變數</p><hr><p>測試安裝完成：在命令列輸入 <code>mvn -v</code> 查看輸出</p><h2 id=相依性配置>相依性配置</h2><p>相依性 (Dependency)：指當前專案執行所需要的 Jar 檔，一個專案中可以引入多個相依性</p><p>設定步驟：</p><ol><li>在 pom.xml 中編寫 <code>&lt;dependencies></code> 標籤</li><li>在 <code>&lt;dependencies></code> 標籤中使用 <code>&lt;dependency></code> 引入座標</li><li>定義座標的 groupId, artifactId, version</li><li>重新整理配置，引入新加入的座標</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 例如引入 logback --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>ch.qos.logback<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>logback-classic<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>1.2.3<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>可以到
+<a class=link href=https://mvnrepository.com/ target=_blank rel=noopener>https://mvnrepository.com/
+</a>查找相依性座標資訊</p></blockquote><h2 id=相依性傳遞>相依性傳遞</h2><p>相依性具有傳遞性</p><ul><li>直接相依：在當前專案中透過相依性配置建立的相依關係</li><li>間接相依：被相依的資源如果相依於其他資源，則當前專案間接相依於其他資源</li></ul><p>當新增相依性時，若此套件相依於其他套件，將自動新增相關套件</p><hr><p>當然，若某個套件的子套件並不需要，可以排除相依 (指主動斷開相依的資源，被排除的資源無需指定版本)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- 例如排除某專案的 junit --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>maven-project<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;exclusions&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;exclusion&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>junit<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>junit<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/exclusion&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/exclusions&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=相依性範圍>相依性範圍</h2><p>相依的 Jar 檔，預設可以在任何地方使用，可以透過 <code>&lt;scope>...&lt;/scope></code> 設定其作用範圍：</p><ul><li>主程式範圍有效 (main 資料夾範圍內)</li><li>測試程式範圍有效 (test 資料夾範圍內)</li><li>是否參與打包執行 (package 指令範圍內)</li></ul><div class=table-wrapper><table><thead><tr><th>scope 值</th><th>主程式</th><th>測試程式</th><th>打包 (執行)</th><th>範例</th></tr></thead><tbody><tr><td>compile (預設)</td><td>Y</td><td>Y</td><td>Y</td><td>log4j</td></tr><tr><td>test</td><td>-</td><td>Y</td><td>-</td><td>junit</td></tr><tr><td>provided</td><td>Y</td><td>Y</td><td>-</td><td>servlet-api</td></tr><tr><td>runtime</td><td>-</td><td>Y</td><td>Y</td><td>JDBC 驅動</td></tr></tbody></table></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>junit<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>junit<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>4.10<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;scope&gt;</span>test<span class=nt>&lt;/scope&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=生命周期>生命周期</h2><p>Maven 的生命週期是為了對所有的 Maven 專案建置過程進行抽象和統一</p><p>Maven 中有 3 套相互獨立的生命週期：</p><ul><li>clean：清理工作</li><li>default：核心工作，如：編譯、測試、打包、安裝、部署等</li><li>site：生成報告、發布站台等</li></ul><p>其中每套生命週期包含一些階段 (phase)，階段是有順序的，後面的階段相依於前面的階段</p><h3 id=clean>clean</h3><ul><li>pre-clean</li><li>clean：移除上一次建置產生的檔案 (target 資料夾)</li><li>post-clean</li></ul><h3 id=default>default</h3><ul><li>validate</li><li>initialize</li><li>generate-sources</li><li>process-sources</li><li>generate-resources</li><li>process-resources</li><li>compile：編譯專案原始碼</li><li>process-classes</li><li>generate-test-sources</li><li>process-test-sources</li><li>generate-test-resources</li><li>process-test-resources</li><li>test-compile</li><li>process-test-classes</li><li>test：使用合適的單元測試框架執行測試 (JUnit)</li><li>prepare-package</li><li>package：將編譯後的檔案打包，如 Jar、War 等</li><li>verify</li><li>install：安裝專案到本地存放庫</li><li>deploy</li></ul><h3 id=site>site</h3><ul><li>pre-site</li><li>site</li><li>post-site</li><li>site-deploy</li></ul><blockquote><p>在同一套生命週期中，當執行後面的階段時，前面的階段都會執行</p></blockquote><h2 id=分模組設計>分模組設計</h2><p>分模組設計是在進行專案設計階段時，就可以將一個大型專案拆分成若干個模組，每一個模組都是獨立的，如果我們需要用到另外一個模組的功能，直接引用該模組的相依性即可</p><p>可以把一些通用的實體類別或工具類別單獨作為一個模組，若某一模組需要使用，直接引入對應的相依性即可</p><p>方便專案的管理維護、擴充，也方便模組間的相互呼叫與資源共享</p><h2 id=繼承>繼承</h2><p>像 Lombok 相依性，可能專案中的每個模組都會使用，每個模組都宣告一次相當繁瑣，可以透過繼承解決這個問題</p><h3 id=繼承關係>繼承關係</h3><p>建立一個父工程，將模組共有的相依性都提取到父工程進行配置，只要子類別繼承了父工程，相依性也會繼承下來，這樣就無需在各個子工程中進行配置了</p><p>繼承描述的是兩個工程間的關係，與 Java 中的繼承相似，子工程可以繼承父工程中的配置資訊，常見於相依關係的繼承，可以簡化相依性配置、統一管理相依性</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--指定父工程--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>...<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>...<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>...<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath&gt;</span>....<span class=nt>&lt;/relativePath&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>如果是 JavaWeb 開發，可以讓父工程繼承 spring-boot-starter-parent，其他模組繼承該父工程</p><blockquote><p>一般情況下，在檔案結構中，子工程為父工程的子目錄</p></blockquote><p>以下為例子</p><ol><li>父工程的打包方式為 pom</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>2.7.5<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath/&gt;</span> <span class=c>&lt;!-- lookup parent from repository --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;groupId&gt;</span>net.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;artifactId&gt;</span>tlias-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;packaging&gt;</span>pom<span class=nt>&lt;/packaging&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Maven 打包方式：</p><ul><li>jar：普通模組打包，SpringBoot 專案基本都是 Jar 檔 (內建 Tomcat 執行)</li><li>war：普通 Web 程式打包，需要部署在外部的 Tomcat 伺服器中執行</li><li>pom：父工程或聚合工程，該模組不寫程式碼，僅進行相依性管理</li></ul><ol start=2><li>子工程指定父工程</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>net.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>tlias-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- 指定父工程的 pom 檔案的相對位置 (如果不指定，將從本地存放庫/遠端存放庫查找該工程) --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath&gt;</span>../tlias-parent/pom.xml<span class=nt>&lt;/relativePath&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>&lt;!-- &lt;groupId&gt;net.yexca&lt;/groupId&gt; 
+</span></span></span><span class=line><span class=cl><span class=c>-	因為自動繼承父工程，可以省略
+</span></span></span><span class=line><span class=cl><span class=c>--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;artifactId&gt;</span>tlias-utils<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>父工程中配置共有相依性</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>1.18.24<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=版本鎖定>版本鎖定</h3><p>某些相依性部分模組需要，部分模組不需要，可以在父級中管理相依性的 version，方便管理與修改</p><p>可以透過 <code>&lt;dependencyManagement></code> 標籤管理相依性版本</p><p>父工程</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--統一管理相依性版本--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencyManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--JWT權杖--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>0.9.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>子工程</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--JWT權杖--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- &lt;version&gt;0.9.1&lt;/version&gt;
+</span></span></span><span class=line><span class=cl><span class=c>		- 因為父工程指定了版本，不需要填寫
+</span></span></span><span class=line><span class=cl><span class=c>		--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>父工程的 <code>&lt;dependencyManagement></code> 配置只管理版本，不會將相依性引入子工程。只有在子工程引入後才會生效，只是引入時無需指定版本號</p><p>而 <code>&lt;dependencies></code> 會把相依性直接引入所有子工程</p></blockquote><h3 id=屬性設定>屬性設定</h3><p>也可以透過自定義屬性及屬性引用的形式，在父工程中將相依性的版本號進行集中管理維護</p><p>自定義屬性：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;lombok.version&gt;</span>1.18.24<span class=nt>&lt;/lombok.version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>引用屬性：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>${lombok.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>於是可以在父工程中將所有的版本號，集中管理維護</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;maven.compiler.source&gt;</span>11<span class=nt>&lt;/maven.compiler.source&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;maven.compiler.target&gt;</span>11<span class=nt>&lt;/maven.compiler.target&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;lombok.version&gt;</span>1.18.24<span class=nt>&lt;/lombok.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jjwt.version&gt;</span>0.9.1<span class=nt>&lt;/jjwt.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;aliyun.oss.version&gt;</span>3.15.1<span class=nt>&lt;/aliyun.oss.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jaxb.version&gt;</span>2.3.1<span class=nt>&lt;/jaxb.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;activation.version&gt;</span>1.1.1<span class=nt>&lt;/activation.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jaxb.runtime.version&gt;</span>2.3.3<span class=nt>&lt;/jaxb.runtime.version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>${lombok.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>&lt;!--統一管理相依性版本--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencyManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--JWT權杖--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${jjwt.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--阿里雲OSS--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>aliyun-sdk-oss<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${aliyun.oss.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>javax.xml.bind<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jaxb-api<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${jaxb.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>javax.activation<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>activation<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${activation.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- no more than 2.3.3--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.glassfish.jaxb<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jaxb-runtime<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${jaxb.runtime.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>若想要修改相依性的版本，只需要在父工程的自定義屬性中，修改相應屬性值即可</p><h2 id=聚合>聚合</h2><p>若一個模組相依於另一個模組，打包該模組前需要先將其他模組 install 到本地存放庫，然後再打包。如果相依的模組很多，那麼需要執行的操作會過於繁瑣</p><p>透過 Maven 的聚合就可以輕鬆實現專案的一鍵建置 (清理、編譯、測試、打包、安裝等)</p><ul><li>**聚合：**將多個模組組織成一個整體，同時進行專案的建置</li><li>**聚合工程：**一個不具有業務功能的「空」工程 (有且僅有一個 pom 檔案。一般來說，繼承關係中的父工程與聚合關係中的聚合工程是同一個)</li><li>**作用：**快速建置專案 (無需根據相依關係手動建置，直接在聚合工程上建置即可)</li></ul><p>可以在聚合工程中透過 <code>&lt;modules></code> 設定當前聚合工程所包含的子模組名稱</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--聚合其他模組--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;modules&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- 工程路徑 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-pojo<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-utils<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-web-management<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/modules&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>之後進行編譯、打包、安裝操作只需在聚合工程上進行即可，其他工程會自動同步操作</p><div class=table-wrapper><table><thead><tr><th></th><th>繼承</th><th>聚合</th></tr></thead><tbody><tr><td>作用</td><td>繼承用於簡化相依性配置、統一管理相依性</td><td>聚合用於快速建置專案</td></tr><tr><td>相同點</td><td>打包方式均為 pom，通常製作在同一個 pom</td><td>均屬於設計型模組，無實際內容</td></tr><tr><td>不同點</td><td>繼承是在子模組中配置關係<br>父模組無法感知哪些子模組繼承了自己</td><td>聚合是在聚合工程中配置關係<br>聚合可以感知到參與聚合的模組有哪些</td></tr></tbody></table></div><h2 id=私服>私服</h2><p>私服是一種特殊的遠端存放庫，它是架設在區域網路內的存放庫服務，用來代理位於外部的中央存放庫，用於解決團隊內部的資源共享與資源同步問題</p><p>如果在專案中需要使用其他第三方提供的相依性，如果本地存放庫沒有，會自動連接私服下載，如果私服也沒有，私服此時會自動連接中央存放庫，去中央存放庫中下載相依性，然後將下載的相依性儲存在私服存放庫及本地存放庫中</p><blockquote><p>私服一般一個公司一台，不用自己配置</p></blockquote><h3 id=私服存放庫與專案版本>私服存放庫與專案版本</h3><p>私服存放庫說明：</p><ul><li>RELEASE：儲存自己開發的 RELEASE 發布版本的資源</li><li>SNAPSHOT：儲存自己開發的 SNAPSHOT 發布版本的資源</li><li>Central：儲存的是從中央存放庫下載下來的相依性</li></ul><p>專案版本說明：</p><ul><li>RELEASE (發布版本)：功能趨於穩定、當前更新停止，可以用於發行的版本，儲存在私服中的 RELEASE 存放庫中</li><li>SNAPSHOT (快照版本)：功能不穩定、尚處於開發中的版本，即快照版本，儲存在私服的 SNAPSHOT 存放庫中</li></ul><h3 id=設定>設定</h3><p>設定私服的存取使用者名稱與密碼，在 Maven 安裝目錄的 <code>conf/settings.xml</code> 的 servers 配置中設定</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;servers&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;server&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-releases<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;username&gt;</span>admin<span class=nt>&lt;/username&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;password&gt;</span>admin<span class=nt>&lt;/password&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/server&gt;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=nt>&lt;server&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;username&gt;</span>admin<span class=nt>&lt;/username&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;password&gt;</span>admin<span class=nt>&lt;/password&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/server&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/servers&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>設定私服相依性下載的存放庫群組地址，檔案同上，修改 mirrors 與 profiles 標籤</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;mirrors&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;mirror&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-public<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mirrorOf&gt;</span>*<span class=nt>&lt;/mirrorOf&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirror&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirrors&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;profiles&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;profile&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>allow-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;activation&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;activeByDefault&gt;</span>true<span class=nt>&lt;/activeByDefault&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/activation&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;repositories&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;repository&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;id&gt;</span>maven-public<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;releases&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;enabled&gt;</span>true<span class=nt>&lt;/enabled&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/releases&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;snapshots&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;enabled&gt;</span>true<span class=nt>&lt;/enabled&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/snapshots&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/repository&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/repositories&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/profile&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/profiles&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>pom 檔案設定上傳地址，在父工程中設定即可</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;distributionManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- release 版本的發布地址 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;repository&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;id&gt;</span>maven-releases<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-releases/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/repository&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- snapshot 版本的發布地址 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;snapshotRepository&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;id&gt;</span>maven-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-snapshots/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/snapshotRepository&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/distributionManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>設定完成後，執行父工程的 deploy 生命周期即可將專案發布到私服存放庫</p></section><footer class=article-footer><section class=article-tags><a href=/zh-tw/tags/maven/>Maven</a>
+<a href=/zh-tw/tags/%E5%B0%88%E6%A1%88%E7%AE%A1%E7%90%86/>專案管理</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 建立 <span>|</span>
+主題 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 設計</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

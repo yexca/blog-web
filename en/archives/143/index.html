@@ -1,0 +1,419 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 This article was translated by gemini-3-flash-preview Maven is a tool for managing and building Java projects.\n"><title>Learning Maven</title>
+<link rel=canonical href=https://blog.yexca.net/en/archives/143/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Learning Maven"><meta property='og:description' content="📢 This article was translated by gemini-3-flash-preview Maven is a tool for managing and building Java projects.\n"><meta property='og:url' content='https://blog.yexca.net/en/archives/143/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Maven'><meta property='article:tag' content='Project Management'><meta property='article:published_time' content='2024-01-13T23:58:42+08:00'><meta property='article:modified_time' content='2024-01-13T23:58:42+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Learning Maven"><meta name=twitter:description content="📢 This article was translated by gemini-3-flash-preview Maven is a tool for managing and building Java projects.\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/en\/archives\/143\/"},"headline":"Learning Maven","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2024-01-13","dateModified":"2024-01-13","inLanguage":"en","description":"yexca\u0027s tech and life blog, writing about coding, projects, and daily thoughts."}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>yexca'Blog</a></h1><h2 class=site-description>Tech Otakus Change The World</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/en/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Background</span></a></li><li><a href=/en/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li><a href=/en/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/en/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>Support</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/ selected>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#installation>Installation</a></li><li><a href=#dependency-configuration>Dependency Configuration</a></li><li><a href=#dependency-transitivity>Dependency Transitivity</a></li><li><a href=#dependency-scope>Dependency Scope</a></li><li><a href=#lifecycle>Lifecycle</a><ul><li><a href=#clean>clean</a></li><li><a href=#default>default</a></li><li><a href=#site>site</a></li></ul></li><li><a href=#multi-module-design>Multi-module Design</a></li><li><a href=#inheritance>Inheritance</a><ul><li><a href=#inheritance-relationship>Inheritance Relationship</a></li><li><a href=#version-management>Version Management</a></li><li><a href=#attribute-configuration-properties>Attribute Configuration (Properties)</a></li></ul></li><li><a href=#aggregation>Aggregation</a></li><li><a href=#private-repositories>Private Repositories</a><ul><li><a href=#private-repo-types-and-project-versions>Private Repo Types and Project Versions</a></li><li><a href=#configuration>Configuration</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/en/categories/tech-learning/>Tech Learning</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/archives/143/>Learning Maven</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2024-01-13 23:58 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>8 minute read</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/en/tags/maven/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Maven</a>
+<a href=/en/tags/project-management/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Project Management</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/143/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/143/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/ja/archives/143/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> This article was translated by gemini-3-flash-preview</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><p>Maven is a tool for managing and building Java projects.</p><p>It simplifies dependency management (jar files) to avoid version conflicts, provides a standard project structure, and offers a cross-platform automated build process.</p><h2 id=installation>Installation</h2><p>Download it from the
+<a class=link href=https://maven.apache.org/download.cgi target=_blank rel=noopener>official website
+</a>and unzip it. Configure the local repository by modifying the <code>&lt;localRepository></code> tag in <code>conf/setting.xml</code> to a specific directory.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Example local repo at D:\develop\maven_repo --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;localRepository&gt;</span>D:\develop\maven_repo<span class=nt>&lt;/localRepository&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>To configure the Aliyun mirror, modify the <code>&lt;mirror></code> tag in <code>conf/setting.xml</code> by adding a child tag:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;mirror&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>alimaven<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>aliyun maven<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;url&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mirrorOf&gt;</span>central<span class=nt>&lt;/mirrorOf&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirror&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Configure environment variables: set <code>MAVEN_HOME</code> to the Maven installation directory and add its <code>bin</code> folder to the <code>PATH</code> variable.</p><hr><p>Verify the installation: run <code>mvn -v</code> in the command line to check the output.</p><h2 id=dependency-configuration>Dependency Configuration</h2><p>Dependencies are the jar files required to run the project. A single project can include multiple dependencies.</p><p>Configuration steps:</p><ol><li>Add the <code>&lt;dependencies></code> tag in <code>pom.xml</code>.</li><li>Use the <code>&lt;dependency></code> tag inside <code>&lt;dependencies></code> to import coordinates.</li><li>Define the <code>groupId</code>, <code>artifactId</code>, and <code>version</code>.</li><li>Refresh the configuration to import the new dependencies.</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Example: Importing logback --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>ch.qos.logback<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>logback-classic<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>1.2.3<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>You can find dependency coordinates at
+<a class=link href=https://mvnrepository.com/ target=_blank rel=noopener>https://mvnrepository.com/
+</a>.</p></blockquote><h2 id=dependency-transitivity>Dependency Transitivity</h2><p>Dependencies are transitive.</p><ul><li><strong>Direct Dependency:</strong> A dependency explicitly defined in the current project.</li><li><strong>Indirect Dependency:</strong> When a dependency depends on other resources, the current project implicitly depends on those resources.</li></ul><p>When you add a dependency that relies on other packages, those packages are added automatically.</p><hr><p>If you don&rsquo;t need a specific sub-dependency, you can exclude it (this breaks the dependency link; no version is required for excluded resources).</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Example: Excluding junit from a project --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>maven-project<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;exclusions&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;exclusion&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>junit<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>junit<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/exclusion&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/exclusions&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=dependency-scope>Dependency Scope</h2><p>By default, jar files are available everywhere. You can use <code>&lt;scope>...&lt;/scope></code> to limit their scope:</p><ul><li><strong>Main program scope</strong> (inside the <code>main</code> folder).</li><li><strong>Test program scope</strong> (inside the <code>test</code> folder).</li><li><strong>Packaging and execution</strong> (during the <code>package</code> phase).</li></ul><div class=table-wrapper><table><thead><tr><th>Scope Value</th><th>Main Program</th><th>Test Program</th><th>Packaging (Runtime)</th><th>Example</th></tr></thead><tbody><tr><td>compile (def)</td><td>Y</td><td>Y</td><td>Y</td><td>log4j</td></tr><tr><td>test</td><td>-</td><td>Y</td><td>-</td><td>junit</td></tr><tr><td>provided</td><td>Y</td><td>Y</td><td>-</td><td>servlet-api</td></tr><tr><td>runtime</td><td>-</td><td>Y</td><td>Y</td><td>jdbc driver</td></tr></tbody></table></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>junit<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>junit<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>4.10<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;scope&gt;</span>test<span class=nt>&lt;/scope&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=lifecycle>Lifecycle</h2><p>The Maven lifecycle abstracts and unifies the build process for all Maven projects.</p><p>There are 3 independent lifecycles:</p><ul><li><strong>clean:</strong> Cleanup tasks.</li><li><strong>default:</strong> Core tasks like compile, test, package, install, and deploy.</li><li><strong>site:</strong> Generating reports and publishing sites.</li></ul><p>Each lifecycle consists of several phases. Phases are sequential; later phases depend on the completion of earlier ones.</p><h3 id=clean>clean</h3><ul><li>pre-clean</li><li>clean: Removes files generated by previous builds (the <code>target</code> folder).</li><li>post-clean</li></ul><h3 id=default>default</h3><ul><li>validate</li><li>initialize</li><li>generate-sources</li><li>process-sources</li><li>generate-resources</li><li>process-resources</li><li>compile: Compiles the source code.</li><li>process-classes</li><li>generate-test-sources</li><li>process-test-sources</li><li>generate-test-resources</li><li>process-test-resources</li><li>test-compile</li><li>process-test-classes</li><li>test: Runs tests using a unit testing framework (e.g., JUnit).</li><li>prepare-package</li><li>package: Packages compiled code (e.g., jar, war).</li><li>verify</li><li>install: Installs the project into the local repository.</li><li>deploy</li></ul><h3 id=site>site</h3><ul><li>pre-site</li><li>site</li><li>post-site</li><li>site-deploy</li></ul><blockquote><p>Within the same lifecycle, running a later phase automatically triggers all preceding phases.</p></blockquote><h2 id=multi-module-design>Multi-module Design</h2><p>Multi-module design allows splitting a large project into several independent modules during the design phase. If one module needs functionality from another, it can simply depend on that module.</p><p>Common entities or utility classes can be placed in separate modules to be shared. This improves project management, maintenance, scalability, and resource sharing.</p><h2 id=inheritance>Inheritance</h2><p>Dependencies like Lombok might be used in every module. Instead of declaring it in every module, you can use inheritance.</p><h3 id=inheritance-relationship>Inheritance Relationship</h3><p>Create a parent project and move shared dependencies to its configuration. Child projects inheriting from the parent will automatically inherit these dependencies, eliminating redundant configuration.</p><p>Inheritance describes the relationship between two projects, similar to inheritance in Java. It simplifies dependency management and ensures consistency.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Specifying the parent project --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>...<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>...<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>...<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath&gt;</span>....<span class=nt>&lt;/relativePath&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>In JavaWeb development, the parent project can inherit from <code>spring-boot-starter-parent</code>, while other modules inherit from that parent project.</p><blockquote><p>Usually, child projects are located in subdirectories of the parent project.</p></blockquote><p>Example:</p><ol><li>Parent project packaging type is <code>pom</code>:</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>2.7.5<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath/&gt;</span> <span class=c>&lt;!-- lookup parent from repository --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;groupId&gt;</span>net.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;artifactId&gt;</span>tlias-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;packaging&gt;</span>pom<span class=nt>&lt;/packaging&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Maven Packaging Types:</p><ul><li><strong>jar:</strong> Standard module packaging. SpringBoot projects usually use this (run via embedded Tomcat).</li><li><strong>war:</strong> Standard web program packaging for external Tomcat servers.</li><li><strong>pom:</strong> Parent or aggregation project. Contains no code, used only for dependency management.</li></ul><ol start=2><li>Child project specifies the parent:</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>net.yexca<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>tlias-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Relative path to parent pom (defaults to local/remote repo if not specified) --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;relativePath&gt;</span>../tlias-parent/pom.xml<span class=nt>&lt;/relativePath&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>&lt;!-- &lt;groupId&gt; can be omitted as it is inherited from the parent --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;artifactId&gt;</span>tlias-utils<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;version&gt;</span>1.0-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>Parent project configures shared dependencies:</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>1.18.24<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=version-management>Version Management</h3><p>If only some modules need a dependency, you can manage the version in the parent project to ensure consistency.</p><p>Use the <code>&lt;dependencyManagement></code> tag for version locking.</p><p>Parent Project:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Unified dependency version management --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencyManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- JWT Token --&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>0.9.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Child Project:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- JWT Token --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- No version needed as it&#39;s defined in the parent --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>The <code>&lt;dependencyManagement></code> in the parent only manages the version; it does not actually import the dependency into children. Children must explicitly include the dependency (without a version) to use it.</p><p>In contrast, <code>&lt;dependencies></code> imports the dependency into all child projects automatically.</p></blockquote><h3 id=attribute-configuration-properties>Attribute Configuration (Properties)</h3><p>You can use custom properties to centralize version management in the parent project.</p><p>Define attributes:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;lombok.version&gt;</span>1.18.24<span class=nt>&lt;/lombok.version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Reference attributes:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>${lombok.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Centralized management in the parent project:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;maven.compiler.source&gt;</span>11<span class=nt>&lt;/maven.compiler.source&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;maven.compiler.target&gt;</span>11<span class=nt>&lt;/maven.compiler.target&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;lombok.version&gt;</span>1.18.24<span class=nt>&lt;/lombok.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jjwt.version&gt;</span>0.9.1<span class=nt>&lt;/jjwt.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;aliyun.oss.version&gt;</span>3.15.1<span class=nt>&lt;/aliyun.oss.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jaxb.version&gt;</span>2.3.1<span class=nt>&lt;/jaxb.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;activation.version&gt;</span>1.1.1<span class=nt>&lt;/activation.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;jaxb.runtime.version&gt;</span>2.3.3<span class=nt>&lt;/jaxb.runtime.version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>${lombok.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependencyManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${jjwt.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>aliyun-sdk-oss<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>${aliyun.oss.version}<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- ... other dependencies ... --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependencyManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>To update a version, you only need to change the property value in the parent project.</p><h2 id=aggregation>Aggregation</h2><p>If one module depends on another, you usually have to <code>install</code> the dependency module to the local repo before packaging the main module. This gets tedious with many modules.</p><p>Maven aggregation allows for one-click project builds (clean, compile, test, package, install, etc.).</p><ul><li><strong>Aggregation:</strong> Organizing multiple modules into a single unit for simultaneous building.</li><li><strong>Aggregation Project:</strong> An &ldquo;empty&rdquo; project containing only a <code>pom.xml</code> (usually the same as the parent project in inheritance).</li><li><strong>Purpose:</strong> Fast project building without manually following dependency order.</li></ul><p>Define sub-modules in the aggregation project using the <code>&lt;modules></code> tag.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- Aggregating other modules --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;modules&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Project paths --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-pojo<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-utils<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;module&gt;</span>../tlias-web-management<span class=nt>&lt;/module&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/modules&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Running compile, package, or install on the aggregation project will automatically sync those operations to all sub-modules.</p><div class=table-wrapper><table><thead><tr><th>Feature</th><th>Inheritance</th><th>Aggregation</th></tr></thead><tbody><tr><td>Purpose</td><td>Simplifies dependency config and management.</td><td>Enables rapid project building.</td></tr><tr><td>Similarities</td><td>Packaging is <code>pom</code>; usually combined in the same file.</td><td>Design-oriented modules with no actual source code.</td></tr><tr><td>Differences</td><td>Relationship defined in child modules. Parent doesn&rsquo;t &ldquo;know&rdquo; children.</td><td>Relationship defined in the aggregator. Aggregator &ldquo;knows&rdquo; children.</td></tr></tbody></table></div><h2 id=private-repositories>Private Repositories</h2><p>A private repository (Nexus, Artifactory) is a remote repository hosted on a local network. It acts as a proxy for the central repository and facilitates resource sharing and synchronization within a team.</p><p>When a project needs a dependency, Maven checks the local repo. If missing, it checks the private repo. If the private repo doesn&rsquo;t have it, it downloads it from the central repository, caches it, and serves it to the local repo.</p><blockquote><p>Companies usually provide a private repository, so you won&rsquo;t need to configure your own.</p></blockquote><h3 id=private-repo-types-and-project-versions>Private Repo Types and Project Versions</h3><p>Private Repo Categories:</p><ul><li><strong>RELEASE:</strong> For finished RELEASE versions of internal code.</li><li><strong>SNAPSHOT:</strong> For internal development SNAPSHOT versions.</li><li><strong>Central:</strong> Proxied dependencies downloaded from the Maven Central Repository.</li></ul><p>Project Versioning:</p><ul><li><strong>RELEASE:</strong> Stable, finished versions for deployment, stored in the RELEASE repo.</li><li><strong>SNAPSHOT:</strong> Unstable, work-in-progress versions, stored in the SNAPSHOT repo.</li></ul><h3 id=configuration>Configuration</h3><p>Set the private repo username and password in <code>conf/settings.xml</code> under the <code>&lt;servers></code> tag:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;servers&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;server&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-releases<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;username&gt;</span>admin<span class=nt>&lt;/username&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;password&gt;</span>admin<span class=nt>&lt;/password&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/server&gt;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=nt>&lt;server&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;username&gt;</span>admin<span class=nt>&lt;/username&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;password&gt;</span>admin<span class=nt>&lt;/password&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/server&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/servers&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Configure the download address in <code>settings.xml</code> using the <code>&lt;mirrors></code> and <code>&lt;profiles></code> tags:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;mirrors&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;mirror&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>maven-public<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;mirrorOf&gt;</span>*<span class=nt>&lt;/mirrorOf&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirror&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/mirrors&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;profiles&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;profile&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;id&gt;</span>allow-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;activation&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;activeByDefault&gt;</span>true<span class=nt>&lt;/activeByDefault&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/activation&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;repositories&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;repository&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;id&gt;</span>maven-public<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-public/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;releases&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;enabled&gt;</span>true<span class=nt>&lt;/enabled&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/releases&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;snapshots&gt;</span>
+</span></span><span class=line><span class=cl>                <span class=nt>&lt;enabled&gt;</span>true<span class=nt>&lt;/enabled&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;/snapshots&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/repository&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/repositories&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/profile&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/profiles&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Configure the upload target in the parent project&rsquo;s <code>pom.xml</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;distributionManagement&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Release release address --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;repository&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;id&gt;</span>maven-releases<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-releases/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/repository&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- Snapshot release address --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;snapshotRepository&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;id&gt;</span>maven-snapshots<span class=nt>&lt;/id&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;url&gt;</span>http://127.0.0.1:8081/repository/maven-snapshots/<span class=nt>&lt;/url&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/snapshotRepository&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/distributionManagement&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Once configured, execute the <code>deploy</code> lifecycle phase on the parent project to publish it to the private repository.</p></section><footer class=article-footer><section class=article-tags><a href=/en/tags/maven/>Maven</a>
+<a href=/en/tags/project-management/>Project Management</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>Built with <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> <span>|</span>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

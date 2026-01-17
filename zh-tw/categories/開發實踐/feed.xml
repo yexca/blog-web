@@ -1,4 +1,304 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>開發實踐 on yexca'Blog</title><link>https://blog.yexca.net/zh-tw/categories/%E9%96%8B%E7%99%BC%E5%AF%A6%E8%B8%90/</link><description>Recent content in 開發實踐 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><copyright>yexca</copyright><lastBuildDate>Fri, 03 Jan 2025 22:52:50 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/zh-tw/categories/%E9%96%8B%E7%99%BC%E5%AF%A6%E8%B8%90/feed.xml" rel="self" type="application/rss+xml"/><item><title>萌娘百科黑幕在 Argon 主題 WordPress 實作</title><link>https://blog.yexca.net/zh-tw/archives/67/</link><pubDate>Mon, 05 Sep 2022 21:51:23 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/67/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 Gemini-3-flash 翻譯
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>開發實踐 on yexca'Blog</title><link>https://blog.yexca.net/zh-tw/categories/%E9%96%8B%E7%99%BC%E5%AF%A6%E8%B8%90/</link><description>Recent content in 開發實踐 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><copyright>yexca</copyright><lastBuildDate>Fri, 26 Dec 2025 18:43:04 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/zh-tw/categories/%E9%96%8B%E7%99%BC%E5%AF%A6%E8%B8%90/feed.xml" rel="self" type="application/rss+xml"/><item><title>利用 Docker 建立臨時 Linux 互動環境</title><link>https://blog.yexca.net/zh-tw/archives/262/</link><pubDate>Fri, 26 Dec 2025 18:43:04 +0900</pubDate><guid>https://blog.yexca.net/zh-tw/archives/262/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>在 Windows 環境下執行一個 bash 腳本顯然難度稍大，在 Linux 環境下，執行另一個發行版本的特化腳本顯然也有點麻煩。利用 Docker 可以協助處理這個問題，同時還可以保護本地環境的純淨。&lt;/p></description></item><item><title>使用 WeBASE 部署 FISCO BCOS 區塊鏈</title><link>https://blog.yexca.net/zh-tw/archives/241/</link><pubDate>Thu, 13 Mar 2025 01:08:02 +0900</pubDate><guid>https://blog.yexca.net/zh-tw/archives/241/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>這篇文章寫於 2024-04-29，之後有修改過一次，本來以為寫完了，但今天看居然沒寫完，可是相關的東西我早就刪掉了，唉，就這樣吧。&lt;/p></description></item><item><title>國際化字型適配</title><link>https://blog.yexca.net/zh-tw/archives/240/</link><pubDate>Mon, 10 Mar 2025 23:56:56 +0900</pubDate><guid>https://blog.yexca.net/zh-tw/archives/240/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="引言">引言
+&lt;/h2>&lt;p>在國際化後，因為平時也不怎麼關注其他語言的文章，直到我之前上網衝浪的時候，看到了不錯的日文字型，這不得給它用上，然後就發現我這其他語言的字型真是一言難盡啊。&lt;/p></description></item><item><title>Pixiv 下載器</title><link>https://blog.yexca.net/zh-tw/archives/211/</link><pubDate>Fri, 03 Jan 2025 20:05:44 +0900</pubDate><guid>https://blog.yexca.net/zh-tw/archives/211/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>2025-05-18 更新&lt;br>
+我寫了一個 SQLite 版的，不用設定資料庫了，詳細資訊請訪問:
+&lt;a class="link" href="https://blog.yexca.net/archives/248"
+>
+https://blog.yexca.net/archives/248
+&lt;/a>
+&lt;/p></description></item><item><title>萌娘百科黑幕在 Argon 主題 WordPress 實作</title><link>https://blog.yexca.net/zh-tw/archives/67/</link><pubDate>Mon, 05 Sep 2022 21:51:23 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/67/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 Gemini-3-flash 翻譯
 &lt;/div>
 &lt;style lang="scss">
 .notice {

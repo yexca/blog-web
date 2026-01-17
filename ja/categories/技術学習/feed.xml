@@ -1,4 +1,458 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技術学習 on yexca'Blog</title><link>https://blog.yexca.net/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/</link><description>Recent content in 技術学習 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Thu, 23 Jan 2025 16:48:38 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/feed.xml" rel="self" type="application/rss+xml"/><item><title>FiddlerでHTTPSパケットをキャプチャする方法</title><link>https://blog.yexca.net/ja/archives/61/</link><pubDate>Thu, 01 Sep 2022 08:17:32 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/61/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技術学習 on yexca'Blog</title><link>https://blog.yexca.net/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/</link><description>Recent content in 技術学習 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Sun, 28 Sep 2025 10:34:38 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/feed.xml" rel="self" type="application/rss+xml"/><item><title>Python で JSON ファイルを扱う</title><link>https://blog.yexca.net/ja/archives/256/</link><pubDate>Sun, 28 Sep 2025 10:34:38 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/256/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>あるすごい人からRecord TreeのJSONファイルをもらったから、ついでに
+&lt;a class="link" href="https://github.com/yexca/RecordTreeDownloader-SQLite"
+target="_blank" rel="noopener"
+>
+サッと何か書いとこう
+&lt;/a>
+。便利だし、忘れちゃったことのメモにもなるしね～（そうそう、ちょうど256番目の記事なんだよね）&lt;/p></description></item><item><title>SpringAMQP</title><link>https://blog.yexca.net/ja/archives/217/</link><pubDate>Wed, 15 Jan 2025 17:03:32 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/217/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="mqについて知るきっかけ">MQについて知るきっかけ
+&lt;/h2>&lt;h3 id="同期呼び出し">同期呼び出し
+&lt;/h3>&lt;p>マイクロサービス間のFeignを使った呼び出しは同期方式で、いくつか問題があるんだ。&lt;/p></description></item><item><title>形式言語とオートマトン - 基本概念</title><link>https://blog.yexca.net/ja/archives/197/</link><pubDate>Tue, 19 Nov 2024 22:18:42 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/197/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="はじめに">はじめに
+&lt;/h2>&lt;p>Sometimes it&amp;rsquo;s the people who no one imagines anything of who do the things that no one can imagine&lt;/p></description></item><item><title>Gateway サービスゲートウェイ</title><link>https://blog.yexca.net/ja/archives/171/</link><pubDate>Sun, 05 May 2024 00:54:52 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/171/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>Gateway は、全てのマイクロサービスの統一エントリポイントで、以下の機能があるよ。&lt;/p></description></item><item><title>Feignでのリモート呼び出し</title><link>https://blog.yexca.net/ja/archives/170/</link><pubDate>Fri, 03 May 2024 23:11:52 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/170/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>Feignは宣言的な Http クライアントだよ。Githubはこちら：
+&lt;a class="link" href="https://github.com/OpenFeign/feign"
+target="_blank" rel="noopener"
+>
+https://github.com/OpenFeign/feign
+&lt;/a>
+&lt;/p></description></item><item><title>Mavenの学習</title><link>https://blog.yexca.net/ja/archives/143/</link><pubDate>Sat, 13 Jan 2024 23:58:42 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/143/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;p>Mavenは、Javaプロジェクトの管理とビルドを行うためのツールだよ。&lt;/p></description></item><item><title>FiddlerでHTTPSパケットをキャプチャする方法</title><link>https://blog.yexca.net/ja/archives/61/</link><pubDate>Thu, 01 Sep 2022 08:17:32 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/61/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
 &lt;/div>
 &lt;style lang="scss">
 .notice {
@@ -306,4 +760,1183 @@ color: #7b3f3f;
 }
 &lt;/style>
 &lt;h2 id="国内ツール">国内ツール
-&lt;/h2>&lt;p>站长工具のポートスキャンを使ってみよう。IPアドレスかドメイン名とポート番号を入力して、「開始スキャン」をクリックするんだ。&lt;/p></description></item></channel></rss>
+&lt;/h2>&lt;p>站长工具のポートスキャンを使ってみよう。IPアドレスかドメイン名とポート番号を入力して、「開始スキャン」をクリックするんだ。&lt;/p></description></item><item><title>データ構造 スタックのコード</title><link>https://blog.yexca.net/ja/archives/17/</link><pubDate>Sun, 21 Nov 2021 22:19:04 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/17/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="順序スタック-配列実装">順序スタック (配列実装)
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 要素 elem をスタックに入れるよ。a は配列で、top が現在のスタックトップの位置だよ。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="n">top&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">elem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// データ要素をスタックから出す処理だよ。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">top&lt;/span>&lt;span class="o">==-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;スタックは空だよ&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;ポップされた要素：%d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">top&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">100&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="o">=-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">top&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>出力結果：&lt;/p></description></item><item><title>データ構造：シーケンシャルリスト（順次リスト）のコード</title><link>https://blog.yexca.net/ja/archives/16/</link><pubDate>Sat, 20 Nov 2021 23:01:47 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/16/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="コード">コード
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;span class="lnt">154
+&lt;/span>&lt;span class="lnt">155
+&lt;/span>&lt;span class="lnt">156
+&lt;/span>&lt;span class="lnt">157
+&lt;/span>&lt;span class="lnt">158
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdlib.h&amp;gt; // malloc()、exit()&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#define Size 5 &lt;/span>&lt;span class="c1">// Sizeをマクロ定義。シーケンシャルリストの初期メモリサイズを表すよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">typedef&lt;/span> &lt;span class="k">struct&lt;/span> &lt;span class="n">Table&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="n">head&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// headという名前の、長さが決まっていない配列（動的配列）を宣言するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">length&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 現在のシーケンシャルリストの長さを記録するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// シーケンシャルリストに割り当てられたストレージ容量を記録するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="n">table&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 初期化関数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="nf">initTable&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Size&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">));&lt;/span> &lt;span class="c1">// 空のシーケンシャルリストを作成して、メモリを動的に確保するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="c1">// もしメモリの確保に失敗したら、メッセージを出してプログラムを終了するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;初期化に失敗したよ&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 空のリストの長さを0で初期化
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">Size&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 空のリストの初期容量をSizeにするよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 挿入関数。elemは挿入する要素、addは挿入する場所だよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="nf">addTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 挿入位置が正しいかチェックするよ（リストの長さ+1より大きいか、1より小さい場合はエラー）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="n">add&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;挿入位置に問題があるよ&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 挿入する前に、空き容量があるか確認。足りなければメモリを再確保するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="nf">realloc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="k">sizeof&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;メモリの再割り当てに失敗したよ&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">size&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 挿入位置以降の要素を、一つずつ後ろにずらすよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="n">add&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// ずらし終わったら、指定の位置に要素を入れるよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">add&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 要素が増えたから、長さを+1するよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 削除関数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="nf">delTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">add&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="n">add&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;削除する要素の位置がおかしいよ&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">exit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="o">--&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 検索関数。elemは探したいデータの値だよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">int&lt;/span> &lt;span class="nf">selectTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 更新関数。elemを新しい要素newElemに書き換えるよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="nf">amendTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">newElem&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">add&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">selectTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">elem&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">add&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">newElem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// リストの中身を表示する関数
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kt">void&lt;/span> &lt;span class="nf">displayTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">table&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d &amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">t&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">int&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">int&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">table&lt;/span> &lt;span class="n">t1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">initTable&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// シーケンシャルリストに要素を追加していくよ
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="o">&amp;lt;=&lt;/span> &lt;span class="n">Size&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">length&lt;/span>&lt;span class="o">++&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;元のシーケンシャルリスト：&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">displayTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;要素1を削除：&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">delTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">displayTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;2番目の位置に要素5を挿入：&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">addTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">displayTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;要素3の位置を検索：&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">add&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">selectTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%d&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;要素3を6に変更：&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">t1&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nf">amendTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">6&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">displayTable&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t1&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="実行結果">実行結果
+&lt;/h2>&lt;p>プログラムを実行すると、こんな感じになるよ：&lt;/p></description></item><item><title>データ構造 連結リストのコード</title><link>https://blog.yexca.net/ja/archives/15/</link><pubDate>Wed, 17 Nov 2021 12:00:49 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/15/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="簡易的な連結リスト">簡易的な連結リスト
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">struct&lt;/span> &lt;span class="n">student&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">long&lt;/span> &lt;span class="n">num&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">float&lt;/span> &lt;span class="n">score&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">struct&lt;/span> &lt;span class="n">student&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="nf">main&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">struct&lt;/span> &lt;span class="n">student&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">head&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="n">p&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">num&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">99101&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mf">89.5&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">b&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">num&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">99103&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">90&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">num&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">99107&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">score&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">85&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ノードの num と score メンバに値を代入
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">head&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ノード a の開始アドレスを頭ポインタ head に代入
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">b&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ノード b の開始アドレスをノード a の next メンバに代入
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">&amp;amp;&lt;/span>&lt;span class="n">c&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">next&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ノード c の next メンバには他のノードのアドレスを入れない
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">head&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// ポインタ p をノード a に向ける
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">do&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nf">printf&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;%ld %5.1f&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s">&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">num&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">score&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// p が指しているノードのデータを出力
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="n">p&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">p&lt;/span>&lt;span class="o">-&amp;gt;&lt;/span>&lt;span class="n">next&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// p を次のノードに向ける
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>&lt;span class="k">while&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">p&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="nb">NULL&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// ノード c を出力し終わった後、p の値は NULL になる
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nf">system&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;pause&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="メモリ割り当て関数">メモリ割り当て関数
+&lt;/h2>&lt;ul>
+&lt;li>malloc 関数&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="kt">void&lt;/span> &lt;span class="o">*&lt;/span>&lt;span class="nf">malloc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">unsigned&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>メモリの動的記憶域内に、長さ size の連続した空間を割り当てる役割があるんだ。この関数の値（戻り値）は、割り当てられた空間の開始アドレスを指すポインタ（基底型は void）だよ。もし関数が正常に実行されなかった場合（メモリ空間が足りないときなど）は、空のポインタ NULL を返すんだ。&lt;/p></description></item><item><title>C言語 データ構造コード</title><link>https://blog.yexca.net/ja/archives/14/</link><pubDate>Thu, 11 Nov 2021 23:03:27 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/14/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>この記事は
+&lt;a class="link" href="https://blog.hiyoung.icu/"
+target="_blank" rel="noopener"
+>
+Hiyoung
+&lt;/a>
+が書いたよ&lt;/p></description></item><item><title>SQL文のいくつかの構文詳細 (SQL Server編)</title><link>https://blog.yexca.net/ja/archives/8/</link><pubDate>Mon, 08 Nov 2021 11:51:18 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/8/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>この記事は
+&lt;a class="link" href="https://blog.hiyoung.icu/"
+target="_blank" rel="noopener"
+>
+Hiyoung
+&lt;/a>
+が書いたよ。&lt;/p></description></item><item><title>Navicat で SQL Server に接続する際に困ったこといくつか</title><link>https://blog.yexca.net/ja/archives/7/</link><pubDate>Sun, 07 Nov 2021 23:41:46 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/7/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>この記事は
+&lt;a class="link" href="https://blog.hiyoung.icu/"
+target="_blank" rel="noopener"
+>
+Hiyoung
+&lt;/a>
+が書いたよ。&lt;/p></description></item><item><title>VS Code で C 言語環境を構築する</title><link>https://blog.yexca.net/ja/archives/6/</link><pubDate>Sun, 07 Nov 2021 23:32:26 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/6/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>この記事は
+&lt;a class="link" href="https://blog.hiyoung.icu/"
+target="_blank" rel="noopener"
+>
+Hiyoung
+&lt;/a>
+によって書かれたよ。&lt;/p></description></item><item><title>VsCode で Python 環境を設定する</title><link>https://blog.yexca.net/ja/archives/5/</link><pubDate>Sun, 07 Nov 2021 11:28:58 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/5/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;h2 id="本文">本文
+&lt;/h2>&lt;p>VS CodeとPythonのインストールと環境変数の設定が終わったら、&lt;/p></description></item><item><title>システムのデフォルトメールクライアントを自動で起動する方法</title><link>https://blog.yexca.net/ja/archives/4/</link><pubDate>Sat, 06 Nov 2021 17:05:36 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/4/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
+&lt;style lang="scss">
+.notice {
+padding: 0.75em 1em;
+margin: 1em 0;
+border-left: 4px solid;
+border-radius: 4px;
+&amp;.default {
+border-color: #ccc;
+background-color: #f9f9f9;
+color: #333;
+}
+&amp;.info {
+border-color: #2196f3;
+background-color: #e3f2fd;
+color: #1a237e;
+}
+&amp;.warn {
+border-color: #ff9800;
+background-color: #fff3e0;
+color: #e65100;
+}
+&amp;.danger {
+border-color: #f44336;
+background-color: #ffebee;
+color: #b71c1c;
+}
+}
+[data-scheme="dark"] {
+.notice {
+&amp;.default {
+border-color: #666;
+background-color: #2a2a2a;
+color: #eee;
+}
+&amp;.info {
+border-color: #90caf9;
+background-color: #1e3a5f;
+color: #e3f2fd;
+}
+&amp;.warn {
+border-color: #ffb74d;
+background-color: #4e342e;
+color: #fff3e0;
+}
+&amp;.danger {
+border-color: #ef5350;
+background-color: #3e2723;
+color: #ffebee;
+}
+}
+}
+[data-scheme="sepia"] {
+.notice {
+&amp;.info {
+border-color: #6a5acd;
+background-color: #fdf6e3;
+color: #3c2f2f;
+}
+&amp;.warn {
+border-color: #e9967a;
+background-color: #faf0e6;
+color: #5c4033;
+}
+&amp;.danger {
+border-color: #cd5c5c;
+background-color: #f5e0dc;
+color: #7b3f3f;
+}
+}
+}
+&lt;/style>
+&lt;blockquote>
+&lt;p>この記事は
+&lt;a class="link" href="https://blog.hiyoung.icu/"
+target="_blank" rel="noopener"
+>
+Hiyoung
+&lt;/a>
+によって書かれたよ。&lt;/p></description></item></channel></rss>

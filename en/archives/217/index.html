@@ -1,0 +1,670 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 This article was translated by gemini-2.5-flash Intro to MQ Synchronous Calls Microservices calling each other via Feign is a synchronous approach, which comes with some issues.\n"><title>SpringAMQP</title>
+<link rel=canonical href=https://blog.yexca.net/en/archives/217/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="SpringAMQP"><meta property='og:description' content="📢 This article was translated by gemini-2.5-flash Intro to MQ Synchronous Calls Microservices calling each other via Feign is a synchronous approach, which comes with some issues.\n"><meta property='og:url' content='https://blog.yexca.net/en/archives/217/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Backend Tech'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-01-15T17:03:32+09:00'><meta property='article:modified_time' content='2025-01-15T17:03:32+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="SpringAMQP"><meta name=twitter:description content="📢 This article was translated by gemini-2.5-flash Intro to MQ Synchronous Calls Microservices calling each other via Feign is a synchronous approach, which comes with some issues.\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/en\/archives\/217\/"},"headline":"SpringAMQP","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-01-15","dateModified":"2025-01-15","inLanguage":"en","description":"yexca\u0027s tech and life blog, writing about coding, projects, and daily thoughts."}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>yexca'Blog</a></h1><h2 class=site-description>Tech Otakus Change The World</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/en/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Background</span></a></li><li><a href=/en/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li><a href=/en/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/en/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>Support</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/ selected>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#intro-to-mq>Intro to MQ</a><ul><li><a href=#synchronous-calls>Synchronous Calls</a></li><li><a href=#asynchronous-call-solutions>Asynchronous Call Solutions</a></li><li><a href=#mq>MQ</a></li></ul></li><li><a href=#installing-rabbitmq>Installing RabbitMQ</a></li><li><a href=#messaging-models>Messaging Models</a><ul><li><a href=#hello-world>Hello World</a></li></ul></li><li><a href=#springamqp>SpringAMQP</a><ul><li><a href=#basic-queue-model>Basic Queue Model</a></li><li><a href=#work-queues-task-queues>Work Queues (Task Queues)</a></li><li><a href=#publishsubscribe-model>Publish/Subscribe Model</a></li></ul></li><li><a href=#message-converters>Message Converters</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/en/categories/tech-learning/>Tech Learning</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/archives/217/>SpringAMQP</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-01-15 17:03 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>11 minute read</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/en/tags/backend-tech/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Backend Tech</a>
+<a href=/en/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/217/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/217/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/ja/archives/217/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> This article was translated by gemini-2.5-flash</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><h2 id=intro-to-mq>Intro to MQ</h2><h3 id=synchronous-calls>Synchronous Calls</h3><p>Microservices calling each other via Feign is a synchronous approach, which comes with some issues.</p><p>For example, if you&rsquo;re building a payment service, it might need to integrate code from the order service and warehouse service. Later, if you add an SMS service or a loyalty points service, you&rsquo;d have to modify the payment code each time. This violates the
+<a class=link href=https://blog.yexca.net/archives/93#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99>Open/Closed Principle
+</a>. Plus, you can&rsquo;t do anything else until the request returns, which wastes performance.</p><p>Problems: High coupling, performance degradation, resource waste, cascading failures (if a provider service goes down, all calling services fail too, like dominoes, quickly bringing down the entire microservice cluster).</p><h3 id=asynchronous-call-solutions>Asynchronous Call Solutions</h3><p>Asynchronous calls are often implemented using an event-driven pattern.</p><p>User payment request -> Payment Service -> Broker. The payment service then completes and responds, and the Broker notifies the order service, warehouse service, and SMS service.</p><p>Pros: Service decoupling, improved performance and throughput, loose coupling (fault isolation), traffic shaping/spike reduction.</p><p>Cons: Relies on the Broker&rsquo;s reliability, security, and throughput. The architecture becomes more complex, business flows aren&rsquo;t always clear, and tracing/management can be harder.</p><h3 id=mq>MQ</h3><p>Message Queue. Literally, a queue for messages. It&rsquo;s the Broker in an event-driven architecture.</p><div class=table-wrapper><table><thead><tr><th></th><th><strong>RabbitMQ</strong></th><th><strong>ActiveMQ</strong></th><th><strong>RocketMQ</strong></th><th><strong>Kafka</strong></th></tr></thead><tbody><tr><td>Company/Community</td><td>Rabbit</td><td>Apache</td><td>Alibaba</td><td>Apache</td></tr><tr><td>Dev Language</td><td>Erlang</td><td>Java</td><td>Java</td><td>Scala&amp;Java</td></tr><tr><td>Protocol Support</td><td>AMQP，XMPP，SMTP，STOMP</td><td>OpenWire,STOMP，REST,XMPP,AMQP</td><td>Custom</td><td>Custom</td></tr><tr><td>Availability</td><td>High</td><td>Moderate</td><td>High</td><td>High</td></tr><tr><td>Single-Node Throughput</td><td>Moderate</td><td>Low</td><td>High</td><td>Very High</td></tr><tr><td>Message Latency</td><td>Microsecond-level</td><td>Millisecond-level</td><td>Millisecond-level</td><td>Sub-millisecond</td></tr><tr><td>Message Reliability</td><td>High</td><td>Moderate</td><td>High</td><td>Moderate</td></tr></tbody></table></div><p>For high availability: Kafka, RocketMQ, RabbitMQ
+For high reliability: RabbitMQ, RocketMQ
+For high throughput: RocketMQ, Kafka
+For low message latency: RabbitMQ, Kafka</p><h2 id=installing-rabbitmq>Installing RabbitMQ</h2><p>You can find various installation methods on the
+<a class=link href=https://www.rabbitmq.com/download.html target=_blank rel=noopener>official website
+</a>. I&rsquo;m using Docker to pull the image.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull rabbitmq:3-management
+</span></span></code></pre></td></tr></table></div></div><p>Run command:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> -e <span class=nv>RABBITMQ_DEFAULT_USER</span><span class=o>=</span>admin <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> -e <span class=nv>RABBITMQ_DEFAULT_PASS</span><span class=o>=</span>admin <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> --name mq <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> --hostname mq1 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> -p 15672:15672 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> -p 5672:5672 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> -d <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> rabbitmq:3-management
+</span></span></code></pre></td></tr></table></div></div><p>Visit
+<a class=link href=localhost:15672 target=_blank rel=noopener>localhost:15672
+</a>to open the management UI. Here are some RabbitMQ concepts:</p><ul><li>channel: The tool to interact with MQ.</li><li>exchange: Routes messages to queues.</li><li>queue: Stores messages.</li><li>virtualHost: A logical grouping for resources like queues, exchanges.</li></ul><h2 id=messaging-models>Messaging Models</h2><p>The
+<a class=link href=https://www.rabbitmq.com/getstarted.html target=_blank rel=noopener>official website provides various demos
+</a>, corresponding to different messaging models.</p><ul><li>Basic Queue:
+<a class=link href=https://www.rabbitmq.com/tutorials/tutorial-one-python.html target=_blank rel=noopener>&ldquo;Hello World!&rdquo;</a></li><li>Work Queues:
+<a class=link href=https://www.rabbitmq.com/tutorials/tutorial-two-python.html target=_blank rel=noopener>Work Queues</a></li><li>Publish/Subscribe Model<ul><li>Fanout Exchange: Broadcast
+<a class=link href=https://www.rabbitmq.com/tutorials/tutorial-three-python.html target=_blank rel=noopener>Publish/Subscribe</a></li><li>Direct Exchange: Routing
+<a class=link href=https://www.rabbitmq.com/tutorials/tutorial-four-python.html target=_blank rel=noopener>Routing</a></li><li>Topic Exchange: Topics
+<a class=link href=https://www.rabbitmq.com/tutorials/tutorial-five-python.html target=_blank rel=noopener>Topics</a></li></ul></li></ul><h3 id=hello-world>Hello World</h3><p>Publisher -> Queue -> Consumer</p><ul><li>publisher: Message sender, sends messages to the queue.</li><li>queue: Message queue, responsible for receiving and caching messages.</li><li>consumer: Subscribes to the queue, processes messages in the queue.</li></ul><p>Publisher</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>PublisherTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testSendMessage</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=p>,</span><span class=w> </span><span class=n>TimeoutException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1. Establish connection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ConnectionFactory</span><span class=w> </span><span class=n>factory</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ConnectionFactory</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1.1. Set connection parameters: hostname, port, vhost, username, password</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setHost</span><span class=p>(</span><span class=s>&#34;localhost&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setPort</span><span class=p>(</span><span class=n>5672</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setVirtualHost</span><span class=p>(</span><span class=s>&#34;/&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setUsername</span><span class=p>(</span><span class=s>&#34;admin&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setPassword</span><span class=p>(</span><span class=s>&#34;admin&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1.2. Establish connection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Connection</span><span class=w> </span><span class=n>connection</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>factory</span><span class=p>.</span><span class=na>newConnection</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 2. Create Channel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Channel</span><span class=w> </span><span class=n>channel</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>connection</span><span class=p>.</span><span class=na>createChannel</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 3. Create queue</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>queueName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>channel</span><span class=p>.</span><span class=na>queueDeclare</span><span class=p>(</span><span class=n>queueName</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 4. Send message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello, rabbitmq!&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>channel</span><span class=p>.</span><span class=na>basicPublish</span><span class=p>(</span><span class=s>&#34;&#34;</span><span class=p>,</span><span class=w> </span><span class=n>queueName</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>,</span><span class=w> </span><span class=n>message</span><span class=p>.</span><span class=na>getBytes</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Message sent successfully: 【&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;】&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 5. Close channel and connection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>channel</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>connection</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Consumer</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>ConsumerTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=p>,</span><span class=w> </span><span class=n>TimeoutException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1. Establish connection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ConnectionFactory</span><span class=w> </span><span class=n>factory</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ConnectionFactory</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1.1. Set connection parameters: hostname, port, vhost, username, password</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setHost</span><span class=p>(</span><span class=s>&#34;localhost&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setPort</span><span class=p>(</span><span class=n>5672</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setVirtualHost</span><span class=p>(</span><span class=s>&#34;/&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setUsername</span><span class=p>(</span><span class=s>&#34;admin&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>factory</span><span class=p>.</span><span class=na>setPassword</span><span class=p>(</span><span class=s>&#34;admin&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 1.2. Establish connection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Connection</span><span class=w> </span><span class=n>connection</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>factory</span><span class=p>.</span><span class=na>newConnection</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 2. Create Channel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Channel</span><span class=w> </span><span class=n>channel</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>connection</span><span class=p>.</span><span class=na>createChannel</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 3. Create queue</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>queueName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>channel</span><span class=p>.</span><span class=na>queueDeclare</span><span class=p>(</span><span class=n>queueName</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>false</span><span class=p>,</span><span class=w> </span><span class=kc>null</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 4. Subscribe to messages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>channel</span><span class=p>.</span><span class=na>basicConsume</span><span class=p>(</span><span class=n>queueName</span><span class=p>,</span><span class=w> </span><span class=kc>true</span><span class=p>,</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DefaultConsumer</span><span class=p>(</span><span class=n>channel</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nd>@Override</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>handleDelivery</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>consumerTag</span><span class=p>,</span><span class=w> </span><span class=n>Envelope</span><span class=w> </span><span class=n>envelope</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                                       </span><span class=n>AMQP</span><span class=p>.</span><span class=na>BasicProperties</span><span class=w> </span><span class=n>properties</span><span class=p>,</span><span class=w> </span><span class=kt>byte</span><span class=o>[]</span><span class=w> </span><span class=n>body</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=c1>// 5. Process message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>String</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>String</span><span class=p>(</span><span class=n>body</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Message received: 【&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>message</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;】&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>});</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Waiting for messages....&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Console Output:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>Waiting for messages....
+</span></span><span class=line><span class=cl>Message received: 【hello, rabbitmq!】
+</span></span></code></pre></td></tr></table></div></div><p>Clearly, this approach is a bit cumbersome.</p><h2 id=springamqp>SpringAMQP</h2><p><a class=link href=https://spring.io/projects/spring-amqp target=_blank rel=noopener>SpringAMQP
+</a>is a template wrapper around RabbitMQ. It also leverages Spring Boot for auto-configuration, making it super convenient to use.</p><ul><li>AMQP</li></ul><p>Advanced Message Queuing Protocol, an open standard for passing business messages between applications. This protocol is language and platform-agnostic, which aligns well with microservices&rsquo; independence requirements.</p><ul><li>Spring AMQP</li></ul><p>Spring AMQP defines a set of APIs based on the AMQP protocol, providing templates for sending and receiving messages. It includes two parts: <code>spring-amqp</code> for basic abstractions, and <code>spring-rabbit</code> as the default underlying implementation.</p><p>It can automatically declare queues, exchanges, and their bindings, and supports annotation-based listener patterns for asynchronous message reception.</p><h3 id=basic-queue-model>Basic Queue Model</h3><p>First, add the dependency in your parent project:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--AMQP dependency, includes RabbitMQ--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-amqp<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=publisher-sending-messages>Publisher (Sending Messages)</h4><p>Configure <code>application.yml</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rabbitmq</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>localhost</span><span class=w> </span><span class=c># Hostname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>5672</span><span class=w> </span><span class=c># Port</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>virtual-host</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w> </span><span class=c># Virtual host</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Username</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Password</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Use <code>RabbitTemplate</code> to send messages:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RunWith</span><span class=p>(</span><span class=n>SpringRunner</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@SpringBootTest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>RabbitTemplate</span><span class=w> </span><span class=n>rabbitTemplate</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testSimpleQueue</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Queue name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>queueName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;Hello Spring ampq&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Send</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>queueName</span><span class=p>,</span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=consumer-receiving-messages>Consumer (Receiving Messages)</h4><p>Same <code>application.yml</code> config as above.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rabbitmq</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>localhost</span><span class=w> </span><span class=c># Hostname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>5672</span><span class=w> </span><span class=c># Port</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>virtual-host</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w> </span><span class=c># Virtual host</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Username</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Password</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Create a new <code>SpringRabbitListener</code> class:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringRabbitListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>queues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenSimpleQueue</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=work-queues-task-queues>Work Queues (Task Queues)</h3><p>Also known as Task Queues. This model can boost message processing speed and prevent queue buildup.</p><p>publisher -> queue -> consumer1 and consumer2 and &mldr;</p><h4 id=publisher-sending-messages-1>Publisher (Sending Messages)</h4><p>Define a method to send 50 messages per second:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testWorkQueue</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>InterruptedException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>queueName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;Hello Spring ampq...&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>0</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=n>50</span><span class=p>;</span><span class=w> </span><span class=n>i</span><span class=o>++</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>queueName</span><span class=p>,</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>i</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c1>// Sleep 20ms, sending 50 messages per second</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>20</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=consumer-receiving-messages-1>Consumer (Receiving Messages)</h4><p>Create two consumers bound to the same queue:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringRabbitListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>queues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenSimpleQueue1</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>InterruptedException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;1 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Processes 40 messages per second</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>25</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>queues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.queue&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenSimpleQueue2</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>InterruptedException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Using System.err to output red messages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>err</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;2 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Processes 5 messages per second</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Thread</span><span class=p>.</span><span class=na>sleep</span><span class=p>(</span><span class=n>200</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=testing>Testing</h4><p>Run consumers first, then the publisher to send messages.</p><p>From the output, you&rsquo;ll see both consumers receive half the messages. This means messages are evenly distributed among consumers, without considering their processing capacity. Clearly, that&rsquo;s an issue.</p><h4 id=prefetch>Prefetch</h4><p>Modify <code>application.yml</code> to set the <code>prefetch</code> value, which controls the prefetch message limit (default is unlimited).</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>spring</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rabbitmq</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>localhost</span><span class=w> </span><span class=c># Hostname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>5672</span><span class=w> </span><span class=c># Port</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>virtual-host</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w> </span><span class=c># Virtual host</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>username</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Username</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>admin</span><span class=w> </span><span class=c># Password</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>listener</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>simple</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># Only fetches one message at a time; must process it before fetching the next</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>prefetch</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Retesting shows improved execution efficiency.</p><h3 id=publishsubscribe-model>Publish/Subscribe Model</h3><p>The Publish/Subscribe model adds an exchange, allowing the same message to be sent to all subscribers.</p><p>publisher -> exchange -> queue1 and queue2
+queue1 -> consumer1 and consumer2
+queue2 -> consumer3</p><p>Common exchanges include:</p><ul><li>Fanout: Broadcast</li><li>Direct: Routing</li><li>Topic: Topic</li></ul><blockquote><p>Exchanges route messages but don&rsquo;t store them. If routing fails, the message is lost.</p></blockquote><h4 id=fanout-broadcast>Fanout (Broadcast)</h4><p>A Fanout exchange broadcasts received messages to every bound queue.</p><p>In the consumer, create a config class to declare queues and exchanges:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>FanoutConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Declare exchange
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>FanoutExchange</span><span class=w> </span><span class=nf>fanoutExchange</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>FanoutExchange</span><span class=p>(</span><span class=s>&#34;hello.fanout&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * First queue
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Queue</span><span class=w> </span><span class=nf>fanoutQueue1</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Queue</span><span class=p>(</span><span class=s>&#34;fanout.queue1&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Bind first queue to exchange
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param fanoutQueue1
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param fanoutExchange
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Binding</span><span class=w> </span><span class=nf>bindingQueue1</span><span class=p>(</span><span class=n>Queue</span><span class=w> </span><span class=n>fanoutQueue1</span><span class=p>,</span><span class=w> </span><span class=n>FanoutExchange</span><span class=w> </span><span class=n>fanoutExchange</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>BindingBuilder</span><span class=p>.</span><span class=na>bind</span><span class=p>(</span><span class=n>fanoutQueue1</span><span class=p>).</span><span class=na>to</span><span class=p>(</span><span class=n>fanoutExchange</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Second queue
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Queue</span><span class=w> </span><span class=nf>fanoutQueue2</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Queue</span><span class=p>(</span><span class=s>&#34;fanout.queue2&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * Bind second queue to exchange
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param fanoutQueue2
+</span></span></span><span class=line><span class=cl><span class=cm>     * @param fanoutExchange
+</span></span></span><span class=line><span class=cl><span class=cm>     * @return
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>Binding</span><span class=w> </span><span class=nf>bindingQueue2</span><span class=p>(</span><span class=n>Queue</span><span class=w> </span><span class=n>fanoutQueue2</span><span class=p>,</span><span class=w> </span><span class=n>FanoutExchange</span><span class=w> </span><span class=n>fanoutExchange</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>BindingBuilder</span><span class=p>.</span><span class=na>bind</span><span class=p>(</span><span class=n>fanoutQueue2</span><span class=p>).</span><span class=na>to</span><span class=p>(</span><span class=n>fanoutExchange</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Message Sending</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testFanoutExchange</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Exchange</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>exchangeName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.fanout&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello, everyone&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>exchangeName</span><span class=p>,</span><span class=s>&#34;&#34;</span><span class=p>,</span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>The empty <code>routingkey</code> in the middle will be used in the next two models.</p><p>Message Reception</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringRabbitListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>queues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;fanout.queue1&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenFanoutQueue1</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Fanout1 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>queues</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;fanout.queue2&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenFanoutQueue2</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Fanout2 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=direct-routing>Direct (Routing)</h4><p>A Direct Exchange routes received messages to specific queues based on rules, hence &lsquo;routing mode&rsquo;.</p><p>Queues bind to exchanges with a <code>Routingkey</code>. Senders must also specify the message&rsquo;s <code>Routingkey</code>. Messages are only received if the queue&rsquo;s <code>Routingkey</code> and the message&rsquo;s <code>Routingkey</code> match exactly.</p><p>Here, we&rsquo;ll use annotations to declare queues and exchanges, no config class needed.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringRabbitListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>bindings</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@QueueBinding</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Queue</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;direct.queue1&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//            exchange = @Exchange(name = &#34;hello.direct&#34;, type = ExchangeTypes.DIRECT),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//            Since the default type is Direct, it can be omitted</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>exchange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Exchange</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.direct&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;warma&#34;</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenDirectQueue1</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;1 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>bindings</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@QueueBinding</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Queue</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;direct.queue2&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>exchange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Exchange</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.direct&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>{</span><span class=s>&#34;red&#34;</span><span class=p>,</span><span class=s>&#34;aqua&#34;</span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenDirectQueue2</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;2 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Sender</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testDirectExchange</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Exchange</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>exchangeName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.direct&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello, aqua&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>exchangeName</span><span class=p>,</span><span class=s>&#34;aqua&#34;</span><span class=p>,</span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>In the example above, only Consumer 2 receives the message. If the routing key was &ldquo;red&rdquo;, both would receive it.</p><h4 id=topic>Topic</h4><p>TopicExchange is similar to DirectExchange, but its routingKey must be a list of multiple words, separated by <code>.</code>.</p><p>When queues and exchanges specify a BindingKey, wildcards can be used:</p><ul><li><code>#</code>: Matches one or more words.</li><li><code>*</code>: Matches only one word.</li></ul><p>Receiver</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Component</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringRabbitListener</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>bindings</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@QueueBinding</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Queue</span><span class=p>(</span><span class=s>&#34;topic.queue1&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>exchange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Exchange</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.topic&#34;</span><span class=p>,</span><span class=w> </span><span class=n>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ExchangeTypes</span><span class=p>.</span><span class=na>TOPIC</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;#.news&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenTopicQueue1</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;1 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@RabbitListener</span><span class=p>(</span><span class=n>bindings</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@QueueBinding</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>value</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Queue</span><span class=p>(</span><span class=s>&#34;topic.queue2&#34;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>exchange</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=nd>@Exchange</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.topic&#34;</span><span class=p>,</span><span class=w> </span><span class=n>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>ExchangeTypes</span><span class=p>.</span><span class=na>TOPIC</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=n>key</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;china.#&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>))</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>listenTopicQueue2</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;2 received message: &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Message Sending</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testTopicExchange</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Exchange</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>exchangeName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.topic&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;news for China&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>exchangeName</span><span class=p>,</span><span class=s>&#34;china.news&#34;</span><span class=p>,</span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>In the example above, both 1 and 2 can receive.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>SpringamqpTest</span><span class=w> </span><span class=p>{</span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testTopicExchange</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Exchange</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>exchangeName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;hello.topic&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Message</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>msg</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;news for Japan&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>rabbitTemplate</span><span class=p>.</span><span class=na>convertAndSend</span><span class=p>(</span><span class=n>exchangeName</span><span class=p>,</span><span class=s>&#34;japan.news&#34;</span><span class=p>,</span><span class=n>msg</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Only 1 can receive.</p><h2 id=message-converters>Message Converters</h2><p>Spring serializes messages to bytes before sending them to MQ, and deserializes bytes back to Java objects when receiving. By default, Spring uses JDK serialization, which results in large data volume, security vulnerabilities, and poor readability.</p><p>We can use JSON for serialization and deserialization.</p><p>First, add the dependency in the parent project:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!-- JSON converter --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.fasterxml.jackson.dataformat<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>jackson-dataformat-xml<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>2.9.10<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Just declare a bean in both the consumer and receiver:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=n>MessageConverter</span><span class=w> </span><span class=nf>jsonMessageConverter</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Jackson2JsonMessageConverter</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/en/tags/backend-tech/>Backend Tech</a>
+<a href=/en/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/en/archives/171/><div class=article-details><h2 class=article-title>Gateway Service Gateway</h2></div></a></article><article><a href=/en/archives/170/><div class=article-details><h2 class=article-title>Feign Remote Calls</h2></div></a></article><article><a href=/en/archives/169/><div class=article-details><h2 class=article-title>Nacos Service Registry</h2></div></a></article><article><a href=/en/archives/168/><div class=article-details><h2 class=article-title>Ribbon Load Balancing</h2></div></a></article><article><a href=/en/archives/161/><div class=article-details><h2 class=article-title>Service Registry - Eureka</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>Built with <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> <span>|</span>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
