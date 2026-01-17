@@ -1,0 +1,767 @@
+<!doctype html><html lang=zh-tw dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 本文由 gemini-2.5-flash 翻譯 設定 YAML、YML、Properties 檔案都可以進行設定，也可以透過 Java 系統屬性及命令列參數。\n"><title>Spring 自動配置與起始依賴</title>
+<link rel=canonical href=https://blog.yexca.net/zh-tw/archives/223/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Spring 自動配置與起始依賴"><meta property='og:description' content="📢 本文由 gemini-2.5-flash 翻譯 設定 YAML、YML、Properties 檔案都可以進行設定，也可以透過 Java 系統屬性及命令列參數。\n"><meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/223/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='後端技術'><meta property='article:tag' content='SpringBoot'><meta property='article:published_time' content='2025-01-23T15:06:36+09:00'><meta property='article:modified_time' content='2025-01-23T15:06:36+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Spring 自動配置與起始依賴"><meta name=twitter:description content="📢 本文由 gemini-2.5-flash 翻譯 設定 YAML、YML、Properties 檔案都可以進行設定，也可以透過 Java 系統屬性及命令列參數。\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/zh-tw\/archives\/223\/"},"headline":"Spring 自動配置與起始依賴","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-01-23","dateModified":"2025-01-23","inLanguage":"zh-tw","description":"yexca 的技術與生活部落格，紀錄程式學習與日常隨筆。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切換選單>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh-tw/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/zh-tw>yexca'Blog</a></h1><h2 class=site-description>把這個不美好的世界，編程您所期望的樣子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/zh-tw/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh-tw/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首頁</span></a></li><li><a href=/zh-tw/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>檔案</span></a></li><li><a href=/zh-tw/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜尋</span></a></li><li><a href=/zh-tw/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/zh-tw/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>連結</span></a></li><li><a href=/zh-tw/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>關於</span></a></li><li><a href=/zh-tw/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>支持</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/ selected>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>夜晚模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目錄</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#設定>設定</a></li><li><a href=#bean-管理>Bean 管理</a><ul><li><a href=#取得-bean>取得 Bean</a></li><li><a href=#bean-作用域>Bean 作用域</a></li><li><a href=#第三方-bean>第三方 Bean</a></li></ul></li><li><a href=#起始依賴>起始依賴</a></li><li><a href=#自動配置>自動配置</a><ul><li><a href=#componentscan>@ComponentScan</a></li><li><a href=#import>@Import</a></li><li><a href=#enablexxxxx>@EnableXxxxx</a></li></ul></li><li><a href=#springboot-的自動配置>SpringBoot 的自動配置</a></li><li><a href=#conditional>@Conditional</a><ul><li><a href=#conditionalonclass>@ConditionalOnClass</a></li><li><a href=#conditionalonmissingbean>@ConditionalOnMissingBean</a></li><li><a href=#conditionalonproperty>@ConditionalOnProperty</a></li></ul></li><li><a href=#自訂起始依賴>自訂起始依賴</a><ul><li><a href=#模組-pom-檔案>模組 POM 檔案</a></li><li><a href=#自動配置-1>自動配置</a></li><li><a href=#使用>使用</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/zh-tw/categories/%E6%8A%80%E8%A1%93%E5%AD%B8%E7%BF%92/>技術學習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/zh-tw/archives/223/>Spring 自動配置與起始依賴</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-01-23 15:06 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>閱讀時間: 8 分鐘</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/zh-tw/tags/%E5%BE%8C%E7%AB%AF%E6%8A%80%E8%A1%93/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">後端技術</a>
+<a href=/zh-tw/tags/springboot/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringBoot</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/223/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/en/archives/223/ class=link>English</a>
+<a href=https://blog.yexca.net/ja/archives/223/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> 本文由 gemini-2.5-flash 翻譯</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><h2 id=設定>設定</h2><p>YAML、YML、Properties 檔案都可以進行設定，也可以透過 Java 系統屬性及命令列參數。</p><p>優先順序：命令列參數 > Java 系統屬性 > Properties 檔案 > YML 檔案 > YAML 檔案</p><p>命令列使用時，需要先執行 Maven 的包裝指令，然後在命令列執行。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>java -jar path_to_jar.jar
+</span></span><span class=line><span class=cl><span class=c1># Java 系統屬性，以埠號為例</span>
+</span></span><span class=line><span class=cl>java -Dserver.port<span class=o>=</span><span class=m>9000</span> -jar path_to_jar.jar
+</span></span><span class=line><span class=cl><span class=c1># 命令列參數，以埠號為例</span>
+</span></span><span class=line><span class=cl>java -jar path_to_jar.jar --server.port<span class=o>=</span><span class=m>9000</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>SpringBoot 專案進行包裝時需要引入 <code>spring-boot-maven-plugin</code> 外掛程式（如果基於官方樣板建立專案，會自動加入該外掛程式）。</p></blockquote><h2 id=bean-管理>Bean 管理</h2><h3 id=取得-bean>取得 Bean</h3><p>對於預設的單例非延遲載入 Bean 而言，Spring 專案啟動時，會把 Bean 都建立好並放置在 IOC 容器中（例如加上 @Lazy 註解後，將會在第一次被使用時實例化）。</p><p>如果想主動取得這些 Bean，可以透過以下方式。</p><ol><li>根據名稱取得</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>Object</span><span class=w> </span><span class=nf>getBean</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>根據類型取得</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=n>T</span><span class=w> </span><span class=nf>getBean</span><span class=p>(</span><span class=n>Class</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=n>requiredType</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=3><li>根據名稱及類型取得（類型轉換）</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=n>T</span><span class=w> </span><span class=nf>getBean</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>Class</span><span class=o>&lt;</span><span class=n>T</span><span class=o>&gt;</span><span class=w> </span><span class=n>requiredType</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>為了使用此方法，需要先取得 IOC 容器物件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>private</span><span class=w> </span><span class=n>ApplicationContext</span><span class=w> </span><span class=n>applicationContext</span><span class=p>;</span><span class=w> </span><span class=c1>//IOC 容器物件</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testGetBean</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 根據 Bean 的名稱取得</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeptController</span><span class=w> </span><span class=n>beanl</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=n>DeptController</span><span class=p>)</span><span class=w> </span><span class=n>applicationContext</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=s>&#34;deptController&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 根據 Bean 的類型取得</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeptController</span><span class=w> </span><span class=n>bean2</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>applicationContext</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>DeptController</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 根據 Bean 的名稱及類型取得</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeptController</span><span class=w> </span><span class=n>bean3</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>applicationContext</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=s>&#34;deptController&#34;</span><span class=p>,</span><span class=w> </span><span class=n>DeptController</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=bean-作用域>Bean 作用域</h3><p>Spring 支援五種作用域，其中後三種只在 Web 環境中生效。</p><div class=table-wrapper><table><thead><tr><th>作用域</th><th>描述</th></tr></thead><tbody><tr><td>singleton</td><td>容器內同名稱的 Bean 只有一個實例（單例）</td></tr><tr><td>prototype</td><td>每次使用該 Bean 時會建立新的實例（非單例）</td></tr><tr><td>request</td><td>每個請求範圍內會建立新的實例</td></tr><tr><td>session</td><td>每個會話範圍內會建立新的實例</td></tr><tr><td>application</td><td>每個應用程式範圍內會建立新的實例</td></tr></tbody></table></div><p>使用註解 @Scope 設定作用域</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 設定為非單例</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Scope</span><span class=p>(</span><span class=s>&#34;prototype&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>xxxController</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p>在實際開發中，絕大部分的 Bean 都是單例的，也就是說絕大部分的 Bean 不需要設定 <code>scope</code> 屬性。</p></blockquote><h3 id=第三方-bean>第三方 Bean</h3><p>如果要管理的 Bean 物件來自於第三方（並非自訂），就無法使用 @Component 及衍生註解來宣告 Bean，這時就需要用到 @Bean 註解。例如解析 XML 檔案的 dom4j。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.dom4j<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>dom4j<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>2.1.3<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>依賴如上所示。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>xxxApplication</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w> </span><span class=c1>// 將方法回傳值交給 IOC 容器管理，使其成為 IOC 容器的 Bean 物件</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>SAXReader</span><span class=w> </span><span class=nf>saxReader</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SAXReader</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>不過，若要管理第三方 Bean 物件，建議對這些 Bean 進行集中分類設定，可以透過 @Configuration 註解宣告一個設定類。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CommonConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>SAXReader</span><span class=w> </span><span class=nf>saxReader</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SAXReader</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>透過 @Bean 註解的 <code>name</code> 或 <code>value</code> 屬性可以宣告 Bean 的名稱，如果不指定，預設 Bean 的名稱就是方法名。如果第三方 Bean 需要依賴其他 Bean 物件，直接在 Bean 定義方法中設定形參即可，容器會根據類型自動組裝。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>CommonConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>SAXReader</span><span class=w> </span><span class=nf>saxReader</span><span class=p>(</span><span class=n>XxService</span><span class=w> </span><span class=n>xxService</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>SAXReader</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=起始依賴>起始依賴</h2><p>在開發中，若直接使用 Spring 需要引入相關依賴，並且保證版本匹配；而使用 SpringBoot 則只需要引入起始依賴即可。其原理是 Maven 的傳遞依賴，其他的依賴都會自動透過 Maven 的依賴機制傳遞進來。</p><h2 id=自動配置>自動配置</h2><p>SpringBoot 的自動配置就是當 Spring 容器啟動後，一些設定類、Bean 物件會自動儲存到 IOC 容器中，不需要我們手動去宣告，從而簡化了開發，省去了繁瑣的設定操作。</p><p>設定類 @Configuration 的底層是 @Component，也是容器中的一個 Bean 物件。</p><p>在引入依賴之後，是如何將依賴 Jar 檔案中所定義的設定類以及 Bean 載入到 Spring IOC 容器中的呢？</p><h3 id=componentscan>@ComponentScan</h3><p>使用 @ComponentScan 可以指定要掃描的套件，例如依賴匯入了 <code>com.example</code> 套件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@ComponentScan</span><span class=p>({</span><span class=s>&#34;net.yexca&#34;</span><span class=p>,</span><span class=s>&#34;com.example&#34;</span><span class=p>})</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>不過，當需要引入大量的第三方依賴時，上方需要設定大量的套件，而大面積的掃描效能也比較低。</p><h3 id=import>@Import</h3><p>可以匯入普通類別、設定類以及 <code>ImportSelector</code> 介面實作類。</p><h4 id=普通類別>普通類別</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Import</span><span class=p>(</span><span class=n>TokenParser</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=c1>//匯入普通類別</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=設定類>設定類</h4><p>設定類內容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderGenerator</span><span class=w> </span><span class=nf>headerGenerator</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderGenerator</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>啟動類</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Import</span><span class=p>(</span><span class=n>HeaderConfig</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=c1>//匯入設定類</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=importselector-介面實作類>ImportSelector 介面實作類</h4><p>ImportSelector 介面實作類內容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>MyImportSelector</span><span class=w> </span><span class=kd>implements</span><span class=w> </span><span class=n>ImportSelector</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=nf>selectImports</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>importingClassMetadata</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//回傳值為字串陣列（陣列中封裝了具完整限定名稱的類別）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>String</span><span class=o>[]</span><span class=p>{</span><span class=s>&#34;com.example.HeaderConfig&#34;</span><span class=p>};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>啟動類</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Import</span><span class=p>(</span><span class=n>MyImportSelector</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w> </span><span class=c1>//匯入 `ImportSelector` 介面實作類</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=enablexxxxx>@EnableXxxxx</h3><p>上述 @Import 需要首先知道第三方依賴中有哪些設定類或 Bean 才行；而第三方依賴可以提供 @EnableXxxxx 註解，封裝 @Import 註解以提供一些常用 Bean，使用時只需要 @EnableXxxxx 註解即可。</p><p>例如上述 @Import 的設定類，可以封裝一個 @EnableHeaderConfig 註解。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Retention</span><span class=p>(</span><span class=n>RetentionPolicy</span><span class=p>.</span><span class=na>RUNTIME</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Target</span><span class=p>(</span><span class=n>ElementType</span><span class=p>.</span><span class=na>TYPE</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Import</span><span class=p>(</span><span class=n>MyImportSelector</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=c1>//指定要匯入哪些 Bean 物件或設定類</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=nd>@interface</span><span class=w> </span><span class=n>EnableHeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>然後只需要在啟動類加上 @EnableHeaderConfig 註解即可匯入相應的 Bean。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@EnableHeaderConfig</span><span class=w>  </span><span class=c1>//使用第三方依賴提供的以 Enable 開頭的註解</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@SpringBootApplication</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>此方法也是 SpringBoot 所採用的方式。</p><h2 id=springboot-的自動配置>SpringBoot 的自動配置</h2><p>在 @SpringBootApplication 註解裡有 @EnableAutoConfiguration，其中 @Import({AutoConfigurationImportSelector.class}) 匯入了 <code>ImportSelector</code> 介面的實作類 <code>AutoConfigurationImportSelector.class</code>。</p><p>在該實作類中覆寫了 <code>selectImports()</code> 方法。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=nf>selectImports</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>annotationMetadata</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=k>this</span><span class=p>.</span><span class=na>isEnabled</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>NO_IMPORTS</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 取得自動配置的設定類資訊集合</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>AutoConfigurationEntry</span><span class=w> </span><span class=n>autoConfigurationEntry</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getAutoConfigurationEntry</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>StringUtils</span><span class=p>.</span><span class=na>toStringArray</span><span class=p>(</span><span class=n>autoConfigurationEntry</span><span class=p>.</span><span class=na>getConfigurations</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>呼叫 <code>getAutoConfigurationEntry()</code> 方法取得了自動配置的設定類資訊集合。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>protected</span><span class=w> </span><span class=n>AutoConfigurationEntry</span><span class=w> </span><span class=nf>getAutoConfigurationEntry</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>annotationMetadata</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=o>!</span><span class=k>this</span><span class=p>.</span><span class=na>isEnabled</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>))</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>EMPTY_ENTRY</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w> </span><span class=k>else</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>AnnotationAttributes</span><span class=w> </span><span class=n>attributes</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getAttributes</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 取得在設定檔中設定的所有自動配置類別的集合</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>configurations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getCandidateConfigurations</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>,</span><span class=w> </span><span class=n>attributes</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>configurations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>removeDuplicates</span><span class=p>(</span><span class=n>configurations</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Set</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>exclusions</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getExclusions</span><span class=p>(</span><span class=n>annotationMetadata</span><span class=p>,</span><span class=w> </span><span class=n>attributes</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>checkExcludedClasses</span><span class=p>(</span><span class=n>configurations</span><span class=p>,</span><span class=w> </span><span class=n>exclusions</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>configurations</span><span class=p>.</span><span class=na>removeAll</span><span class=p>(</span><span class=n>exclusions</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>configurations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getConfigurationClassFilter</span><span class=p>().</span><span class=na>filter</span><span class=p>(</span><span class=n>configurations</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>fireAutoConfigurationImportEvents</span><span class=p>(</span><span class=n>configurations</span><span class=p>,</span><span class=w> </span><span class=n>exclusions</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AutoConfigurationEntry</span><span class=p>(</span><span class=n>configurations</span><span class=p>,</span><span class=w> </span><span class=n>exclusions</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>其中 <code>getCandidateConfigurations(annotationMetadata, attributes)</code> 方法會取得在設定檔中設定的所有自動配置類別的集合。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>protected</span><span class=w> </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=nf>getCandidateConfigurations</span><span class=p>(</span><span class=n>AnnotationMetadata</span><span class=w> </span><span class=n>metadata</span><span class=p>,</span><span class=w> </span><span class=n>AnnotationAttributes</span><span class=w> </span><span class=n>attributes</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>String</span><span class=o>&gt;</span><span class=w> </span><span class=n>configurations</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>ArrayList</span><span class=p>(</span><span class=n>SpringFactoriesLoader</span><span class=p>.</span><span class=na>loadFactoryNames</span><span class=p>(</span><span class=k>this</span><span class=p>.</span><span class=na>getSpringFactoriesLoaderFactoryClass</span><span class=p>(),</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getBeanClassLoader</span><span class=p>()));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>ImportCandidates</span><span class=p>.</span><span class=na>load</span><span class=p>(</span><span class=n>AutoConfiguration</span><span class=p>.</span><span class=na>class</span><span class=p>,</span><span class=w> </span><span class=k>this</span><span class=p>.</span><span class=na>getBeanClassLoader</span><span class=p>()).</span><span class=na>forEach</span><span class=p>(</span><span class=n>configurations</span><span class=p>::</span><span class=n>add</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Assert</span><span class=p>.</span><span class=na>notEmpty</span><span class=p>(</span><span class=n>configurations</span><span class=p>,</span><span class=w> </span><span class=s>&#34;No auto configuration classes found in META-INF/spring.factories nor in META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports. If you are using a custom packaging, make sure that file is correct.&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=n>configurations</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>可以看到，它是取得 <code>META-INF/spring.factories</code> 和 <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 檔案中設定類別的集合。</p><p>上述兩個檔案通常在引入的起始依賴中。</p><p>也就是說，當 SpringBoot 程式啟動時，就會載入設定檔當中所定義的設定類，並將這些設定類資訊（類別的完整限定名稱）封裝到 String 類型的陣列中，最終透過 @Import 註解將這些設定類全部載入到 Spring 的 IOC 容器中，交由 IOC 容器管理。</p><h2 id=conditional>@Conditional</h2><p>但是檔案中的設定類那麼多，每個 Bean 都會註冊到 IOC 容器中嗎？並非如此，使用 @Conditional 註解可以讓 Bean 物件依照條件進行組裝。</p><p>@Conditional 是一個父註解，底下有許多子註解。</p><h3 id=conditionalonclass>@ConditionalOnClass</h3><p>判斷環境中是否存在對應的位元碼檔案，才會將 Bean 註冊到 IOC 容器。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//環境中存在指定的這個類別時，才會將該 Bean 加入 IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ConditionalOnClass</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s>&#34;io.jsonwebtoken.Jwts&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>上述 Bean 需要引入 JWT 權杖的依賴才會注入到 IOC 容器中。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--JWT 權杖--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=nt>&lt;groupId&gt;</span>io.jsonwebtoken<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=nt>&lt;artifactId&gt;</span>jjwt<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=nt>&lt;version&gt;</span>0.9.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>測試</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AutoConfigurationTests</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>ApplicationContext</span><span class=w> </span><span class=n>applicationContext</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testHeaderParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>applicationContext</span><span class=p>.</span><span class=na>getBean</span><span class=p>(</span><span class=n>HeaderParser</span><span class=p>.</span><span class=na>class</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=conditionalonmissingbean>@ConditionalOnMissingBean</h3><p>判斷環境中沒有對應的 Bean（類型或名稱），才會將 Bean 註冊到 IOC 容器。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//不存在該類型的 Bean 時，才會將該 Bean 加入 IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ConditionalOnMissingBean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>上述當 IOC 中沒有 HeaderConfig 類型的 Bean 時才會建立。</p><p>也可以在註解中指定其他 Bean 名稱。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//不存在指定名稱的 Bean 時，才會將該 Bean 加入 IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ConditionalOnMissingBean</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s>&#34;deptController2&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>上例在不存在名稱為 <code>deptController2</code> 的 Bean 物件時，才會建立 HeaderConfig 物件並註冊到 IOC。</p><p>還可以指定類型。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//不存在指定類型的 Bean 時，才會將 Bean 加入 IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ConditionalOnMissingBean</span><span class=p>(</span><span class=n>HeaderConfig</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>上例執行時呼叫該 Bean 會引發 <code>NoSuchBeanDefinitionException</code> 異常，因為 @Configuration 中有 @Component，所以會自動建立 HeaderConfig 的 Bean，因此不會建立 HeaderParser 的 Bean。</p><h3 id=conditionalonproperty>@ConditionalOnProperty</h3><p>判斷設定檔中存在對應屬性與值時，才會將 Bean 註冊到 IOC 容器。</p><p>設定檔</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>header</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>設定類</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HeaderConfig</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//設定檔中存在指定屬性名與值時，才會將 Bean 加入 IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@ConditionalOnProperty</span><span class=p>(</span><span class=n>name</span><span class=w> </span><span class=o>=</span><span class=s>&#34;name&#34;</span><span class=p>,</span><span class=n>havingValue</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;header&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>HeaderParser</span><span class=w> </span><span class=nf>headerParser</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HeaderParser</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=自訂起始依賴>自訂起始依賴</h2><p>例如自訂一個阿里雲 OSS 的起始依賴。</p><p>首先是命名，SpringBoot 官方 Starter 命名為 <code>spring-boot-starter-xxx</code>，而第三方組織提供的則為 <code>xxx-spring-boot-starter</code>。</p><p>然後是模組，需要按照規範定義兩個模組：</p><ol><li>Starter 模組，進行依賴管理，將程式開發所需的依賴都定義在 Starter 起始依賴中。</li><li>Autoconfigure 模組，用於自動配置。</li></ol><p>定義好這兩個模組後，其他專案只需要引入起始依賴即可，自動配置模組會透過依賴傳遞引入。</p><h3 id=模組-pom-檔案>模組 POM 檔案</h3><p>aliyun-oss-spring-boot-starter 模組</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;project</span> <span class=na>xmlns=</span><span class=s>&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span class=na>xmlns:xsi=</span><span class=s>&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=na>xsi:schemaLocation=</span><span class=s>&#34;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;modelVersion&gt;</span>4.0.0<span class=nt>&lt;/modelVersion&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>2.7.5<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;relativePath/&gt;</span> <span class=c>&lt;!-- lookup parent from repository --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>aliyun-oss-spring-boot-starter<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>0.0.1-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;java.version&gt;</span>11<span class=nt>&lt;/java.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/properties&gt;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--引入autoconfigure模組--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>aliyun-oss-spring-boot-autoconfigure<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>0.0.1-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/project&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>aliyun-oss-spring-boot-autoconfigure 模組</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;project</span> <span class=na>xmlns=</span><span class=s>&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span class=na>xmlns:xsi=</span><span class=s>&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=na>xsi:schemaLocation=</span><span class=s>&#34;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;modelVersion&gt;</span>4.0.0<span class=nt>&lt;/modelVersion&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;parent&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-parent<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;version&gt;</span>2.7.5<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;relativePath/&gt;</span> <span class=c>&lt;!-- lookup parent from repository --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/parent&gt;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>aliyun-oss-spring-boot-autoconfigure<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>0.0.1-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;java.version&gt;</span>11<span class=nt>&lt;/java.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/properties&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;dependencies&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--引入Web起始依賴--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.springframework.boot<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>spring-boot-starter-web<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--Lombok--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.projectlombok<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>lombok<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!--阿里雲OSS--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>aliyun-sdk-oss<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>3.15.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>javax.xml.bind<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jaxb-api<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>2.3.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>javax.activation<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>activation<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>1.1.1<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=c>&lt;!-- no more than 2.3.3--&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;groupId&gt;</span>org.glassfish.jaxb<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;artifactId&gt;</span>jaxb-runtime<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&lt;version&gt;</span>2.3.3<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;/dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/dependencies&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/project&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=自動配置-1>自動配置</h3><p>AliOSSAutoConfiguration 類別</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Configuration</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>//匯入 AliOSSProperties 類別，並交給 Spring IOC 管理</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@EnableConfigurationProperties</span><span class=p>(</span><span class=n>AliOSSProperties</span><span class=p>.</span><span class=na>class</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AliOSSAutoConfiguration</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//建立 AliOSSUtils 物件，並交給 Spring IOC 容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Bean</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>AliOSSUtils</span><span class=w> </span><span class=nf>aliOSSUtils</span><span class=p>(</span><span class=n>AliOSSProperties</span><span class=w> </span><span class=n>aliOSSProperties</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>AliOSSUtils</span><span class=w> </span><span class=n>aliOSSUtils</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>AliOSSUtils</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>aliOSSUtils</span><span class=p>.</span><span class=na>setAliOSSProperties</span><span class=p>(</span><span class=n>aliOSSProperties</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>aliOSSUtils</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>AliOSSProperties 類別</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/*阿里雲 OSS 相關設定*/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@ConfigurationProperties</span><span class=p>(</span><span class=n>prefix</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;aliyun.oss&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AliOSSProperties</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//區域</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>endpoint</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//身份 ID</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>accessKeyId</span><span class=w> </span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//身份密鑰</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>accessKeySecret</span><span class=w> </span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>//儲存空間</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>bucketName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>AliOSSUtils 類別</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Data</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>AliOSSUtils</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>AliOSSProperties</span><span class=w> </span><span class=n>aliOSSProperties</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * 實作上傳圖片到 OSS
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>upload</span><span class=p>(</span><span class=n>MultipartFile</span><span class=w> </span><span class=n>multipartFile</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 取得上傳檔案的輸入流</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>InputStream</span><span class=w> </span><span class=n>inputStream</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>multipartFile</span><span class=p>.</span><span class=na>getInputStream</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 避免檔案覆蓋</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>originalFilename</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>multipartFile</span><span class=p>.</span><span class=na>getOriginalFilename</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>fileName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>UUID</span><span class=p>.</span><span class=na>randomUUID</span><span class=p>().</span><span class=na>toString</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>originalFilename</span><span class=p>.</span><span class=na>substring</span><span class=p>(</span><span class=n>originalFilename</span><span class=p>.</span><span class=na>lastIndexOf</span><span class=p>(</span><span class=s>&#34;.&#34;</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//上傳檔案到 OSS</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>OSS</span><span class=w> </span><span class=n>ossClient</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>OSSClientBuilder</span><span class=p>().</span><span class=na>build</span><span class=p>(</span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getEndpoint</span><span class=p>(),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getAccessKeyId</span><span class=p>(),</span><span class=w> </span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getAccessKeySecret</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ossClient</span><span class=p>.</span><span class=na>putObject</span><span class=p>(</span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getBucketName</span><span class=p>(),</span><span class=w> </span><span class=n>fileName</span><span class=p>,</span><span class=w> </span><span class=n>inputStream</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//檔案存取路徑</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>url</span><span class=w> </span><span class=o>=</span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getEndpoint</span><span class=p>().</span><span class=na>split</span><span class=p>(</span><span class=s>&#34;//&#34;</span><span class=p>)</span><span class=o>[</span><span class=n>0</span><span class=o>]</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;//&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getBucketName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;.&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>aliOSSProperties</span><span class=p>.</span><span class=na>getEndpoint</span><span class=p>().</span><span class=na>split</span><span class=p>(</span><span class=s>&#34;//&#34;</span><span class=p>)</span><span class=o>[</span><span class=n>1</span><span class=o>]</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;/&#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>fileName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// 關閉 ossClient</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>ossClient</span><span class=p>.</span><span class=na>shutdown</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>url</span><span class=p>;</span><span class=c1>// 回傳上傳到 OSS 的路徑</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>新建自動設定檔 <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-markdown data-lang=markdown><span class=line><span class=cl>com.aliyun.oss.AliOSSAutoConfiguration
+</span></span></code></pre></td></tr></table></div></div><h3 id=使用>使用</h3><p>引入依賴</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--引入阿里雲 OSS 起始依賴--&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>com.aliyun.oss<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>aliyun-oss-spring-boot-starter<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;version&gt;</span>0.0.1-SNAPSHOT<span class=nt>&lt;/version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>上例阿里雲 OSS 相關設定需要從設定檔讀取。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=c>#設定阿里雲 OSS 參數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>aliyun</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>oss</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>endpoint</span><span class=p>:</span><span class=w> </span><span class=l>your_oss_region</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>accessKeyId</span><span class=p>:</span><span class=w> </span><span class=l>your_key_id</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>accessKeySecret</span><span class=p>:</span><span class=w> </span><span class=l>your_key_secret</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>bucketName</span><span class=p>:</span><span class=w> </span><span class=l>your_bucker_name</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>測試</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@RestController</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>UploadController</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>AliOSSUtils</span><span class=w> </span><span class=n>aliOSSUtils</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@PostMapping</span><span class=p>(</span><span class=s>&#34;/upload&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>upload</span><span class=p>(</span><span class=n>MultipartFile</span><span class=w> </span><span class=n>image</span><span class=p>)</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>Exception</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>//上傳檔案到阿里雲 OSS</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>String</span><span class=w> </span><span class=n>url</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>aliOSSUtils</span><span class=p>.</span><span class=na>upload</span><span class=p>(</span><span class=n>image</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>url</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/zh-tw/tags/%E5%BE%8C%E7%AB%AF%E6%8A%80%E8%A1%93/>後端技術</a>
+<a href=/zh-tw/tags/springboot/>SpringBoot</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相關文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh-tw/archives/222/><div class=article-details><h2 class=article-title>Spring 事務管理</h2></div></a></article><article><a href=/zh-tw/archives/221/><div class=article-details><h2 class=article-title>Spring AOP (面向切面程式設計)</h2></div></a></article><article><a href=/zh-tw/archives/218/><div class=article-details><h2 class=article-title>JWT 登入驗證</h2></div></a></article><article><a href=/zh-tw/archives/157/><div class=article-details><h2 class=article-title>Redis</h2></div></a></article><article><a href=/zh-tw/archives/147/><div class=article-details><h2 class=article-title>三層架構與分層解耦</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 建立 <span>|</span>
+主題 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 設計</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
