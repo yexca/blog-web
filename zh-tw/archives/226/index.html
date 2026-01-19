@@ -1,0 +1,883 @@
+<!doctype html><html lang=zh-tw dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 本文由 gemini-2.5-flash 翻譯 Elasticsearch 系列\n"><title>Elasticsearch 入門</title>
+<link rel=canonical href=https://blog.yexca.net/zh-tw/archives/226/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Elasticsearch 入門"><meta property='og:description' content="📢 本文由 gemini-2.5-flash 翻譯 Elasticsearch 系列\n"><meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/226/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='後端技術'><meta property='article:tag' content='Elasticsearch'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-01-29T23:38:51+09:00'><meta property='article:modified_time' content='2025-02-15T17:17:08+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Elasticsearch 入門"><meta name=twitter:description content="📢 本文由 gemini-2.5-flash 翻譯 Elasticsearch 系列\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/zh-tw\/archives\/226\/"},"headline":"Elasticsearch 入門","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-01-29","dateModified":"2025-02-15","inLanguage":"zh-tw","description":"yexca 的技術與生活部落格，紀錄程式學習與日常隨筆。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切換選單>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh-tw/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/zh-tw>yexca'Blog</a></h1><h2 class=site-description>把這個不美好的世界，編程您所期望的樣子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/zh-tw/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh-tw/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首頁</span></a></li><li><a href=/zh-tw/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>檔案</span></a></li><li><a href=/zh-tw/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜尋</span></a></li><li><a href=/zh-tw/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/zh-tw/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>連結</span></a></li><li><a href=/zh-tw/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>關於</span></a></li><li><a href=/zh-tw/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>支持</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/ selected>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>夜晚模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目錄</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#正向索引>正向索引</a></li><li><a href=#倒排索引>倒排索引</a><ul><li><a href=#文件-document>文件 (Document)</a></li><li><a href=#索引與映射-mapping>索引與映射 (Mapping)</a></li></ul></li><li><a href=#mysql-與-elasticsearch>MySQL 與 Elasticsearch</a><ul><li><a href=#優缺點>優缺點</a></li></ul></li><li><a href=#安裝>安裝</a><ul><li><a href=#elasticsearch>Elasticsearch</a></li><li><a href=#kibana>Kibana</a></li><li><a href=#ik-斷詞器>IK 斷詞器</a></li></ul></li><li><a href=#dsl-索引庫操作>DSL 索引庫操作</a><ul><li><a href=#mapping-映射屬性>Mapping 映射屬性</a></li><li><a href=#建立索引庫>建立索引庫</a></li><li><a href=#查詢索引庫>查詢索引庫</a></li><li><a href=#修改索引庫>修改索引庫</a></li><li><a href=#刪除索引庫>刪除索引庫</a></li><li><a href=#索引庫操作總結>索引庫操作總結</a></li></ul></li><li><a href=#dsl-文件操作>DSL 文件操作</a><ul><li><a href=#新增文件>新增文件</a></li><li><a href=#查詢文件>查詢文件</a></li><li><a href=#修改文件>修改文件</a></li><li><a href=#刪除文件>刪除文件</a></li><li><a href=#文件操作總結>文件操作總結</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/zh-tw/categories/%E6%8A%80%E8%A1%93%E5%AD%B8%E7%BF%92/>技術學習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/zh-tw/archives/226/>Elasticsearch 入門</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-01-29 23:38 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>閱讀時間: 12 分鐘</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/zh-tw/tags/%E5%BE%8C%E7%AB%AF%E6%8A%80%E8%A1%93/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">後端技術</a>
+<a href=/zh-tw/tags/elasticsearch/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Elasticsearch</a>
+<a href=/zh-tw/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/226/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/en/archives/226/ class=link>English</a>
+<a href=https://blog.yexca.net/ja/archives/226/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> 本文由 gemini-2.5-flash 翻譯</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>Elasticsearch 系列</strong></p><div class=table-wrapper><table><thead><tr><th style=text-align:left>內容</th><th style=text-align:left>連結</th></tr></thead><tbody><tr><td style=text-align:left>Elasticsearch 基礎操作</td><td style=text-align:left>本文</td></tr><tr><td style=text-align:left>Elasticsearch 查詢操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/227>https://blog.yexca.net/archives/227</a></td></tr><tr><td style=text-align:left>RestClient 基礎操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/228>https://blog.yexca.net/archives/228</a></td></tr><tr><td style=text-align:left>RestClient 查詢操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/229>https://blog.yexca.net/archives/229</a></td></tr><tr><td style=text-align:left>Elasticsearch 資料聚合</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/231>https://blog.yexca.net/archives/231</a></td></tr><tr><td style=text-align:left>Elasticsearch 自動補齊</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/232>https://blog.yexca.net/archives/232</a></td></tr><tr><td style=text-align:left>Elasticsearch 資料同步</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/234>https://blog.yexca.net/archives/234</a></td></tr><tr><td style=text-align:left>Elasticsearch 叢集</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/235>https://blog.yexca.net/archives/235</a></td></tr></tbody></table></div></blockquote><p>Elasticsearch 是一款非常強大的開源搜尋引擎軟體，可以幫助我們從海量資料中快速找到需要的內容。結合 Kibana、Logstash、Beats，也就是 Elastic Stack (ELK)。被廣泛應用在日誌資料分析、即時監控等領域。</p><p>而 Elasticsearch 是 Elastic Stack 的核心，負責儲存、搜尋、分析資料。</p><p>Elasticsearch 底層基於 Lucene 實作，Lucene 為 Java 的一個搜尋引擎函式庫。</p><h2 id=正向索引>正向索引</h2><p>傳統資料庫 (例如 MySQL) 採用正向索引，舉例來說下表：</p><div class=table-wrapper><table><thead><tr><th>id</th><th>title</th><th>price</th></tr></thead><tbody><tr><td>1</td><td>小米手機</td><td>3499</td></tr><tr><td>2</td><td>華為手機</td><td>4999</td></tr><tr><td>3</td><td>華為小米充電器</td><td>49</td></tr><tr><td>4</td><td>小米手環</td><td>239</td></tr></tbody></table></div><p>如果基於 id 精準查詢，直接走索引會很快。</p><p>但若基於 title 做模糊查詢，只能逐行掃描資料，流程：</p><ol><li>使用者搜尋 <em>手機</em>，資料庫條件 <code>%手機%</code></li><li>逐行取得資料，如 id 為 1 的資料</li><li>判斷資料中的 title 是否符合條件</li><li>符合則放入，不符合則捨棄，下一行</li></ol><p>隨著資料量的增加，逐行掃描的效率越來越低。</p><h2 id=倒排索引>倒排索引</h2><p>倒排索引的概念是基於 MySQL 這樣的正向索引而言的。</p><p>Elasticsearch 採用倒排索引，概念：</p><ul><li>文件 (document)：每筆資料就是一個文件。</li><li>詞條 (term)：文件按照語義分成的詞語。</li></ul><p>建立倒排索引是對正向索引的一種特殊處理，流程：</p><ol><li>將每一個文件的資料利用演算法斷詞，得到一個個詞條。</li><li>建立表，每行包括詞條、詞條所在文件 id、位置等資訊。</li><li>因為詞條的唯一性，可以給詞條建立索引，例如雜湊表結構索引。</li></ol><p>舉例來說上例的表可以建立如下倒排索引：</p><div class=table-wrapper><table><thead><tr><th>詞條</th><th>文件 id</th></tr></thead><tbody><tr><td>小米</td><td>1，3，4</td></tr><tr><td>手機</td><td>1，2</td></tr><tr><td>華為</td><td>2，3</td></tr><tr><td>充電器</td><td>3</td></tr><tr><td>手環</td><td>4</td></tr></tbody></table></div><p>倒排索引搜尋流程：</p><ol><li>使用者搜尋 <code>小米手機</code>。</li><li>對搜尋內容斷詞，得到 <code>小米</code>、<code>手機</code>。</li><li>使用詞條在倒排索引查找，得到包含詞條的文件 id：1、2、3、4。</li><li>使用文件 id 到正向索引中查找具體文件。</li></ol><h3 id=文件-document>文件 (Document)</h3><p>Elasticsearch 是面向文件儲存的，可以是資料庫中的一筆商品資料、一個訂單資訊。文件資料會被序列化為 JSON 格式後儲存在 Elasticsearch 中。</p><p>上述正向索引表的 JSON 如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;小米手機&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>3499</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;華為手機&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>4999</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;華為小米充電器&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>49</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;小米手環&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>299</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>在 Json 文件中包含許多欄位，類似於資料庫中的欄。</p><h3 id=索引與映射-mapping>索引與映射 (Mapping)</h3><p>索引 (index) 為相同型別的文件集合。</p><p>映射 (mapping) 為索引中文件的欄位限制資訊，類似於資料表的結構限制。</p><p>可以把索引當做是資料庫中的資料表，資料庫的資料表會有限制資訊，用來定義表的結構、欄位的名稱、型別等資訊。因此，索引庫中就有映射，是索引中文件的欄位限制資訊，類似於資料表的結構限制。</p><h2 id=mysql-與-elasticsearch>MySQL 與 Elasticsearch</h2><div class=table-wrapper><table><thead><tr><th>MySQL</th><th>Elasticsearch</th><th>說明</th></tr></thead><tbody><tr><td>Table</td><td>Index</td><td>索引 (index)，就是文件的集合，類似資料庫的資料表 (table)</td></tr><tr><td>Row</td><td>Document</td><td>文件 (Document)，就是一筆筆的資料，類似資料庫中的資料列 (Row)，文件都是 JSON 格式</td></tr><tr><td>Column</td><td>Field</td><td>欄位 (Field)，就是 JSON 文件中的欄位，類似資料庫中的欄 (Column)</td></tr><tr><td>Schema</td><td>Mapping</td><td>Mapping (映射) 是索引中文件的限制，例如欄位型別限制。類似資料庫的綱要 (Schema)</td></tr><tr><td>SQL</td><td>DSL</td><td>DSL 是 Elasticsearch 提供的 JSON 風格的請求語句，用來操作 Elasticsearch，實作 CRUD</td></tr></tbody></table></div><p>在企業中，往往是兩者結合使用：</p><ul><li>對安全性要求較高的寫入操作，使用 MySQL 實作。</li><li>對查詢效能要求較高的搜尋需求，使用 Elasticsearch 實作。</li><li>兩者再基於某種方式，實作資料的同步，確保一致性。</li></ul><h3 id=優缺點>優缺點</h3><p><strong>正向索引</strong>：</p><ul><li>優點：<ul><li>可以給多個欄位建立索引。</li><li>根據索引欄位搜尋、排序速度非常快。</li></ul></li><li>缺點：<ul><li>根據非索引欄位，或者索引欄位中的部分詞條查找時，只能全表掃描。</li></ul></li></ul><p><strong>倒排索引</strong>：</p><ul><li>優點：<ul><li>根據詞條搜尋、模糊搜尋時，速度非常快。</li></ul></li><li>缺點：<ul><li>只能給詞條建立索引，而不是欄位。</li><li>無法根據欄位做排序。</li></ul></li></ul><h2 id=安裝>安裝</h2><p>一般只用 Elasticsearch 即可，使用 Kibana 可以提供一個 Elasticsearch 的視覺化介面，方便學習撰寫 DSL 語句。</p><h3 id=elasticsearch>Elasticsearch</h3><p>為了使 Elasticsearch 與 Kibana 容器互連，可以先建立一個網路。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker network create es-net
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>有多種方式可以實作互連，如 docker-compose、172.17.0.1</p></blockquote><p>拉取 Elasticsearch 映像檔。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull elasticsearch:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>單點部署</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --name es <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;discovery.type=single-node&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -v es-data:/usr/share/elasticsearch/data <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -v es-plugins:/usr/share/elasticsearch/plugins <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --privileged <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --network es-net <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -p 9200:9200 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -p 9300:9300 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>elasticsearch:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>注意修改映射目錄，上述使用資料卷 (volume)，部分解釋：</p><ul><li><code>-e "cluster.name=es-docker-cluster"</code>：設定叢集名稱。</li><li><code>-e "http.host=0.0.0.0"</code>：監聽的位址，可以從外部網路存取。</li><li><code>-e "ES_JAVA_OPTS=-Xms512m -Xmx512m"</code>：記憶體大小。</li><li><code>-e "discovery.type=single-node"</code>：非叢集模式。</li><li><code>-v es-data:/usr/share/elasticsearch/data</code>：掛載資料卷，綁定 ES 的資料目錄。</li><li><code>-v es-logs:/usr/share/elasticsearch/logs</code>：掛載資料卷，綁定 ES 的日誌目錄。</li><li><code>-v es-plugins:/usr/share/elasticsearch/plugins</code>：掛載資料卷，綁定 ES 的插件目錄。</li><li><code>--privileged</code>：授予資料卷存取權。</li><li><code>--network es-net</code> ：加入一個名為 es-net 的網路中。</li></ul><p>存取 <code>&lt;localhost:9200></code> 查看回傳類似下述內容即表示啟動成功。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;6747e3f712ba&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cluster_name&#34;</span> <span class=p>:</span> <span class=s2>&#34;docker-cluster&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cluster_uuid&#34;</span> <span class=p>:</span> <span class=s2>&#34;GSLtjxiMSlyRRRW-pSzvWQ&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;version&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;number&#34;</span> <span class=p>:</span> <span class=s2>&#34;7.12.1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_flavor&#34;</span> <span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;docker&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_hash&#34;</span> <span class=p>:</span> <span class=s2>&#34;3186837139b9c6b6d23c3200870651f10d3343b7&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_date&#34;</span> <span class=p>:</span> <span class=s2>&#34;2021-04-20T20:56:39.040728659Z&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_snapshot&#34;</span> <span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lucene_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;8.8.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;minimum_wire_compatibility_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;6.8.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;minimum_index_compatibility_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;6.0.0-beta1&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tagline&#34;</span> <span class=p>:</span> <span class=s2>&#34;You Know, for Search&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=kibana>Kibana</h3><p>拉取相同版本的映像檔。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull kibana:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>執行</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--name kibana <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>-e <span class=nv>ELASTICSEARCH_HOSTS</span><span class=o>=</span>http://es:9200 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--network<span class=o>=</span>es-net <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>-p 5601:5601  <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>kibana:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>其中 <code>-e ELASTICSEARCH_HOSTS=http://es:9200"</code>：設定 Elasticsearch 的位址，因為 Kibana 已經與 Elasticsearch 在同一個網路，因此可以用容器名稱直接存取 Elasticsearch。</p><p>Kibana 啟動通常比較慢，需要多等一會兒，可以查看日誌，若出現連接埠號則表示啟動成功。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker logs -f kibana
+</span></span></code></pre></td></tr></table></div></div><p>存取 <code>&lt;localhost:5601></code> 查看結果。</p><h3 id=ik-斷詞器>IK 斷詞器</h3><p>ES 在建立倒排索引時需要對文件斷詞；在搜尋時，需要對使用者輸入內容斷詞。但預設的斷詞規則對中文處理不太友善，例如測試：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>測試斷詞</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/_analyze</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;standard&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;初次使用 Elasticsearch&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>語法說明：</p><ul><li>POST：請求方式。</li><li>/_analyze：請求路徑。這裡省略了 <code>http://localhost:9200</code>，由 Kibana 補充。</li><li>請求參數使用 JSON。<ul><li>analyzer：斷詞器型別，預設為 standard。</li><li>text：需要斷詞的內容。</li></ul></li></ul><p>結果為：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tokens&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;初&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;次&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;使&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;用&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;elasticsearch&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;ALPHANUM&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>4</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>可以看到斷詞效果非常不好，處理中文斷詞，一般會使用 IK 斷詞器。</p><p>IK 斷詞器 Github：
+<a class=link href=https://github.com/medcl/elasticsearch-analysis-ik target=_blank rel=noopener>https://github.com/medcl/elasticsearch-analysis-ik</a></p><h4 id=線上安裝>線上安裝</h4><p>注意安裝版本需與 ES 對應。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 進入容器內部</span>
+</span></span><span class=line><span class=cl>docker <span class=nb>exec</span> -it elasticsearch /bin/bash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 線上下載並安裝</span>
+</span></span><span class=line><span class=cl>./bin/elasticsearch-plugin  install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.12.1/elasticsearch-analysis-ik-7.12.1.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 離開</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=c1># 重新啟動容器</span>
+</span></span><span class=line><span class=cl>docker restart elasticsearch
+</span></span></code></pre></td></tr></table></div></div><h4 id=離線安裝>離線安裝</h4><p>安裝插件需要知道 Elasticsearch 的 <code>plugins</code> 目錄位置，上述使用資料卷掛載到本機，可使用下面指令查看：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker volume inspect es-plugins
+</span></span></code></pre></td></tr></table></div></div><p>輸出的 JSON 的 <code>Mountpoint</code> 即為目錄。</p><p>將從 Github 下載的壓縮檔解壓縮後，將資料夾重新命名為 <code>ik</code>，放到 <code>plugins</code> 目錄下。</p><p>重新啟動容器。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker restart es
+</span></span></code></pre></td></tr></table></div></div><h4 id=測試效果>測試效果</h4><p>IK 斷詞器有兩種模式：</p><ul><li>ik_smart：最少切分。</li><li>ik_max_word：最細切分。</li></ul><p>還是上例：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>測試</span> <span class=err>IK</span> <span class=err>斷詞</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/_analyze</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;初次使用 Elasticsearch&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tokens&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;初次&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;CN_WORD&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;使用&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;CN_WORD&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;elasticsearch&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;ENGLISH&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>此範例兩種斷詞模式結果相同，可使用其他更長語句測試結果。</p></blockquote><h4 id=擴展詞庫>擴展詞庫</h4><p>隨著網際網路發展，會不斷湧現新詞語，在原有的詞彙列表中並不存在，所以詞彙列表也需要不斷更新。若擴展 IK 詞庫，只需要修改 IK 目錄 <code>config</code> 目錄中的 <code>IKAnalyzer.cfg.xml</code> 文件即可。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=cp>&lt;!DOCTYPE properties SYSTEM &#34;http://java.sun.com/dtd/properties.dtd&#34;&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;comment&gt;</span>IK Analyzer 擴展設定<span class=nt>&lt;/comment&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--使用者可以在這裡設定自己的擴展字典 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;entry</span> <span class=na>key=</span><span class=s>&#34;ext_dict&#34;</span><span class=nt>&gt;</span>ext.dic<span class=nt>&lt;/entry&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=c>&lt;!--使用者可以在這裡設定自己的擴展停用詞字典--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;entry</span> <span class=na>key=</span><span class=s>&#34;ext_stopwords&#34;</span><span class=nt>&gt;</span>stopwords.dic<span class=nt>&lt;/entry&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--使用者可以在這裡設定遠端擴展字典 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- &lt;entry key=&#34;remote_ext_dict&#34;&gt;words_location&lt;/entry&gt; --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--使用者可以在這裡設定遠端擴展停用詞字典--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- &lt;entry key=&#34;remote_ext_stopwords&#34;&gt;words_location&lt;/entry&gt; --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>如上將擴展詞放在 <code>./ext.dic</code>，停用詞放在 <code>./stopwords.dic</code>。</p><p>停用詞可以放一些無意義的詞，如 <em>的</em>、<em>啊</em> 等。</p><p>設定好後重新啟動 ES。</p><h2 id=dsl-索引庫操作>DSL 索引庫操作</h2><p>索引庫就類似資料庫表，要向 ES 中儲存資料，必須先建立「庫」和「表」。</p><h3 id=mapping-映射屬性>Mapping 映射屬性</h3><p>Mapping 是對索引庫中文件的限制，常見的 Mapping 屬性包括：</p><ul><li>type：欄位資料型別，常見的簡單型別有：<ul><li>字串：text（可斷詞的文字）、keyword（精確值，例如：品牌、國家、IP 位址）</li><li>數值：long、integer、short、byte、double、float、</li><li>布林：boolean</li><li>日期：date</li><li>物件：object</li></ul></li><li>index：是否建立索引，預設為 true。</li><li>analyzer：使用哪種斷詞器。</li><li>properties：該欄位的子欄位。</li></ul><h3 id=建立索引庫>建立索引庫</h3><ul><li>請求方式：PUT</li><li>請求路徑：/索引庫名稱，可以自訂。</li><li>請求參數：mapping 映射。</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/索引庫名稱</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;mappings&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;欄位名稱&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;欄位名稱2&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;欄位名稱3&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;子欄位&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>建立索引庫</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;mappings&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>},</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>執行後回傳類似即成功：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;shards_acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=查詢索引庫>查詢索引庫</h3><ul><li><p>請求方式：GET</p></li><li><p>請求路徑：/索引庫名稱</p></li><li><p>請求參數：無</p></li></ul><p>格式：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/索引庫名稱</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>查看索引庫</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hello</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;hello&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;aliases&#34;</span> <span class=p>:</span> <span class=p>{</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;mappings&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;properties&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;email&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;info&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;analyzer&#34;</span> <span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;properties&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;firstName&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lastName&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;settings&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;routing&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;allocation&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;include&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;_tier_preference&#34;</span> <span class=p>:</span> <span class=s2>&#34;data_content&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;number_of_shards&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;blocks&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;read_only_allow_delete&#34;</span> <span class=p>:</span> <span class=s2>&#34;true&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;provided_name&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;creation_date&#34;</span> <span class=p>:</span> <span class=s2>&#34;1703683379263&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;number_of_replicas&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;uuid&#34;</span> <span class=p>:</span> <span class=s2>&#34;zn-kPdsETZeFcB0nXK79hg&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;version&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;created&#34;</span> <span class=p>:</span> <span class=s2>&#34;7120199&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=修改索引庫>修改索引庫</h3><p>索引庫和 Mapping 一旦建立，不允許修改，但可以新增欄位。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/索引庫名稱/_mapping</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;新欄位名稱&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>新增欄位</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_mapping</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><hr><p>如果遇到 <code>read-only-allow-delete</code> 類似錯誤，產生原因為磁碟剩餘空間不足 5%，可透過以下請求解決：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>_settings</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;blocks&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;read_only_allow_delete&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=刪除索引庫>刪除索引庫</h3><ul><li><p>請求方式：DELETE</p></li><li><p>請求路徑：/索引庫名稱</p></li><li><p>請求參數：無</p></li></ul><p>格式：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/索引庫名稱</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/hello</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=索引庫操作總結>索引庫操作總結</h3><ul><li>建立索引庫：PUT /索引庫名稱</li><li>查詢索引庫：GET /索引庫名稱</li><li>刪除索引庫：DELETE /索引庫名稱</li><li>新增欄位：PUT /索引庫名稱/_mapping</li></ul><h2 id=dsl-文件操作>DSL 文件操作</h2><h3 id=新增文件>新增文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/索引庫名稱/_doc/文件id</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;欄位1&#34;</span><span class=p>:</span> <span class=s2>&#34;值1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;欄位2&#34;</span><span class=p>:</span> <span class=s2>&#34;值2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;欄位3&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;子屬性1&#34;</span><span class=p>:</span> <span class=s2>&#34;值3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;子屬性2&#34;</span><span class=p>:</span> <span class=s2>&#34;值4&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>範例：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>新增文件</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;created&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=查詢文件>查詢文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/</span><span class=p>{</span><span class=err>索引庫名稱</span><span class=p>}</span><span class=err>/_doc/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>範例：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>查詢文件</span>
+</span></span><span class=line><span class=cl><span class=err>GEt</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;found&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;info&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;email&#34;</span> <span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;firstName&#34;</span> <span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;lastName&#34;</span> <span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=修改文件>修改文件</h3><p>修改有兩種方式，完整修改與增量修改。</p><h4 id=完整修改>完整修改</h4><p>完整修改是覆蓋原來的文件的內容，其本質是：</p><ol><li>根據指定的 id 刪除文件。</li><li>新增一個相同 id 的文件。</li></ol><p>如果 id 不存在，也會執行第二步，也就從修改變成新增了 (覆蓋寫入)。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/</span><span class=p>{</span><span class=err>索引庫名稱</span><span class=p>}</span><span class=err>/_doc/文件id</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;欄位1&#34;</span><span class=p>:</span> <span class=s2>&#34;值1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;欄位2&#34;</span><span class=p>:</span> <span class=s2>&#34;值2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>修改-完整修改</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;es@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;updated&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>查詢可發現信箱已經修改。</p><h4 id=增量修改>增量修改</h4><p>增量修改是只修改指定 id 匹配的文件中的部分欄位。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/</span><span class=p>{</span><span class=err>索引庫名稱</span><span class=p>}</span><span class=err>/_update/文件id</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;doc&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>         <span class=nt>&#34;欄位名稱&#34;</span><span class=p>:</span> <span class=s2>&#34;新的值&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>修改-增量修改</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/hello/_update/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;doc&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;updated&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>查詢可發現信箱已經修改。</p><h3 id=刪除文件>刪除文件</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/</span><span class=p>{</span><span class=err>索引庫名稱</span><span class=p>}</span><span class=err>/_doc/id值</span>
+</span></span></code></pre></td></tr></table></div></div><p>例如：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>刪除文件</span>
+</span></span><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 因為中間我修改了其他的，版本號變高了
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>8</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;deleted&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>7</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=文件操作總結>文件操作總結</h3><ul><li>新增文件：POST /{索引庫名稱}/_doc/文件id { json 文件 }</li><li>查詢文件：GET /{索引庫名稱}/_doc/文件id</li><li>刪除文件：DELETE /{索引庫名稱}/_doc/文件id</li><li>修改文件：<ul><li>完整修改：PUT /{索引庫名稱}/_doc/文件id { json 文件 }</li><li>增量修改：POST /{索引庫名稱}/_update/文件id { &ldquo;doc&rdquo;: {欄位}}</li></ul></li></ul></section><footer class=article-footer><section class=article-tags><a href=/zh-tw/tags/%E5%BE%8C%E7%AB%AF%E6%8A%80%E8%A1%93/>後端技術</a>
+<a href=/zh-tw/tags/elasticsearch/>Elasticsearch</a>
+<a href=/zh-tw/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最後更新 2025-02-15 17:17 +0900</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相關文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh-tw/archives/217/><div class=article-details><h2 class=article-title>SpringAMQP</h2></div></a></article><article><a href=/zh-tw/archives/171/><div class=article-details><h2 class=article-title>Gateway 服務閘道器</h2></div></a></article><article><a href=/zh-tw/archives/170/><div class=article-details><h2 class=article-title>Feign 遠端呼叫</h2></div></a></article><article><a href=/zh-tw/archives/169/><div class=article-details><h2 class=article-title>Nacos 註冊中心</h2></div></a></article><article><a href=/zh-tw/archives/168/><div class=article-details><h2 class=article-title>Ribbon 負載平衡</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 建立 <span>|</span>
+主題 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 設計</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

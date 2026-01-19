@@ -1,0 +1,945 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><title>Elasticsearch クエリ</title>
+<link rel=canonical href=https://blog.yexca.net/ja/archives/227/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Elasticsearch クエリ"><meta property='og:description' content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><meta property='og:url' content='https://blog.yexca.net/ja/archives/227/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='バックエンド技術'><meta property='article:tag' content='Elasticsearch'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-02-01T15:16:28+09:00'><meta property='article:modified_time' content='2025-02-15T17:17:08+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Elasticsearch クエリ"><meta name=twitter:description content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/ja\/archives\/227\/"},"headline":"Elasticsearch クエリ","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-02-01","dateModified":"2025-02-15","inLanguage":"ja","description":"yexca の技術と生活のブログ。プログラミングや日常の記録を掲載。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/ja/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/ja>yexca'Blog</a></h1><h2 class=site-description>この世で道が尽きることはなく、行きたいと望む心があれば、道は必ず足元に広がる</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/ja/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/ja/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>ホーム</span></a></li><li><a href=/ja/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>アーカイブ</span></a></li><li><a href=/ja/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>検索</span></a></li><li><a href=/ja/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/ja/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>リンク</span></a></li><li><a href=/ja/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>について</span></a></li><li><a href=/ja/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>応援</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/ selected>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>ダークモード</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#クエリの分類>クエリの分類</a></li><li><a href=#全件検索>全件検索</a></li><li><a href=#全文検索クエリ>全文検索クエリ</a></li><li><a href=#厳密検索>厳密検索</a><ul><li><a href=#term-クエリ><code>term</code> クエリ</a></li><li><a href=#range-クエリ><code>range</code> クエリ</a></li></ul></li><li><a href=#地理座標クエリ>地理座標クエリ</a><ul><li><a href=#矩形範囲検索>矩形範囲検索</a></li><li><a href=#近隣検索>近隣検索</a></li></ul></li><li><a href=#複合クエリ>複合クエリ</a><ul><li><a href=#関連性スコア>関連性スコア</a></li><li><a href=#スコア計算関数クエリ>スコア計算関数クエリ</a></li><li><a href=#ブールクエリ>ブールクエリ</a></li></ul></li><li><a href=#検索結果の処理>検索結果の処理</a><ul><li><a href=#ソート>ソート</a></li><li><a href=#ページネーション>ページネーション</a></li><li><a href=#ハイライト>ハイライト</a></li><li><a href=#検索結果処理のまとめ>検索結果処理のまとめ</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/>技術学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/ja/archives/227/>Elasticsearch クエリ</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-02-01 15:16 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>読了時間: 13分</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/ja/tags/%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E6%8A%80%E8%A1%93/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">バックエンド技術</a>
+<a href=/ja/tags/elasticsearch/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Elasticsearch</a>
+<a href=/ja/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/227/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/227/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/en/archives/227/ class=link>English</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> この記事は gemini-2.5-flash によって翻訳されました</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>Elasticsearch シリーズ</strong></p><div class=table-wrapper><table><thead><tr><th style=text-align:left>内容</th><th style=text-align:left>リンク</th></tr></thead><tbody><tr><td style=text-align:left>Elasticsearch 基本操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/226>https://blog.yexca.net/archives/226</a></td></tr><tr><td style=text-align:left>Elasticsearch クエリ操作</td><td style=text-align:left>この記事</td></tr><tr><td style=text-align:left>RestClient 基本操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/228>https://blog.yexca.net/archives/228</a></td></tr><tr><td style=text-align:left>RestClient クエリ操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/229>https://blog.yexca.net/archives/229</a></td></tr><tr><td style=text-align:left>Elasticsearch データ集計</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/231>https://blog.yexca.net/archives/231</a></td></tr><tr><td style=text-align:left>Elasticsearch オートコンプリート</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/232>https://blog.yexca.net/archives/232</a></td></tr><tr><td style=text-align:left>Elasticsearch データ同期</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/234>https://blog.yexca.net/archives/234</a></td></tr><tr><td style=text-align:left>Elasticsearch クラスター</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/235>https://blog.yexca.net/archives/235</a></td></tr></tbody></table></div></blockquote><p>前回の記事では主にESのデータ保存機能について話したけど、ESが一番得意なのはやっぱり検索とデータ分析なんだ。</p><p>ESのクエリも相変わらずJSON形式のDSLで実装するよ。</p><h2 id=クエリの分類>クエリの分類</h2><p>よくあるクエリの種類はこんな感じ。</p><ul><li>全件検索: 全てのデータを検索するやつ。だいたいテストで使うね。例: <code>match_all</code></li><li>全文検索 (full text) クエリ: アナライザーを使ってユーザー入力の内容を分かち書きして、転置インデックスからマッチするものを探すよ。例:<ul><li><code>match_query</code></li><li><code>multi_match_query</code></li></ul></li><li>厳密検索: 正確なターム値に基づいてデータを検索するやつ。だいたい <code>keyword</code>、数値、日付、<code>boolean</code> などのフィールドタイプを探す時に使うよ。例:<ul><li><code>ids</code></li><li><code>range</code></li><li><code>term</code></li></ul></li><li>地理情報 (geo) クエリ: 緯度経度に基づいて検索するやつ。例:<ul><li><code>geo_distance</code></li><li><code>geo_bounding_box</code></li></ul></li><li>複合クエリ (compound): 上記の簡単なクエリ条件を組み合わせて、検索条件をまとめるやつ。例:<ul><li><code>bool</code></li><li><code>function_score</code></li></ul></li></ul><p>クエリの文法はだいたい同じだよ:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;クエリタイプ&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;検索条件&#34;</span><span class=p>:</span> <span class=s2>&#34;条件値&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=全件検索>全件検索</h2><p>クエリタイプは <code>match_all</code> で、検索条件はないよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=c1>// 全件検索
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=全文検索クエリ>全文検索クエリ</h2><p>ユーザーの入力内容を分かち書きするよ。検索ボックスでの検索によく使われるね。タームを使ってマッチさせるから、検索対象のフィールドは分かち書きできる <code>text</code> タイプじゃないといけないんだ。</p><p>よくあるのは:</p><ul><li><code>match</code>: 単一フィールド検索</li><li><code>multi_match</code>: 複数フィールド検索。どれか一つのフィールドが条件に合えば検索条件に合うとみなされるよ。</li></ul><p><code>match</code> クエリの文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>match</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=s2>&#34;TEXT&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=err>例</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;all&#34;</span><span class=p>:</span> <span class=s2>&#34;外灘如家&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>multi_match</code> の文法</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>multi_match</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;multi_match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=s2>&#34;TEXT&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;FIELD1&#34;</span><span class=p>,</span> <span class=s2>&#34;FIELD2&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=err>例</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;multi_match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=s2>&#34;外灘如家&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;brand&#34;</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>,</span> <span class=s2>&#34;business&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>以前インデックスを作成した時に、<code>brand</code>、<code>name</code>、<code>business</code> の値を <code>copy_to</code> を使って <code>all</code> フィールドにコピーしたから、上記の2つのクエリの結果は同じになるよ。</p><p>でも、検索フィールドが増えれば増えるほどパフォーマンスへの影響が大きくなるから、<code>copy_to</code> を使って、単一フィールドで検索するのがおすすめだよ。</p></blockquote><h2 id=厳密検索>厳密検索</h2><p>厳密検索は検索条件を分かち書きしないよ。よくあるのは:</p><ul><li><code>term</code>: タームの厳密な値に基づいて検索</li><li><code>range</code>: 値の範囲に基づいて検索</li></ul><h3 id=term-クエリ><code>term</code> クエリ</h3><p>検索条件は分かち書きされないタームじゃないといけないよ。入力値と完全に一致した場合にのみ条件に合うんだ。</p><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>term</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;VALUE&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=range-クエリ><code>range</code> クエリ</h3><p>範囲検索だよ。だいたい数値タイプの範囲で絞り込みをする時に使うね。例えば、価格や日付の範囲でフィルタリングする時とか。</p><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>range</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;gte&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// ここで`gte`は「以上」、`gt`は「より大きい」という意味だよ
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;lte&#34;</span><span class=p>:</span> <span class=mi>20</span> <span class=c1>// `lte`は「以下」、`lt`は「より小さい」という意味だね
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;gte&#34;</span><span class=p>:</span> <span class=mi>1000</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;lte&#34;</span><span class=p>:</span> <span class=mi>2000</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=地理座標クエリ>地理座標クエリ</h2><p>これは要するに緯度経度に基づいて検索するやつだよ。公式ドキュメントはこちら:
+<a class=link href=https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html target=_blank rel=noopener>https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html</a></p><p>よくあるシーン: 周囲のホテル、タクシー、人、グルメを検索する時とか。</p><h3 id=矩形範囲検索>矩形範囲検索</h3><p><code>geo_bounding_box</code> クエリ。特定の矩形範囲内にある座標を持つ全てのドキュメントを検索するよ。</p><p>左上と右下の2つの点の座標を指定する必要があるんだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>geo_bounding_box</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_bounding_box&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;top_left&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// 左上隅の点
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>20</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;bottom_right&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// 右下隅の点
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>31</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>21</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=近隣検索>近隣検索</h3><p>距離検索 (<code>geo_distance</code>) とも呼ばれるね。指定した中心点から特定の距離以内にある全てのドキュメントを検索するよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>geo_distance</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;15km&#34;</span><span class=p>,</span> <span class=c1>// 半径
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=s2>&#34;31, 21&#34;</span> <span class=c1>// 中心
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例: 周囲 (31.21, 121.5) の15km以内にあるホテルを検索するよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;15km&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=s2>&#34;31.21, 121.5&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=複合クエリ>複合クエリ</h2><p>他のシンプルなクエリを組み合わせて、より複雑な検索ロジックを実現するんだ。よくあるのは2種類:</p><ul><li><code>function score</code>: スコア計算関数クエリ。ドキュメントの関連性スコアを制御して、ドキュメントのランキングを調整できるよ。</li><li><code>bool query</code>: ブールクエリ。論理関係を使って複数の他のクエリを組み合わせ、複雑な検索を実現するよ。</li></ul><h3 id=関連性スコア>関連性スコア</h3><p><code>match</code> クエリを使うと、ドキュメントの結果は検索タームとの関連度に基づいてスコア (<code>_score</code>) がつけられて、結果はスコアの高い順に並んで返ってくるんだ。こんな感じ:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>17.850193</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;虹橋如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>12.259849</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;外灘如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>11.91091</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;迪士尼如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>ESでは、初期にはTF-IDFアルゴリズムがスコア計算に使われていたんだ。</p><p><img src=https://jsd.cdn.zzko.cn/gh/yexca/image_hosting@master/2024/01-SpringCloud/image-20210721190152134.z026lthgfsw.webp loading=lazy alt=image></p><p>TF-IDFアルゴリズムには欠点があって、タームの頻度が高くなるほどドキュメントのスコアも高くなって、単一のタームがドキュメントに与える影響が大きすぎたんだ。5.1バージョン以降は、アルゴリズムがBM25アルゴリズムに変わり、単一のタームのスコアには上限が設けられるようになったよ。</p><p><img src=https://jsd.cdn.zzko.cn/gh/yexca/image_hosting@master/2024/01-SpringCloud/image-20210721190416214.erx3gt63494.webp loading=lazy alt=image></p><h3 id=スコア計算関数クエリ>スコア計算関数クエリ</h3><p>スコア計算関数はかなり合理的だけど、プロダクトが求めているものと必ずしも一致するとは限らないんだ。関連性スコアを制御したい場合は、ESの <code>function_score</code> クエリを使って、ドキュメントの関連性スコアを変更し、新しく得られたスコアに基づいてソートする必要があるよ。</p><p>構造:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>function</span> <span class=err>score</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;function_score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{},</span> <span class=c1>// 元のクエリ
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;functions&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>{},</span> <span class=c1>// フィルタ条件
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;weight&#34;</span><span class=p>:</span> <span class=mi>1</span> <span class=c1>// スコア計算関数
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;boost_mode&#34;</span><span class=p>:</span> <span class=s2>&#34;multiply&#34;</span> <span class=c1>// 演算モード
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>元のクエリ: この条件に基づいてドキュメントを検索し、BM25アルゴリズムに基づいてドキュメントにスコアをつけるよ。これが元のスコア (query score) だね。</p><p>フィルタ条件: この条件に合致するドキュメントのみが再スコアリングされるよ。</p><p>スコア計算関数: フィルタ条件に合致するドキュメントは、この関数に基づいて計算されて、関数スコアが得られるんだ。4種類の関数があるよ:</p><ul><li><code>weight</code>: 関数の結果が定数になる。</li><li><code>field_value_factor</code>: ドキュメント内の特定のフィールド値を関数の結果として使う。</li><li><code>random_score</code>: 乱数を関数の結果として使う。</li><li><code>script_score</code>: カスタムのスコア計算関数アルゴリズム。</li></ul><p>演算モード: スコア計算関数の結果と、元のクエリの関連性スコアの間の演算方法。こんな感じ:</p><ul><li><code>multiply</code>: 乗算</li><li><code>replace</code>: <code>function score</code> で <code>query score</code> を置き換える</li><li>その他、<code>sum</code>、<code>avg</code>、<code>max</code>、<code>min</code> など</li></ul><p>例: 「如家」というブランドのホテルを上位に表示させるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// 元のクエリ条件は任意だけど、ここでは動作させるために条件を追加してるよ
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;function_score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;functions&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;brand&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}},</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;weight&#34;</span><span class=p>:</span> <span class=mi>10</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;boost_mode&#34;</span><span class=p>:</span> <span class=s2>&#34;multiply&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=ブールクエリ>ブールクエリ</h3><p>ブールクエリは一つまたは複数のクエリ句の組み合わせで、それぞれの句がサブクエリになっているんだ。組み合わせ方はこんな感じ:</p><ul><li><code>must</code>: 各サブクエリに必ずマッチする必要がある。「AND」みたいなものだね。</li><li><code>should</code>: サブクエリに選択的にマッチする。「OR」みたいなものだよ。</li><li><code>must_not</code>: 必ずマッチしないこと。スコア計算には参加しない。「NOT」みたいなものだね。</li><li><code>filter</code>: 必ずマッチすること。スコア計算には参加しない。</li></ul><p>例えば、ホテルを検索する時に、地域、ブランド、価格などのフィールドで絞り込みたい場合、それぞれのフィールドで検索条件や方法が違うから、複数の異なるクエリが必要になるよね。それらを組み合わせるには<code>bool</code>クエリを使うんだ。</p><p>スコア計算に参加するフィールドは、検索パフォーマンスが悪くなるよ。多条件検索の時は、次のことをおすすめするね:</p><ul><li>検索ボックスのキーワード検索は全文検索だから、<code>must</code> クエリを使って、スコア計算に参加させる。</li><li>その他のフィルタ条件は、<code>filter</code> クエリを使って、スコア計算には参加させない。</li></ul><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>bool</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;bool&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;should&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must_not&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例: 名前が「如家」を含み、価格が400以下で、座標 (31.21, 121.5) の周囲10km以内にあるホテルを検索するよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;bool&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must_not&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;gt&#34;</span><span class=p>:</span> <span class=mi>400</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;10km&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mf>31.21</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mf>121.5</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=検索結果の処理>検索結果の処理</h2><p>検索で得られた結果は、ソート、ページネーション、ハイライトができるよ。</p><h3 id=ソート>ソート</h3><p>ESはデフォルトでは関連性スコアに基づいてソートするけど、カスタム方式で検索結果をソートすることもできるんだ。ソートできるフィールドタイプは、<code>keyword</code> タイプ、数値タイプ、地理座標タイプ、日付タイプなどがあるよ。</p><h4 id=通常フィールドのソート>通常フィールドのソート</h4><p><code>keyword</code>、数値、日付タイプのソートの文法はだいたい同じだよ。</p><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>sort_normal</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span> <span class=c1>// ソートフィールド、昇順 (ASC)、降順 (DESC)
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>ソート条件は配列になっていて、複数のソート条件を書けるよ。宣言された順に、最初の条件が同じ場合は2番目の条件で、というように続くんだ。</p><p>例: ホテルデータをユーザー評価の降順で、評価が同じ場合は価格の昇順でソートするよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// または
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=地理座標ソート>地理座標ソート</h4><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>sort_geo</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>40</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>-70</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span> <span class=c1>// ソート順
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span> <span class=c1>// ソート単位
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例: ホテルを距離でソートするよ (位置を 31.034661, 121.612282 と仮定するね)。</p><blockquote><p>高徳で緯度経度を取得するにはここ:
+<a class=link href=https://lbs.amap.com/demo/jsapi-v2/example/map/click-to-get-lnglat/ target=_blank rel=noopener>https://lbs.amap.com/demo/jsapi-v2/example/map/click-to-get-lnglat/</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mf>31.034661</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mf>121.612282</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=ページネーション>ページネーション</h3><p>ESはデフォルトでTop10のデータしか返さないから、もっと多くのデータを検索したい場合はページネーションのパラメータを変更する必要があるよ。ESは <code>from</code>、<code>size</code> パラメータを変更して、返却するページング結果を制御するんだ:</p><ul><li><code>from</code>: 何番目のドキュメントから始めるか</li><li><code>size</code>: 合計でいくつのドキュメントを検索するか</li></ul><blockquote><p>MySQLの <code>limit ?,?</code> みたいなものだね。</p></blockquote><h4 id=基本ページネーション>基本ページネーション</h4><p>基本的な文法は以下の通りだよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>基本ページネーション</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=ディープページネーションの問題>ディープページネーションの問題</h4><p>もし990〜1000番目のデータを検索したいなら、クエリはこうなるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>990</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>でもESの仕組み上、ページネーションする時はまず0〜1000件を検索して、それから990〜1000件目を切り取って表示するんだ。</p><p>ESがシングルノードモードなら大きな影響はないけど、クラスター構成でデプロイされている場合、1000件検索するからといって各ノードが200件ずつ検索するわけじゃないんだ。なぜなら、Aノードの200件がBノードでは1000位以下になる可能性もあるからね。</p><p>上位1000件を取得するためには、各ノードがTop1000を検索し、それらをまとめて再ランキングして切り取る必要があるんだ。</p><p>もしTop10000、あるいはそれ以上を検索しようとすると、メモリとCPUに非常に大きな負荷がかかるから、ESは <code>from + size</code> が10000を超えるリクエストを禁止しているよ。</p><p>ディープページネーションに対しては、ESが2つの解決策を提供しているよ:
+<a class=link href=https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html target=_blank rel=noopener>https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html</a></p><ul><li><code>search after</code>: ページネーション時にソートが必要で、原理は前回のソート値から次のページのデータを検索するんだ。公式が推奨する方法だね。</li><li><code>scroll</code>: 原理はソートされたドキュメントIDのスナップショットをメモリに保存するんだけど、公式はもう推奨していないよ。</li></ul><h4 id=ページネーションまとめ>ページネーションまとめ</h4><ul><li><code>from + size</code>:<ul><li>利点: ランダムなページ移動をサポートしているよ。</li><li>欠点: ディープページネーションの問題があるのと、デフォルトの検索上限 (<code>from + size</code>) が10000なんだ。</li><li>使うシーン: 百度、京東、Google、淘宝みたいなランダムなページ移動がある検索だね。</li></ul></li><li><code>after search</code>:<ul><li>利点: 検索上限がないよ (1回の検索で <code>size</code> が10000を超えなければね)。</li><li>欠点: 次のページへ順次検索するだけで、ランダムなページ移動はできないんだ。</li><li>使うシーン: ランダムなページ移動が必要ない検索、例えばスマホで下にスクロールするページ移動とか。</li></ul></li><li><code>scroll</code>:<ul><li>利点: 検索上限がないよ (1回の検索で <code>size</code> が10000を超えなければね)。</li><li>欠点: 余分なメモリ消費があるし、検索結果はリアルタイムじゃないんだ。</li><li>使うシーン: 大量のデータ取得や移行。ES7.1からは非推奨になってて、<code>after search</code> がおすすめだよ。</li></ul></li></ul><h3 id=ハイライト>ハイライト</h3><p>検索エンジンでコンテンツを検索する時、キーワードが赤色になって目立つことがあるよね。それがハイライト表示で、通常はドキュメント内の全てのキーワードに <code>&lt;em></code> タグを追加して、そのタグにCSSスタイルを設定するんだ。</p><p>文法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>ハイライト</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// ハイライトするフィールドを指定する
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span> <span class=c1>// ハイライトフィールドをマークするための開始タグ
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span> <span class=c1>// ハイライトフィールドをマークするための終了タグ
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>注意点:</p><ul><li>ハイライトはキーワードに対して行われるから、検索条件にはキーワードが必要で、範囲検索はできないよ。</li><li>デフォルトでは、ハイライトするフィールドは検索で指定したフィールドと一致している必要があるよ。そうじゃないとハイライトされないんだ。</li><li>検索対象ではないフィールドをハイライトしたい場合は、<code>required_field_match=false</code> というプロパティを追加する必要があるよ。</li></ul><p>例: 検索結果で、名前の部分をハイライトするよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;all&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;require_field_match&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 結果の抜粋
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=s2>&#34;hits&#34;</span> <span class=err>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hotel&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;339952837&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>2.7875905</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;address&#34;</span> <span class=p>:</span> <span class=s2>&#34;良郷西路7号&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;brand&#34;</span> <span class=p>:</span> <span class=s2>&#34;如家&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;business&#34;</span> <span class=p>:</span> <span class=s2>&#34;房山風景区&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span> <span class=p>:</span> <span class=s2>&#34;北京&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;id&#34;</span> <span class=p>:</span> <span class=mi>339952837</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;location&#34;</span> <span class=p>:</span> <span class=s2>&#34;39.73167, 116.132482&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;如家酒店(北京良郷西路店)&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;pic&#34;</span> <span class=p>:</span> <span class=s2>&#34;https://m.tuniucdn.com/fb3/s1/2n9c/3Dpgf5RTTzrxpeN5y3RLnRVtxMEA_w200_h200_c1_t0.jpg&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span> <span class=p>:</span> <span class=mi>159</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span> <span class=p>:</span> <span class=mi>46</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;starName&#34;</span> <span class=p>:</span> <span class=s2>&#34;二钻&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;highlight&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&lt;em&gt;如家&lt;/em&gt;ホテル(北京良郷西路店)&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果の <code>highlight</code> 部分に、タグが追加された後の結果が表示されているね。</p><h3 id=検索結果処理のまとめ>検索結果処理のまとめ</h3><p>DSLクエリは大きなJSONオブジェクトで、以下を含むよ:</p><ul><li><code>query</code>: クエリ</li><li><code>from</code>、<code>size</code>: ページネーション条件</li><li><code>sort</code>: ソート条件</li><li><code>highlight</code>: ハイライト条件</li></ul><p>総合的な例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>クエリ総合</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// クエリ
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// ページネーション開始
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// ページネーションサイズ
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span> <span class=c1>// 通常ソート
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span> <span class=c1>// 距離ソート
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>31</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>121</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// ハイライトフィールド
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;require_field_match&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E6%8A%80%E8%A1%93/>バックエンド技術</a>
+<a href=/ja/tags/elasticsearch/>Elasticsearch</a>
+<a href=/ja/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最終更新 2025-02-15 17:17 +0900</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/ja/archives/226/><div class=article-details><h2 class=article-title>Elasticsearch 入門</h2></div></a></article><article><a href=/ja/archives/217/><div class=article-details><h2 class=article-title>SpringAMQP</h2></div></a></article><article><a href=/ja/archives/171/><div class=article-details><h2 class=article-title>Gateway サービスゲートウェイ</h2></div></a></article><article><a href=/ja/archives/170/><div class=article-details><h2 class=article-title>Feignでのリモート呼び出し</h2></div></a></article><article><a href=/ja/archives/223/><div class=article-details><h2 class=article-title>Springの自動設定とスターター依存</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p><a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> で構築されています。 <span>|</span>
+テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

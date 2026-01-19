@@ -1,0 +1,945 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><title>Elasticsearch Queries</title>
+<link rel=canonical href=https://blog.yexca.net/en/archives/227/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Elasticsearch Queries"><meta property='og:description' content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><meta property='og:url' content='https://blog.yexca.net/en/archives/227/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Backend Tech'><meta property='article:tag' content='Elasticsearch'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-02-01T15:16:28+09:00'><meta property='article:modified_time' content='2025-02-15T17:17:08+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Elasticsearch Queries"><meta name=twitter:description content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/en\/archives\/227\/"},"headline":"Elasticsearch Queries","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-02-01","dateModified":"2025-02-15","inLanguage":"en","description":"yexca\u0027s tech and life blog, writing about coding, projects, and daily thoughts."}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>yexca'Blog</a></h1><h2 class=site-description>Tech Otakus Change The World</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/en/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Background</span></a></li><li><a href=/en/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li><a href=/en/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/en/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>Support</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/ selected>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#query-categories>Query Categories</a></li><li><a href=#match-all>Match All</a></li><li><a href=#full-text-search-queries>Full-Text Search Queries</a></li><li><a href=#exact-queries>Exact Queries</a><ul><li><a href=#term-query>Term Query</a></li><li><a href=#range-query>Range Query</a></li></ul></li><li><a href=#geographic-coordinate-queries>Geographic Coordinate Queries</a><ul><li><a href=#bounding-box-query>Bounding Box Query</a></li><li><a href=#proximity-query>Proximity Query</a></li></ul></li><li><a href=#compound-queries>Compound Queries</a><ul><li><a href=#relevance-scoring>Relevance Scoring</a></li><li><a href=#function-score-query>Function Score Query</a></li><li><a href=#boolean-query>Boolean Query</a></li></ul></li><li><a href=#search-result-processing>Search Result Processing</a><ul><li><a href=#sorting>Sorting</a></li><li><a href=#pagination>Pagination</a></li><li><a href=#highlighting>Highlighting</a></li><li><a href=#search-result-processing-summary>Search Result Processing Summary</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/en/categories/tech-learning/>Tech Learning</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/archives/227/>Elasticsearch Queries</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-02-01 15:16 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>7 minute read</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/en/tags/backend-tech/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Backend Tech</a>
+<a href=/en/tags/elasticsearch/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Elasticsearch</a>
+<a href=/en/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/227/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/227/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/ja/archives/227/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> This article was translated by gemini-2.5-flash</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>Elasticsearch Series</strong></p><div class=table-wrapper><table><thead><tr><th style=text-align:left>Content</th><th style=text-align:left>Link</th></tr></thead><tbody><tr><td style=text-align:left>Elasticsearch Basic Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/226>https://blog.yexca.net/archives/226</a></td></tr><tr><td style=text-align:left>Elasticsearch Query Operations</td><td style=text-align:left>This article</td></tr><tr><td style=text-align:left>RestClient Basic Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/228>https://blog.yexca.net/archives/228</a></td></tr><tr><td style=text-align:left>RestClient Query Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/229>https://blog.yexca.net/archives/229</a></td></tr><tr><td style=text-align:left>Elasticsearch Data Aggregation</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/231>https://blog.yexca.net/archives/231</a></td></tr><tr><td style=text-align:left>Elasticsearch Autocomplete</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/232>https://blog.yexca.net/archives/232</a></td></tr><tr><td style=text-align:left>Elasticsearch Data Synchronization</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/234>https://blog.yexca.net/archives/234</a></td></tr><tr><td style=text-align:left>Elasticsearch Cluster</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/235>https://blog.yexca.net/archives/235</a></td></tr></tbody></table></div></blockquote><p>The previous article mainly covered ES&rsquo;s data storage features. However, ES truly excels at search and data analysis.</p><p>ES queries are still implemented using JSON-style DSL.</p><h2 id=query-categories>Query Categories</h2><p>Common query types include:</p><ul><li><strong>Match All:</strong> Retrieves all data, typically for testing. E.g., <code>match_all</code>.</li><li><strong>Full-Text Search Queries:</strong> Uses an analyzer to tokenize user input, then matches against the inverted index. E.g.:<ul><li><code>match_query</code></li><li><code>multi_match_query</code></li></ul></li><li><strong>Exact Queries:</strong> Finds data based on precise term values, typically for <code>keyword</code>, numeric, date, or boolean fields. E.g.:<ul><li><code>ids</code></li><li><code>range</code></li><li><code>term</code></li></ul></li><li><strong>Geographic (Geo) Queries:</strong> Queries based on latitude and longitude. E.g.:<ul><li><code>geo_distance</code></li><li><code>geo_bounding_box</code></li></ul></li><li><strong>Compound Queries:</strong> Combines the above simple query conditions to form complex queries. E.g.:<ul><li><code>bool</code></li><li><code>function_score</code></li></ul></li></ul><p>The query syntax is generally consistent:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;QueryType&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;QueryCondition&#34;</span><span class=p>:</span> <span class=s2>&#34;ConditionValue&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=match-all>Match All</h2><p>The query type is <code>match_all</code>, with no query conditions.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=c1>// Query all
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=full-text-search-queries>Full-Text Search Queries</h2><p>These queries tokenize user input and are commonly used for search box functionality. Since they match against terms, the fields involved in the search must also be tokenizable <code>text</code> type fields.</p><p>Common types:</p><ul><li><code>match</code>: Single-field query.</li><li><code>multi_match</code>: Multi-field query; any field meeting the condition satisfies the query.</li></ul><p><code>match</code> query syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>match</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=s2>&#34;TEXT&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=err>Example</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;all&#34;</span><span class=p>:</span> <span class=s2>&#34;外滩如家&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>multi_match</code> syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>multi_match</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;multi_match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=s2>&#34;TEXT&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;FIELD1&#34;</span><span class=p>,</span> <span class=s2>&#34;FIELD2&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=err>Example</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;multi_match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=s2>&#34;外滩如家&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;brand&#34;</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>,</span> <span class=s2>&#34;business&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>Since <code>brand</code>, <code>name</code>, <code>business</code> values were copied to the <code>all</code> field when creating the index, the results of the two query types above are the same.</p><p>However, searching more fields impacts performance more. Using <code>copy_to</code> and then a single-field query is recommended.</p></blockquote><h2 id=exact-queries>Exact Queries</h2><p>Exact queries do not tokenize the search condition. Common types include:</p><ul><li><code>term</code>: Searches based on an exact term value.</li><li><code>range</code>: Searches based on a range of values.</li></ul><h3 id=term-query>Term Query</h3><p>The query condition must be a non-tokenized term. Only an exact match between the input and the value will satisfy the condition.</p><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>term</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;VALUE&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=range-query>Range Query</h3><p>Range queries are typically used for filtering numeric types by a range. For example, filtering by price or date ranges.</p><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>range</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;gte&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// gte means greater than or equal to, gt means greater than
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;lte&#34;</span><span class=p>:</span> <span class=mi>20</span> <span class=c1>// lte means less than or equal to, lt means less than
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;gte&#34;</span><span class=p>:</span> <span class=mi>1000</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;lte&#34;</span><span class=p>:</span> <span class=mi>2000</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=geographic-coordinate-queries>Geographic Coordinate Queries</h2><p>These are essentially searches based on latitude and longitude. Official documentation:
+<a class=link href=https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html target=_blank rel=noopener>https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-queries.html</a></p><p>Common scenarios: searching for nearby hotels, taxis, people, or restaurants.</p><h3 id=bounding-box-query>Bounding Box Query</h3><p><code>geo_bounding_box</code> query: searches for all documents whose coordinates fall within a specified rectangular area.</p><p>Requires specifying the coordinates of the top-left and bottom-right points.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>geo_bounding_box</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_bounding_box&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;top_left&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Top-left point
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>30</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>20</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;bottom_right&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Bottom-right point
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>31</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>21</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=proximity-query>Proximity Query</h3><p>Also known as <code>geo_distance</code> query: searches for all documents within a specified distance from a given central point.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>geo_distance</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;15km&#34;</span><span class=p>,</span> <span class=c1>// Radius
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=s2>&#34;31, 21&#34;</span> <span class=c1>// Center point
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Example: Search for hotels within 15km of (31.21, 121.5).</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;15km&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=s2>&#34;31.21, 121.5&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=compound-queries>Compound Queries</h2><p>Combine simple queries to achieve more complex search logic. There are two common types:</p><ul><li><code>function score</code>: A scoring function query that controls document relevance scores to influence ranking.</li><li><code>bool query</code>: A boolean query that combines multiple other queries using logical relationships to achieve complex searches.</li></ul><h3 id=relevance-scoring>Relevance Scoring</h3><p>When using a <code>match</code> query, document results are scored based on their relevance to the search terms (<code>_score</code>), and returned in descending order of score, e.g.:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>[</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>17.850193</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;虹桥如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>12.259849</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;外滩如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>11.91091</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;迪士尼如家酒店真不错&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>In ES, the scoring algorithm used in earlier versions was TF-IDF.</p><p><img src=https://jsd.cdn.zzko.cn/gh/yexca/image_hosting@master/2024/01-SpringCloud/image-20210721190152134.z026lthgfsw.webp loading=lazy alt=image></p><p>The TF-IDF algorithm had a flaw: higher term frequency led to higher document scores, giving a single term too much influence. After version 5.1, the algorithm was changed to BM25, which gives a maximum limit to a single term&rsquo;s score.</p><p><img src=https://jsd.cdn.zzko.cn/gh/yexca/image_hosting@master/2024/01-SpringCloud/image-20210721190416214.erx3gt63494.webp loading=lazy alt=image></p><h3 id=function-score-query>Function Score Query</h3><p>While the BM25 scoring function is generally reasonable, it may not align with product requirements. To control relevance scoring, you can use ES&rsquo;s <code>function_score</code> query to modify a document&rsquo;s relevance score and reorder results based on the new scores.</p><p>Structure:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>function</span> <span class=err>score</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;function_score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{},</span> <span class=c1>// Original query
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;functions&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>{},</span> <span class=c1>// Filter condition
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nt>&#34;weight&#34;</span><span class=p>:</span> <span class=mi>1</span> <span class=c1>// Score function
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;boost_mode&#34;</span><span class=p>:</span> <span class=s2>&#34;multiply&#34;</span> <span class=c1>// Operation mode
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><strong>Original Query:</strong> Searches documents based on this condition and scores them using the BM25 algorithm (original query score).</li><li><strong>Filter Condition:</strong> Only documents matching this condition will be re-scored.</li><li><strong>Score Function:</strong> Documents matching the filter condition will be processed by this function to get a function score. There are four types of functions:<ul><li><code>weight</code>: Function result is a constant.</li><li><code>field_value_factor</code>: Uses a field&rsquo;s value in the document as the function result.</li><li><code>random_score</code>: Uses a random number as the function result.</li><li><code>script_score</code>: Custom scoring function algorithm.</li></ul></li><li><strong>Operation Mode:</strong> The way the function score and the original query&rsquo;s relevance score are combined. Includes:<ul><li><code>multiply</code>: Multiplies the scores.</li><li><code>replace</code>: Replaces the query score with the function score.</li><li>Others, such as: <code>sum</code>, <code>avg</code>, <code>max</code>, <code>min</code>.</li></ul></li></ul><p>Example: Give &ldquo;如家&rdquo; (Rujia) brand hotels a higher rank.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Original query condition is any; added condition here for execution
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;function_score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;functions&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;term&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;brand&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}},</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;weight&#34;</span><span class=p>:</span> <span class=mi>10</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;boost_mode&#34;</span><span class=p>:</span> <span class=s2>&#34;multiply&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=boolean-query>Boolean Query</h3><p>A boolean query combines one or more query clauses. Each clause is a sub-query, and they can be combined in the following ways:</p><ul><li><code>must</code>: All sub-queries must match, similar to &ldquo;AND&rdquo;.</li><li><code>should</code>: Sub-queries are optional matches, similar to &ldquo;OR&rdquo;.</li><li><code>must_not</code>: Sub-queries must not match, does not contribute to the score, similar to &ldquo;NOT&rdquo;.</li><li><code>filter</code>: Sub-queries must match, does not contribute to the score.</li></ul><p>For example, when searching for hotels, you might filter by region, brand, price, etc. Each different field requires a different query condition and method. To combine these multiple distinct queries, a <code>bool</code> query is necessary.</p><blockquote><p>Fields contributing to scoring generally lead to slower query performance. For multi-condition queries, it&rsquo;s recommended:</p><ul><li>Keyword searches in the search box are full-text searches, use <code>must</code> query, and contribute to scoring.</li><li>Other filter conditions, use <code>filter</code> query, and do not contribute to scoring.</li></ul></blockquote><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>bool</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;bool&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;should&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must_not&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{}</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Example: Search for hotels whose name contains &ldquo;如家&rdquo;, price is not higher than 400, and are within 10km of coordinates 31.21, 121.5.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;bool&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;must_not&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;range&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;gt&#34;</span><span class=p>:</span> <span class=mi>400</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>],</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;filter&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span><span class=nt>&#34;geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;distance&#34;</span><span class=p>:</span> <span class=s2>&#34;10km&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mf>31.21</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mf>121.5</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}}</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=search-result-processing>Search Result Processing</h2><p>Search results can be sorted, paginated, and highlighted.</p><h3 id=sorting>Sorting</h3><p>ES sorts by relevance score by default, but it also supports custom sorting of search results. Fields that can be sorted include <code>keyword</code> type, numeric type, geographic coordinate type, date type, etc.</p><h4 id=standard-field-sorting>Standard Field Sorting</h4><p>Sorting for <code>keyword</code>, numeric, and date types has largely the same syntax.</p><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>sort_normal</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span> <span class=c1>// Sort field, ASC, DESC
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>The sort condition is an array, allowing multiple sort conditions. They are applied in the declared order: if the first condition is equal, the second condition is used, and so on.</p><p>Example: Hotel data sorted by user review in descending order, then by price in ascending order if reviews are the same.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// Or
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=geographic-coordinate-sorting>Geographic Coordinate Sorting</h4><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>sort_geo</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>40</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>-70</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span> <span class=c1>// Sort order
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span> <span class=c1>// Sort unit
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Example: Sort hotels by distance (assuming location is 31.034661, 121.612282).</p><blockquote><p>Gaode (Amap) to get lat/lon:
+<a class=link href=https://lbs.amap.com/demo/jsapi-v2/example/map/click-to-get-lnglat/ target=_blank rel=noopener>https://lbs.amap.com/demo/jsapi-v2/example/map/click-to-get-lnglat/</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mf>31.034661</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mf>121.612282</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=pagination>Pagination</h3><p>ES by default only returns the top 10 documents. To query more data, you need to modify the pagination parameters. ES controls the paginated results returned by modifying the <code>from</code> and <code>size</code> parameters:</p><ul><li><code>from</code>: The starting document index.</li><li><code>size</code>: The total number of documents to query.</li></ul><blockquote><p>Similar to <code>limit ?,?</code> in MySQL.</p></blockquote><h4 id=basic-pagination>Basic Pagination</h4><p>The basic syntax is as follows:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>Basic</span> <span class=err>pagination</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;desc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=deep-pagination-problem>Deep Pagination Problem</h4><p>To query data from 990-1000, the statement would be:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match_all&#34;</span><span class=p>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>990</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>However, due to ES&rsquo;s mechanism, pagination requires first querying documents from 0-1000, then taking documents from 990-1000 for display.</p><p>If ES is in a single-node setup, this has little impact. But in a clustered deployment, querying 1000 documents does not mean each node queries 200 documents, because node A&rsquo;s 200 documents might rank outside the Top 1000 on node B.</p><p>To get the Top 1000, each node needs to query its own Top 1000, then results are aggregated, re-ranked, and finally truncated.</p><p>Querying Top 10000 or more can put significant pressure on memory and CPU. Therefore, ES restricts <code>from + size</code> from exceeding 10000.</p><p>For deep pagination, ES provides two solutions:
+<a class=link href=https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html target=_blank rel=noopener>https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html</a></p><ul><li><code>search after</code>: Requires sorting during pagination. The principle is to query the next page&rsquo;s data starting from the sort values of the last document on the previous page. Officially recommended.</li><li><code>scroll</code>: The principle is to create a snapshot of sorted document IDs in memory. Officially no longer recommended.</li></ul><h4 id=pagination-summary>Pagination Summary</h4><ul><li><p><code>from + size</code>:</p><ul><li><strong>Pros:</strong> Supports arbitrary page jumps.</li><li><strong>Cons:</strong> Deep pagination issues, default query limit (<code>from + size</code>) is 10000.</li><li><strong>Scenarios:</strong> Random pagination searches like Baidu, JD, Google, Taobao.</li></ul></li><li><p><code>search after</code>:</p><ul><li><strong>Pros:</strong> No query limit (single query <code>size</code> does not exceed 10000).</li><li><strong>Cons:</strong> Can only query pages sequentially forward, does not support arbitrary page jumps.</li><li><strong>Scenarios:</strong> Searches without a random page jump requirement, e.g., scrolling down on a mobile phone.</li></ul></li><li><p><code>scroll</code>:</p><ul><li><strong>Pros:</strong> No query limit (single query <code>size</code> does not exceed 10000).</li><li><strong>Cons:</strong> Incurs extra memory overhead, and search results are not real-time.</li><li><strong>Scenarios:</strong> Retrieving and migrating large amounts of data. Not recommended since ES 7.1; <code>search after</code> is suggested instead.</li></ul></li></ul><h3 id=highlighting>Highlighting</h3><p>When searching content with a search engine, keywords often appear in a prominent color (e.g., red) for better visibility. This is highlighting, typically achieved by adding a tag (<code>&lt;em></code>) around all keywords in a document and applying CSS styles to that tag.</p><p>Syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>Highlight</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/indexName/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Specify fields to highlight
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;FIELD&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span> <span class=c1>// Pre-tag for highlighting field
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span> <span class=c1>// Post-tag for highlighting field
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Notes:</p><ul><li>Highlighting applies to keywords, so the search condition must involve keywords, not range queries.</li><li>By default, highlighted fields must be the same as the fields specified in the search; otherwise, highlighting won&rsquo;t work.</li><li>To highlight fields not explicitly searched, add the attribute: <code>required_field_match=false</code>.</li></ul><p>Example: Search with the name field highlighted.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;all&#34;</span><span class=p>:</span> <span class=s2>&#34;如家&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;require_field_match&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// Truncated result
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=s2>&#34;hits&#34;</span> <span class=err>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hotel&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;339952837&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_score&#34;</span> <span class=p>:</span> <span class=mf>2.7875905</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;address&#34;</span> <span class=p>:</span> <span class=s2>&#34;良乡西路7号&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;brand&#34;</span> <span class=p>:</span> <span class=s2>&#34;如家&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;business&#34;</span> <span class=p>:</span> <span class=s2>&#34;房山风景区&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span> <span class=p>:</span> <span class=s2>&#34;北京&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;id&#34;</span> <span class=p>:</span> <span class=mi>339952837</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;location&#34;</span> <span class=p>:</span> <span class=s2>&#34;39.73167, 116.132482&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;如家酒店(北京良乡西路店)&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;pic&#34;</span> <span class=p>:</span> <span class=s2>&#34;https://m.tuniucdn.com/fb3/s1/2n9c/3Dpgf5RTTzrxpeN5y3RLnRVtxMEA_w200_h200_c1_t0.jpg&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span> <span class=p>:</span> <span class=mi>159</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span> <span class=p>:</span> <span class=mi>46</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;starName&#34;</span> <span class=p>:</span> <span class=s2>&#34;二钻&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;highlight&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;&lt;em&gt;如家&lt;/em&gt;酒店(北京良乡西路店)&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span></code></pre></td></tr></table></div></div><p>The <code>highlight</code> section of the result shows the text with the added tags.</p><h3 id=search-result-processing-summary>Search Result Processing Summary</h3><p>A DSL query is a large JSON object containing:</p><ul><li><code>query</code>: Search query.</li><li><code>from</code>, <code>size</code>: Pagination conditions.</li><li><code>sort</code>: Sort conditions.</li><li><code>highlight</code>: Highlighting conditions.</li></ul><p>Comprehensive example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>Comprehensive</span> <span class=err>Query</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel/_search</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;query&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Query
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;match&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=s2>&#34;上海&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;from&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// Pagination start
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;size&#34;</span><span class=p>:</span> <span class=mi>10</span><span class=p>,</span> <span class=c1>// Pagination size
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;sort&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span> <span class=c1>// Normal sort
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span> <span class=c1>// Distance sort
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nt>&#34;_geo_distance&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lat&#34;</span><span class=p>:</span> <span class=mi>31</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lon&#34;</span><span class=p>:</span> <span class=mi>121</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;order&#34;</span><span class=p>:</span> <span class=s2>&#34;asc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;unit&#34;</span><span class=p>:</span> <span class=s2>&#34;km&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;highlight&#34;</span><span class=p>:</span> <span class=p>{</span> <span class=c1>// Highlight fields
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;fields&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;require_field_match&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;pre_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;em&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;post_tags&#34;</span><span class=p>:</span> <span class=s2>&#34;&lt;/em&gt;&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/en/tags/backend-tech/>Backend Tech</a>
+<a href=/en/tags/elasticsearch/>Elasticsearch</a>
+<a href=/en/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Last updated on 2025-02-15 17:17 +0900</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/en/archives/226/><div class=article-details><h2 class=article-title>Elasticsearch Getting Started</h2></div></a></article><article><a href=/en/archives/217/><div class=article-details><h2 class=article-title>SpringAMQP</h2></div></a></article><article><a href=/en/archives/171/><div class=article-details><h2 class=article-title>Gateway Service Gateway</h2></div></a></article><article><a href=/en/archives/170/><div class=article-details><h2 class=article-title>Feign Remote Calls</h2></div></a></article><article><a href=/en/archives/223/><div class=article-details><h2 class=article-title>Spring Auto-Configuration and Starter Dependencies</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>Built with <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> <span>|</span>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

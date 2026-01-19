@@ -1,0 +1,278 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 この記事は gemini-3-flash-preview によって翻訳されました 第7章 簡単なシェルスクリプトを書いてみよう もし何度も繰り返すタスクがあって、そのたびに大量のコマンドを打ち込まないといけないなら、シェルスクリプトを書いて一つのコマンドで全部済ませちゃうのがいいよ。\n"><title>Linux学習 第7章 簡単なシェルスクリプトを書いてみよう</title>
+<link rel=canonical href=https://blog.yexca.net/ja/archives/81/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Linux学習 第7章 簡単なシェルスクリプトを書いてみよう"><meta property='og:description' content="📢 この記事は gemini-3-flash-preview によって翻訳されました 第7章 簡単なシェルスクリプトを書いてみよう もし何度も繰り返すタスクがあって、そのたびに大量のコマンドを打ち込まないといけないなら、シェルスクリプトを書いて一つのコマンドで全部済ませちゃうのがいいよ。\n"><meta property='og:url' content='https://blog.yexca.net/ja/archives/81/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Linux'><meta property='article:tag' content='読書ノート'><meta property='article:published_time' content='2022-12-05T20:47:43+08:00'><meta property='article:modified_time' content='2022-12-05T20:47:43+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Linux学習 第7章 簡単なシェルスクリプトを書いてみよう"><meta name=twitter:description content="📢 この記事は gemini-3-flash-preview によって翻訳されました 第7章 簡単なシェルスクリプトを書いてみよう もし何度も繰り返すタスクがあって、そのたびに大量のコマンドを打ち込まないといけないなら、シェルスクリプトを書いて一つのコマンドで全部済ませちゃうのがいいよ。\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/ja\/archives\/81\/"},"headline":"Linux学習 第7章 簡単なシェルスクリプトを書いてみよう","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2022-12-05","dateModified":"2022-12-05","inLanguage":"ja","description":"yexca の技術と生活のブログ。プログラミングや日常の記録を掲載。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/ja/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/ja>yexca'Blog</a></h1><h2 class=site-description>この世で道が尽きることはなく、行きたいと望む心があれば、道は必ず足元に広がる</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/ja/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/ja/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>ホーム</span></a></li><li><a href=/ja/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>アーカイブ</span></a></li><li><a href=/ja/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>検索</span></a></li><li><a href=/ja/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/ja/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>リンク</span></a></li><li><a href=/ja/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>について</span></a></li><li><a href=/ja/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>応援</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/ selected>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>ダークモード</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#第7章-簡単なシェルスクリプトを書いてみよう>第7章 簡単なシェルスクリプトを書いてみよう</a><ul><li><a href=#71-シェルスクリプトを理解する>7.1 シェルスクリプトを理解する</a></li><li><a href=#72-小結>7.2 小結</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/>技術学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/ja/archives/81/>Linux学習 第7章 簡単なシェルスクリプトを書いてみよう</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2022-12-05 20:47 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>読了時間: 9分</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/ja/tags/linux/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Linux</a>
+<a href=/ja/tags/%E8%AA%AD%E6%9B%B8%E3%83%8E%E3%83%BC%E3%83%88/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">読書ノート</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/81/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/81/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/en/archives/81/ class=link>English</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> この記事は gemini-3-flash-preview によって翻訳されました</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><h2 id=第7章-簡単なシェルスクリプトを書いてみよう>第7章 簡単なシェルスクリプトを書いてみよう</h2><p>もし何度も繰り返すタスクがあって、そのたびに大量のコマンドを打ち込まないといけないなら、シェルスクリプトを書いて一つのコマンドで全部済ませちゃうのがいいよ。</p><h3 id=71-シェルスクリプトを理解する>7.1 シェルスクリプトを理解する</h3><p>シェルスクリプトは、コマンド、関数、変数、その他シェルで使える機能をひとまとめにしたもの。これらをプレーンテキストファイルに書き込むことで、一つのコマンドとして実行できるようになるんだ。</p><blockquote><p>Windowsのバッチファイル (.bat) みたいなものだね。</p></blockquote><h4 id=711-シェルスクリプトの実行とデバッグ>7.1.1 シェルスクリプトの実行とデバッグ</h4><p>シェルスクリプトのいいところは、どんなテキストエディタでも開いて中身を確認できること。逆に欠点は、大きくて複雑なスクリプトだと、コンパイル済みのプログラムより実行が遅くなりがちなことかな。実行方法は基本的に2つあるよ。</p><ol><li><p>スクリプト名を bash の引数として渡す。例：<code>bash myscript</code></p></li><li><p>シェルスクリプトの1行目にインタプリタの名前 (<code>#!/bin/bash</code>) を書いて、そのファイルに実行権限を付けてから (<code>chmod +x myscript</code>)、コマンドラインでスクリプトのパスを入力して実行する。例：(<code>./myscript.sh</code>)</p></li></ol><p>実行するとき、スクリプト名の後に続くのがコマンドライン引数だよ。</p><blockquote><p>コメントは <code>#</code> を使う。</p><p>スクリプトの最初に <code>set -x</code> を入れるか、<code>$ bash -x myscript</code> と打つことで、実行中のコマンドを表示しながらデバッグできるよ。</p></blockquote><h4 id=712-シェル変数を理解する>7.1.2 シェル変数を理解する</h4><p>シェル変数の名前はは大文字と小文字を区別するから注意してね。定義するときは等号 (<code>=</code>) の前後にスペースを入れないのがルールだよ。例：</p><p><code>NAME=value</code></p><p>変数にはテキスト、数字、アンダースコアなどの定数を代入できる。</p><p>コマンドの結果を変数に入れることもできるよ。例：<code>MYDATE=$(date)</code> と書くと、date コマンドの出力が変数 MYDATE に入るんだ。</p><p>こうすると、変数 MYDATE を使うたびに一回 date コマンドが動いて、その結果が MYDATE に代入される。代入時の実行結果が欲しいときは、コマンドを引用符 <code>'</code> で囲めばOK。</p><hr><p>特殊なシェル文字：ドル記号 (<code>$</code>)、引用符 (<code>'</code>)、アスタリスク (<code>*</code>)、感嘆符 (<code>!</code>) など。</p><p>もしコマンドラインで <code>$HOME</code> という文字列をそのまま表示したいなら、<code>$</code> をエスケープする必要がある。<code>echo '$HOME'</code> か <code>echo \$HOME</code> を使えばいいよ。つまり：</p><ul><li><p>シェルに特定の文字をそのまま解釈させたいときは、バックスラッシュ <code>\</code> を使う。</p></li><li><p>文字の集まりをそのまま解釈させたいときは、シングルクォート (<code>'</code>) で囲む。</p></li><li><p>一部の文字だけそのまま解釈させたいときは、ダブルクォート (<code>"</code>) で囲む。この場合、ドル記号 (<code>$</code>)、引用符 (<code>'</code>)、感嘆符 (<code>!</code>) は解釈されるけど、アスタリスク (<code>*</code>) などの他の文字はそのまま扱われるよ。</p></li></ul><blockquote><p>変数に値を代入するときはそのまま名前を使うけど、変数を参照（値を取得）するときは頭にドル記号 (<code>$</code>) をつけるのを忘れないで。</p><p>例：ある変数の値を新しい変数に入れる：<code>newVar="$oldVar"</code></p></blockquote><hr><ol><li><h5 id=特殊なシェル位置パラメータ>特殊なシェル位置パラメータ</h5></li></ol><p><em>位置パラメータ</em>、つまり <em>コマンドライン引数</em> は、<code>$0</code>、<code>$1</code>、<code>$2</code>&mldr;<code>$n</code> という名前になっているよ。</p><p><code>$0</code> は呼び出されたスクリプト自身の名前で、それ以外はコマンドラインから渡された引数の値が入るんだ。例えば：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;最初の引数は </span><span class=nv>$1</span><span class=s2> 、2番目の引数は </span><span class=nv>$2</span><span class=s2> &#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;このスクリプトの名前は </span><span class=nv>$0</span><span class=s2> &#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;全部で </span><span class=nv>$#</span><span class=s2> 個の引数が渡されたよ&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;すべての引数はこれ：</span><span class=nv>$@</span><span class=s2> &#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>./myscript hello bye</code> というコマンドを実行すると、結果はこうなる：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>最初の引数は hello 、2番目の引数は bye
+</span></span><span class=line><span class=cl>このスクリプトの名前は /home/yexca/tmp/myscript
+</span></span><span class=line><span class=cl>全部で <span class=m>2</span> 個の引数が渡されたよ
+</span></span><span class=line><span class=cl>すべての引数はこれ：hello bye
+</span></span></code></pre></td></tr></table></div></div><p>もう一つ面白いのが <code>$?</code> で、これは最後に実行されたコマンドの終了ステータスを受け取る。普通、正常に終われば <code>0</code> が返ってくるよ。</p><hr><ol start=2><li><h5 id=引数を読み取る>引数を読み取る</h5></li></ol><p><code>read</code> コマンドを使うと、ユーザーの入力を受け取ることができる。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=nb>read</span> -p <span class=s2>&#34;2つの単語を入力してね：&#34;</span> var1 var2
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;今、 </span><span class=nv>$var1</span><span class=s2> と </span><span class=nv>$var2</span><span class=s2> が入力されたよ&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><hr><ol start=3><li>Bash でのパラメータ展開</li></ol><p>変数の値が欲しいときは頭にドル記号 (<code>$</code>) をつけて <code>$var</code> と書くけど、これは実は <code>${var}</code> の短縮形なんだ。</p><p>Bash にはパラメータの値をいろいろな方法で展開するルールがある。よく使うものを <code>${var}</code> を例に挙げておくね。</p><div class=table-wrapper><table><thead><tr><th>例</th><th>説明</th></tr></thead><tbody><tr><td>${var:-value}</td><td>もし変数が未設定か空なら、value として展開する</td></tr><tr><td>${var#pattern}</td><td>var の値の <em>前方</em> から、pattern と <em>最短</em> で一致する部分を削る</td></tr><tr><td>${var##pattern}</td><td>var の値の <em>前方</em> から、pattern と <em>最長</em> で一致する部分を削る</td></tr><tr><td>${var%pattern}</td><td>var の値の <em>末尾</em> から、pattern と <em>最短</em> で一致する部分を削る</td></tr><tr><td>${var%%pattern}</td><td>var の値の <em>末尾</em> から、pattern と <em>最長</em> で一致する部分を削る</td></tr></tbody></table></div><p>これを使うと、こんな便利なことができるよ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>myFileName</span><span class=o>=</span>/home/yexca/myfile.txt
+</span></span><span class=line><span class=cl><span class=c1># file は myfile.txt になる</span>
+</span></span><span class=line><span class=cl><span class=nv>file</span><span class=o>=</span><span class=si>${</span><span class=nv>myFileName</span><span class=p>##*/</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># dir は /home/yexca になる</span>
+</span></span><span class=line><span class=cl><span class=nv>dir</span><span class=o>=</span><span class=si>${</span><span class=nv>myFileName</span><span class=p>%/*</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># name は myfile になる</span>
+</span></span><span class=line><span class=cl><span class=nv>name</span><span class=o>=</span><span class=si>${</span><span class=nv>file</span><span class=p>%.*</span><span class=si>}</span>
+</span></span><span class=line><span class=cl><span class=c1># extension は txt になる</span>
+</span></span><span class=line><span class=cl><span class=nv>extension</span><span class=o>=</span><span class=si>${</span><span class=nv>file</span><span class=p>##*.</span><span class=si>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=713-シェルスクリプトで計算をする>7.1.3 シェルスクリプトで計算をする</h4><p>Bash の変数は型が決まっていない（非型指定）。<code>declare</code> で明示しない限り、変数は文字列として扱われるんだ。でも計算するときは自動的に整数に変換されるから、代入時に型を気にする必要はないよ。</p><p>内蔵の <code>let</code> コマンド、外部の <code>expr</code> コマンド、あるいは <code>bc</code> コマンドを使って整数の計算ができる。</p><p>例：<code>let result=$num/16</code> や <code>let num=$RANDOM</code></p><p>インクリメント演算子の <code>i++</code> や <code>++i</code> も使えるよ。</p><blockquote><p><code>let</code> コマンドは、演算子と数字の間にスペースを入れちゃダメ。</p><p><code>expr</code> コマンドは逆に、演算子と数字の間にスペースが必要。</p><p><code>bc</code> コマンドはスペースを気にしなくていいし、浮動小数点（小数）の計算もできるよ。</p></blockquote><h4 id=714-シェルスクリプトでプログラミング構造を使う>7.1.4 シェルスクリプトでプログラミング構造を使う</h4><ol><li>&ldquo;if&mldr;then&rdquo; 文</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$var</span> -eq <span class=m>1</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;変数は 1 だよ&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>数字を比べるなら <code>-eq</code> がいいけど、文字列を比べるなら等号 (<code>=</code>) のほうが使いやすいよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$str</span> <span class=o>=</span> <span class=s2>&#34;hello&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>不等号 <code>!=</code> もある。</p><p><code>elif</code> を使えば選択肢を増やせるし、<code>else</code> で「それ以外」の場合を指定できる。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>str</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$HOME</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> -f <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2> は普通のファイルだね&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>elif</span> <span class=o>[</span> -d <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2>&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$str</span><span class=s2> はディレクトリだね&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;これは何かな？？？&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span></code></pre></td></tr></table></div></div><p>よく使うテスト条件のリストだよ：</p><div class=table-wrapper><table><thead><tr><th>演算子</th><th>テストの内容</th></tr></thead><tbody><tr><td>-a file</td><td>ファイルが存在するか（-e と同じ）</td></tr><tr><td>-b file</td><td>ブロックデバイスファイルか</td></tr><tr><td>-c file</td><td>キャラクタデバイスファイルか</td></tr><tr><td>-d file</td><td>ディレクトリか</td></tr><tr><td>-e file</td><td>ファイルが存在するか（-a と同じ）</td></tr><tr><td>-f file</td><td>普通のファイルか（ディレクトリやデバイスファイルじゃないか）</td></tr><tr><td>-g file</td><td>SGID ビットがセットされているか</td></tr><tr><td>-h file</td><td>シンボリックリンクか（-L と同じ）</td></tr><tr><td>-k file</td><td>スティッキービットがセットされているか</td></tr><tr><td>-L file</td><td>シンボリックリンクか（-h と同じ）</td></tr><tr><td>-n string</td><td>文字列の長さが 0 より大きいか</td></tr><tr><td>-O file</td><td>自分がそのファイルの所有者か</td></tr><tr><td>-p file</td><td>名前付きパイプか</td></tr><tr><td>-r file</td><td>読み取り可能か</td></tr><tr><td>-s file</td><td>ファイルが存在して、サイズが 0 より大きいか</td></tr><tr><td>-S file</td><td>ソケットファイルか</td></tr><tr><td>-t file</td><td>ターミナルに接続されたディスクリプタか</td></tr><tr><td>-u file</td><td>SUID ビットがセットされているか</td></tr><tr><td>-w file</td><td>書き込み可能か</td></tr><tr><td>-x file</td><td>実行可能か</td></tr><tr><td>-z string</td><td>文字列の長さが 0 か</td></tr></tbody></table></div><p>こっちは2つの変数を比べるとき：</p><div class=table-wrapper><table><thead><tr><th>演算子</th><th>テストの内容</th></tr></thead><tbody><tr><td>expr1 -a expr2</td><td>両方の式が真か</td></tr><tr><td>expr1 -o expr2</td><td>どちらかの式が真か</td></tr><tr><td>file1 -nt file2</td><td>ファイル1のほうが新しいか（タイムスタンプで比較）</td></tr><tr><td>file1 -ot file2</td><td>ファイル1のほうが古いか（タイムスタンプで比較）</td></tr><tr><td>file1 -ef file2</td><td>2つのファイルが同じ実体（ハードリンクかシンボリックリンク）か</td></tr><tr><td>var1 = var2</td><td>2つの変数が等しいか</td></tr><tr><td>var1 -eq var2</td><td>2つの変数が等しいか</td></tr><tr><td>var1 -ge var2</td><td>var1 が var2 以上か</td></tr><tr><td>var1 -gt var2</td><td>var1 が var2 より大きいか</td></tr><tr><td>var1 -le var2</td><td>var1 が var2 以下か</td></tr><tr><td>var1 -lt var2</td><td>var1 が var2 より小さいか</td></tr><tr><td>var1 != var2</td><td>2つの変数が等しくないか</td></tr><tr><td>var1 -ne var2</td><td>2つの変数が等しくないか</td></tr></tbody></table></div><p>さらに、テスト演算子を <code>&&</code>（AND）や <code>||</code>（OR）と組み合わせて、C言語の三項演算子みたいに書くこともできるよ。</p><p>C言語：<code>a>b ? a : b</code></p><p>Shell：<code>[ $a -gt $b ] && echo $a || echo $b</code></p><p>単独でも使える。例えば：
+<code>[ $a -eq $b ] && echo $a</code> は「a と b が等しければ、a を表示する」。</p><p><code>[ -d "$dirName" ] || mkdir "$dirName"</code> は「<code>$dirName</code> というディレクトリがなければ、<code>mkdir</code> で作る」。</p><hr><ol start=2><li>case コマンド</li></ol><p>C言語の switch 文みたいなもので、条件分岐に使うよ。基本の形はこんな感じ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>case</span> <span class=s2>&#34;VAR&#34;</span> in
+</span></span><span class=line><span class=cl>    Result1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    Result2 <span class=p>|</span> Result3<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl>    *<span class=o>)</span>
+</span></span><span class=line><span class=cl>        body
+</span></span><span class=line><span class=cl>        <span class=p>;;</span>
+</span></span><span class=line><span class=cl><span class=k>esac</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=3><li>for&mldr;do ループ</li></ol><p>for ループはリストの中身を順番に処理するときに使うよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> VAR in LIST
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># またはこう書く</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> VAR in LIST <span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span> 
+</span></span></code></pre></td></tr></table></div></div><p>例えば：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=k>for</span> num in <span class=m>0</span> <span class=m>1</span> <span class=m>2</span> <span class=m>3</span> <span class=m>4</span>
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;数字は </span><span class=nv>$num</span><span class=s2> だよ&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># コマンドの出力をリストにすることもできる</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> file in <span class=k>$(</span>ls /bin<span class=k>)</span> <span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=nv>$file</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=4><li>while&mldr;do と until&mldr;do ループ</li></ol><p>構造はこんな感じ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># while...do：条件が真の間繰り返す</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> condition
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># until...do：条件が真になるまで繰り返す</span>
+</span></span><span class=line><span class=cl><span class=k>until</span> condition
+</span></span><span class=line><span class=cl><span class=k>do</span>
+</span></span><span class=line><span class=cl>    body
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=715-便利なテキスト操作プログラムを使う>7.1.5 便利なテキスト操作プログラムを使う</h4><p>よく使われるのは grep, cut, tr, awk, sed。ほとんどが標準入力と標準出力を使うように設計されているよ。</p><ol><li>一般正規表現アナライザー (grep)</li></ol><p>ファイルやテキストの中から特定のパターンを探す方法。強力な検索ツールとして使えるよ。</p><p>形式：<code>grep 探したい内容 入力元</code></p><p>詳しくは <code>man grep</code> で確認してみて。</p><ol start=2><li>テキストの切り出し (cut)</li></ol><p><code>cut</code> コマンドはテキストやファイルから特定のフィールドを抜き出すことができる。例えば：</p><p><code>grep /home /etc/passwd | cut -d':' -f6 -</code></p><p>まず <code>grep</code> で /etc/passwd から <code>/home</code> を含む行を探して、それを <code>cut</code> に渡す。<code>cut</code> は <code>:</code> を区切り文字として使って、6番目のセグメント (<code>-f6</code>) を取り出しているよ。</p><ol start=3><li>文字の変換や削除 (tr)</li></ol><p><code>tr</code> は文字ベースのコンバーターで、文字を置換したり削除したりできる。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 大文字を小文字に変換</span>
+</span></span><span class=line><span class=cl><span class=nv>FOO</span><span class=o>=</span><span class=s2>&#34;AbcDEF&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$FOO</span> <span class=p>|</span> tr <span class=o>[</span>A-Z<span class=o>]</span> <span class=o>[</span>a-z<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ファイル名の中のスペースをアンダースコアに変換する例</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> file in *<span class=p>;</span> <span class=k>do</span>
+</span></span><span class=line><span class=cl>    <span class=nv>f</span><span class=o>=</span><span class=k>$(</span><span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=p>|</span> tr <span class=s1>&#39; &#39;</span> <span class=s1>&#39;_&#39;</span><span class=k>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;</span><span class=nv>$f</span><span class=s2>&#34;</span> <span class=o>]</span> <span class=o>||</span> mv -i -- <span class=s2>&#34;</span><span class=nv>$file</span><span class=s2>&#34;</span> <span class=s2>&#34;</span><span class=nv>$f</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>done</span>
+</span></span></code></pre></td></tr></table></div></div><ol start=4><li>ストリームエディタ (sed)</li></ol><p><code>sed</code> は簡単なスクリプトエディタ。特定のパターンに一致する行を消したり、文字を置換したりといった編集ができる。</p><p>かなり奥が深いから、オンラインドキュメントで調べてみてね。</p><h4 id=716-簡単なシェルスクリプトを使ってみる>7.1.6 簡単なシェルスクリプトを使ってみる</h4><p>電話リストの例だよ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># (@)/ph</span>
+</span></span><span class=line><span class=cl><span class=c1># とてもシンプルな電話リスト</span>
+</span></span><span class=line><span class=cl><span class=c1># &#34;ph new 名前 番号&#34; でリストに追加</span>
+</span></span><span class=line><span class=cl><span class=c1># &#34;ph 名前&#34; で電話番号を検索できるよ</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>PHONELIST</span><span class=o>=</span>~/.phonelist.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 引数がない場合はエラーメッセージを出す</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=nv>$#</span> -lt <span class=m>1</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;誰の番号が知りたいの？&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 新しい番号を追加する場合</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> <span class=s2>&#34;</span><span class=nv>$1</span><span class=s2>&#34;</span> <span class=o>=</span> <span class=s2>&#34;new&#34;</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>shift</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=nv>$*</span> &gt;&gt; <span class=nv>$PHONELIST</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2> をデータベースに追加したよ&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>0</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 検索。ファイルが空じゃないかチェック</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=o>[</span> ! -s <span class=nv>$PHONELIST</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>
+</span></span><span class=line><span class=cl>    <span class=nb>echo</span> <span class=s2>&#34;まだ電話リストに誰もいないよ！&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl><span class=k>else</span>
+</span></span><span class=line><span class=cl>    grep -i -q <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span> <span class=nv>$PHONELIST</span>    <span class=c1># 静かに検索</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -ne <span class=m>0</span> <span class=o>]</span><span class=p>;</span> <span class=k>then</span>    <span class=c1># 見つかったかな？</span>
+</span></span><span class=line><span class=cl>        <span class=nb>echo</span> <span class=s2>&#34;残念、その名前はリストになかったよ&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=nb>exit</span> <span class=m>1</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span>
+</span></span><span class=line><span class=cl>        grep -i <span class=s2>&#34;</span><span class=nv>$*</span><span class=s2>&#34;</span> <span class=nv>$PHONELIST</span>
+</span></span><span class=line><span class=cl>    <span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=k>fi</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span> <span class=m>0</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=72-小結>7.2 小結</h3><p>シェルスクリプトを書けるようになると、よくあるシステム管理タスクを自動化できるようになって、すごく便利になるよ。</p></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/linux/>Linux</a>
+<a href=/ja/tags/%E8%AA%AD%E6%9B%B8%E3%83%8E%E3%83%BC%E3%83%88/>読書ノート</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/ja/archives/78/><div class=article-details><h2 class=article-title>Linux学習 第五章 テキストファイルを使ってみよう</h2></div></a></article><article><a href=/ja/archives/75/><div class=article-details><h2 class=article-title>Linux学習 第4章 ファイルシステム内での移動</h2></div></a></article><article><a href=/ja/archives/69/><div class=article-details><h2 class=article-title>Linux学習 第3章 shellを使う</h2></div></a></article><article><a href=/ja/archives/79/><div class=article-details><h2 class=article-title>Linux 学習 第6章 実行中のプロセスを管理する</h2></div></a></article><article><a href=/ja/archives/70/><div class=article-details><h2 class=article-title>SSH 公開鍵ログイン</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p><a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> で構築されています。 <span>|</span>
+テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

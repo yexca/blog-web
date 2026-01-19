@@ -1,0 +1,883 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><title>Elasticsearch 入門</title>
+<link rel=canonical href=https://blog.yexca.net/ja/archives/226/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Elasticsearch 入門"><meta property='og:description' content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><meta property='og:url' content='https://blog.yexca.net/ja/archives/226/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='バックエンド技術'><meta property='article:tag' content='Elasticsearch'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-01-29T23:38:51+09:00'><meta property='article:modified_time' content='2025-02-15T17:17:08+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Elasticsearch 入門"><meta name=twitter:description content="📢 この記事は gemini-2.5-flash によって翻訳されました Elasticsearch シリーズ\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/ja\/archives\/226\/"},"headline":"Elasticsearch 入門","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-01-29","dateModified":"2025-02-15","inLanguage":"ja","description":"yexca の技術と生活のブログ。プログラミングや日常の記録を掲載。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/ja/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/ja>yexca'Blog</a></h1><h2 class=site-description>この世で道が尽きることはなく、行きたいと望む心があれば、道は必ず足元に広がる</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/ja/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/ja/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>ホーム</span></a></li><li><a href=/ja/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>アーカイブ</span></a></li><li><a href=/ja/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>検索</span></a></li><li><a href=/ja/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/ja/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>リンク</span></a></li><li><a href=/ja/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>について</span></a></li><li><a href=/ja/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>応援</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/ selected>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>ダークモード</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#順方向インデックス>順方向インデックス</a></li><li><a href=#転置インデックス>転置インデックス</a><ul><li><a href=#ドキュメント>ドキュメント</a></li><li><a href=#インデックスとマッピング>インデックスとマッピング</a></li></ul></li><li><a href=#mysql-と-elasticsearch>MySQL と Elasticsearch</a><ul><li><a href=#メリットデメリット>メリット・デメリット</a></li></ul></li><li><a href=#インストール>インストール</a><ul><li><a href=#elasticsearch>Elasticsearch</a></li><li><a href=#kibana>kibana</a></li><li><a href=#ik形態素解析器>IK形態素解析器</a></li></ul></li><li><a href=#dsl-インデックス操作>DSL インデックス操作</a><ul><li><a href=#マッピングプロパティ>マッピングプロパティ</a></li><li><a href=#インデックスの作成>インデックスの作成</a></li><li><a href=#インデックスの検索>インデックスの検索</a></li><li><a href=#インデックスの変更>インデックスの変更</a></li><li><a href=#インデックスの削除>インデックスの削除</a></li><li><a href=#インデックス操作まとめ>インデックス操作まとめ</a></li></ul></li><li><a href=#dsl-ドキュメント操作>DSL ドキュメント操作</a><ul><li><a href=#ドキュメントの追加>ドキュメントの追加</a></li><li><a href=#ドキュメントの検索>ドキュメントの検索</a></li><li><a href=#ドキュメントの変更>ドキュメントの変更</a></li><li><a href=#ドキュメントの削除>ドキュメントの削除</a></li><li><a href=#ドキュメント操作まとめ>ドキュメント操作まとめ</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/>技術学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/ja/archives/226/>Elasticsearch 入門</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-01-29 23:38 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>読了時間: 17分</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/ja/tags/%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E6%8A%80%E8%A1%93/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">バックエンド技術</a>
+<a href=/ja/tags/elasticsearch/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Elasticsearch</a>
+<a href=/ja/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/226/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/226/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/en/archives/226/ class=link>English</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> この記事は gemini-2.5-flash によって翻訳されました</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>Elasticsearch シリーズ</strong></p><div class=table-wrapper><table><thead><tr><th style=text-align:left>内容</th><th style=text-align:left>リンク</th></tr></thead><tbody><tr><td style=text-align:left>Elasticsearch の基本操作</td><td style=text-align:left>この記事</td></tr><tr><td style=text-align:left>Elasticsearch 検索操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/227>https://blog.yexca.net/archives/227</a></td></tr><tr><td style=text-align:left>RestClient の基本操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/228>https://blog.yexca.net/archives/228</a></td></tr><tr><td style=text-align:left>RestClient 検索操作</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/229>https://blog.yexca.net/archives/229</a></td></tr><tr><td style=text-align:left>Elasticsearch データ集計</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/231>https://blog.yexca.net/archives/231</a></td></tr><tr><td style=text-align:left>Elasticsearch オートコンプリート</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/232>https://blog.yexca.net/archives/232</a></td></tr><tr><td style=text-align:left>Elasticsearch データ同期</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/234>https://blog.yexca.net/archives/234</a></td></tr><tr><td style=text-align:left>Elasticsearch クラスター</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/235>https://blog.yexca.net/archives/235</a></td></tr></tbody></table></div></blockquote><p>Elasticsearchって、めちゃくちゃ強力なオープンソース検索エンジンなんだ。膨大なデータの中から、必要なものをサッと見つけるのに役立ってくれるよ。kibana、Logstash、Beatsと組み合わせると、elastic stack（ELK）になるんだ。ログデータ分析とか、リアルタイム監視みたいな分野で広く使われてるんだよね。</p><p>で、ElasticsearchはそのElastic Stackの核となる部分で、データの保存、検索、分析を担当してるんだ。</p><p>Elasticsearchの根幹はLuceneっていうJavaの検索エンジンライブラリでできてて、それをベースにしてるんだよ。</p><h2 id=順方向インデックス>順方向インデックス</h2><p>従来のデータベース（例えばMySQL）は順方向インデックスを使ってるんだ。例えば下の表みたいにね。</p><div class=table-wrapper><table><thead><tr><th>id</th><th>title</th><th>price</th></tr></thead><tbody><tr><td>1</td><td>Xiaomi スマホ</td><td>3499</td></tr><tr><td>2</td><td>Huawei スマホ</td><td>4999</td></tr><tr><td>3</td><td>Huawei Xiaomi 充電器</td><td>49</td></tr><tr><td>4</td><td>Xiaomi スマートバンド</td><td>239</td></tr></tbody></table></div><p>もしIDで正確に検索するなら、直接インデックスを使うからすごく速いんだ。</p><p>でも、タイトルであいまい検索しようとすると、データを1行ずつスキャンしていくしかないんだよね。流れとしてはこんな感じ。</p><ol><li>ユーザーが「スマホ」って検索すると、データベースでは「%スマホ%」って条件になる。</li><li>データを1行ずつ取得して、例えばIDが1のデータとか。</li><li>そのデータのタイトルが条件に合ってるか判断する。</li><li>合ってればリストに入れて、合ってなければ捨てる。そして次の行へ、って感じ。</li></ol><p>データ量が増えれば増えるほど、この1行ずつのスキャンの効率はどんどん悪くなっちゃうんだ。</p><h2 id=転置インデックス>転置インデックス</h2><p>転置インデックスの考え方は、MySQLみたいな順方向インデックスを基準にしてるんだ。</p><p>Elasticsearchは転置インデックスを採用してるよ。コンセプトはこんな感じ。</p><ul><li>ドキュメント：1つ1つのデータがドキュメントになる。</li><li>ターム：ドキュメントが意味に基づいて分割された単語のこと。</li></ul><p>転置インデックスを作るのは、順方向インデックスに対する特殊な処理なんだ。流れはこう。</p><ol><li>各ドキュメントのデータをアルゴリズムを使って単語に分割し、タームを1つ1つ取得する。</li><li>テーブルを作成して、各行にはターム、そのタームが含まれるドキュメントID、位置などの情報を含める。</li><li>タームはユニークだから、タームにインデックス（例えばハッシュテーブル構造のインデックス）を作ることができるんだ。</li></ol><p>例えば、さっきの表からはこんな転置インデックスが作れるよ。</p><div class=table-wrapper><table><thead><tr><th>ターム</th><th>ドキュメントID</th></tr></thead><tbody><tr><td>Xiaomi</td><td>1，3，4</td></tr><tr><td>スマホ</td><td>1，2</td></tr><tr><td>Huawei</td><td>2，3</td></tr><tr><td>充電器</td><td>3</td></tr><tr><td>スマートバンド</td><td>4</td></tr></tbody></table></div><p>転置インデックスの検索フロー：</p><ol><li>ユーザーが「Xiaomiスマホ」って検索する。</li><li>検索内容を形態素解析して、「Xiaomi」、「スマホ」を得る。</li><li>タームを使って転置インデックスを検索し、タームを含むドキュメントID：1、2、3、4を得る。</li><li>ドキュメントIDを使って順方向インデックスから具体的なドキュメントを探す。</li></ol><h3 id=ドキュメント>ドキュメント</h3><p>Elasticsearchはドキュメント指向でデータを保存するんだ。データベースにある1つの商品データとか、注文情報とかになるんだよ。ドキュメントデータはJSON形式にシリアライズされてから、Elasticsearchに保存されるんだ。</p><p>さっきの順方向インデックスの表をJSONにするとこうなるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;小米手机&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>3499</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;华为手机&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>4999</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;华为小米充电器&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>49</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;title&#34;</span><span class=p>:</span> <span class=s2>&#34;小米手环&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=mi>299</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>JSONドキュメントにはたくさんのフィールドが含まれてて、データベースの列みたいなものだね。</p><h3 id=インデックスとマッピング>インデックスとマッピング</h3><p>インデックスは、同じ種類のドキュメントの集まりのこと。</p><p>マッピングは、インデックス内のドキュメントのフィールドに関する制約情報で、テーブルの構造制約みたいなものだよ。</p><p>インデックスはデータベースのテーブルみたいなものって考えたらいいよ。データベースのテーブルには、テーブルの構造やフィールド名、型などを定義する制約情報があるよね。だから、インデックスにはマッピングがあって、これはインデックス内のドキュメントのフィールド制約情報、つまりテーブルの構造制約みたいなものなんだ。</p><h2 id=mysql-と-elasticsearch>MySQL と Elasticsearch</h2><div class=table-wrapper><table><thead><tr><th>MySQL</th><th>Elasticsearch</th><th>説明</th></tr></thead><tbody><tr><td>Table</td><td>Index</td><td>インデックスはドキュメントの集まりで、データベースのテーブルみたいなものだよ。</td></tr><tr><td>Row</td><td>Document</td><td>ドキュメントは1つ1つのデータで、データベースの行みたいなもの。ドキュメントは全部JSON形式だよ。</td></tr><tr><td>Column</td><td>Field</td><td>フィールドはJSONドキュメントの中のフィールドで、データベースの列みたいなものだね。</td></tr><tr><td>Schema</td><td>Mapping</td><td>マッピングはインデックス内のドキュメントの制約、例えばフィールドの型制約のこと。データベースのテーブル構造みたいなものだよ。</td></tr><tr><td>SQL</td><td>DSL</td><td>DSLはElasticsearchが提供するJSON形式のリクエスト文で、Elasticsearchを操作してCRUDを実現するのに使うんだ。</td></tr></tbody></table></div><p>企業では、よく両方を組み合わせて使うことが多いんだ。</p><ul><li>セキュリティの要求が高い書き込み操作は、MySQLで実装する。</li><li>検索性能の要求が高い検索ニーズは、Elasticsearchで実装する。</li><li>そして、両者は何らかの方法でデータ同期を実現して、一貫性を保つんだ。</li></ul><h3 id=メリットデメリット>メリット・デメリット</h3><p><strong>順方向インデックス</strong>：</p><ul><li>メリット：<ul><li>複数のフィールドにインデックスを作成できる。</li><li>インデックスフィールドによる検索やソートがすごく速い。</li></ul></li><li>デメリット：<ul><li>非インデックスフィールドや、インデックスフィールド内の一部のタームで検索する時は、全表スキャンするしかない。</li></ul></li></ul><p><strong>転置インデックス</strong>：</p><ul><li>メリット：<ul><li>タームによる検索やあいまい検索の時に、ものすごく速い。</li></ul></li><li>デメリット：<ul><li>フィールドじゃなくて、タームにしかインデックスを作成できない。</li><li>フィールドでソートできない。</li></ul></li></ul><h2 id=インストール>インストール</h2><p>普通はElasticsearchだけで十分だけど、kibanaを使うとElasticsearchの可視化インターフェースを提供してくれるから、DSL文の学習や記述が楽になるよ。</p><h3 id=elasticsearch>Elasticsearch</h3><p>Elasticsearchとkibanaコンテナを相互接続させるために、まずネットワークを作るといいよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker network create es-net
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>相互接続する方法はいくつかあって、docker-composeとか172.17.0.1とかね。</p></blockquote><p>Elasticsearchをプルする</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull elasticsearch:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>シングルノードデプロイ</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --name es <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;ES_JAVA_OPTS=-Xms512m -Xmx512m&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -e <span class=s2>&#34;discovery.type=single-node&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -v es-data:/usr/share/elasticsearch/data <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -v es-plugins:/usr/share/elasticsearch/plugins <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --privileged <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --network es-net <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -p 9200:9200 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    -p 9300:9300 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>elasticsearch:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>マッピングディレクトリの変更に注意してね。上記ではデータボリュームを使ってるんだけど、一部を説明するよ。</p><ul><li><code>-e "cluster.name=es-docker-cluster"</code>：クラスター名を指定する。</li><li><code>-e "http.host=0.0.0.0"</code>：リスニングアドレスで、外部からのアクセスを許可する。</li><li><code>-e "ES_JAVA_OPTS=-Xms512m -Xmx512m"</code>：メモリサイズ。</li><li><code>-e "discovery.type=single-node"</code>：非クラスターモード。</li><li><code>-v es-data:/usr/share/elasticsearch/data</code>：論理ボリュームをマウントして、ESのデータディレクトリをバインドする。</li><li><code>-v es-logs:/usr/share/elasticsearch/logs</code>：論理ボリュームをマウントして、ESのログディレクトリをバインドする。</li><li><code>-v es-plugins:/usr/share/elasticsearch/plugins</code>：論理ボリュームをマウントして、ESのプラグインディレクトリをバインドする。</li><li><code>--privileged</code>：論理ボリュームへのアクセス権を付与する。</li><li><code>--network es-net</code> ：es-netという名前のネットワークに参加させる。</li></ul><p><code>&lt;localhost:9200></code>にアクセスして、下みたいなレスポンスが返ってきたら起動成功だよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=s2>&#34;6747e3f712ba&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cluster_name&#34;</span> <span class=p>:</span> <span class=s2>&#34;docker-cluster&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;cluster_uuid&#34;</span> <span class=p>:</span> <span class=s2>&#34;GSLtjxiMSlyRRRW-pSzvWQ&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;version&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;number&#34;</span> <span class=p>:</span> <span class=s2>&#34;7.12.1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_flavor&#34;</span> <span class=p>:</span> <span class=s2>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;docker&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_hash&#34;</span> <span class=p>:</span> <span class=s2>&#34;3186837139b9c6b6d23c3200870651f10d3343b7&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_date&#34;</span> <span class=p>:</span> <span class=s2>&#34;2021-04-20T20:56:39.040728659Z&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build_snapshot&#34;</span> <span class=p>:</span> <span class=kc>false</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lucene_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;8.8.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;minimum_wire_compatibility_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;6.8.0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;minimum_index_compatibility_version&#34;</span> <span class=p>:</span> <span class=s2>&#34;6.0.0-beta1&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tagline&#34;</span> <span class=p>:</span> <span class=s2>&#34;You Know, for Search&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=kibana>kibana</h3><p>同じバージョンのイメージをプルする</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull kibana:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>実行</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--name kibana <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>-e <span class=nv>ELASTICSEARCH_HOSTS</span><span class=o>=</span>http://es:9200 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>--network<span class=o>=</span>es-net <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>-p 5601:5601  <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>kibana:7.12.1
+</span></span></code></pre></td></tr></table></div></div><p>この<code>-e ELASTICSEARCH_HOSTS=http://es:9200"</code>はElasticsearchのアドレスを設定してるんだ。kibanaはElasticsearchと同じネットワークにいるから、コンテナ名で直接Elasticsearchにアクセスできるってわけ。</p><p>kibanaの起動はだいたい遅いから、少し待ってみてね。ログを確認して、ポート番号が表示されたら起動成功だよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker logs -f kibana
+</span></span></code></pre></td></tr></table></div></div><p><code>&lt;localhost:5601></code>にアクセスして結果を見てみて。</p><h3 id=ik形態素解析器>IK形態素解析器</h3><p>ESは転置インデックスを作る時にドキュメントを形態素解析する必要があるし、検索する時もユーザーの入力内容を形態素解析する必要があるんだ。でも、デフォルトの形態素解析ルールは日本語の処理にはあまり優しくないんだ。例えばテストしてみよう。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>形態素解析のテスト</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/_analyze</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;standard&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;初次使用 Elasticsearch&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>構文の説明</p><ul><li>POST：リクエスト方式</li><li><code>/_analyze</code>：リクエストパス。ここでは<code>&lt;http://localhost:9200></code>が省略されてて、kibanaが補完してくれるんだ。</li><li>リクエストパラメータはJSONを使う。<ul><li><code>analyzer</code>：形態素解析器のタイプで、デフォルトはstandardだよ。</li><li><code>text</code>：形態素解析したい内容。</li></ul></li></ul><p>結果はこんな感じ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tokens&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;初&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;次&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;使&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;用&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;IDEOGRAPHIC&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;elasticsearch&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;&lt;ALPHANUM&gt;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>4</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>形態素解析の結果がすごく良くないのがわかるでしょ。日本語の形態素解析を処理するには、だいたいIK形態素解析器を使うんだ。</p><p>IK形態素解析器 Github：
+<a class=link href=https://github.com/medcl/elasticsearch-analysis-ik target=_blank rel=noopener>https://github.com/medcl/elasticsearch-analysis-ik</a></p><h4 id=オンラインインストール>オンラインインストール</h4><p>インストールするバージョンがESと合ってるか注意してね。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># コンテナの中に入る</span>
+</span></span><span class=line><span class=cl>docker <span class=nb>exec</span> -it elasticsearch /bin/bash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># オンラインでダウンロードしてインストール</span>
+</span></span><span class=line><span class=cl>./bin/elasticsearch-plugin  install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.12.1/elasticsearch-analysis-ik-7.12.1.zip
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 終了する</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=c1># コンテナを再起動する</span>
+</span></span><span class=line><span class=cl>docker restart elasticsearch
+</span></span></code></pre></td></tr></table></div></div><h4 id=オフラインインストール>オフラインインストール</h4><p>プラグインをインストールするには、Elasticsearchのpluginsディレクトリの場所を知る必要があるんだ。上記ではデータボリュームをローカルにマウントしてるから、以下のコマンドで確認できるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker volume inspect es-plugins
+</span></span></code></pre></td></tr></table></div></div><p>出力されるJSONの<code>Mountpoint</code>がディレクトリだよ。</p><p>Githubからダウンロードした圧縮ファイルを解凍して、フォルダ名を<code>ik</code>にリネームしてからpluginsディレクトリに置いてね。</p><p>コンテナを再起動する</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker restart es
+</span></span></code></pre></td></tr></table></div></div><h4 id=効果のテスト>効果のテスト</h4><p>IK形態素解析器には2つのモードがあるんだ。</p><ul><li><code>ik_smart</code>：最小分割</li><li><code>ik_max_word</code>：最大分割（最も細かく分割）</li></ul><p>さっきの例でまた試してみるね。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>IK形態素解析のテスト</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/_analyze</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;初次使用 Elasticsearch&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;tokens&#34;</span> <span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;初次&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;CN_WORD&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;使用&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>4</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;CN_WORD&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;token&#34;</span> <span class=p>:</span> <span class=s2>&#34;elasticsearch&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;start_offset&#34;</span> <span class=p>:</span> <span class=mi>5</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;end_offset&#34;</span> <span class=p>:</span> <span class=mi>18</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;ENGLISH&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;position&#34;</span> <span class=p>:</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>この例では2つの形態素解析モードで結果が同じになったけど、もっと長い文で試すと結果の違いがわかるよ。</p></blockquote><h4 id=辞書の拡張>辞書の拡張</h4><p>インターネットが発展するにつれて、新しい言葉がどんどん生まれてくるから、既存の語彙リストにはない言葉も出てくるよね。だから、語彙リストも常に更新していく必要があるんだ。IK辞書を拡張するなら、ikディレクトリの中のconfigディレクトリにある<code>IKAnalyzer.cfg.xml</code>ファイルを変更するだけでOKだよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=cp>&lt;!DOCTYPE properties SYSTEM &#34;http://java.sun.com/dtd/properties.dtd&#34;&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;comment&gt;</span>IK Analyzer 拡張設定<span class=nt>&lt;/comment&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--ここで自分の拡張辞書を設定できるよ。 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;entry</span> <span class=na>key=</span><span class=s>&#34;ext_dict&#34;</span><span class=nt>&gt;</span>ext.dic<span class=nt>&lt;/entry&gt;</span>
+</span></span><span class=line><span class=cl>     <span class=c>&lt;!--ここで自分の拡張ストップワード辞書を設定できるよ。--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;entry</span> <span class=na>key=</span><span class=s>&#34;ext_stopwords&#34;</span><span class=nt>&gt;</span>stopwords.dic<span class=nt>&lt;/entry&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--ここでリモートの拡張辞書を設定できるよ。 --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- &lt;entry key=&#34;remote_ext_dict&#34;&gt;words_location&lt;/entry&gt; --&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!--ここでリモートの拡張ストップワード辞書を設定できるよ。--&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=c>&lt;!-- &lt;entry key=&#34;remote_ext_stopwords&#34;&gt;words_location&lt;/entry&gt; --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>上の設定みたいに、拡張語は<code>./ext.dic</code>に置いて、禁止語は<code>./stopwords.dic</code>に置くんだ。</p><p>禁止語には、「の」とか「ね」みたいな意味のない言葉を入れてもいいよ。</p><p>設定が終わったら、ESを再起動してね。</p><h2 id=dsl-インデックス操作>DSL インデックス操作</h2><p>インデックスはデータベースのテーブルみたいなものなんだ。ESにデータを保存するには、まず「データベース」と「テーブル」を作る必要があるんだよ。</p><h3 id=マッピングプロパティ>マッピングプロパティ</h3><p>マッピングはインデックス内のドキュメントに対する制約で、よく使われるマッピングプロパティはこんな感じだよ。</p><ul><li><code>type</code>：フィールドのデータ型。よくある簡単な型はね。<ul><li>文字列：<code>text</code>（形態素解析可能なテキスト）、<code>keyword</code>（厳密な値、例えばブランド、国、IPアドレス）</li><li>数値：<code>long</code>、<code>integer</code>、<code>short</code>、<code>byte</code>、<code>double</code>、<code>float</code></li><li>ブール：<code>boolean</code></li><li>日付：<code>date</code></li><li>オブジェクト：<code>object</code></li></ul></li><li><code>index</code>：インデックスを作成するかどうか。デフォルトはtrueだよ。</li><li><code>analyzer</code>：どの形態素解析器を使うか。</li><li><code>properties</code>：このフィールドの子フィールド。</li></ul><h3 id=インデックスの作成>インデックスの作成</h3><ul><li>リクエスト方式：PUT</li><li>リクエストパス：<code>/インデックス名</code>、自由に設定できるよ。</li><li>リクエストパラメータ：マッピング</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/インデックス名</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;mappings&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;フィールド名&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;フィールド名2&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;フィールド名3&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;子フィールド&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>インデックスを作成</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;mappings&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>},</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>実行後、こんな感じのが返ってきたら成功だよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;shards_acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=インデックスの検索>インデックスの検索</h3><ul><li><p>リクエスト方式：GET</p></li><li><p>リクエストパス：<code>/インデックス名</code></p></li><li><p>リクエストパラメータ：なし</p></li></ul><p>形式</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/インデックス名</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>インデックスを確認</span>
+</span></span><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hello</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;hello&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;aliases&#34;</span> <span class=p>:</span> <span class=p>{</span> <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;mappings&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;properties&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;email&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;info&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;analyzer&#34;</span> <span class=p>:</span> <span class=s2>&#34;ik_smart&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;properties&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;firstName&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;lastName&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;type&#34;</span> <span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;settings&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;index&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;routing&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;allocation&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nt>&#34;include&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>              <span class=nt>&#34;_tier_preference&#34;</span> <span class=p>:</span> <span class=s2>&#34;data_content&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;number_of_shards&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;blocks&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;read_only_allow_delete&#34;</span> <span class=p>:</span> <span class=s2>&#34;true&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;provided_name&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;creation_date&#34;</span> <span class=p>:</span> <span class=s2>&#34;1703683379263&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;number_of_replicas&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;uuid&#34;</span> <span class=p>:</span> <span class=s2>&#34;zn-kPdsETZeFcB0nXK79hg&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;version&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nt>&#34;created&#34;</span> <span class=p>:</span> <span class=s2>&#34;7120199&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=インデックスの変更>インデックスの変更</h3><p>インデックスとマッピングは一度作ったら変更できないんだけど、フィールドを追加することはできるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/インデックス名/_mapping</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;新しいフィールド名&#34;</span><span class=p>:{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>フィールドを追加</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_mapping</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><hr><p>もし<code>read-only-allow-delete</code>みたいなエラーが出たら、それはディスクの空き容量が5%未満だからだよ。以下のリクエストで解決できるよ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>_settings</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;blocks&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;read_only_allow_delete&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=インデックスの削除>インデックスの削除</h3><ul><li><p>リクエスト方式：DELETE</p></li><li><p>リクエストパス：<code>/インデックス名</code></p></li><li><p>リクエストパラメータ：なし</p></li></ul><p>形式</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/インデックス名</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/hello</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;acknowledged&#34;</span> <span class=p>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=インデックス操作まとめ>インデックス操作まとめ</h3><ul><li>インデックスの作成：<code>PUT /インデックス名</code></li><li>インデックスの検索：<code>GET /インデックス名</code></li><li>インデックスの削除：<code>DELETE /インデックス名</code></li><li>フィールドの追加：<code>PUT /インデックス名/_mapping</code></li></ul><h2 id=dsl-ドキュメント操作>DSL ドキュメント操作</h2><h3 id=ドキュメントの追加>ドキュメントの追加</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/インデックス名/_doc/ドキュメントid</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;フィールド1&#34;</span><span class=p>:</span> <span class=s2>&#34;値1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;フィールド2&#34;</span><span class=p>:</span> <span class=s2>&#34;値2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;フィールド3&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;サブプロパティ1&#34;</span><span class=p>:</span> <span class=s2>&#34;値3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;サブプロパティ2&#34;</span><span class=p>:</span> <span class=s2>&#34;値4&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>ドキュメントを追加</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;created&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=ドキュメントの検索>ドキュメントの検索</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/</span><span class=p>{</span><span class=err>インデックス名</span><span class=p>}</span><span class=err>/_doc/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>ドキュメントを検索</span>
+</span></span><span class=line><span class=cl><span class=err>GEt</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;found&#34;</span> <span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_source&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;info&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;email&#34;</span> <span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;firstName&#34;</span> <span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;lastName&#34;</span> <span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=ドキュメントの変更>ドキュメントの変更</h3><p>変更には2つの方法があって、全量変更と増分変更だよ。</p><h4 id=全量変更>全量変更</h4><p>全量変更は、元のドキュメントを上書きするんだ。本質的にはこうだよ。</p><ol><li>指定されたIDに基づいてドキュメントを削除する。</li><li>同じIDで新しいドキュメントを追加する。</li></ol><p>もしIDが存在しなかったら、2番目のステップが実行されて、変更じゃなくて新規追加（上書き書き込み）になるんだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/</span><span class=p>{</span><span class=err>インデックス名</span><span class=p>}</span><span class=err>/_doc/ドキュメントid</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;フィールド1&#34;</span><span class=p>:</span> <span class=s2>&#34;値1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;フィールド2&#34;</span><span class=p>:</span> <span class=s2>&#34;値2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// code
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>変更</span> <span class=err>-</span> <span class=err>全量変更</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;info&#34;</span><span class=p>:</span> <span class=s2>&#34;hello es&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;es@yexca.net&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;firstName&#34;</span><span class=p>:</span> <span class=s2>&#34;yexca&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lastName&#34;</span><span class=p>:</span> <span class=s2>&#34;Dale&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;updated&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>検索してみると、メールアドレスが変更されてるのがわかるよ。</p><h4 id=増分変更>増分変更</h4><p>増分変更は、指定されたIDに一致するドキュメントの中の一部フィールドだけを変更するんだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/</span><span class=p>{</span><span class=err>インデックス名</span><span class=p>}</span><span class=err>/_update/ドキュメントid</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;doc&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>         <span class=nt>&#34;フィールド名&#34;</span><span class=p>:</span> <span class=s2>&#34;新しい値&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>変更</span> <span class=err>-</span> <span class=err>増分変更</span>
+</span></span><span class=line><span class=cl><span class=err>POST</span> <span class=err>/hello/_update/</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;doc&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;email&#34;</span><span class=p>:</span> <span class=s2>&#34;blog@yexca.net&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;updated&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>検索してみると、メールアドレスが変更されてるのがわかるよ。</p><h3 id=ドキュメントの削除>ドキュメントの削除</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/</span><span class=p>{</span><span class=err>インデックス名</span><span class=p>}</span><span class=err>/_doc/id値</span>
+</span></span></code></pre></td></tr></table></div></div><p>例えば</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>ドキュメントを削除</span>
+</span></span><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/hello/_doc/</span><span class=mi>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>結果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_index&#34;</span> <span class=p>:</span> <span class=s2>&#34;hello&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_type&#34;</span> <span class=p>:</span> <span class=s2>&#34;_doc&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_id&#34;</span> <span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 途中で他のを編集したから、バージョン番号が高くなってるよ
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;_version&#34;</span> <span class=p>:</span> <span class=mi>8</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;result&#34;</span> <span class=p>:</span> <span class=s2>&#34;deleted&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_shards&#34;</span> <span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;total&#34;</span> <span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;successful&#34;</span> <span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;failed&#34;</span> <span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_seq_no&#34;</span> <span class=p>:</span> <span class=mi>7</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;_primary_term&#34;</span> <span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=ドキュメント操作まとめ>ドキュメント操作まとめ</h3><ul><li>ドキュメントの作成：<code>POST /{インデックス名}/_doc/ドキュメントid { jsonドキュメント }</code></li><li>ドキュメントの検索：<code>GET /{インデックス名}/_doc/ドキュメントid</code></li><li>ドキュメントの削除：<code>DELETE /{インデックス名}/_doc/ドキュメントid</code></li><li>ドキュメントの変更：<ul><li>全量変更：<code>PUT /{インデックス名}/_doc/ドキュメントid { jsonドキュメント }</code></li><li>増分変更：<code>POST /{インデックス名}/_update/ドキュメントid { "doc": {フィールド}}</code></li></ul></li></ul></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/%E3%83%90%E3%83%83%E3%82%AF%E3%82%A8%E3%83%B3%E3%83%89%E6%8A%80%E8%A1%93/>バックエンド技術</a>
+<a href=/ja/tags/elasticsearch/>Elasticsearch</a>
+<a href=/ja/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最終更新 2025-02-15 17:17 +0900</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/ja/archives/217/><div class=article-details><h2 class=article-title>SpringAMQP</h2></div></a></article><article><a href=/ja/archives/171/><div class=article-details><h2 class=article-title>Gateway サービスゲートウェイ</h2></div></a></article><article><a href=/ja/archives/170/><div class=article-details><h2 class=article-title>Feignでのリモート呼び出し</h2></div></a></article><article><a href=/ja/archives/223/><div class=article-details><h2 class=article-title>Springの自動設定とスターター依存</h2></div></a></article><article><a href=/ja/archives/222/><div class=article-details><h2 class=article-title>Springのトランザクション管理</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p><a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> で構築されています。 <span>|</span>
+テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

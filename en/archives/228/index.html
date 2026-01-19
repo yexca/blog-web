@@ -1,0 +1,778 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><title>Getting Started with Elasticsearch RestClient</title>
+<link rel=canonical href=https://blog.yexca.net/en/archives/228/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Getting Started with Elasticsearch RestClient"><meta property='og:description' content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><meta property='og:url' content='https://blog.yexca.net/en/archives/228/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Backend Tech'><meta property='article:tag' content='Elasticsearch'><meta property='article:tag' content='SpringCloud'><meta property='article:published_time' content='2025-02-03T22:30:00+09:00'><meta property='article:modified_time' content='2025-02-15T17:17:08+09:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Getting Started with Elasticsearch RestClient"><meta name=twitter:description content="📢 This article was translated by gemini-2.5-flash Elasticsearch Series\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/en\/archives\/228\/"},"headline":"Getting Started with Elasticsearch RestClient","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2025-02-03","dateModified":"2025-02-15","inLanguage":"en","description":"yexca\u0027s tech and life blog, writing about coding, projects, and daily thoughts."}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>yexca'Blog</a></h1><h2 class=site-description>Tech Otakus Change The World</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/en/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Background</span></a></li><li><a href=/en/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li><a href=/en/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/en/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>Support</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/ selected>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#creating-an-index>Creating an Index</a></li><li><a href=#initializing-restclient>Initializing RestClient</a></li><li><a href=#deleting-an-index>Deleting an Index</a></li><li><a href=#checking-if-an-index-exists>Checking if an Index Exists</a></li><li><a href=#restclient>RestClient</a></li><li><a href=#adding-documents>Adding Documents</a><ul><li><a href=#structure-adjustment>Structure Adjustment</a></li><li><a href=#add-syntax>Add Syntax</a></li><li><a href=#add-document-example-code>Add Document Example Code</a></li></ul></li><li><a href=#querying-documents>Querying Documents</a><ul><li><a href=#query-syntax>Query Syntax</a></li><li><a href=#query-document-example-code>Query Document Example Code</a></li></ul></li><li><a href=#deleting-documents>Deleting Documents</a><ul><li><a href=#delete-syntax>Delete Syntax</a></li><li><a href=#delete-document-example-code>Delete Document Example Code</a></li></ul></li><li><a href=#updating-documents>Updating Documents</a><ul><li><a href=#update-syntax>Update Syntax</a></li><li><a href=#update-document-example-code>Update Document Example Code</a></li></ul></li><li><a href=#bulk-importing-documents>Bulk Importing Documents</a><ul><li><a href=#bulk-import-document-example-code>Bulk Import Document Example Code</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/en/categories/tech-learning/>Tech Learning</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/archives/228/>Getting Started with Elasticsearch RestClient</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2025-02-03 22:30 +0900</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>5 minute read</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/en/tags/backend-tech/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Backend Tech</a>
+<a href=/en/tags/elasticsearch/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Elasticsearch</a>
+<a href=/en/tags/springcloud/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">SpringCloud</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/228/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/228/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/ja/archives/228/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> This article was translated by gemini-2.5-flash</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>Elasticsearch Series</strong></p><div class=table-wrapper><table><thead><tr><th style=text-align:left>Content</th><th style=text-align:left>Link</th></tr></thead><tbody><tr><td style=text-align:left>Elasticsearch Basic Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/226>https://blog.yexca.net/archives/226</a></td></tr><tr><td style=text-align:left>Elasticsearch Query Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/227>https://blog.yexca.net/archives/227</a></td></tr><tr><td style=text-align:left>RestClient Basic Operations</td><td style=text-align:left>This Article</td></tr><tr><td style=text-align:left>RestClient Query Operations</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/229>https://blog.yexca.net/archives/229</a></td></tr><tr><td style=text-align:left>Elasticsearch Data Aggregation</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/231>https://blog.yexca.net/archives/231</a></td></tr><tr><td style=text-align:left>Elasticsearch Autocomplete</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/232>https://blog.yexca.net/archives/232</a></td></tr><tr><td style=text-align:left>Elasticsearch Data Sync</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/234>https://blog.yexca.net/archives/234</a></td></tr><tr><td style=text-align:left>Elasticsearch Cluster</td><td style=text-align:left><a class=link href=https://blog.yexca.net/archives/235>https://blog.yexca.net/archives/235</a></td></tr></tbody></table></div></blockquote><p>Elasticsearch provides official clients for various languages to interact with ES. These clients essentially build DSL queries and send them to ES via HTTP requests.</p><p>Official Docs:
+<a class=link href=https://www.elastic.co/guide/en/elasticsearch/client/index.html target=_blank rel=noopener>https://www.elastic.co/guide/en/elasticsearch/client/index.html</a></p><p>This article uses the Java High-Level Rest Client API.</p><h2 id=creating-an-index>Creating an Index</h2><p>Here&rsquo;s the database table structure:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=o>`</span><span class=n>id</span><span class=o>`</span><span class=w> </span><span class=nb>bigint</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店id&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>name</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店名称&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>address</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店地址&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>price</span><span class=o>`</span><span class=w> </span><span class=nb>int</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店价格&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>score</span><span class=o>`</span><span class=w> </span><span class=nb>int</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店评分&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>brand</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店品牌&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>city</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;所在城市&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>star_name</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>16</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>DEFAULT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店星级，1星到5星，1钻到5钻&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>business</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>DEFAULT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;商圈&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>latitude</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;纬度&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>longitude</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;经度&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>`</span><span class=n>pic</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>255</span><span class=p>)</span><span class=w> </span><span class=nb>CHARACTER</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>utf8mb4</span><span class=w> </span><span class=k>COLLATE</span><span class=w> </span><span class=n>utf8mb4_general_ci</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>DEFAULT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=k>COMMENT</span><span class=w> </span><span class=s1>&#39;酒店图片&#39;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>PRIMARY</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=p>(</span><span class=o>`</span><span class=n>id</span><span class=o>`</span><span class=p>)</span><span class=w> </span><span class=k>USING</span><span class=w> </span><span class=n>BTREE</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Creating an index hinges on the mapping. You need to consider:</p><ul><li>Field names and data types (refer to your database table structure).</li><li>Whether the field should be searchable (based on business needs, e.g., image URLs typically aren&rsquo;t).</li><li>Whether the field needs tokenization (depends on content, e.g., cities usually don&rsquo;t).</li><li>Which tokenizer to use (ik_max_word is a common choice).</li></ul><p>Example mapping for the table above:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>#</span> <span class=err>Create</span> <span class=err>index</span>
+</span></span><span class=line><span class=cl><span class=err>PUT</span> <span class=err>/hotel</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;mappings&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;properties&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_max_word&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;copy_to&#34;</span><span class=p>:</span> <span class=s2>&#34;all&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=err>/*</span> <span class=err>Copies</span> <span class=err>this</span> <span class=err>field</span> <span class=err>to</span> <span class=err>the</span> <span class=err>&#39;all&#39;</span> <span class=err>field</span> <span class=err>*/</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;address&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;price&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;score&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;integer&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;brand&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;copy_to&#34;</span><span class=p>:</span> <span class=s2>&#34;all&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;city&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;copy_to&#34;</span><span class=p>:</span> <span class=s2>&#34;all&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;starName&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;business&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;location&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;geo_point&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=err>/*</span> <span class=err>ES</span> <span class=err>supports</span> <span class=err>two</span> <span class=err>geospatial</span> <span class=err>data</span> <span class=err>types</span> <span class=err>*/</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;pic&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;keyword&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;index&#34;</span><span class=p>:</span> <span class=kc>false</span>
+</span></span><span class=line><span class=cl>      <span class=p>},</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;all&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=err>/*</span> <span class=err>Combined</span> <span class=err>field,</span> <span class=err>won&#39;t</span> <span class=err>show</span> <span class=err>in</span> <span class=err>query</span> <span class=err>results</span> <span class=err>but</span> <span class=err>is</span> <span class=err>searchable</span> <span class=err>*/</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;text&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&#34;analyzer&#34;</span><span class=p>:</span> <span class=s2>&#34;ik_max_word&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Geospatial data types:</p><ul><li>geo_point: A single point defined by latitude and longitude. E.g., <code>"32.84 120.25"</code></li><li>geo_shape: Complex geometric shapes composed of multiple geo_points. E.g., a line <code>"LINESTRING(-77.03 38.29, +77.00 38.88)"</code></li></ul><h2 id=initializing-restclient>Initializing RestClient</h2><p>All interactions with Elasticsearch are encapsulated within the <code>RestHighLevelClient</code> class.</p><p>First, add the <code>RestHighLevelClient</code> dependency:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;dependency&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;groupId&gt;</span>org.elasticsearch.client<span class=nt>&lt;/groupId&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;artifactId&gt;</span>elasticsearch-rest-high-level-client<span class=nt>&lt;/artifactId&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/dependency&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Since SpringBoot&rsquo;s default ES version is 7.6.2, you&rsquo;ll need to override it.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;properties&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;java.version&gt;</span>1.8<span class=nt>&lt;/java.version&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;elasticsearch.version&gt;</span>7.12.1<span class=nt>&lt;/elasticsearch.version&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/properties&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>Here&rsquo;s how to initialize the <code>RestHighLevelClient</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=n>RestHighLevelClient</span><span class=w> </span><span class=n>client</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RestHighLevelClient</span><span class=p>(</span><span class=n>RestClient</span><span class=p>.</span><span class=na>builder</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>HttpHost</span><span class=p>.</span><span class=na>create</span><span class=p>(</span><span class=s>&#34;http://IP:9200&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>));</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>For convenience during testing, the initialization code is placed in <code>@BeforeEach</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HotelIndexTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>RestHighLevelClient</span><span class=w> </span><span class=n>client</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@BeforeEach</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>setUp</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>client</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RestHighLevelClient</span><span class=p>(</span><span class=n>RestClient</span><span class=p>.</span><span class=na>builder</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>HttpHost</span><span class=p>.</span><span class=na>create</span><span class=p>(</span><span class=s>&#34;http://127.0.0.1:9200&#34;</span><span class=p>)));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@AfterEach</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>tearDown</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>client</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>The JSON part of the DSL statement needed for defining the index can be extracted into a separate constant.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HotelContants</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kd>final</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>MAPPING_TEMPLATE</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s>&#34;{\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;  \&#34;mappings\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;    \&#34;properties\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;id\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;name\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;address\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;index\&#34;: false\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;price\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;score\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;integer\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;brand\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;city\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;copy_to\&#34;: \&#34;all\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;starName\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;business\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;location\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;geo_point\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;pic\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;keyword\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;index\&#34;: false\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      },\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      \&#34;all\&#34;: {\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;type\&#34;: \&#34;text\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;        \&#34;analyzer\&#34;: \&#34;ik_max_word\&#34;\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;      }\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;    }\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;  }\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;}&#34;</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Code to create the index:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// Note the CreateIndexRequest package</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kn>import</span><span class=w> </span><span class=nn>org.elasticsearch.client.indices.CreateIndexRequest</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kt>void</span><span class=w> </span><span class=nf>testCreateHotelIndex</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create a Request object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>CreateIndexRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>CreateIndexRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Request parameters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>source</span><span class=p>(</span><span class=n>MAPPING_TEMPLATE</span><span class=p>,</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>indices</span><span class=p>().</span><span class=na>create</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=deleting-an-index>Deleting an Index</h2><p>DSL statement:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/hotel</span>
+</span></span></code></pre></td></tr></table></div></div><p>The only difference from the creation code is the Request object, and it takes no parameters.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kt>void</span><span class=w> </span><span class=nf>testDeleteHotelIndex</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeleteIndexRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DeleteIndexRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>indices</span><span class=p>().</span><span class=na>delete</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=checking-if-an-index-exists>Checking if an Index Exists</h2><p>DSL statement:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/hotel</span>
+</span></span></code></pre></td></tr></table></div></div><p>Again, the difference is just the Request object.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kt>void</span><span class=w> </span><span class=nf>testExistsHotelIndex</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>GetIndexRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>GetIndexRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>boolean</span><span class=w> </span><span class=n>exists</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>client</span><span class=p>.</span><span class=na>indices</span><span class=p>().</span><span class=na>exists</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Output</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>exists</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p><strong>Summary</strong></p><p>The process for Java RestClient operations on ES is quite similar: use the <code>client.indices()</code> method to get the index management object.</p></blockquote><h2 id=restclient>RestClient</h2><p>Typically, data is managed (CRUD) in an index from a database query.
+Initializing <code>RestHighLevelClient</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@SpringBootTest</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HotelDocumentTest</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Inject service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@Autowired</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>IHotelService</span><span class=w> </span><span class=n>hotelService</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>RestHighLevelClient</span><span class=w> </span><span class=n>client</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@BeforeEach</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>setUp</span><span class=p>()</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Build RestClient</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>client</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>RestHighLevelClient</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=n>RestClient</span><span class=p>.</span><span class=na>builder</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=n>HttpHost</span><span class=p>.</span><span class=na>create</span><span class=p>(</span><span class=s>&#34;http://127.0.0.1:9200&#34;</span><span class=p>)));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@AfterEach</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kt>void</span><span class=w> </span><span class=nf>tearDown</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>client</span><span class=p>.</span><span class=na>close</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=adding-documents>Adding Documents</h2><p>Query data from the database and write it into ES.</p><h3 id=structure-adjustment>Structure Adjustment</h3><p>The result of a database query is a <code>Hotel</code> object.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@TableName</span><span class=p>(</span><span class=s>&#34;tb_hotel&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Hotel</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nd>@TableId</span><span class=p>(</span><span class=n>type</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>IdType</span><span class=p>.</span><span class=na>INPUT</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Integer</span><span class=w> </span><span class=n>price</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Integer</span><span class=w> </span><span class=n>score</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>brand</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>city</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>starName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>business</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>longitude</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>latitude</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>pic</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>There&rsquo;s a structural difference compared to the index. We need to define a new type that matches the index structure.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nd>@NoArgsConstructor</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>HotelDoc</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Long</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>address</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Integer</span><span class=w> </span><span class=n>price</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>Integer</span><span class=w> </span><span class=n>score</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>brand</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>city</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>starName</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>business</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>location</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>pic</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=nf>HotelDoc</span><span class=p>(</span><span class=n>Hotel</span><span class=w> </span><span class=n>hotel</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getId</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>address</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getAddress</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>price</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getPrice</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>score</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getScore</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>brand</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getBrand</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>city</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getCity</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>starName</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getStarName</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>business</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getBusiness</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>location</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getLatitude</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;, &#34;</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getLongitude</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>pic</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotel</span><span class=p>.</span><span class=na>getPic</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=add-syntax>Add Syntax</h3><p>The DSL syntax is:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/</span><span class=p>{</span><span class=err>indexName</span><span class=p>}</span><span class=err>/_doc/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Jack&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=mi>21</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>The corresponding Java code:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelCreateTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>IndexRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IndexRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>).</span><span class=na>id</span><span class=p>(</span><span class=s>&#34;1&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the JSON object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>source</span><span class=p>(</span><span class=s>&#34;{\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;    \&#34;name\&#34;: \&#34;Jack\&#34;,\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;    \&#34;age\&#34;: 21\n&#34;</span><span class=w> </span><span class=o>+</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;}&#34;</span><span class=p>,</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>index</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=add-document-example-code>Add Document Example Code</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelCreateTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Query hotel data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>Hotel</span><span class=w> </span><span class=n>hotel</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotelService</span><span class=p>.</span><span class=na>getById</span><span class=p>(</span><span class=n>61083L</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Convert to document type</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>HotelDoc</span><span class=w> </span><span class=n>hotelDoc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HotelDoc</span><span class=p>(</span><span class=n>hotel</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Convert to JSON</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>json</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>JSON</span><span class=p>.</span><span class=na>toJSONString</span><span class=p>(</span><span class=n>hotelDoc</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>IndexRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>IndexRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>).</span><span class=na>id</span><span class=p>(</span><span class=n>hotelDoc</span><span class=p>.</span><span class=na>getId</span><span class=p>().</span><span class=na>toString</span><span class=p>());</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the JSON object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>source</span><span class=p>(</span><span class=n>json</span><span class=p>,</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>index</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=querying-documents>Querying Documents</h2><h3 id=query-syntax>Query Syntax</h3><p>DSL statement:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>GET</span> <span class=err>/</span><span class=p>{</span><span class=err>indexName</span><span class=p>}</span><span class=err>/_doc/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Java code:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelGetTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>GetRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>GetRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>GetResponse</span><span class=w> </span><span class=n>response</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>client</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Parse the result</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>json</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>response</span><span class=p>.</span><span class=na>getSourceAsString</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>json</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=query-document-example-code>Query Document Example Code</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelGetTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>GetRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>GetRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;61083&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>GetResponse</span><span class=w> </span><span class=n>response</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>client</span><span class=p>.</span><span class=na>get</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Parse the result</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>String</span><span class=w> </span><span class=n>json</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>response</span><span class=p>.</span><span class=na>getSourceAsString</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Deserialize into a Java object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>HotelDoc</span><span class=w> </span><span class=n>hotelDoc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>JSON</span><span class=p>.</span><span class=na>parseObject</span><span class=p>(</span><span class=n>json</span><span class=p>,</span><span class=w> </span><span class=n>HotelDoc</span><span class=p>.</span><span class=na>class</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>hotelDoc</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=deleting-documents>Deleting Documents</h2><h3 id=delete-syntax>Delete Syntax</h3><p>DSL statement:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>DELETE</span> <span class=err>/</span><span class=p>{</span><span class=err>indexName</span><span class=p>}</span><span class=err>/_doc/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Java code:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelDeleteTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeleteRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DeleteRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>delete</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=delete-document-example-code>Delete Document Example Code</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelDeleteTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>DeleteRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>DeleteRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;61083&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send the request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>delete</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=updating-documents>Updating Documents</h2><h3 id=update-syntax>Update Syntax</h3><p>Updates can be full or partial. In the RestClient API, both use the same API, determined by the ID. When adding:</p><ul><li>If ID exists, it&rsquo;s an update.</li><li>If ID doesn&rsquo;t exist, it&rsquo;s an insert.</li></ul><p>Here, we&rsquo;ll focus on partial updates. DSL statement:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>POST</span> <span class=err>/</span><span class=p>{</span><span class=err>indexName</span><span class=p>}</span><span class=err>/_update/</span><span class=p>{</span><span class=err>id</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;doc&#34;</span><span class=p>:</span> <span class=s2>&#34;Rose&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;age&#34;</span><span class=p>:</span> <span class=mi>18</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>Java code:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelUpdateTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create request object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>UpdateRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>UpdateRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;id&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare parameters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>doc</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;name&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;Rose&#34;</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;age&#34;</span><span class=p>,</span><span class=w> </span><span class=n>18</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Update document</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>update</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=update-document-example-code>Update Document Example Code</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>HotelUpdateTest</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create request object</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>UpdateRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>UpdateRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;61083&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Prepare parameters</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>doc</span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;price&#34;</span><span class=p>,</span><span class=w> </span><span class=n>950</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=s>&#34;starName&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;四钻&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Update document</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>update</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=bulk-importing-documents>Bulk Importing Documents</h2><p>Use <code>BulkRequest</code> to import database data into the index in bulk. This essentially combines multiple regular CRUD requests and sends them together. Example:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testBulk</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create bulk request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>BulkRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BulkRequest</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Add bulk requests</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>IndexRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>).</span><span class=na>id</span><span class=p>(</span><span class=s>&#34;id1&#34;</span><span class=p>).</span><span class=na>source</span><span class=p>(</span><span class=s>&#34;json1&#34;</span><span class=p>,</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>request</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>IndexRequest</span><span class=p>(</span><span class=s>&#34;indexName&#34;</span><span class=p>).</span><span class=na>id</span><span class=p>(</span><span class=s>&#34;id2&#34;</span><span class=p>).</span><span class=na>source</span><span class=p>(</span><span class=s>&#34;json2&#34;</span><span class=p>,</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send bulk request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>bulk</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=bulk-import-document-example-code>Bulk Import Document Example Code</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=nd>@Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>testBulk</span><span class=p>()</span><span class=w> </span><span class=kd>throws</span><span class=w> </span><span class=n>IOException</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Batch query data</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>List</span><span class=o>&lt;</span><span class=n>Hotel</span><span class=o>&gt;</span><span class=w> </span><span class=n>hotelList</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>hotelService</span><span class=p>.</span><span class=na>list</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Create bulk request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>BulkRequest</span><span class=w> </span><span class=n>request</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>BulkRequest</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Add bulk requests</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>for</span><span class=w> </span><span class=p>(</span><span class=n>Hotel</span><span class=w> </span><span class=n>hotel</span><span class=w> </span><span class=p>:</span><span class=w> </span><span class=n>hotelList</span><span class=p>)</span><span class=w> </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Convert to document type</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>HotelDoc</span><span class=w> </span><span class=n>hotelDoc</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>HotelDoc</span><span class=p>(</span><span class=n>hotel</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// Create request object for new document</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>request</span><span class=p>.</span><span class=na>add</span><span class=p>(</span><span class=k>new</span><span class=w> </span><span class=n>IndexRequest</span><span class=p>(</span><span class=s>&#34;hotel&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>id</span><span class=p>(</span><span class=n>hotelDoc</span><span class=p>.</span><span class=na>getId</span><span class=p>().</span><span class=na>toString</span><span class=p>())</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=p>.</span><span class=na>source</span><span class=p>(</span><span class=n>JSON</span><span class=p>.</span><span class=na>toJSONString</span><span class=p>(</span><span class=n>hotelDoc</span><span class=p>),</span><span class=w> </span><span class=n>XContentType</span><span class=p>.</span><span class=na>JSON</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// Send bulk request</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>client</span><span class=p>.</span><span class=na>bulk</span><span class=p>(</span><span class=n>request</span><span class=p>,</span><span class=w> </span><span class=n>RequestOptions</span><span class=p>.</span><span class=na>DEFAULT</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/en/tags/backend-tech/>Backend Tech</a>
+<a href=/en/tags/elasticsearch/>Elasticsearch</a>
+<a href=/en/tags/springcloud/>SpringCloud</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Last updated on 2025-02-15 17:17 +0900</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/en/archives/227/><div class=article-details><h2 class=article-title>Elasticsearch Queries</h2></div></a></article><article><a href=/en/archives/226/><div class=article-details><h2 class=article-title>Elasticsearch Getting Started</h2></div></a></article><article><a href=/en/archives/217/><div class=article-details><h2 class=article-title>SpringAMQP</h2></div></a></article><article><a href=/en/archives/171/><div class=article-details><h2 class=article-title>Gateway Service Gateway</h2></div></a></article><article><a href=/en/archives/170/><div class=article-details><h2 class=article-title>Feign Remote Calls</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>Built with <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> <span>|</span>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

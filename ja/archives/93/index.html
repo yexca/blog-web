@@ -1,0 +1,286 @@
+<!doctype html><html lang=ja dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 この記事は gemini-3-flash-preview によって翻訳されました オブジェクト指向 (Object-Oriented, OO) は、すごく実用的なシステム化されたソフトウェア開発手法なんだ。\n"><title>オブジェクト指向の基礎</title>
+<link rel=canonical href=https://blog.yexca.net/ja/archives/93/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="オブジェクト指向の基礎"><meta property='og:description' content="📢 この記事は gemini-3-flash-preview によって翻訳されました オブジェクト指向 (Object-Oriented, OO) は、すごく実用的なシステム化されたソフトウェア開発手法なんだ。\n"><meta property='og:url' content='https://blog.yexca.net/ja/archives/93/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='ソフトウェア工学'><meta property='article:tag' content='オブジェクト指向'><meta property='article:published_time' content='2023-02-25T19:34:30+08:00'><meta property='article:modified_time' content='2023-02-25T19:34:30+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="オブジェクト指向の基礎"><meta name=twitter:description content="📢 この記事は gemini-3-flash-preview によって翻訳されました オブジェクト指向 (Object-Oriented, OO) は、すごく実用的なシステム化されたソフトウェア開発手法なんだ。\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/ja\/archives\/93\/"},"headline":"オブジェクト指向の基礎","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2023-02-25","dateModified":"2023-02-25","inLanguage":"ja","description":"yexca の技術と生活のブログ。プログラミングや日常の記録を掲載。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=メニューを開く・閉じる>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/ja/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/ja>yexca'Blog</a></h1><h2 class=site-description>この世で道が尽きることはなく、行きたいと望む心があれば、道は必ず足元に広がる</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/ja/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/ja/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>ホーム</span></a></li><li><a href=/ja/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>アーカイブ</span></a></li><li><a href=/ja/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>検索</span></a></li><li><a href=/ja/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/ja/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>リンク</span></a></li><li><a href=/ja/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>について</span></a></li><li><a href=/ja/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>応援</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/ selected>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>ダークモード</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目次</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#手続き型とオブジェクト指向>手続き型とオブジェクト指向</a><ul><li><a href=#手続き型>手続き型</a></li><li><a href=#オブジェクト指向>オブジェクト指向</a></li></ul></li><li><a href=#オブジェクト指向の基礎>オブジェクト指向の基礎</a><ul><li><a href=#オブジェクト>オブジェクト</a></li><li><a href=#メッセージ>メッセージ</a></li><li><a href=#クラス>クラス</a></li></ul></li><li><a href=#メソッドのオーバーロード>メソッドのオーバーロード</a></li><li><a href=#オブジェクト指向の三大特徴>オブジェクト指向の三大特徴</a><ul><li><a href=#カプセル化>カプセル化</a></li><li><a href=#継承>継承</a></li><li><a href=#多態性-ポリモーフィズム>多態性 (ポリモーフィズム)</a></li></ul></li><li><a href=#オブジェクト指向分析>オブジェクト指向分析</a></li><li><a href=#オブジェクト指向設計>オブジェクト指向設計</a><ul><li><a href=#オブジェクト指向設計の活動>オブジェクト指向設計の活動</a></li><li><a href=#オブジェクト指向設計の原則>オブジェクト指向設計の原則</a></li></ul></li><li><a href=#オブジェクト指向テスト>オブジェクト指向テスト</a></li><li><a href=#オブジェクト指向プログラミング>オブジェクト指向プログラミング</a></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/ja/categories/%E6%8A%80%E8%A1%93%E5%AD%A6%E7%BF%92/>技術学習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/ja/archives/93/>オブジェクト指向の基礎</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2023-02-25 19:34 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>読了時間: 13分</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/ja/tags/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E5%B7%A5%E5%AD%A6/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">ソフトウェア工学</a>
+<a href=/ja/tags/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">オブジェクト指向</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/93/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/93/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/en/archives/93/ class=link>English</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> この記事は gemini-3-flash-preview によって翻訳されました</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><p>オブジェクト指向 (Object-Oriented, OO) は、すごく実用的なシステム化されたソフトウェア開発手法なんだ。</p><h2 id=手続き型とオブジェクト指向>手続き型とオブジェクト指向</h2><p>一つの問題から考えてみよう。「ゾウを冷蔵庫に入れるには、何ステップ必要かな？」</p><p>普通は、まず冷蔵庫を開けて、次にゾウを中に入れて、最後に冷蔵庫を閉めるよね。</p><h3 id=手続き型>手続き型</h3><p>「どうやってやるか」を気にするスタイル。機能を一歩ずつ実現していくんだ。</p><p>さっきの問題なら：</p><ol><li>自分が冷蔵庫を開ける</li><li>自分がゾウを冷蔵庫の中に押し込む</li><li>自分が冷蔵庫のドアを閉める</li></ol><h3 id=オブジェクト指向>オブジェクト指向</h3><p>「誰にやらせるか」を気にするスタイル。オブジェクトの操作を呼び出すことで機能を実現するんだ。</p><p>さっきの問題なら：</p><p>オブジェクトを作る：ゾウ、冷蔵庫</p><ol><li>冷蔵庫がドアを開ける</li><li>ゾウが冷蔵庫の中に入る</li><li>冷蔵庫がドアを閉める</li></ol><h2 id=オブジェクト指向の基礎>オブジェクト指向の基礎</h2><p>オブジェクト指向 ＝ オブジェクト ＋ 分類 ＋ 継承 ＋ メッセージによる通信</p><p>この 4 つの概念を使って開発されたソフトウェアシステムが、オブジェクト指向だと言えるよ。</p><h3 id=オブジェクト>オブジェクト</h3><p>現実世界は、たくさんの具体的なモノ、出来事、概念、ルールで成り立っていて、これらはすべてオブジェクトと見なすことができる。</p><p>オブジェクト指向システムにおいて、オブジェクトは基本的な実行時のエンティティなんだ。データ（属性）と、そのデータに作用する操作（振る舞い）の両方を含んでいる。<strong>一つのオブジェクトは、通常「オブジェクト名」「属性」「メソッド」の 3 つの部分で構成されるよ。</strong></p><h3 id=メッセージ>メッセージ</h3><p>オブジェクト間で通信するための仕組みをメッセージと呼ぶ。あるメッセージを特定のオブジェクトに送るとき、それには受信側のオブジェクトに特定の活動を実行させるための情報が含まれている。メッセージを受け取ったオブジェクトは、それを解釈して応答するんだ。</p><p><em>メソッド呼び出しの引数渡しみたいなものだね。</em></p><h3 id=クラス>クラス</h3><p>クラスは、大体似たようなオブジェクトの集まりを定義するものだ。一つのクラスに含まれるメソッドとデータは、オブジェクトのグループに共通する<strong>振る舞い</strong>と<strong>属性</strong>を記述している。オブジェクトの共通の特徴を抽象化してクラスに保存することは、オブジェクト指向技術の最も重要なポイントなんだ。充実したクラスライブラリがあるかどうかは、そのオブジェクト指向プログラミング言語が成熟しているかどうかの重要な指標になる。</p><p><strong>クラスはオブジェクトを抽象化したもの</strong>であり、**オブジェクトはクラスを具体化したもの（インスタンス）**なんだ。分析や設計のときは、具体的なオブジェクトではなく、通常はクラスに注目する。オブジェクトを一つずつ定義する必要はなくて、クラスを定義して、その属性に異なる値を割り当てるだけで、そのクラスのオブジェクトインスタンスが手に入るんだ。</p><p>クラスは 3 つに分けられる：エンティティクラス、インターフェースクラス（境界クラス）、コントロールクラス。コントロールクラスのオブジェクトは、処理の流れを制御し、コーディネーターの役割を果たすよ。</p><p>クラスの中には「一般と特殊」の関係を持つものがある。あるクラスが別のクラスの特殊なケースだったり、逆に一般的なケースだったりする。特殊なクラスは一般なクラスの「サブクラス」で、一般的なクラスは特殊なクラスの「スーパークラス（親クラス）」になるんだ。</p><p>通常、一つのクラスとそのクラスのすべてのオブジェクトをまとめて「クラスとオブジェクト」またはオブジェクトクラスと呼ぶこともある。</p><h2 id=メソッドのオーバーロード>メソッドのオーバーロード</h2><p>メソッドをオーバーロードする方法：</p><ol><li>メソッド名は同じで、引数の数が異なる</li><li>メソッド名は同じで、引数の型が異なる</li><li>メソッド名は同じで、引数の型の順番が異なる</li></ol><p>Java を例にすると、関数の書式はこんな感じ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=cm>/*
+</span></span></span><span class=line><span class=cl><span class=cm>アクセス修飾子 戻り値の型 メソッド名(引数の型1 引数名1, 引数の型2 引数名2, ···)
+</span></span></span><span class=line><span class=cl><span class=cm>{
+</span></span></span><span class=line><span class=cl><span class=cm>    メソッドの本体
+</span></span></span><span class=line><span class=cl><span class=cm>}
+</span></span></span><span class=line><span class=cl><span class=cm>*/</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>例を挙げるね：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 元のメソッド</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sum</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=n>b</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>a</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>b</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 1. メソッド名は同じで、引数の数が異なる</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sum</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=kt>double</span><span class=w> </span><span class=n>b</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>c</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>a</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>b</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>c</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 2. メソッド名は同じで、引数の型が異なる</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sum</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>b</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>a</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>b</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 3. メソッド名は同じで、引数の型の順番が異なる</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sum</span><span class=p>(</span><span class=kt>double</span><span class=w> </span><span class=n>a</span><span class=p>,</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>b</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>a</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=n>b</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=オブジェクト指向の三大特徴>オブジェクト指向の三大特徴</h2><p>オブジェクト指向の 3 つの基本特徴は、カプセル化、継承、多態性（ポリモーフィズム）だよ。</p><h3 id=カプセル化>カプセル化</h3><p>カプセル化は情報を隠蔽する技術で、オブジェクトの利用者と作成者を切り離し、定義と実装を分けることが目的なんだ。設計者から見ればオブジェクトはプログラムモジュールだけど、ユーザーから見れば期待通りの振る舞いを提供してくれるものに見える。</p><p>つまり、現実のモノを抽象的なクラスにまとめ、自分自身のデータやメソッドを信頼できるクラスやオブジェクトだけに操作させ、信頼できないものからは情報を隠すことなんだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Person</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>    </span><span class=c1>// private を使ってアクセスを制限する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>age</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setName</span><span class=p>(</span><span class=n>String</span><span class=w> </span><span class=n>name</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// public メソッドを通じて属性を変更する手段を提供する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>name</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=n>String</span><span class=w> </span><span class=nf>getName</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// public メソッドを通じて属性を取得する手段を提供する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>name</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setAge</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>age</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>if</span><span class=w> </span><span class=p>(</span><span class=n>age</span><span class=w> </span><span class=o>&gt;=</span><span class=w> </span><span class=n>0</span><span class=w> </span><span class=o>&amp;&amp;</span><span class=w> </span><span class=n>age</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=n>150</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=k>this</span><span class=p>.</span><span class=na>age</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>age</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>getAge</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>age</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>run</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;走る！&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=継承>継承</h3><p>継承は、親クラスと子クラスの間でデータとメソッドを共有する仕組みだ。これはクラス間の関係の一つで、新しいクラスを定義・実装するときに、すでにある親クラスをベースにできるんだ。既存のクラスの内容を自分のものとして取り込み、そこに新しい内容を追加する感じだね。</p><p>一つの親クラスは複数の子クラスを持つことができて、これらの中身はすべて親クラスの特殊なケースになる。親クラスは子クラスの共通の属性やメソッドを記述しているんだ。子クラスは親クラス（または祖先クラス）の属性やメソッドを引き継げるから、子クラスでそれらを再定義する必要はない。もちろん、子クラス独自の属性やメソッドを追加することもできるよ。</p><p>もし子クラスが一つの親クラスからしか継承しないなら「単一継承」、二つ以上の親クラスから継承するなら「多重継承」と呼ぶ。</p><blockquote><p>注：Java では一つの子クラスは一つの親クラスしか持てない（単一継承）。</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 前のコードの続き</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Student</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Person</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// キーワード extends を使って継承する親クラスを指定する</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>private</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>setId</span><span class=p>(</span><span class=kt>int</span><span class=w> </span><span class=n>id</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>this</span><span class=p>.</span><span class=na>id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>int</span><span class=w> </span><span class=nf>getId</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>return</span><span class=w> </span><span class=n>id</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>study</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>getName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;は勉強中&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// 親クラスのメソッドをオーバーライド（書き換え）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>run</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=n>getName</span><span class=p>()</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=s>&#34;は逃げたい&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=多態性-ポリモーフィズム>多態性 (ポリモーフィズム)</h3><p>メッセージを受け取ったとき、オブジェクトはそれに応答する。異なるオブジェクトが同じメッセージを受け取っても、全く異なる結果を生じることがある。この現象を多態性と呼ぶんだ。多態性を使うと、ユーザーは一般的なメッセージを送るだけで、具体的な実装の詳細は受信側のオブジェクトに任せることができる。こうして、同じメッセージで異なるメソッドを呼び出せるようになるんだ。</p><p>多態性の実現は継承に支えられている。クラスの継承階層を利用して、共通の機能を持つメッセージを高い階層に置き、その機能を実現する異なる振る舞いを低い階層に置く。そうすることで、低い階層で生成されたオブジェクトが共通のメッセージに対して異なる応答を返せるようになるんだ。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>// 親クラス</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Person</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>work</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;仕事をする&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 子クラス 1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Student</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Person</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// メソッドのオーバーライド</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>work</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;学校に行く&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>run</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;Only the young CAN RUN!&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 子クラス 2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Worker</span><span class=w> </span><span class=kd>extends</span><span class=w> </span><span class=n>Person</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>// メソッドのオーバーライド</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>work</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;出社する&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>sleep</span><span class=p>(){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>System</span><span class=p>.</span><span class=na>out</span><span class=p>.</span><span class=na>println</span><span class=p>(</span><span class=s>&#34;寝る&#34;</span><span class=p>);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// main</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=kd>public</span><span class=w> </span><span class=kd>class</span> <span class=nc>Main</span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=kd>public</span><span class=w> </span><span class=kd>static</span><span class=w> </span><span class=kt>void</span><span class=w> </span><span class=nf>main</span><span class=p>(</span><span class=n>String</span><span class=o>[]</span><span class=w> </span><span class=n>args</span><span class=p>){</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// コンパイル時は左（型）を見て、実行時は右（中身）を見る</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Person</span><span class=w> </span><span class=n>stu</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Student</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>stu</span><span class=p>.</span><span class=na>work</span><span class=p>();</span><span class=w> </span><span class=c1>// &#34;学校に行く&#34; と出力される</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// stu.run(); は呼び出せない（Person 型には run がないから）</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>Person</span><span class=w> </span><span class=n>wok</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>new</span><span class=w> </span><span class=n>Worker</span><span class=p>();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=n>wok</span><span class=p>.</span><span class=na>work</span><span class=p>();</span><span class=w> </span><span class=c1>// &#34;出社する&#34; と出力される</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c1>// wok.sleep(); は呼び出せない</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 実行結果：</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 学校に行く</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>// 出社する</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=多態性の形式>多態性の形式</h4><p>多態性にはいくつかの形式があって、Cardelli と Wegner は 4 つに分類しているよ。</p><p><img src=https://cdn.statically.io/gh/yexca/picx-images-hosting@master/2023/02-%e9%9d%a2%e5%90%91%e5%af%b9%e8%b1%a1/image.610jlm8h8vw0.webp loading=lazy alt=image></p><ol><li><strong>パラメータ多態 (Parametric polymorphism)</strong>：広く使われている多態性で、<strong>最も純粋な多態性</strong>と言われている。</li><li><strong>包含多態 (Inclusion polymorphism)</strong>：多くの言語に存在し、最も一般的な例は<strong>サブタイプ化</strong>だ。つまり、ある型が別の型のサブタイプであること。</li><li><strong>過負荷多態 (Overloading polymorphism)</strong>：同じ名前が異なる<strong>コンテキスト</strong>（文脈）で異なる意味を持つこと。</li><li><strong>強制多態 (Coercion polymorphism)</strong>：型変換などによって実現される多態性。</li></ol><h4 id=動的バインディングと静的バインディング>動的バインディングと静的バインディング</h4><p>バインディング（結合）とは、プロシージャの呼び出しと、その呼び出しに応答して実行されるコードを関連付けるプロセスのこと。一般的なプログラミング言語では、バインディングは<strong>コンパイル時</strong>に行われ、これを<strong>静的バインディング</strong>と呼ぶ。一方で、<strong>動的バインディングは実行時</strong>に行われる。つまり、呼び出しが発生するまで、どのコードが実行されるか決まらないんだ。</p><p>動的バインディングはクラスの継承や多態性と深く関わっている。継承関係において、子クラスは親クラスの特殊なケースだから、親クラスが使える場所には子クラスのオブジェクトも置ける。そのため実行中に、あるオブジェクトがメッセージを送ってサービスを要求したとき、受信側のオブジェクトの具体的な状況に応じて、要求された操作と実装メソッドを接続する、つまり動的接続が行われるんだ。</p><h2 id=オブジェクト指向分析>オブジェクト指向分析</h2><p>オブジェクト指向分析 (Object-Oriented Analysis, OOA) の目的は、アプリケーションの問題を理解することだ。理解の目的は、システムの機能や性能要件を確定させることにある。</p><p>OOA には 5 つの活動がある：オブジェクトの認定、オブジェクトの組織化、オブジェクト間の相互作用の記述、オブジェクトの操作の確定、オブジェクトの内部情報の定義。</p><h2 id=オブジェクト指向設計>オブジェクト指向設計</h2><p>オブジェクト指向設計 (Object-Oriented Design, OOD) は、OOA で作成された分析モデルを設計モデルに変換すること。その目標は、システムの構築図（ブループリント）を定義することなんだ。通常、概念モデルから生成された分析モデルを実行環境に組み込む際、実装上の問題を考慮して調整や補充が必要になる。例えば、使用するプログラミング言語が多重継承をサポートしているかどうかに合わせてクラス構造を調整したりする。OOA と OOD の間には大きな隔たりはなく、一貫した概念と表現方法が使われる。OOD も同様に、抽象化、情報隠蔽、機能の独立、モジュール化などの設計原則に従うべきだね。</p><h3 id=オブジェクト指向設計の活動>オブジェクト指向設計の活動</h3><p>OOD は OOA のモデルを再利用した上で、OOA に対応する以下の 5 つの活動を含んでいるよ。</p><ol><li>クラスとオブジェクトの識別</li><li>属性の定義</li><li>サービスの定義</li><li>関係の識別</li><li>パッケージの識別</li></ol><h3 id=オブジェクト指向設計の原則>オブジェクト指向設計の原則</h3><ol><li><p><strong>単一責任の原則 (Single Responsibility Principle)</strong>
+一つのクラスにとって、それを変更する理由はたった一つであるべきだ。つまり、あるクラスを修正する必要があるときはその理由が一つだけで、一つのクラスには一種類だけの責任を持たせるようにする。</p></li><li><p><strong>開放・閉鎖の原則 (Open-Closed Principle)</strong>
+ソフトウェアのエンティティ（クラス、モジュール、関数など）は拡張に対して開いているべきだけど、修正に対しては閉じているべきだ。</p></li><li><p><strong>リスコフの置換原則 (Liskov Substitution Principle)</strong>
+サブタイプは、その基本（親）タイプと置換可能でなければならない。つまり、親クラスが登場するどんな場所でも、子クラスのインスタンスを親クラスの参照に代入できなければならない。子タイプのインスタンスがそのスーパークラスのどのインスタンスとも置き換えられるとき、それらは &ldquo;is-a&rdquo; 関係にあると言える。</p></li><li><p><strong>依存関係逆転の原則 (Dependency Inversion Principle)</strong>
+抽象は詳細に依存すべきではなく、詳細は抽象に依存すべきだ。つまり、高層モジュールは低層モジュールに依存すべきではなく、両者は抽象に依存すべきなんだ。</p></li><li><p><strong>インターフェース分離の原則 (Interface Segregation Principle)</strong>
+クライアントが利用しないメソッドに依存することを強制してはいけない。インターフェースはクライアントに属するもので、それが置かれているクラス階層に属するものではない。つまり、具体的なものではなく抽象に依存し、かつ抽象レベルにおいて詳細への依存があってはいけない。こうすることで、変化に最大限対応できるようになる。</p></li></ol><p>以上がオブジェクト指向における五大原則（SOLIDの一部）だ。これらに加えて、Robert C. Martin は以下の原則も提唱しているよ。</p><ol start=6><li><p><strong>再利用・リリース等価の原則 (Release-Reuse Equivalency Principle)</strong>
+再利用の単位はリリースの単位と等価である。</p></li><li><p><strong>共通閉鎖の原則 (Common Closure Principle)</strong>
+パッケージ内のすべてのクラスは、同じ種類の変更に対して共に閉じているべきだ。一つの変更があるパッケージに影響を与えるなら、そのパッケージ内のすべてのクラスに影響し、他のパッケージには影響を与えないようにする。</p></li><li><p><strong>共通再利用の原則 (Common Reuse Principle)</strong>
+パッケージ内のすべてのクラスは共に再利用されるべきだ。パッケージ内の一つのクラスを再利用するなら、そのパッケージ内のすべてのクラスを再利用することになる。</p></li><li><p><strong>非循環依存関係の原則 (Acyclic Dependencies Principle)</strong>
+パッケージの依存関係グラフに循環があってはいけない。つまり、パッケージ間の構造は直接的な非循環グラフでなければならない。</p></li><li><p><strong>安定依存の原則 (Stable Dependencies Principle)</strong>
+より安定した方向へ依存するようにする。</p></li><li><p><strong>安定抽象の原則 (Stable Abstractions Principle)</strong>
+パッケージの抽象度は、その安定度と一致すべきだ。</p></li></ol><h2 id=オブジェクト指向テスト>オブジェクト指向テスト</h2><p>テストに関して言えば、オブジェクト指向で開発されたシステムのテストも、他の手法で開発されたものと大きな違いはないよ。</p><p>一般的に、オブジェクト指向ソフトウェアのテストは以下の 4 つのレベルで行われる。</p><ol><li>アルゴリズム層</li><li>クラス層</li><li>テンプレート層</li><li>システム層</li></ol><h2 id=オブジェクト指向プログラミング>オブジェクト指向プログラミング</h2><p>プログラミングパラダイム (Programming Paradigm) は、プログラミングをするときの基本的な考え方のモデルだ。考え方や使うツールを決定し、一定の適用範囲を持っている。歴史的には、手続き型、モジュール化、関数型、論理型と進化してきて、今のオブジェクト指向プログラミングパラダイムに至っているんだ。</p><p>オブジェクト指向プログラミング (Object-Oriented Programming, OOP) の本質は、オブジェクト指向プログラミング言語 (OOPL) を選び、オブジェクト、クラス、および関連する概念を用いてプログラミングを行うこと。カギとなるのは、クラスと継承を導入したことで抽象度がさらに高まった点だね。特定の OOP の概念は、通常 OOPL の特定の言語メカニズムを通じて体現されるんだ。</p><p>今では OOP はシステム分析やソフトウェア設計の範囲まで拡張されて、オブジェクト指向分析 (OOA) やオブジェクト指向設計 (OOD) という概念が登場している。これについては、さっき説明した通りだよ。</p></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E5%B7%A5%E5%AD%A6/>ソフトウェア工学</a>
+<a href=/ja/tags/%E3%82%AA%E3%83%96%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E6%8C%87%E5%90%91/>オブジェクト指向</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p><a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> で構築されています。 <span>|</span>
+テーマ <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> は <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> によって設計されています。</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
