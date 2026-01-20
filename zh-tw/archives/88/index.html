@@ -1,0 +1,665 @@
+<!doctype html><html lang=zh-tw dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="📢 本文由 gemini-3-flash-preview 翻譯 SQL Series\n"><title>資料庫學習三 SQL 語言</title>
+<link rel=canonical href=https://blog.yexca.net/zh-tw/archives/88/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="資料庫學習三 SQL 語言"><meta property='og:description' content="📢 本文由 gemini-3-flash-preview 翻譯 SQL Series\n"><meta property='og:url' content='https://blog.yexca.net/zh-tw/archives/88/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='資料庫'><meta property='article:published_time' content='2023-02-08T08:00:00+08:00'><meta property='article:modified_time' content='2023-02-08T08:00:00+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="資料庫學習三 SQL 語言"><meta name=twitter:description content="📢 本文由 gemini-3-flash-preview 翻譯 SQL Series\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/zh-tw\/archives\/88\/"},"headline":"資料庫學習三 SQL 語言","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2023-02-08","dateModified":"2023-02-08","inLanguage":"zh-tw","description":"yexca 的技術與生活部落格，紀錄程式學習與日常隨筆。"}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切換選單>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh-tw/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/zh-tw>yexca'Blog</a></h1><h2 class=site-description>把這個不美好的世界，編程您所期望的樣子吧！</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/zh-tw/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh-tw/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首頁</span></a></li><li><a href=/zh-tw/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>檔案</span></a></li><li><a href=/zh-tw/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜尋</span></a></li><li><a href=/zh-tw/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>背景</span></a></li><li><a href=/zh-tw/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>連結</span></a></li><li><a href=/zh-tw/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>關於</span></a></li><li><a href=/zh-tw/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>支持</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/ selected>繁體中文</option><option value=https://blog.yexca.net/en/>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>夜晚模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目錄</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#sql-語言的分類>SQL 語言的分類</a></li><li><a href=#一ddl-資料定義語言>(一)、DDL 資料定義語言</a><ul><li><a href=#1-建立資料庫>1. 建立資料庫</a></li><li><a href=#2-建立基本資料表>2. 建立基本資料表</a></li><li><a href=#3-修改基本資料表結構>3. 修改基本資料表結構</a></li><li><a href=#4-刪除基本資料表>4. 刪除基本資料表</a></li></ul></li><li><a href=#二dml-資料操作語言>(二)、DML 資料操作語言</a><ul><li><a href=#1-insert-插入語句>1. INSERT 插入語句</a></li><li><a href=#2-delete-刪除語句>2. DELETE 刪除語句</a></li><li><a href=#3-update-修改語句>3. UPDATE 修改語句</a></li></ul></li><li><a href=#三dql-資料查詢語言>(三)、DQL 資料查詢語言</a><ul><li><a href=#1-投影查詢>1. 投影查詢</a></li><li><a href=#2-選擇查詢>2. 選擇查詢</a></li><li><a href=#3-排序查詢>3. 排序查詢</a></li><li><a href=#4-聚合函數>4. 聚合函數</a></li><li><a href=#5-資料分組>5. 資料分組</a></li><li><a href=#6-資料表連接查詢-join>6. 資料表連接查詢 (Join)</a></li><li><a href=#7-子查詢>7. 子查詢</a></li><li><a href=#8-查詢結果的聯集交集差集運算>8. 查詢結果的聯集、交集、差集運算</a></li></ul></li><li><a href=#四dcl-資料控制語言>(四)、DCL 資料控制語言</a><ul><li><a href=#資料庫的安全性>資料庫的安全性</a></li><li><a href=#自主存取控制>自主存取控制</a></li><li><a href=#資料庫的角色>資料庫的角色</a></li><li><a href=#檢視表-view-機制>檢視表 (View) 機制</a></li><li><a href=#稽核-audit>稽核 (Audit)</a></li><li><a href=#資料加密>資料加密</a></li></ul></li><li><a href=#索引-index>索引 (Index)</a><ul><li><a href=#建立索引>建立索引</a></li><li><a href=#刪除索引>刪除索引</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/zh-tw/categories/%E6%8A%80%E8%A1%93%E5%AD%B8%E7%BF%92/>技術學習</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/zh-tw/archives/88/>資料庫學習三 SQL 語言</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2023-02-08 08:00 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>閱讀時間: 14 分鐘</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/zh-tw/tags/%E8%B3%87%E6%96%99%E5%BA%AB/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">資料庫</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/88/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/en/archives/88/ class=link>English</a>
+<a href=https://blog.yexca.net/ja/archives/88/ class=link>日本語</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong> 本文由 gemini-3-flash-preview 翻譯</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><blockquote><p><strong>SQL Series</strong></p><p>資料庫學習一 資料庫導論:
+<a class=link href=https://blog.yexca.net/archives/86>https://blog.yexca.net/archives/86</a><br>資料庫學習二 關聯模型:
+<a class=link href=https://blog.yexca.net/archives/87>https://blog.yexca.net/archives/87</a><br>資料庫學習三 SQL 語言: 本文<br>資料庫學習四 關聯資料庫理論:
+<a class=link href=https://blog.yexca.net/archives/89>https://blog.yexca.net/archives/89</a><br>資料庫學習五 範式:
+<a class=link href=https://blog.yexca.net/archives/90>https://blog.yexca.net/archives/90</a><br>資料庫學習六 資料庫設計:
+<a class=link href=https://blog.yexca.net/archives/91>https://blog.yexca.net/archives/91</a><br>資料庫學習七 資料庫的控制功能:
+<a class=link href=https://blog.yexca.net/archives/92>https://blog.yexca.net/archives/92</a></p></blockquote><h2 id=sql-語言的分類>SQL 語言的分類</h2><ul><li>DDL (Data Definition Language, 資料定義語言)</li></ul><p>在資料庫系統中，每一個資料庫、資料庫中的資料表、檢視表和索引等都是資料庫的物件，要建立和刪除一個資料庫物件，都可以透過 SQL 語言來完成。DDL 包括 <code>CREATE</code>、<code>ALTER</code> 和 <code>DROP</code> 等。</p><ul><li>DML (Data Manipulation Language, 資料操作語言)</li></ul><p>DML 是指用來新增、修改和刪除資料庫中資料的語句，包括 <code>INSERT</code>、<code>DELETE</code> 和 <code>UPDATE</code> 等。</p><ul><li>DQL (Data Query Language, 資料查詢語言)</li></ul><p>查詢是資料庫的基本功能，查詢操作透過 SQL 資料查詢語言來實現。例如，用 <code>SELECT</code> 查詢資料表中的內容。</p><ul><li>DCL (Data Control Language, 資料控制語言)</li></ul><p>DCL 包括資料庫物件的權限管理和交易管理等。</p><h2 id=一ddl-資料定義語言>(一)、DDL 資料定義語言</h2><h3 id=1-建立資料庫>1. 建立資料庫</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>database</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料庫名</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-建立基本資料表>2. 建立基本資料表</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料類型</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=err>欄位級完整性條件約束</span><span class=p>],</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[</span><span class=err>···</span><span class=p>,]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[</span><span class=err>資料表級完整性條件約束</span><span class=p>,]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[</span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=1-資料類型>&lt;1> 資料類型</h4><ol><li><code>INT</code> / <code>INTEGER</code> : 整數</li><li><code>FLOAT(n)</code> : 浮點數，精度至少為 n 位數字</li><li><code>NUMERIC(p, d)</code> / <code>DECIMAL(p, d)</code> / <code>DEC(p, d)</code> : 定點數，由 p 位數字 (不包括正負號、小數點) 組成，小數點後面有 d 位數字</li><li><code>CHAR(n)</code> : 長度為 n 的定長字串</li><li>DATETIME : 日期時間型</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f1</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f2</span><span class=w> </span><span class=nb>int</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-欄位級完整性條件約束>&lt;2> 欄位級完整性條件約束</h4><ol><li><p>not null: 不可為空值</p></li><li><p>unique: 唯一</p></li><li><p>not null unique: 不可為空值且唯一</p></li><li><p>default: 定義一個預設值</p></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f1</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- 該欄位不可為空
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f2</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- 該欄位值可以為空，但每列應不一樣
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f3</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- 該欄位不可為空且每列不一樣
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f4</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>default</span><span class=w> </span><span class=s1>&#39;nashi&#39;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- 若新增列未賦值，此欄位預設賦值 &#39;nashi&#39;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=3-資料表級完整性條件約束>&lt;3> 資料表級完整性條件約束</h4><div class=table-wrapper><table><thead><tr><th>名稱</th><th>子句</th><th>對應關聯完整性</th></tr></thead><tbody><tr><td>主鍵子句</td><td>PRIMARY KEY</td><td>實體完整性</td></tr><tr><td>檢查子句</td><td>CHECK</td><td>使用者自定義完整性</td></tr><tr><td>外鍵子句</td><td>FOREIGN KEY</td><td>參照完整性</td></tr></tbody></table></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>primary</span><span class=w> </span><span class=k>key</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w> </span><span class=c1>-- not null unique
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 或者
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>primary</span><span class=w> </span><span class=k>key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>course</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>cid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>score</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>check</span><span class=p>(</span><span class=n>score</span><span class=w> </span><span class=o>&gt;=</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=mi>100</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>foreign</span><span class=w> </span><span class=k>key</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w> </span><span class=k>references</span><span class=w> </span><span class=n>student</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=對於完整性的檢查>對於完整性的檢查</h4><ol><li>斷言 (Assertion，一般不主張使用)</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>ASSERTION</span><span class=w> </span><span class=o>&lt;</span><span class=err>斷言名</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>check子句</span><span class=o>&gt;</span><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 其中check子句與where子句的運算式類似
+</span></span></span><span class=line><span class=cl><span class=c1>-- 刪除斷言名稱
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>DROP</span><span class=w> </span><span class=k>ASSERTION</span><span class=w> </span><span class=o>&lt;</span><span class=err>斷言名</span><span class=o>&gt;</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>觸發器 (Trigger)</li></ol><p>當對一個資料表進行增、刪、改的時候，對觸發器裡面的條件進行檢查，如果成立，則執行觸發器裡面的動作，否則不執行裡面的動作。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>TRIGGER</span><span class=w> </span><span class=o>&lt;</span><span class=err>觸發器名</span><span class=o>&gt;</span><span class=w>           
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 每當觸發事件發生時，該觸發器被啟動
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>{</span><span class=k>BEFORE</span><span class=o>|</span><span class=k>AFTER</span><span class=err>}</span><span class=w> </span><span class=o>&lt;</span><span class=err>觸發事件</span><span class=o>&gt;</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 指明觸發器啟動的時間是在執行觸發事件前或後
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>REFERERCING</span><span class=w> </span><span class=k>NEW</span><span class=o>|</span><span class=k>OLD</span><span class=w> </span><span class=k>ROW</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=o>&lt;</span><span class=err>變數</span><span class=o>&gt;</span><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- REFERENCING指出參照的變數
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>FOR</span><span class=w> </span><span class=k>EACH</span><span class=err>{</span><span class=k>ROW</span><span class=o>|</span><span class=k>STATEMENT</span><span class=err>}</span><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 定義觸發器的類型，指明動作主體執行的頻率
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>[</span><span class=k>WHEN</span><span class=w> </span><span class=o>&lt;</span><span class=err>觸發事件</span><span class=o>&gt;</span><span class=p>]</span><span class=w> </span><span class=o>&lt;</span><span class=err>觸發動作主體</span><span class=o>&gt;</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 僅當觸發條件為真時才執行觸發動作主體
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 刪除觸發器
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>DROP</span><span class=w> </span><span class=k>TRIGGER</span><span class=w> </span><span class=o>&lt;</span><span class=err>觸發器名</span><span class=o>&gt;</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-修改基本資料表結構>3. 修改基本資料表結構</h3><ul><li>增加一個新欄位</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w> </span><span class=k>add</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>類型</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>add</span><span class=w> </span><span class=n>f3</span><span class=w> </span><span class=n>datetime</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>修改一個欄位</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w> </span><span class=k>alter</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>新類型</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- MySQL
+</span></span></span><span class=line><span class=cl><span class=c1>-- alter table &lt;資料表名&gt; modify &lt;欄位名&gt; &lt;新類型&gt;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>alter</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=n>f3</span><span class=w> </span><span class=nb>float</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- alter table test modify f3 float
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>刪除一個欄位</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w> </span><span class=k>drop</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- MySQL
+</span></span></span><span class=line><span class=cl><span class=c1>-- alter table &lt;資料表名&gt; drop &lt;欄位名&gt;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>drop</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=n>f3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- alter table test drop f3
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=4-刪除基本資料表>4. 刪除基本資料表</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>drop</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=二dml-資料操作語言>(二)、DML 資料操作語言</h2><p>以下內容的範例基於這幾張資料表：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 註：為方便理解使用中文，在實際開發中，請儘量不要使用中文
+</span></span></span><span class=line><span class=cl><span class=c1>-- 學生表
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>學號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>姓名</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>8</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>性別</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>出生日期</span><span class=w> </span><span class=n>datetime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>班號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 成績表
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>學號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>課程號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>分數</span><span class=w> </span><span class=nb>int</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 教師表
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>教師編號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>姓名</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>8</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>性別</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>出生日期</span><span class=w> </span><span class=n>datetime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>職稱</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>6</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>系別</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 課程表
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>course</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>課程號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>課程名</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>20</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=err>任課教師編號</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=1-insert-插入語句>1. INSERT 插入語句</h3><p>向 SQL 的基本資料表中插入資料有兩種方式：直接插入值組 (Tuple) 或插入一個查詢的結果值。</p><ol><li>直接插入值組</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=err>表名</span><span class=p>[(</span><span class=err>欄位序列</span><span class=p>)]</span><span class=w> </span><span class=k>values</span><span class=w> </span><span class=p>(</span><span class=err>值組</span><span class=p>)[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 或者
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=err>表名</span><span class=p>[(</span><span class=err>欄位序列</span><span class=p>)]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=k>table</span><span class=w> </span><span class=p>(</span><span class=err>值組</span><span class=p>)[,</span><span class=w> </span><span class=p>(</span><span class=err>值組</span><span class=p>),</span><span class=w> </span><span class=err>···</span><span class=p>])</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>values</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=s1>&#39;108&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;張三&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;男&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-01-01&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09033&#39;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=s1>&#39;109&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;李四&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;男&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-05-05&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09034&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 插入指定欄位
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=p>(</span><span class=err>學號，姓名，性別，出生日期</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>values</span><span class=w> </span><span class=p>(</span><span class=mi>110</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;王五&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;男&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-04-18&#39;</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>插入一個查詢的結果值</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=err>表名</span><span class=p>[(</span><span class=err>欄位序列</span><span class=p>)]</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=err>查詢語句</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=mi>111</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;趙六&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;男&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-03-19&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09035&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-delete-刪除語句>2. DELETE 刪除語句</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=err>條件運算式</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w> </span><span class=c1>-- 刪除整個資料表的所有內容
+</span></span></span><span class=line><span class=cl><span class=c1>-- 刪除學號為 111 的資料列
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>111</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-update-修改語句>3. UPDATE 修改語句</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>update</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>&lt;</span><span class=err>值運算式</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=err>條件運算式</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>update</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=err>班號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09058&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>110</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 或者
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>update</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=err>班號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09057&#39;</span><span class=p>,</span><span class=w> </span><span class=err>性別</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;女&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>110</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=err>班號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09058&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=三dql-資料查詢語言>(三)、DQL 資料查詢語言</h2><p>SQL 資料查詢功能是透過 SELECT 語句實現，完整語法如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=err>目標表的欄位名或列表達式序列</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=err>關聯表序列</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=err>列條件運算式</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位序列</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>having</span><span class=w> </span><span class=o>&lt;</span><span class=err>群組條件運算式</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=k>asc</span><span class=o>|</span><span class=k>desc</span><span class=p>]]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=1-投影查詢>1. 投影查詢</h3><p>使用 <code>SELECT</code> 命令可以選擇查詢資料表中的任意欄位，當為多個欄位時，中間使用逗號 <code>,</code> 分隔。當 <code>FROM</code> 子句中的關聯表不止一個時，每個資料表的名稱都要寫出。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>100</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 查詢學生學號與分數
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 查詢所有欄位
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>使用 <code>DISTINCT</code> 可以去除重複列。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 去除重複列，查詢被選修的課程
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=k>distinct</span><span class=w> </span><span class=err>課程號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>使用 <code>AS</code> 可為查詢結果自定義欄位名稱。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;sno&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-選擇查詢>2. 選擇查詢</h3><p>選擇查詢就是指定查詢條件，只從來源表提取或顯示滿足該查詢條件的記錄。</p><p>選擇查詢通常使用下列幾類運算子：</p><div class=table-wrapper><table><thead><tr><th>運算子</th><th>代碼</th><th>描述</th></tr></thead><tbody><tr><td>集合成員運算子</td><td>IN<br>NOT IN</td><td>在集合中<br>不在集合中</td></tr><tr><td>字串比對運算子</td><td>LIKE</td><td>與 <code>_</code> 和 <code>%</code> 進行單個或多個字元比對</td></tr><tr><td>空值比較運算子</td><td>IS NULL<br>IS NOT NULL</td><td>為空值<br>不為空值</td></tr><tr><td>算術運算子</td><td>><br>>=<br>&#171;br />&lt;=<br>=<br>&lt;></td><td>大於<br>大於等於<br>小於<br>小於等於<br>等於<br>不等於</td></tr><tr><td>邏輯運算子</td><td>AND<br>OR<br>NOT</td><td>與 (And)<br>或 (Or)<br>非 (Not)</td></tr></tbody></table></div><h4 id=1-條件運算式的比較運算>&lt;1> 條件運算式的比較運算</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>--- 查詢分數在 60-80 之間的記錄
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=k>between</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=mi>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 使用 between 指包含 60 與 80，即 [60, 80]
+</span></span></span><span class=line><span class=cl><span class=c1>-- 等價於 where 分數 &gt;= 60 and 分數 &lt;= 80
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-字串的比對運算>&lt;2> 字串的比對運算</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>where</span><span class=w> </span><span class=p>[</span><span class=k>not</span><span class=p>]</span><span class=w> </span><span class=k>like</span><span class=w> </span><span class=s1>&#39;比對字串&#39;</span><span class=w> </span><span class=p>[</span><span class=k>escape</span><span class=w> </span><span class=s1>&#39;逸出字元&#39;</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>其中 <code>'比對字串'</code> 可以是完整字串，也可以包含萬用字元 <code>%</code> 和 <code>_</code>。</p><ul><li>% : 代表任意長度的字元</li><li>_ : 代表任意單個字元</li></ul><h4 id=3-集合的比較運算>&lt;3> 集合的比較運算</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢成績為 85、86 或 88 的記錄
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=k>in</span><span class=w> </span><span class=p>(</span><span class=mi>85</span><span class=p>,</span><span class=w> </span><span class=mi>86</span><span class=p>,</span><span class=w> </span><span class=mi>88</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=4-邏輯組合運算>&lt;4> 邏輯組合運算</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢 09031 班的所有女學生
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>班號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09031&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=err>性別</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;女&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-排序查詢>3. 排序查詢</h3><p>透過使用 <code>ORDER BY</code> 子句可以對查詢結果進行排序。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 升序 asc (預設，可省略)
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=err>姓名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=err>學號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 降序 desc
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=err>姓名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=err>學號</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>也可以指定多個欄位排序，將會先排序第一個，然後再排序第二個。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 以課程號升序，分數降序檢索結果
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=err>課程號</span><span class=w> </span><span class=k>asc</span><span class=p>,</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p><code>ORDER BY</code> 子句必須放在查詢的最後！</p></blockquote><h3 id=4-聚合函數>4. 聚合函數</h3><p>聚合函數實現資料統計等功能，用於對一組值進行計算並返回單一的值。</p><p>通常與 <code>group by</code> 子句一起使用，常用的聚合函數有：</p><div class=table-wrapper><table><thead><tr><th>函數名</th><th>描述</th></tr></thead><tbody><tr><td>AVG</td><td>平均值</td></tr><tr><td>COUNT</td><td>計算指定運算式中選擇的項數<br>COUNT(*) 統計查詢輸出的列數</td></tr><tr><td>MIN</td><td>最小值</td></tr><tr><td>MAX</td><td>最大值</td></tr><tr><td>SUM</td><td>數值總和</td></tr><tr><td>STDWV</td><td>計算指定運算式中所有資料的標準差</td></tr><tr><td>STDEVP</td><td>總體標準差</td></tr></tbody></table></div><p>聚合函數參數的一般格式為：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=p>[</span><span class=k>all</span><span class=o>|</span><span class=k>distinct</span><span class=p>]</span><span class=w> </span><span class=n>expr</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>其中 <code>ALL</code> 表示對所有值進行聚合函數運算，為預設值。而 <code>DISTINCT</code> 指定每個唯一值都被考慮。<code>expr</code> 為運算式。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢 &#39;09031&#39; 班學生人數
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=k>count</span><span class=p>(</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;人數&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>班號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09031&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=5-資料分組>5. 資料分組</h3><p>因為聚合函數只會輸出一個結果，查詢某個欄位和聚合函數放在一起時會報錯。</p><p>可以透過資料分組計算某一個類別的聚合函數結果，即聚合函數作用範圍變成了每組的所有記錄。</p><p>如果想使用聚合函數作為篩選條件，必須放在 <code>HAVING</code> 子句後。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢最低分大於 70，最高分小於 90 的學生學號
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=err>學號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>having</span><span class=w> </span><span class=k>min</span><span class=p>(</span><span class=err>分數</span><span class=p>)</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>70</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=k>max</span><span class=p>(</span><span class=err>分數</span><span class=p>)</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>90</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>當 <code>WHERE</code> 子句、<code>GROUP BY</code> 子句、<code>HAVING</code> 子句和聚合函數同時出現在一個查詢中時，<code>SELECT</code> 命令的執行順序如下：</p><ol><li>執行 <code>WHERE</code> 子句，從資料表中選取列</li><li>由 <code>GROUP BY</code> 對選取的列進行分組</li><li>執行聚合函數</li><li>執行 <code>HAVING</code> 子句選取滿足條件的分組</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢每個課程的平均分
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=k>avg</span><span class=p>(</span><span class=err>分數</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=err>課程號</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p>聚合函數作為條件只能放在 <code>HAVING</code> 子句後，不能放在 <code>WHERE</code> 子句後。</p><p>當 <code>SELECT</code> 子句中包含 <em>欄位名稱</em> 與 <em>聚合函數</em> 時，所有的 <em>欄位名稱</em> 都應該被分組。</p></blockquote><h3 id=6-資料表連接查詢-join>6. 資料表連接查詢 (Join)</h3><p>在 <code>FROM</code> 子句中指定要連接的資料表，在 <code>WHERE</code> 子句中給出連接條件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=err>欄位名</span><span class=mi>1</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表</span><span class=mi>1</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>連接條件</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>對於兩個資料表的公共欄位，需要提供前綴，例如 <code>student.學號</code>。</p><p>在 SQL Server 中，連接分為內連接和外連接。</p><h4 id=1-內連接-inner-join>&lt;1> 內連接 INNER JOIN</h4><p>Θ 連接、等值連接、自然連接。</p><p>內連接是最基本的連接方式，使用 <code>INNER JOIN</code> 關鍵字，不使用該關鍵字時預設均為內連接。</p><ol><li>等值連接</li></ol><p>即兩個資料表之間的連接關係為「等於」。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢所有學生的姓名、課程號和分數量
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>學號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 即
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>inner</span><span class=w> </span><span class=k>join</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=err>學號</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>為簡化輸入，可以使用資料表的別名。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 上一個範例的簡化
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w> </span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>y</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>學號</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>非等值連接</li></ol><p>即兩個資料表之間的連接關係不是「等於」。</p><ol start=3><li>自連接</li></ol><p>將同一個資料表進行連接，這種連接稱之為自連接。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢選修了 &#39;3-105&#39; 並且成績高於 &#39;109&#39; 號同學成績的學生記錄
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>y</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>課程號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;3-105&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>分數</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>and</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>學號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;109&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=err>課程號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;3-105&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=err>分數</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-外連接-outer-join>&lt;2> 外連接 OUTER JOIN</h4><p>左外連接 : LEFT OUTER JOIN 或 LEFT JOIN</p><p>右外連接 : RIGHT OUTER JOIN 或 RIGHT JOIN</p><p>全外連接 : FULL OUTER JOIN 或 FULL JOIN</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 左外連接範例
+</span></span></span><span class=line><span class=cl><span class=c1>-- 查詢所有課程的任課教師的姓名
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>course</span><span class=p>.</span><span class=err>課程名</span><span class=p>,</span><span class=w> </span><span class=n>teacher</span><span class=p>.</span><span class=err>姓名</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>course</span><span class=w> </span><span class=k>left</span><span class=w> </span><span class=k>join</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=p>(</span><span class=n>course</span><span class=p>.</span><span class=err>任課教師編號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>teacher</span><span class=p>.</span><span class=err>教師編號</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=7-子查詢>7. 子查詢</h3><h4 id=1-一般子查詢>&lt;1> 一般子查詢</h4><p>當一個查詢是另一個查詢的條件時，換言之，當從資料表中選取資料列的條件依賴於該表本身或其他資料表的聯合資訊時，需要使用子查詢來實現。</p><p>子查詢最常用於 <code>SELECT</code> 語句中的 <code>WHERE</code> 子句中。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢與學號為 &#39;105&#39; 的同學同年出生的學生
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=err>出生日期</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;出生年份&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=err>出生日期</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>						</span><span class=k>select</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=err>出生日期</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    					</span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    					</span><span class=k>where</span><span class=w> </span><span class=err>学号</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;105&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>						</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-相互關聯子查詢-correlated-subquery>&lt;2> 相互關聯子查詢 (Correlated Subquery)</h4><p>在一般子查詢中，每個子查詢僅執行一次，返回的值為主查詢的 <code>WHERE</code> 子句所用。</p><p>當主查詢在判斷每個待選列時，必須「喚醒」子查詢，然後反饋給主查詢。即內層的條件涉及到外層屬性的子查詢稱為相互關聯子查詢。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢成績比該課程平均成績低的學生
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>學號</span><span class=p>,</span><span class=w> </span><span class=err>課程號</span><span class=p>,</span><span class=w> </span><span class=err>分數</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>select</span><span class=w> </span><span class=k>avg</span><span class=p>(</span><span class=err>分數</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>a</span><span class=p>.</span><span class=err>課程號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>b</span><span class=p>.</span><span class=err>課程號</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>and</span><span class=w> </span><span class=err>分數</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=3-帶-exists-測試的子查詢>&lt;3> 帶 EXISTS 測試的子查詢</h4><p><code>EXISTS</code> 代表存在量詞 ∃，只返回邏輯真值或邏輯假值。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 查詢所有任課教師的姓名和系別
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=err>系別</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>teacher</span><span class=w> </span><span class=n>a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>exists</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>course</span><span class=w> </span><span class=n>b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>a</span><span class=p>.</span><span class=err>教師編號</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>b</span><span class=p>.</span><span class=err>任課教師編號</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>或者還有 <code>NOT EXISTS</code> ，將結果取反。</p><h3 id=8-查詢結果的聯集交集差集運算>8. 查詢結果的聯集、交集、差集運算</h3><p>可以使用以下運算子將兩個 <code>SELECT</code> 查詢語句的結果進行相應運算：</p><ul><li>UNION : 聯集 (並)</li><li>INSTERSECT : 交集</li><li>EXCEPT : 差集</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 聯集的範例
+</span></span></span><span class=line><span class=cl><span class=c1>-- 查詢所有教師和學生的姓名、性別和出生年份
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=err>性別</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=err>出生日期</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;出生年份&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>union</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=err>姓名</span><span class=p>,</span><span class=w> </span><span class=err>性別</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=err>出生日期</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;出生年份&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- order by 出生年份
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=四dcl-資料控制語言>(四)、DCL 資料控制語言</h2><p>資料控制控制的是使用者對資料的存取權限，是由 DBA (資料庫管理員) 決定的。</p><h3 id=資料庫的安全性>資料庫的安全性</h3><p>不安全的因素：</p><ol><li>非授權對資料庫的惡意存取和破壞。</li><li>資料庫中重要資料的洩露。</li><li>安全環境的脆弱性。</li></ol><p>安全性控制：</p><ol><li>使用者身分鑑別：靜態密碼鑑別、動態密碼鑑別、生物特徵鑑別、智慧卡鑑別。</li><li>存取控制。</li><li>自主存取控制方法 (使用者可以自定義和分配其他使用者的操作權限)。</li></ol><h3 id=自主存取控制>自主存取控制</h3><p>DBMS (資料庫管理系統) 資料控制應具有以下功能：</p><ol><li>透過 <code>GRANT</code> 和 <code>REVOKE</code> 將授權通知系統，並存入資料字典。</li><li>當使用者提出請求時，根據授權情況檢查是否執行操作請求。</li></ol><p>SQL 標準包括 <code>DELETE</code> 、<code>INSERT</code> 、<code>SELECT</code> 和 <code>UPDATE</code> 權限。<code>SELECT</code> 權限對應於 <code>READ</code> 權限，SQL 還包括了 <code>REFERENCES</code> 權限，用來限制使用者在建立關聯時定義外鍵的能力。</p><h4 id=1-授權的語句格式>1. 授權的語句格式</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>grant</span><span class=w> </span><span class=o>&lt;</span><span class=err>權限</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件類型</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件名</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>to</span><span class=w> </span><span class=o>&lt;</span><span class=err>使用者</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>with</span><span class=w> </span><span class=k>grant</span><span class=w> </span><span class=k>option</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>不同類型的操作物件有不同的權限，常見的權限如下：</p><div class=table-wrapper><table><thead><tr><th>物件</th><th>物件類型</th><th>操作權限</th></tr></thead><tbody><tr><td>屬性欄</td><td>TABLE</td><td>SELECT、INSERT、UPDATE、DELETE、<br>ALL PRIVILEGES (4 種權限的總和)</td></tr><tr><td>檢視表</td><td>TABLE</td><td>SELECT、INSERT、UPDATE、DELETE、<br>ALL PRIVILEGES (4 種權限的總和)</td></tr><tr><td>資料表</td><td>TABLE</td><td>SELECT、INSERT、UPDATE、DELETE、ALTER、INDEX<br>ALL PRIVILEGES (6 種權限的總和)</td></tr><tr><td>資料庫</td><td>DATABASE</td><td>CREATETAB 建立資料表的權限，可由 DBA 授予一般使用者</td></tr></tbody></table></div><ul><li>PUBLIC : 接受權限的使用者可以是單個或多個具體的使用者，<code>PUBLIC</code> 參數可將權限賦予全體使用者。</li><li>WITH GRANT OPTION : 若指定了此子句，那麼獲得權限的使用者還可以將權限賦予其他使用者。</li></ul><h4 id=2-收回權限語句格式>2. 收回權限語句格式</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>revoke</span><span class=w> </span><span class=o>&lt;</span><span class=err>權限</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件類型</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件名</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=err>使用者</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=資料庫的角色>資料庫的角色</h3><p>角色指的是一類人，比如 CEO、總監、一般職員，可以給一類人授權。</p><ol><li>角色的建立</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>role</span><span class=w> </span><span class=o>&lt;</span><span class=err>角色名</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>角色授權</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>grant</span><span class=w> </span><span class=o>&lt;</span><span class=err>權限</span><span class=o>&gt;</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件類型</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件名</span><span class=o>&gt;</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>&lt;</span><span class=err>角色</span><span class=mi>1</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=err>···</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=3><li>把角色授權給其他使用者或角色</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>grant</span><span class=w> </span><span class=o>&lt;</span><span class=err>角色</span><span class=o>&gt;</span><span class=w> </span><span class=k>to</span><span class=w> </span><span class=o>&lt;</span><span class=err>角色</span><span class=o>&gt;</span><span class=err>或</span><span class=o>&lt;</span><span class=err>使用者名字</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>with</span><span class=w> </span><span class=k>admin</span><span class=w> </span><span class=k>option</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>with admin option</code> 意味著這個使用者可以把這權限授予其他角色或使用者。</p><ol start=4><li>角色權限的收回</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>revoke</span><span class=w> </span><span class=o>&lt;</span><span class=err>權限</span><span class=o>&gt;</span><span class=w> </span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=err>物件名</span><span class=o>&gt;</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=err>角色名字</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=檢視表-view-機制>檢視表 (View) 機制</h3><p>檢視表是從一個或者多個基本資料表或檢視表中導出的表，是一個虛擬表。</p><p>為不同的使用者定義不同的檢視表，把不需要的資料隱藏起來，這樣使用者就不會進行誤操作。</p><h4 id=檢視表的建立>檢視表的建立</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=o>&lt;</span><span class=err>檢視表名</span><span class=p>(</span><span class=err>欄位列表</span><span class=p>)</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>as</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=err>查詢子句</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>with</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=k>option</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol><li>子查詢的 <code>SELECT</code> 語句通常不允許含有 <code>ORDER BY</code> 子句和 <code>DISTINCT</code> 語句。</li><li><code>WITH CHECK OPTION</code> 表示對 <code>UPDATE</code> 、<code>INSERT</code> 、<code>DELETE</code> 操作時，保證被操作的列滿足檢視表定義中的謂語條件 (即子查詢中的條件運算式)。</li><li>組成檢視表的屬性欄位名稱或者全部省略，或者全部指定。如果省略，則隱含該檢視表由 <code>SELECT</code> 子查詢目標欄位的主屬性組成。</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 關聯模式：student(sno, sname, sex, SD, email)
+</span></span></span><span class=line><span class=cl><span class=c1>-- 建立 &#39;計算機系 (CS)&#39; 學生的檢視表，並且進行修改操作時
+</span></span></span><span class=line><span class=cl><span class=c1>-- 保證檢視表中只有計算機系的孩子會受到影響
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=n>cs</span><span class=o>-</span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>as</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>sex</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>SD</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;CS&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>with</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=k>option</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=檢視表的刪除>檢視表的刪除</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=o>&lt;</span><span class=err>檢視表名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>--例如
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>drop</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=n>cs</span><span class=o>-</span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=稽核-audit>稽核 (Audit)</h3><p>把對資料庫的所有操作都記錄到稽核記錄 (Audit Log) 中，然後就可以透過記錄審查裡面是否有一些非法的行為。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- 對修改“SC”資料的操作進行稽核
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>AUDIT</span><span class=w> </span><span class=k>UPDATE</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=n>SC</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- 取消對“SC”表的一切稽核
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=n>NOAUDIT</span><span class=w> </span><span class=k>UPDATE</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=n>SC</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=資料加密>資料加密</h3><p>透過一些加密演算法，把明文變成密文，這樣別人就無法查看。</p><h2 id=索引-index>索引 (Index)</h2><p>利用索引可以使資料庫程式無需對整個資料表進行掃描，就可以在其中找到所需資料。</p><p>資料庫中的索引是某個資料表中一欄或者若干欄位值的集合，以及相應指向資料表中實體標識這些值的資料頁的邏輯指標清單。</p><p>由內層模式 (Internal Schema) 定義 (內層模式定義所有的內部記錄類型、索引和檔案的組織方式)。</p><h3 id=建立索引>建立索引</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=p>[</span><span class=k>unique</span><span class=p>]</span><span class=w> </span><span class=p>[</span><span class=k>cluster</span><span class=p>]</span><span class=w> </span><span class=k>index</span><span class=w> </span><span class=o>&lt;</span><span class=err>索引名</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=err>資料表名</span><span class=o>&gt;</span><span class=p>(</span><span class=err>欄位名</span><span class=p>[</span><span class=err>次序</span><span class=p>],</span><span class=w> </span><span class=err>···</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>次序：可選 <code>ASC</code> (預設) 或 <code>DESC</code>。</p><p><code>UNIQUE</code> ：表明此索引的每一個索引值只對應唯一的資料記錄。</p><p><code>CLUSTER</code> ：表明要建立的索引是叢集索引 (Clustered Index)，意指索引項的順序是與資料表中記錄的實體順序一致的索引組織。</p><h3 id=刪除索引>刪除索引</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>index</span><span class=w> </span><span class=o>&lt;</span><span class=err>索引名</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/zh-tw/tags/%E8%B3%87%E6%96%99%E5%BA%AB/>資料庫</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相關文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh-tw/archives/87/><div class=article-details><h2 class=article-title>資料庫學習二 關聯式模型</h2></div></a></article><article><a href=/zh-tw/archives/86/><div class=article-details><h2 class=article-title>資料庫學習（一）：資料庫導論</h2></div></a></article><article><a href=/zh-tw/archives/8/><div class=article-details><h2 class=article-title>SQL 語句的一些語法細節 (SQL SERVER 語句)</h2></div></a></article><article><a href=/zh-tw/archives/7/><div class=article-details><h2 class=article-title>關於在使用 navicat 連接 SQL server 的一些問題</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>使用 <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> 建立 <span>|</span>
+主題 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a> 設計</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>

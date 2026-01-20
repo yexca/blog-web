@@ -1,0 +1,636 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content=" SQL Series\nDatabase Learning 1: Introduction: https://blog.yexca.net/archives/86 Database Learning 2: Relational Model: https://blog.yexca.net/archives/87 Database Learning 3: SQL: This article\nDatabase Learning 4: Relational Database Theory: https://blog.yexca.net/archives/89 Database Learning 5: Normal Forms: https://blog.yexca.net/archives/90 Database Learning 6: Database Design: https://blog.yexca.net/archives/91 Database Learning 7: Database Control Functions: https://blog.yexca.net/archives/92 📢 This article was translated by gemini-3-flash-preview SQL Classification DDL (Data Definition Language) In a database system, every database, table, view, and index is an object. DDL is used to create and delete these objects. DDL includes commands like CREATE, ALTER, and DROP.\n"><title>Database Learning Part 3: SQL</title>
+<link rel=canonical href=https://blog.yexca.net/en/archives/88/><link rel=stylesheet href=/scss/style.min.79e65cda61d3f6f6cb935a8c05fb64fb839474529dd1c9ab2e552270ef816b46.css><meta property='og:title' content="Database Learning Part 3: SQL"><meta property='og:description' content=" SQL Series\nDatabase Learning 1: Introduction: https://blog.yexca.net/archives/86 Database Learning 2: Relational Model: https://blog.yexca.net/archives/87 Database Learning 3: SQL: This article\nDatabase Learning 4: Relational Database Theory: https://blog.yexca.net/archives/89 Database Learning 5: Normal Forms: https://blog.yexca.net/archives/90 Database Learning 6: Database Design: https://blog.yexca.net/archives/91 Database Learning 7: Database Control Functions: https://blog.yexca.net/archives/92 📢 This article was translated by gemini-3-flash-preview SQL Classification DDL (Data Definition Language) In a database system, every database, table, view, and index is an object. DDL is used to create and delete these objects. DDL includes commands like CREATE, ALTER, and DROP.\n"><meta property='og:url' content='https://blog.yexca.net/en/archives/88/'><meta property='og:site_name' content="yexca'Blog"><meta property='og:type' content='article'><meta property='article:section' content='Posts'><meta property='article:tag' content='Database'><meta property='article:published_time' content='2023-02-08T08:00:00+08:00'><meta property='article:modified_time' content='2023-02-08T08:00:00+08:00'><meta name=twitter:site content="@yexcano"><meta name=twitter:creator content="@yexcano"><meta name=twitter:title content="Database Learning Part 3: SQL"><meta name=twitter:description content=" SQL Series\nDatabase Learning 1: Introduction: https://blog.yexca.net/archives/86 Database Learning 2: Relational Model: https://blog.yexca.net/archives/87 Database Learning 3: SQL: This article\nDatabase Learning 4: Relational Database Theory: https://blog.yexca.net/archives/89 Database Learning 5: Normal Forms: https://blog.yexca.net/archives/90 Database Learning 6: Database Design: https://blog.yexca.net/archives/91 Database Learning 7: Database Control Functions: https://blog.yexca.net/archives/92 📢 This article was translated by gemini-3-flash-preview SQL Classification DDL (Data Definition Language) In a database system, every database, table, view, and index is an object. DDL is used to create and delete these objects. DDL includes commands like CREATE, ALTER, and DROP.\n"><link rel="shortcut icon" href=/favicon.ico><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.yexca.net\/en\/archives\/88\/"},"headline":"Database Learning Part 3: SQL","name":"yexca'Blog","author":{"@type":"Person","name":"yexca"},"publisher":{"@type":"Person","name":"yexca'Blog"},"datePublished":"2023-02-08","dateModified":"2023-02-08","inLanguage":"en","description":"yexca\u0027s tech and life blog, writing about coding, projects, and daily thoughts."}</script><link rel=alternate hreflang=x-default href=https://blog.yexca.net/><link rel=alternate hreflang=zh-CN href=https://blog.yexca.net/><link rel=alternate hreflang=zh-TW href=https://blog.yexca.net/zh-tw/><link rel=alternate hreflang=ja href=https://blog.yexca.net/ja/><link rel=alternate hreflang=en href=https://blog.yexca.net/en/><link rel=preconnect href=https://fonts.googleapis.com><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+SC:wght@100..900&family=Noto+Sans+TC:wght@100..900&family=Yomogi&display=swap" rel=stylesheet></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en/><img src=/img/avatar_hu16531030078560657968.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>yexca'Blog</a></h1><h2 class=site-description>Tech Otakus Change The World</h2></div></header><ol class=menu-social><li><a href=https://github.com/yexca target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=mailto:blog@yexca.net target=_blank title=Mail rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path d="M3 7l9 6 9-6"/></svg></a></li><li><a href=https://t.me/yexca target=_blank title=Telegram rel=me><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-telegram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 10l-4 4 6 6 4-16-18 7 4 2 2 6 3-4"/></svg></a></li><li><a href=/en/feed.xml target=_blank title=RSS rel=me><svg class="icon icon-tabler icon-tabler-rss" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="5" cy="19" r="1"/><path d="M4 4a16 16 0 0116 16"/><path d="M4 11a9 9 0 019 9"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/background/><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>Background</span></a></li><li><a href=/en/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li><a href=/en/about/><svg class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+<span>About</span></a></li><li><a href=/en/support/><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-coffee"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 14c.83.642 2.077 1.017 3.5 1 1.423.017 2.67-.358 3.5-1s2.077-1.017 3.5-1c1.423-.017 2.67.358 3.5 1"/><path d="M8 3A2.4 2.4.0 007 5a2.4 2.4.0 001 2"/><path d="M12 3a2.4 2.4.0 00-1 2 2.4 2.4.0 001 2"/><path d="M3 10h14v5a6 6 0 01-6 6H9a6 6 0 01-6-6v-5z"/><path d="M16.746 16.726a3 3 0 10.252-5.555"/></svg>
+<span>Support</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://blog.yexca.net/>简体中文</option><option value=https://blog.yexca.net/zh-tw/>繁體中文</option><option value=https://blog.yexca.net/en/ selected>English</option><option value=https://blog.yexca.net/ja/>日本語</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ul><li><a href=#sql-classification>SQL Classification</a></li><li><a href=#i-ddl-data-definition-language>(I) DDL: Data Definition Language</a><ul><li><a href=#1-create-database>1. Create Database</a></li><li><a href=#2-create-base-table>2. Create Base Table</a></li><li><a href=#3-modify-table-structure>3. Modify Table Structure</a></li><li><a href=#4-drop-table>4. Drop Table</a></li></ul></li><li><a href=#ii-dml-data-manipulation-language>(II) DML: Data Manipulation Language</a><ul><li><a href=#1-insert-statement>1. INSERT Statement</a></li><li><a href=#2-delete-statement>2. DELETE Statement</a></li><li><a href=#3-update-statement>3. UPDATE Statement</a></li></ul></li><li><a href=#iii-dql-data-query-language>(III) DQL: Data Query Language</a><ul><li><a href=#1-projection-queries>1. Projection Queries</a></li><li><a href=#2-selection-queries>2. Selection Queries</a></li><li><a href=#3-sorting-queries>3. Sorting Queries</a></li><li><a href=#4-aggregate-functions>4. Aggregate Functions</a></li><li><a href=#5-data-grouping>5. Data Grouping</a></li><li><a href=#6-table-joins>6. Table Joins</a></li><li><a href=#7-subqueries>7. Subqueries</a></li><li><a href=#8-set-operations>8. Set Operations</a></li></ul></li><li><a href=#iv-dcl-data-control-language>(IV) DCL: Data Control Language</a><ul><li><a href=#database-security>Database Security</a></li><li><a href=#discretionary-access-control-dac>Discretionary Access Control (DAC)</a></li><li><a href=#database-roles>Database Roles</a></li><li><a href=#view-mechanism>View Mechanism</a></li><li><a href=#auditing>Auditing</a></li><li><a href=#data-encryption>Data Encryption</a></li></ul></li><li><a href=#indexes>Indexes</a><ul><li><a href=#create-index>Create Index</a></li><li><a href=#drop-index>Drop Index</a></li></ul></li></ul></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/en/categories/technical-learning/>Technical Learning</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/archives/88/>Database Learning Part 3: SQL</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2023-02-08 08:00 +0800</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>12 minute read</time></div></footer><footer class=post-tags><svg class="icon icon-tabler icon-tabler-tag" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v3l9 9 7-7-9-9H8A2 2 0 006 5"/><path d="M9 8h-.01"/></svg>
+<a href=/en/tags/database/ target=_blank class="tag badge badge-secondary post-meta-detail-tag">Database</a></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://blog.yexca.net/archives/88/ class=link>简体中文</a>
+<a href=https://blog.yexca.net/zh-tw/archives/88/ class=link>繁體中文</a>
+<a href=https://blog.yexca.net/ja/archives/88/ class=link>日本語</a></div></footer></div></header><section class=article-content><blockquote><p><strong>SQL Series</strong></p><p>Database Learning 1: Introduction:
+<a class=link href=https://blog.yexca.net/archives/86>https://blog.yexca.net/archives/86</a><br>Database Learning 2: Relational Model:
+<a class=link href=https://blog.yexca.net/archives/87>https://blog.yexca.net/archives/87</a><br>Database Learning 3: SQL: This article<br>Database Learning 4: Relational Database Theory:
+<a class=link href=https://blog.yexca.net/archives/89>https://blog.yexca.net/archives/89</a><br>Database Learning 5: Normal Forms:
+<a class=link href=https://blog.yexca.net/archives/90>https://blog.yexca.net/archives/90</a><br>Database Learning 6: Database Design:
+<a class=link href=https://blog.yexca.net/archives/91>https://blog.yexca.net/archives/91</a><br>Database Learning 7: Database Control Functions:
+<a class=link href=https://blog.yexca.net/archives/92>https://blog.yexca.net/archives/92</a></p></blockquote><div class=notice><strong>📢</strong> This article was translated by gemini-3-flash-preview</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><h2 id=sql-classification>SQL Classification</h2><ul><li>DDL (Data Definition Language)</li></ul><p>In a database system, every database, table, view, and index is an object. DDL is used to create and delete these objects. DDL includes commands like <code>CREATE</code>, <code>ALTER</code>, and <code>DROP</code>.</p><ul><li>DML (Data Manipulation Language)</li></ul><p>DML is used to add, modify, and delete data within the database. It includes <code>INSERT</code>, <code>DELETE</code>, and <code>UPDATE</code>.</p><ul><li>DQL (Data Query Language)</li></ul><p>Querying is the fundamental function of a database. This is handled by SQL DQL, primarily using the <code>SELECT</code> statement.</p><ul><li>DCL (Data Control Language)</li></ul><p>DCL handles permission management and transaction management for database objects.</p><h2 id=i-ddl-data-definition-language>(I) DDL: Data Definition Language</h2><h3 id=1-create-database>1. Create Database</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>database</span><span class=w> </span><span class=o>&lt;</span><span class=n>database_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-create-base-table>2. Create Base Table</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>data_type</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=n>column_level_constraint</span><span class=p>],</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[...</span><span class=w> </span><span class=p>,]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[</span><span class=n>table_level_constraint</span><span class=p>,]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>[...]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=1-data-types>&lt;1> Data Types</h4><ol><li><code>INT</code> / <code>INTEGER</code>: Integer</li><li><code>FLOAT(n)</code>: Floating point, precision of at least n digits</li><li><code>NUMERIC(p, d)</code> / <code>DECIMAL(p, d)</code> / <code>DEC(p, d)</code>: Fixed point, p total digits (excluding sign/decimal point), d digits after the decimal</li><li><code>CHAR(n)</code>: Fixed-length string of length n</li><li><code>DATETIME</code>: Date and time</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f1</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>10</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f2</span><span class=w> </span><span class=nb>int</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-column-level-integrity-constraints>&lt;2> Column-Level Integrity Constraints</h4><ol><li><code>not null</code>: Cannot be empty</li><li><code>unique</code>: Values must be unique</li><li><code>not null unique</code>: Cannot be empty and must be unique</li><li><code>default</code>: Defines a default value</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f1</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- Column cannot be null
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f2</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- Can be null, but non-null values must be unique
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f3</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- Cannot be null and must be unique
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>    
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>f4</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>default</span><span class=w> </span><span class=s1>&#39;nashi&#39;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c1>-- Defaults to &#39;nashi&#39; if no value is assigned
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=3-table-level-integrity-constraints>&lt;3> Table-Level Integrity Constraints</h4><div class=table-wrapper><table><thead><tr><th>Name</th><th>Clause</th><th>Relational Integrity</th></tr></thead><tbody><tr><td>Primary Key</td><td>PRIMARY KEY</td><td>Entity Integrity</td></tr><tr><td>Check Clause</td><td>CHECK</td><td>User-defined Integrity</td></tr><tr><td>Foreign Key</td><td>FOREIGN KEY</td><td>Referential Integrity</td></tr></tbody></table></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>primary</span><span class=w> </span><span class=k>key</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w> </span><span class=c1>-- implies not null unique
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Or
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=w> </span><span class=k>primary</span><span class=w> </span><span class=k>key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>course</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>cid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sid</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>score</span><span class=w> </span><span class=nb>int</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>check</span><span class=p>(</span><span class=n>score</span><span class=w> </span><span class=o>&gt;=</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=o>&lt;=</span><span class=w> </span><span class=mi>100</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>foreign</span><span class=w> </span><span class=k>key</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w> </span><span class=k>references</span><span class=w> </span><span class=n>student</span><span class=p>(</span><span class=n>sid</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=integrity-checking>Integrity Checking</h4><ol><li>Assertions (Generally discouraged)</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>ASSERTION</span><span class=w> </span><span class=o>&lt;</span><span class=n>assertion_name</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>check_clause</span><span class=o>&gt;</span><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- check_clause is similar to a WHERE clause expression
+</span></span></span><span class=line><span class=cl><span class=c1>-- Drop assertion
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>DROP</span><span class=w> </span><span class=k>ASSERTION</span><span class=w> </span><span class=o>&lt;</span><span class=n>assertion_name</span><span class=o>&gt;</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>Triggers</li></ol><p>Triggers check conditions when a table is inserted, deleted, or updated. If the condition is met, the trigger action executes.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>TRIGGER</span><span class=w> </span><span class=o>&lt;</span><span class=k>trigger_name</span><span class=o>&gt;</span><span class=w>           
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Trigger activated on event
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=err>{</span><span class=k>BEFORE</span><span class=o>|</span><span class=k>AFTER</span><span class=err>}</span><span class=w> </span><span class=o>&lt;</span><span class=n>trigger_event</span><span class=o>&gt;</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Executed before or after the event
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>REFERENCING</span><span class=w> </span><span class=k>NEW</span><span class=o>|</span><span class=k>OLD</span><span class=w> </span><span class=k>ROW</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=o>&lt;</span><span class=k>variable</span><span class=o>&gt;</span><span class=w>  
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- References row variables
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>FOR</span><span class=w> </span><span class=k>EACH</span><span class=w> </span><span class=err>{</span><span class=k>ROW</span><span class=o>|</span><span class=k>STATEMENT</span><span class=err>}</span><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Trigger type/frequency
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>[</span><span class=k>WHEN</span><span class=w> </span><span class=o>&lt;</span><span class=n>trigger_condition</span><span class=o>&gt;</span><span class=p>]</span><span class=w> </span><span class=o>&lt;</span><span class=n>trigger_body</span><span class=o>&gt;</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Body executes if condition is true
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Delete trigger
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>DROP</span><span class=w> </span><span class=k>TRIGGER</span><span class=w> </span><span class=o>&lt;</span><span class=k>trigger_name</span><span class=o>&gt;</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-modify-table-structure>3. Modify Table Structure</h3><ul><li>Add a new column</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w> </span><span class=k>add</span><span class=w> </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=k>type</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>add</span><span class=w> </span><span class=n>f3</span><span class=w> </span><span class=n>datetime</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>Modify a column</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w> </span><span class=k>alter</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>new_type</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- MySQL
+</span></span></span><span class=line><span class=cl><span class=c1>-- alter table &lt;table_name&gt; modify &lt;column_name&gt; &lt;new_type&gt;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>alter</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=n>f3</span><span class=w> </span><span class=nb>float</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- alter table test modify f3 float
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>Delete a column</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w> </span><span class=k>drop</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- MySQL
+</span></span></span><span class=line><span class=cl><span class=c1>-- alter table &lt;table_name&gt; drop &lt;column_name&gt;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>alter</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w> </span><span class=k>drop</span><span class=w> </span><span class=k>column</span><span class=w> </span><span class=n>f3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- alter table test drop f3
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=4-drop-table>4. Drop Table</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>drop</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>test</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=ii-dml-data-manipulation-language>(II) DML: Data Manipulation Language</h2><p>The following examples are based on these tables:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Note: Using English for clarity; avoid non-ASCII characters in production.
+</span></span></span><span class=line><span class=cl><span class=c1>-- Student Table
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sname</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>8</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>ssex</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sbirthday</span><span class=w> </span><span class=n>datetime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>class</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Score Table
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>sno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>cno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>degree</span><span class=w> </span><span class=nb>int</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Teacher Table
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tname</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>8</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tsex</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>2</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tbirthday</span><span class=w> </span><span class=n>datetime</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>prof</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>6</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>depart</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Course Table
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>table</span><span class=w> </span><span class=n>course</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>cno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w> </span><span class=k>unique</span><span class=p>,</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>cname</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>20</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>tno</span><span class=w> </span><span class=nb>char</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=1-insert-statement>1. INSERT Statement</h3><p>Two ways to insert data: direct tuple insertion or using query results.</p><ol><li>Direct tuple insertion</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=k>table_name</span><span class=p>[(</span><span class=n>column_list</span><span class=p>)]</span><span class=w> </span><span class=k>values</span><span class=w> </span><span class=p>(</span><span class=n>tuple_values</span><span class=p>)[,</span><span class=w> </span><span class=p>...]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Or
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=k>table_name</span><span class=p>[(</span><span class=n>column_list</span><span class=p>)]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=k>table</span><span class=w> </span><span class=p>(</span><span class=n>tuple_values</span><span class=p>)[,</span><span class=w> </span><span class=p>(</span><span class=n>tuple_values</span><span class=p>),</span><span class=w> </span><span class=p>...])</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>values</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=s1>&#39;108&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Zhang San&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;M&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-01-01&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09033&#39;</span><span class=p>),</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>(</span><span class=s1>&#39;109&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Li Si&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;M&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-05-05&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09034&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Insert specific columns
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=p>(</span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>ssex</span><span class=p>,</span><span class=w> </span><span class=n>sbirthday</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>values</span><span class=w> </span><span class=p>(</span><span class=mi>110</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Wang Wu&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;M&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-04-18&#39;</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li>Insert from a query result</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=k>table_name</span><span class=p>[(</span><span class=n>column_list</span><span class=p>)]</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=n>query_statement</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>insert</span><span class=w> </span><span class=k>into</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=mi>111</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;Zhao Liu&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;M&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2000-03-19&#39;</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;09035&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-delete-statement>2. DELETE Statement</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=n>condition</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w> </span><span class=c1>-- Deletes all content in the table
+</span></span></span><span class=line><span class=cl><span class=c1>-- Delete tuple where sno is 111
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>delete</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>111</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-update-statement>3. UPDATE Statement</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>update</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>&lt;</span><span class=n>expression</span><span class=o>&gt;</span><span class=p>[,</span><span class=w> </span><span class=p>...]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=n>condition</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>update</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=k>class</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09058&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>110</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Or
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>update</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>set</span><span class=w> </span><span class=k>class</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09057&#39;</span><span class=p>,</span><span class=w> </span><span class=n>ssex</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;F&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>110</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=k>class</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09058&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=iii-dql-data-query-language>(III) DQL: Data Query Language</h2><p>DQL is implemented via the <code>SELECT</code> statement. Complete syntax:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=n>column_list_or_expressions</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=n>table_list</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=n>row_condition</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=o>&lt;</span><span class=n>column_list</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>having</span><span class=w> </span><span class=o>&lt;</span><span class=n>group_condition</span><span class=o>&gt;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=o>&lt;</span><span class=k>column_name</span><span class=o>&gt;</span><span class=w> </span><span class=p>[</span><span class=k>asc</span><span class=o>|</span><span class=k>desc</span><span class=p>]]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=1-projection-queries>1. Projection Queries</h3><p><code>SELECT</code> retrieves specific columns. Use <code>,</code> for multiple columns. In <code>FROM</code>, list all involved tables.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Examples
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=mi>1</span><span class=w> </span><span class=o>+</span><span class=w> </span><span class=mi>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=mi>100</span><span class=w> </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Query student sno and scores
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Query all columns
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Use <code>DISTINCT</code> to remove duplicate rows.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query distinct courses that were taken
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=k>distinct</span><span class=w> </span><span class=n>cno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Use <code>AS</code> for column aliasing.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;student_id&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=2-selection-queries>2. Selection Queries</h3><p>Selection filters records based on specific criteria.</p><p>Common operators:</p><div class=table-wrapper><table><thead><tr><th>Operator</th><th>Syntax</th><th>Description</th></tr></thead><tbody><tr><td>Set Membership</td><td>IN / NOT IN</td><td>In set / Not in set</td></tr><tr><td>String Matching</td><td>LIKE</td><td>Pattern match with <code>_</code> and <code>%</code></td></tr><tr><td>Null Comparison</td><td>IS NULL / IS NOT NULL</td><td>Is null / Is not null</td></tr><tr><td>Arithmetic</td><td>>, >=, &lt;, &lt;=, =, &lt;></td><td>Standard comparison operators</td></tr><tr><td>Logic</td><td>AND, OR, NOT</td><td>Standard logical operators</td></tr></tbody></table></div><h4 id=1-range-comparison>&lt;1> Range Comparison</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query scores between 60 and 80
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=k>between</span><span class=w> </span><span class=mi>60</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=mi>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- &#39;between&#39; is inclusive: [60, 80]
+</span></span></span><span class=line><span class=cl><span class=c1>-- Equivalent to: where degree &gt;= 60 and degree &lt;= 80
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-string-matching>&lt;2> String Matching</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>where</span><span class=w> </span><span class=p>[</span><span class=k>not</span><span class=p>]</span><span class=w> </span><span class=k>like</span><span class=w> </span><span class=s1>&#39;pattern&#39;</span><span class=w> </span><span class=p>[</span><span class=k>escape</span><span class=w> </span><span class=s1>&#39;escape_char&#39;</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li><code>%</code>: Any number of characters</li><li><code>_</code>: Any single character</li></ul><h4 id=3-set-comparison>&lt;3> Set Comparison</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query scores that are 85, 86, or 88
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=k>in</span><span class=w> </span><span class=p>(</span><span class=mi>85</span><span class=p>,</span><span class=w> </span><span class=mi>86</span><span class=p>,</span><span class=w> </span><span class=mi>88</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=4-logical-combinations>&lt;4> Logical Combinations</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query all female students in class 09031
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>class</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09031&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>ssex</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;F&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=3-sorting-queries>3. Sorting Queries</h3><p>Use <code>ORDER BY</code> for sorting.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Ascending (default)
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>sno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Descending
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Multiple columns can be specified.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Sort by cno ascending, then degree descending
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>cno</span><span class=w> </span><span class=k>asc</span><span class=p>,</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p><code>ORDER BY</code> must be the last clause!</p></blockquote><h3 id=4-aggregate-functions>4. Aggregate Functions</h3><p>Aggregate functions calculate a single value from a set of values. Usually used with <code>GROUP BY</code>.</p><div class=table-wrapper><table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody><tr><td>AVG</td><td>Average value</td></tr><tr><td>COUNT</td><td>Number of items (COUNT(*) for total rows)</td></tr><tr><td>MIN</td><td>Minimum value</td></tr><tr><td>MAX</td><td>Maximum value</td></tr><tr><td>SUM</td><td>Total sum</td></tr><tr><td>STDEV</td><td>Standard deviation</td></tr></tbody></table></div><p>General format:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=p>[</span><span class=k>all</span><span class=o>|</span><span class=k>distinct</span><span class=p>]</span><span class=w> </span><span class=n>expr</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>ALL</code> is the default. <code>DISTINCT</code> only considers unique values.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Count students in class &#39;09031&#39;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=k>count</span><span class=p>(</span><span class=o>*</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;total&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>class</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;09031&#39;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=5-data-grouping>5. Data Grouping</h3><p>Aggregate functions return one result. Mixing raw columns with aggregate functions without grouping causes errors. <code>GROUP BY</code> changes the scope of the aggregate function to each group. Use <code>HAVING</code> to filter groups.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query sno where min score &gt; 70 and max score &lt; 90
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>sno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>having</span><span class=w> </span><span class=k>min</span><span class=p>(</span><span class=n>degree</span><span class=p>)</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=mi>70</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=k>max</span><span class=p>(</span><span class=n>degree</span><span class=p>)</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=mi>90</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Execution order:</p><ol><li><code>WHERE</code>: Filter rows</li><li><code>GROUP BY</code>: Group rows</li><li>Aggregate functions calculated</li><li><code>HAVING</code>: Filter groups</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Average score per course
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=k>avg</span><span class=p>(</span><span class=n>degree</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>group</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>cno</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><blockquote><p><code>HAVING</code> filters groups (usually with aggregates). <code>WHERE</code> filters rows.
+When using <code>SELECT</code> with columns and aggregates, all columns must be in <code>GROUP BY</code>.</p></blockquote><h3 id=6-table-joins>6. Table Joins</h3><p>Specify tables in <code>FROM</code> and conditions in <code>WHERE</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=n>columns</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=n>tables</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=o>&lt;</span><span class=n>join_condition</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Common columns require prefixes (e.g., <code>student.sno</code>).</p><h4 id=1-inner-join>&lt;1> Inner Join</h4><p>Theta join, Equi-join, Natural join. <code>INNER JOIN</code> is the basic join.</p><ol><li>Equi-join</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Query names, course IDs, and scores
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>sno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- Or using syntax:
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>inner</span><span class=w> </span><span class=k>join</span><span class=w> </span><span class=n>score</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=n>student</span><span class=p>.</span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>score</span><span class=p>.</span><span class=n>sno</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Table aliases simplify queries:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>select</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w> </span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>y</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>sno</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=2><li><p>Non-equi join: Relationship is not &ldquo;=&rdquo;.</p></li><li><p>Self-join: Joining a table to itself.</p></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Students in course &#39;3-105&#39; with scores higher than student &#39;109&#39; in the same course
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>x</span><span class=p>,</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>y</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>cno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;3-105&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>degree</span><span class=w> </span><span class=o>&gt;</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>and</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;109&#39;</span><span class=w> </span><span class=k>and</span><span class=w> </span><span class=n>y</span><span class=p>.</span><span class=n>cno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;3-105&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>order</span><span class=w> </span><span class=k>by</span><span class=w> </span><span class=n>x</span><span class=p>.</span><span class=n>degree</span><span class=w> </span><span class=k>desc</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-outer-join>&lt;2> Outer Join</h4><ul><li>LEFT OUTER JOIN (or LEFT JOIN)</li><li>RIGHT OUTER JOIN (or RIGHT JOIN)</li><li>FULL OUTER JOIN (or FULL JOIN)</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Left join example
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>course</span><span class=p>.</span><span class=n>cname</span><span class=p>,</span><span class=w> </span><span class=n>teacher</span><span class=p>.</span><span class=n>tname</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>course</span><span class=w> </span><span class=k>left</span><span class=w> </span><span class=k>join</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=p>(</span><span class=n>course</span><span class=p>.</span><span class=n>tno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>teacher</span><span class=p>.</span><span class=n>tno</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=7-subqueries>7. Subqueries</h3><h4 id=1-general-subquery>&lt;1> General Subquery</h4><p>Used when a query condition depends on another query. Frequently in the <code>WHERE</code> clause.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Students born in the same year as student &#39;105&#39;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=n>sbirthday</span><span class=p>)</span><span class=w> </span><span class=k>as</span><span class=w> </span><span class=s1>&#39;birth_year&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=n>sbirthday</span><span class=p>)</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>select</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=n>sbirthday</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>sno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;105&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=2-correlated-subquery>&lt;2> Correlated Subquery</h4><p>In a correlated subquery, the inner query references columns from the outer query and executes once for each candidate row in the outer query.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Students whose score is lower than the course average
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>cno</span><span class=p>,</span><span class=w> </span><span class=n>degree</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=o>&lt;</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>select</span><span class=w> </span><span class=k>avg</span><span class=p>(</span><span class=n>degree</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>score</span><span class=w> </span><span class=n>b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>a</span><span class=p>.</span><span class=n>cno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>b</span><span class=p>.</span><span class=n>cno</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=k>and</span><span class=w> </span><span class=n>degree</span><span class=w> </span><span class=k>is</span><span class=w> </span><span class=k>not</span><span class=w> </span><span class=k>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=3-exists-subquery>&lt;3> EXISTS Subquery</h4><p><code>EXISTS</code> returns true if the subquery returns any rows.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Names and departments of all teachers who teach a course
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>tname</span><span class=p>,</span><span class=w> </span><span class=n>depart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>teacher</span><span class=w> </span><span class=n>a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>where</span><span class=w> </span><span class=k>exists</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>select</span><span class=w> </span><span class=o>*</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>course</span><span class=w> </span><span class=n>b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>a</span><span class=p>.</span><span class=n>tno</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>b</span><span class=p>.</span><span class=n>tno</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p><code>NOT EXISTS</code> negates the logic.</p><h3 id=8-set-operations>8. Set Operations</h3><p>Combine multiple <code>SELECT</code> results:</p><ul><li>UNION: Union (Set sum)</li><li>INTERSECT: Intersection</li><li>EXCEPT: Difference</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Union example
+</span></span></span><span class=line><span class=cl><span class=c1>-- Names, genders, and birth years of all teachers and students
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>select</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>ssex</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=n>sbirthday</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>teacher</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>union</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>select</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>ssex</span><span class=p>,</span><span class=w> </span><span class=k>year</span><span class=p>(</span><span class=n>sbirthday</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h2 id=iv-dcl-data-control-language>(IV) DCL: Data Control Language</h2><p>DCL controls access rights, usually managed by the DBA (Database Administrator).</p><h3 id=database-security>Database Security</h3><p>Security factors:</p><ol><li>Malicious access/destruction</li><li>Sensitive data leakage</li><li>Environmental vulnerabilities</li></ol><p>Controls:</p><ol><li>Identity Authentication (passwords, biometrics, etc.)</li><li>Access Control</li><li>Discretionary Access Control (DAC): Users can grant permissions to others.</li></ol><h3 id=discretionary-access-control-dac>Discretionary Access Control (DAC)</h3><p>Functions:</p><ol><li>Notify system of authorization via <code>GRANT</code> and <code>REVOKE</code>.</li><li>Check requests against authorizations in the data dictionary.</li></ol><p>Standard permissions: <code>DELETE</code>, <code>INSERT</code>, <code>SELECT</code>, <code>UPDATE</code>. <code>SELECT</code> is equivalent to <code>READ</code>. <code>REFERENCES</code> restricts the ability to create foreign keys.</p><h4 id=1-grant-syntax>1. GRANT Syntax</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>grant</span><span class=w> </span><span class=o>&lt;</span><span class=k>privileges</span><span class=o>&gt;</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=n>object_type</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>object_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>to</span><span class=w> </span><span class=o>&lt;</span><span class=k>user</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>with</span><span class=w> </span><span class=k>grant</span><span class=w> </span><span class=k>option</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li>PUBLIC: Grants permission to all users.</li><li>WITH GRANT OPTION: Allows the user to grant that permission to others.</li></ul><h4 id=2-revoke-syntax>2. REVOKE Syntax</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>revoke</span><span class=w> </span><span class=o>&lt;</span><span class=k>privileges</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=n>object_type</span><span class=o>&gt;</span><span class=w> </span><span class=o>&lt;</span><span class=n>object_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>from</span><span class=w> </span><span class=o>&lt;</span><span class=k>user</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=database-roles>Database Roles</h3><p>Roles represent groups of users (e.g., CEO, Developer).</p><ol><li>Create Role: <code>create role &lt;role_name></code></li><li>Grant to Role: <code>grant &lt;privilege> on &lt;object> to &lt;role></code></li><li>Assign Role to User: <code>grant &lt;role> to &lt;user> [with admin option]</code></li><li>Revoke from Role: <code>revoke &lt;privilege> on &lt;object> from &lt;role></code></li></ol><h3 id=view-mechanism>View Mechanism</h3><p>A view is a virtual table derived from base tables or other views. It hides unnecessary data from users for security and simplicity.</p><h4 id=create-view>Create View</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=o>&lt;</span><span class=n>view_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>as</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=o>&lt;</span><span class=n>query</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>[</span><span class=k>with</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=k>option</span><span class=p>]</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol><li>Subqueries usually shouldn&rsquo;t use <code>ORDER BY</code> or <code>DISTINCT</code>.</li><li><code>WITH CHECK OPTION</code> ensures <code>UPDATE</code>/<code>INSERT</code>/<code>DELETE</code> operations on the view satisfy the view&rsquo;s query condition.</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=c1>-- Example: View for CS students
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=k>create</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=n>cs_student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>as</span><span class=w> </span><span class=k>select</span><span class=w> </span><span class=n>sno</span><span class=p>,</span><span class=w> </span><span class=n>sname</span><span class=p>,</span><span class=w> </span><span class=n>ssex</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>from</span><span class=w> </span><span class=n>student</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>where</span><span class=w> </span><span class=n>depart</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;CS&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>with</span><span class=w> </span><span class=k>check</span><span class=w> </span><span class=k>option</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=drop-view>Drop View</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>view</span><span class=w> </span><span class=o>&lt;</span><span class=n>view_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=auditing>Auditing</h3><p>Records all database operations to an audit log to detect illegal behavior.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=n>AUDIT</span><span class=w> </span><span class=k>UPDATE</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=n>score</span><span class=p>;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>NOAUDIT</span><span class=w> </span><span class=k>UPDATE</span><span class=w> </span><span class=k>ON</span><span class=w> </span><span class=n>score</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=data-encryption>Data Encryption</h3><p>Uses algorithms to transform plaintext into ciphertext for storage.</p><h2 id=indexes>Indexes</h2><p>Indexes allow the DB engine to find data without scanning the whole table. They are defined at the internal schema level.</p><h3 id=create-index>Create Index</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>create</span><span class=w> </span><span class=p>[</span><span class=k>unique</span><span class=p>]</span><span class=w> </span><span class=p>[</span><span class=k>cluster</span><span class=p>]</span><span class=w> </span><span class=k>index</span><span class=w> </span><span class=o>&lt;</span><span class=n>index_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>on</span><span class=w> </span><span class=o>&lt;</span><span class=k>table_name</span><span class=o>&gt;</span><span class=p>(</span><span class=k>column_name</span><span class=w> </span><span class=p>[</span><span class=k>ASC</span><span class=o>|</span><span class=k>DESC</span><span class=p>],</span><span class=w> </span><span class=p>...)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ul><li><code>UNIQUE</code>: Each index value maps to exactly one record.</li><li><code>CLUSTER</code>: The physical order of records matches the index order.</li></ul><h3 id=drop-index>Drop Index</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>drop</span><span class=w> </span><span class=k>index</span><span class=w> </span><span class=o>&lt;</span><span class=n>index_name</span><span class=o>&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/en/tags/database/>Database</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/en/archives/87/><div class=article-details><h2 class=article-title>Database Learning 2: The Relational Model</h2></div></a></article><article><a href=/en/archives/86/><div class=article-details><h2 class=article-title>Database Learning 1: Introduction to Databases</h2></div></a></article><article><a href=/en/archives/8/><div class=article-details><h2 class=article-title>SQL Syntax Details (SQL Server)</h2></div></a></article><article><a href=/en/archives/7/><div class=article-details><h2 class=article-title>Issues Connecting Navicat to SQL Server</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
+2021 -
+2026 <a href=https://blog.yexca.net target=_blank class=link rel=noopener>yexca</a></section><section class=powerby><p><span id=htmer_time style=color:var(--themecolor)></span></p><img src=https://count.getloli.com/@yexca><p>Visits Since 2025-02-28</p>Built with <a href=https://gohugo.io/ target=_blank class=link rel=noopener>Hugo</a> <span>|</span>
+Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank class=link rel=noopener data-version=3.29.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank class=link rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script><script>function secondToDate(e){if(!e)return 0;var t=new Array(0,0,0,0,0);return e>=365*24*3600&&(t[0]=parseInt(e/(365*24*3600)),e%=365*24*3600),e>=24*3600&&(t[1]=parseInt(e/(24*3600)),e%=24*3600),e>=3600&&(t[2]=parseInt(e/3600),e%=3600),e>=60&&(t[3]=parseInt(e/60),e%=60),e>0&&(t[4]=e),t}</script><script type=text/javascript language=javascript>function setTime(){var e=Math.round(new Date(Date.UTC(2021,10,6,14,15,19)).getTime()/1e3),t=Math.round(((new Date).getTime()+8*60*60*1e3)/1e3);currentTime=secondToDate(t-e),currentTimeHtml="This blog has been running for "+currentTime[0]+" years "+currentTime[1]+" days "+currentTime[2]+" hours "+currentTime[3]+" minutes "+currentTime[4]+" seconds",document.getElementById("htmer_time").innerHTML=currentTimeHtml}setInterval(setTime,1e3)</script></body></html>
