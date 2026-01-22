@@ -19,10 +19,16 @@
 <a href=https://blog.yexca.net/zh-tw/archives/248/ class=link>繁體中文</a>
 <a href=https://blog.yexca.net/en/archives/248/ class=link>English</a></div></footer></div></header><section class=article-content><div class=notice><strong>📢</strong>　この記事は ChatGPT によって翻訳されました。また、このソフトウェアは中国語簡体字のみです。　</div><style lang=scss>.notice{padding:.75em 1em;margin:1em 0;border-left:4px solid;border-radius:4px;&.default { border-color: #ccc; background-color: #f9f9f9; color: #333; } &.info { border-color: #2196f3; background-color: #e3f2fd; color: #1a237e; } &.warn { border-color: #ff9800; background-color: #fff3e0; color: #e65100; } &.danger { border-color: #f44336; background-color: #ffebee; color: #b71c1c; }}[data-scheme=dark]{.notice { &.default { border-color: #666; background-color: #2a2a2a; color: #eee; } &.info { border-color: #90caf9; background-color: #1e3a5f; color: #e3f2fd; } &.warn { border-color: #ffb74d; background-color: #4e342e; color: #fff3e0; } &.danger { border-color: #ef5350; background-color: #3e2723; color: #ffebee; } }}[data-scheme=sepia]{.notice { &.info { border-color: #6a5acd; background-color: #fdf6e3; color: #3c2f2f; } &.warn { border-color: #e9967a; background-color: #faf0e6; color: #5c4033; } &.danger { border-color: #cd5c5c; background-color: #f5e0dc; color: #7b3f3f; } }}</style><p>元々はちょっとしたものを適当に書くつもりで、二三日で飽きる予定だった（いつも大体そう）。でもバグらずに動いてくれることで時間めっちゃ節約できたし、どんどん使いやすくなっていった。</p><p>そうすると以前思ってた「SQLite 使えばよくない？」って発想がよみがえってきた。確かに、毎回 MySQL 起動するのはめんどすぎるって話。で、今回のバージョンが生まれたわけ。やっと DB サービス起動しなくても使えるようになった～ <del>（やっと人間が使えるものになった）</del></p><h2 id=使用方法>使用方法</h2><p>項目地址:
 <a class=link href=https://github.com/yexca/PixivDownloader-SQLite target=_blank rel=noopener>https://github.com/yexca/PixivDownloader-SQLite</a></p><p>GUI は前バージョンと似てるから、
-<a class=link href=https://blog.yexca.net/archives/211/>https://blog.yexca.net/archives/211/
+<a class=link href=https://blog.yexca.net/ja/archives/211/>https://blog.yexca.net/ja/archives/211/
 </a>を見ればわかる。</p><h3 id=設定について>設定について</h3><p>使う前に設定が必要：</p><ul><li><code>refresh token</code>（Pixiv のログイン認証。参考:
 <a class=link href=https://gist.github.com/ZipFile/c9ebedb224406f4f11845ab700124362 target=_blank rel=noopener>Pixiv OAuth Flow
-</a>）</li><li>ダウンロード先（デフォルトは <code>D:\Downloads</code>）</li></ul><h3 id=ダウンロードの仕方>ダウンロードの仕方</h3><p>その後は以下のどちらかを入力すれば OK：</p><ul><li>イラストレーター ID、または</li><li>作品 ID（両方入れた場合はイラストレーター ID 優先）</li></ul><p>「下载」ボタンを押せば、全作品をダウンロードして DB に記録してくれる（記録がない場合は全部、記録がある場合は未ダウンロードのやつだけ）。</p><h3 id=エラー処理>エラー処理</h3><p>プログラムのエラー処理は基本的にクローリング関係だけやってる。エラーポップアップが出たら、以下の問題が考えられる：</p><ul><li><code>refresh token</code> が設定されてない、または無効</li><li>イラストレーターアカウントが存在しない</li><li>作品が存在しない</li></ul><p>エラーの内容は詳しく出してないから、この3点をチェックしてみて。</p><p>それ以外（ソフトごとクラッシュとか）のエラーは <code>程序根目录/logs/app_*-*-*.log</code> にある最新ログを送ってもらえれば、こっちで見ます。</p><p>連絡先：<code>PixivDownloader#yexca.net</code>（@ に変えてね）</p><h2 id=新機能mysql-から-sqlite-へ>新機能：MySQL から SQLite へ</h2><p>一番の変更点は、MySQL を自分で用意しなくていいってところ。軽量な SQLite に切り替えた。</p><p>それで DB 設定とか全部いらなくなって、Pixiv の認証トークンとかと一緒に設定ファイルにした。</p><p>あと icon も入れた（ChatGPT に適当に描かせたやつ）。UI も少しだけ調整したけど、そんなに変えてない。</p><p>コードも一応構造化し始めたけど、最後の方はまたグチャった。<del>まあ、いつかまた書き直すかもね</del></p><h2 id=旧-mysql-データベースからの移行方法>旧 MySQL データベースからの移行方法</h2><p>まあ前バージョン使ってる人いないと思うけど、一応書いとく。</p><p>DB 構造の違いで、直接 SELECT して INSERT 文として出力するのが一番楽。こんな感じ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</a>）</li><li>ダウンロード先（デフォルトは <code>D:\Downloads</code>）</li></ul><h3 id=ダウンロードの仕方>ダウンロードの仕方</h3><p>その後は以下のどちらかを入力すれば OK：</p><ul><li>イラストレーター ID、または</li><li>作品 ID（両方入れた場合はイラストレーター ID 優先）</li></ul><p>「下载」ボタンを押せば、全作品をダウンロードして DB に記録してくれる（記録がない場合は全部、記録がある場合は未ダウンロードのやつだけ）。</p><h3 id=エラー処理>エラー処理</h3><p>プログラムのエラー処理は基本的にクローリング関係だけやってる。エラーポップアップが出たら、以下の問題が考えられる：</p><ul><li><code>refresh token</code> が設定されてない、または無効</li><li>イラストレーターアカウントが存在しない</li><li>作品が存在しない</li></ul><p>エラーの内容は詳しく出してないから、この3点をチェックしてみて。</p><p>それ以外（ソフトごとクラッシュとか）のエラーは <code>程序根目录/logs/app_*-*-*.log</code> にある最新ログを送ってもらえれば、こっちで見ます。</p><p>連絡先：<code>PixivDownloader#yexca.net</code>（@ に変えてね）</p><h2 id=新機能mysql-から-sqlite-へ>新機能：MySQL から SQLite へ</h2><p>一番の変更点は、MySQL を自分で用意しなくていいってところ。軽量な SQLite に切り替えた。</p><p>それで DB 設定とか全部いらなくなって、Pixiv の認証トークンとかと一緒に設定ファイルにした。</p><p>あと icon も入れた（ChatGPT に適当に描かせたやつ）。UI も少しだけ調整したけど、そんなに変えてない。</p><p>コードも一応構造化し始めたけど、最後の方はまたグチャった。<del>まあ、いつかまた書き直すかもね</del></p><h2 id=旧-mysql-データベースからの移行方法>旧 MySQL データベースからの移行方法</h2><p>まあ前バージョン使ってる人いないと思うけど、一応書いとく。</p><p>DB 構造の違いで、直接 SELECT して INSERT 文として出力するのが一番楽。こんな感じ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=n>ID</span><span class=p>,</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>downloadedDate</span><span class=p>,</span><span class=w> </span><span class=n>lastDownloadID</span><span class=p>,</span><span class=w> </span><span class=n>url</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>FROM</span><span class=w> </span><span class=n>pic</span><span class=w> 
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>WHERE</span><span class=w> </span><span class=n>platform</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;pixiv&#39;</span><span class=p>;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>出力は SQL の INSERT 文にしてね（Dataflare ってツールがその機能ある）。</p><p>そのあと、Python ファイルを用意して以下を入れる：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -59,32 +65,12 @@
 </span><span class=lnt>35
 </span><span class=lnt>36
 </span><span class=lnt>37
-</span><span class=lnt>38
-</span><span class=lnt>39
-</span><span class=lnt>40
-</span><span class=lnt>41
-</span><span class=lnt>42
-</span><span class=lnt>43
-</span><span class=lnt>44
-</span><span class=lnt>45
-</span><span class=lnt>46
-</span><span class=lnt>47
-</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=n>ID</span><span class=p>,</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>downloadedDate</span><span class=p>,</span><span class=w> </span><span class=n>lastDownloadID</span><span class=p>,</span><span class=w> </span><span class=n>url</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>FROM</span><span class=w> </span><span class=n>pic</span><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>WHERE</span><span class=w> </span><span class=n>platform</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=s1>&#39;pixiv&#39;</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>~~~</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=err>出力は</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=err>の</span><span class=w> </span><span class=k>INSERT</span><span class=w> </span><span class=err>文にしてね（</span><span class=n>Dataflare</span><span class=w> </span><span class=err>ってツールがその機能ある）。</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=err>そのあと、</span><span class=n>Python</span><span class=w> </span><span class=err>ファイルを用意して以下を入れる：</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=o>```</span><span class=n>python</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>import</span><span class=w> </span><span class=n>sqlite3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>conn</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>sqlite3</span><span class=p>.</span><span class=k>connect</span><span class=p>(</span><span class=s2>&#34;pixiv.db&#34;</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>cursor</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=n>conn</span><span class=p>.</span><span class=k>cursor</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>cursor</span><span class=p>.</span><span class=k>execute</span><span class=p>(</span><span class=s1>&#39;&#39;&#39;
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sqlite3</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>conn</span> <span class=o>=</span> <span class=n>sqlite3</span><span class=o>.</span><span class=n>connect</span><span class=p>(</span><span class=s2>&#34;pixiv.db&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>cursor</span> <span class=o>=</span> <span class=n>conn</span><span class=o>.</span><span class=n>cursor</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cursor</span><span class=o>.</span><span class=n>execute</span><span class=p>(</span><span class=s1>&#39;&#39;&#39;
 </span></span></span><span class=line><span class=cl><span class=s1>        Create Table If Not Exists pic (
 </span></span></span><span class=line><span class=cl><span class=s1>               ID TEXT PRIMARY KEY,
 </span></span></span><span class=line><span class=cl><span class=s1>               name TEXT,
@@ -92,31 +78,31 @@
 </span></span></span><span class=line><span class=cl><span class=s1>               lastDownloadID TEXT,
 </span></span></span><span class=line><span class=cl><span class=s1>               url TEXT
 </span></span></span><span class=line><span class=cl><span class=s1>               )               
-</span></span></span><span class=line><span class=cl><span class=s1>               &#39;&#39;&#39;</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>conn</span><span class=p>.</span><span class=k>commit</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>cursor</span><span class=p>.</span><span class=k>execute</span><span class=p>(</span><span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>               &#39;&#39;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>conn</span><span class=o>.</span><span class=n>commit</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cursor</span><span class=o>.</span><span class=n>execute</span><span class=p>(</span><span class=s2>&#34;&#34;&#34;
 </span></span></span><span class=line><span class=cl><span class=s2>INSERT INTO `pic` (`ID`, `name`, `downloadedDate`, `lastDownloadID`, `url`) VALUES
 </span></span></span><span class=line><span class=cl><span class=s2>(&#39;123&#39;, &#39;name1&#39;, &#39;2024-06-08 00:00:00&#39;, &#39;1234&#39;, &#39;https://www.pixiv.net/users/123&#39;),
 </span></span></span><span class=line><span class=cl><span class=s2>(&#39;234&#39;, &#39;name2&#39;, &#39;2025-02-12 00:05:36&#39;, &#39;2345&#39;, &#39;https://www.pixiv.net/users/234&#39;),
 </span></span></span><span class=line><span class=cl><span class=s2>(&#39;345&#39;, &#39;name3&#39;, &#39;2025-01-11 17:26:17&#39;, &#39;3456&#39;, &#39;https://www.pixiv.net/users/345&#39;);
-</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>conn</span><span class=p>.</span><span class=k>commit</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>cursor</span><span class=p>.</span><span class=k>execute</span><span class=p>(</span><span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>conn</span><span class=o>.</span><span class=n>commit</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cursor</span><span class=o>.</span><span class=n>execute</span><span class=p>(</span><span class=s2>&#34;&#34;&#34;
 </span></span></span><span class=line><span class=cl><span class=s2>Select * from pic
-</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>rows</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=k>cursor</span><span class=p>.</span><span class=n>fetchall</span><span class=p>()</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>for</span><span class=w> </span><span class=k>row</span><span class=w> </span><span class=k>in</span><span class=w> </span><span class=k>rows</span><span class=p>:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=n>print</span><span class=p>(</span><span class=k>row</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>conn</span><span class=p>.</span><span class=k>close</span><span class=p>()</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div><p><code>cursor.execute</code> の中身を自分のバックアップ SQL に差し替えて、例として3件残しておいた。</p><p>その後、できた <code>pixiv.db</code> を <code>程序根目录/resources</code> に置けば OK。</p><h2 id=ちょっとした開発感想グチャグチャから混乱の理解へ>ちょっとした開発感想：「グチャグチャ」から「混乱の理解」へ</h2><p>そういえば今回の開発、前回コードがグチャグチャすぎたのが気になって手を入れようとしたんだけど、途中で「あ～そりゃ前回グチャるわ」って理解した😂</p><p>むしろ今回の方がさらにグチャったまである。途中から「もうリファクタやめてコピペでいいか」ってなって、キャメルケースとスネークケースが混ざるカオスが爆誕した。もう触りたくない。はぁ。</p><p>とはいえ、動いてるし、使えるならまぁいいか～</p><p><img src=https://count.getloli.com/@yexca-248 loading=lazy alt=yexca-248></p></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/pixiv/>Pixiv</a>
+</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rows</span> <span class=o>=</span> <span class=n>cursor</span><span class=o>.</span><span class=n>fetchall</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>row</span> <span class=ow>in</span> <span class=n>rows</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>row</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>conn</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>cursor.execute</code> の中身を自分のバックアップ SQL に差し替えて、例として3件残しておいた。</p><p>その後、できた <code>pixiv.db</code> を <code>程序根目录/resources</code> に置けば OK。</p><h2 id=ちょっとした開発感想グチャグチャから混乱の理解へ>ちょっとした開発感想：「グチャグチャ」から「混乱の理解」へ</h2><p>そういえば今回の開発、前回コードがグチャグチャすぎたのが気になって手を入れようとしたんだけど、途中で「あ～そりゃ前回グチャるわ」って理解した😂</p><p>むしろ今回の方がさらにグチャったまである。途中から「もうリファクタやめてコピペでいいか」ってなって、キャメルケースとスネークケースが混ざるカオスが爆誕した。もう触りたくない。はぁ。</p><p>とはいえ、動いてるし、使えるならまぁいいか～</p><p><img src=https://count.getloli.com/@yexca-248 loading=lazy alt=yexca-248></p></section><footer class=article-footer><section class=article-tags><a href=/ja/tags/pixiv/>Pixiv</a>
 <a href=/ja/tags/python/>Python</a>
 <a href=/ja/tags/pyqt6/>PyQt6</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
 <span>This post is licensed under CC BY-NC-SA 4.0 by the author.</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>関連するコンテンツ</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/ja/archives/211/><div class=article-details><h2 class=article-title>Pixiv ダウンローダー</h2></div></a></article><article><a href=/ja/archives/213/><div class=article-details><h2 class=article-title>Pythonでpyinstallerを使って実行ファイル化する</h2></div></a></article><article><a href=/ja/archives/133/><div class=article-details><h2 class=article-title>hvdb 登録監視ツール</h2></div></a></article><article><a href=/ja/archives/94/><div class=article-details><h2 class=article-title>データベースにはダウンロードされたアーティストの作品が記録されます</h2></div></a></article><article><a href=/ja/archives/5/><div class=article-details><h2 class=article-title>VsCode で Python 環境を設定する</h2></div></a></article></div></div></aside><script src=//cdn.jsdelivr.net/npm/twikoo@1.6.39/dist/twikoo.all.min.js></script><div id=tcomment></div><style>.twikoo{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}:root[data-scheme=dark]{--twikoo-body-text-color-main:rgba(255, 255, 255, 0.9);--twikoo-body-text-color:rgba(255, 255, 255, 0.7)}.twikoo .el-input-group__prepend,.twikoo .tk-action-icon,.twikoo .tk-submit-action-icon,.twikoo .tk-time,.twikoo .tk-comments-no,.twikoo .tk-comments-count{color:var(--twikoo-body-text-color)}.twikoo .el-input__inner,.twikoo .el-textarea__inner,.twikoo .tk-preview-container,.twikoo .tk-content,.twikoo .tk-nick,.twikoo .tk-send{color:var(--twikoo-body-text-color-main)}.twikoo .el-button{color:var(--twikoo-body-text-color)!important}.twikoo .el-input__count{color:var(--twikoo-body-text-color)!important}.OwO .OwO-body{background-color:var(--body-background)!important;color:var(--body-text-color)!important}</style><script>twikoo.init({envId:"https://twikoo-jade-one.vercel.app/",el:"#tcomment"})</script><footer class=site-footer><section class=copyright>&copy;
