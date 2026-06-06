@@ -1,155 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Fedora on yexca'Blog</title><link>https://blog.yexca.net/en/tags/fedora/</link><description>Recent content in Fedora on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>yexca</copyright><lastBuildDate>Sun, 28 Jan 2024 14:25:58 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/en/tags/fedora/feed.xml" rel="self" type="application/rss+xml"/><item><title>Running Scripts on Fedora Boot</title><link>https://blog.yexca.net/en/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/149/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
-&lt;/div>
-&lt;h2 id="introduction">Introduction
-&lt;/h2>&lt;p>Seriously, don&amp;rsquo;t put infinite loops in here!!! We&amp;rsquo;re using the systemd way.&lt;/p>
-&lt;h2 id="create-the-script">Create the Script
-&lt;/h2>&lt;p>Write your script in this file:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vi /etc/rc.d/rc.local
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Grant execute permissions:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">chmod +x /etc/rc.d/rc.local
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="edit-startup-status">Edit Startup Status
-&lt;/h2>&lt;p>Edit the file:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vi /usr/lib/systemd/system/rc-local.service
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Add &lt;em>[Install]&lt;/em> to the last line:&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file is part of systemd.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># systemd is free software; you can redistribute it and/or modify it&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># under the terms of the GNU Lesser General Public License as published by&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># the Free Software Foundation; either version 2.1 of the License, or&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># (at your option) any later version.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This unit gets pulled automatically into multi-user.target by&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># systemd-rc-local-generator if /etc/rc.d/rc.local is executable.&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Unit&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Description&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local Compatibility
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ConditionFileIsExecutable&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">After&lt;/span>&lt;span class="o">=&lt;/span>network.target
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Service&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">Type&lt;/span>&lt;span class="o">=&lt;/span>forking
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">ExecStart&lt;/span>&lt;span class="o">=&lt;/span>/etc/rc.d/rc.local start
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TimeoutSec&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">0&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">RemainAfterExit&lt;/span>&lt;span class="o">=&lt;/span>yes
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SysVStartPriority&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">99&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">[&lt;/span>Install&lt;span class="o">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">WantedBy&lt;/span>&lt;span class="o">=&lt;/span>multi-user.target
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>Then enable it for boot with systemd:&lt;/p></description></item><item><title>Fedora Desktop Customization</title><link>https://blog.yexca.net/en/archives/74/</link><pubDate>Sun, 18 Sep 2022 11:10:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/74/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
-&lt;/div>
-&lt;h2 id="introduction">Introduction
-&lt;/h2>&lt;p>This should be my last time tweaking things for a while. After enabling a lot of plugins, the desktop takes quite a while to appear after booting. I&amp;rsquo;ll need to disable some unused ones later.&lt;/p>
-&lt;h2 id="theme">Theme
-&lt;/h2>&lt;p>I discovered the
-&lt;a class="link" href="https://www.gnome-look.org/s/Gnome/browse/"
-target="_blank" rel="noopener"
->
-GNOME Look website
-&lt;/a>
-through
-&lt;a class="link" href="https://blog.yexca.net/en/archives/129"
->
-some reading
-&lt;/a>
-. After browsing a bit, the very first theme I saw really caught my eye.&lt;/p></description></item><item><title>Installing Java 8 (Oracle JDK) on Fedora</title><link>https://blog.yexca.net/en/archives/63/</link><pubDate>Fri, 02 Sep 2022 17:37:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/63/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
-&lt;/div>
-&lt;h2 id="intro">Intro
-&lt;/h2>&lt;p>Fedora comes with Java, but it&amp;rsquo;s OpenJDK. Sometimes, you just need Oracle&amp;rsquo;s version.&lt;/p>
-&lt;h2 id="download">Download
-&lt;/h2>&lt;p>Head to the official site to download:
-&lt;a class="link" href="https://www.oracle.com/java/technologies/downloads/"
-target="_blank" rel="noopener"
->
-Java Downloads | Oracle
-&lt;/a>
-(Requires login to download)&lt;/p>
-&lt;p>Find &lt;em>java8-Linux&lt;/em>, then grab the &lt;em>x64 Compressed Archive&lt;/em> (that&amp;rsquo;s the 64-bit compressed package).&lt;/p>
-&lt;p>As of writing, the file was named &lt;em>jdk-8u341-linux-x64.tar.gz&lt;/em>.&lt;/p>
-&lt;h2 id="move-to-directory">Move to Directory
-&lt;/h2>&lt;ol>
-&lt;li>First, create a Java directory under &lt;em>/usr/local&lt;/em>.&lt;/li>
-&lt;/ol>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo mkdir -p /usr/local/java
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;ol start="2">
-&lt;li>Copy the file there.&lt;/li>
-&lt;/ol>
-&lt;p>Assuming your download is in &lt;em>~/Downloads&lt;/em>, navigate to it.&lt;/p></description></item><item><title>Fedora Post-Install Setup</title><link>https://blog.yexca.net/en/archives/59/</link><pubDate>Wed, 24 Aug 2022 12:13:30 +0800</pubDate><guid>https://blog.yexca.net/en/archives/59/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
-&lt;/div>
-&lt;h2 id="intro">Intro
-&lt;/h2>&lt;p>Here&amp;rsquo;s a list of things I install after setting up Fedora.&lt;/p>
-&lt;h2 id="change-terminal-shortcut">Change Terminal Shortcut
-&lt;/h2>&lt;p>Open &lt;em>Settings &amp;gt; Keyboard&lt;/em>, then find &lt;em>View and Customize Shortcuts&lt;/em> at the bottom.&lt;/p>
-&lt;p>Custom Shortcuts&lt;/p>
-&lt;p>Name: Shell Terminal&lt;/p>
-&lt;p>Command: gnome-terminal&lt;/p>
-&lt;p>Shortcut: Custom&lt;/p>
-&lt;h2 id="update-system">Update System
-&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo dnf update
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="change-screenshot-shortcut">Change Screenshot Shortcut
-&lt;/h2>&lt;p>Still prefer Windows-style shortcuts.&lt;/p>
-&lt;p>Under &lt;em>Screenshot&lt;/em>, change &lt;em>Interactive Screenshot&lt;/em> to &lt;em>Win+Shift+S&lt;/em>.&lt;/p>
-&lt;h2 id="change-user-directories-to-english">Change User Directories to English
-&lt;/h2>&lt;p>Chinese directories are a pain to use with the terminal.&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Fedora on yexca'Blog</title><link>https://blog.yexca.net/en/tags/fedora/</link><description>Recent content in Fedora on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>yexca</copyright><lastBuildDate>Sun, 28 Jan 2024 14:25:58 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/en/tags/fedora/feed.xml" rel="self" type="application/rss+xml"/><item><title>Running Scripts on Fedora Boot</title><link>https://blog.yexca.net/en/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/149/</guid><description>📢 This article was translated by gemini-2.5-flash Introduction Seriously, don’t put infinite loops in here!!! We’re using the systemd way.
+Create the Script Write your script in this file:
+1 vi /etc/rc.d/rc.local Grant execute permissions:
+1 chmod +x /etc/rc.d/rc.local Edit Startup Status Edit the file:
+1 vi /usr/lib/systemd/system/rc-local.service Add [Install] to the last line:
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 # This file is part of systemd. # # …</description></item><item><title>Fedora Desktop Customization</title><link>https://blog.yexca.net/en/archives/74/</link><pubDate>Sun, 18 Sep 2022 11:10:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/74/</guid><description>📢 This article was translated by gemini-3-flash-preview Introduction This should be my last time tweaking things for a while. After enabling a lot of plugins, the desktop takes quite a while to appear after booting. I’ll need to disable some unused ones later.
+Theme I discovered the GNOME Look website through some reading . After browsing a bit, the very first theme I saw really caught my eye.</description></item><item><title>Installing Java 8 (Oracle JDK) on Fedora</title><link>https://blog.yexca.net/en/archives/63/</link><pubDate>Fri, 02 Sep 2022 17:37:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/63/</guid><description>📢 This article was translated by gemini-2.5-flash Intro Fedora comes with Java, but it’s OpenJDK. Sometimes, you just need Oracle’s version.
+Download Head to the official site to download: Java Downloads | Oracle (Requires login to download)
+Find java8-Linux, then grab the x64 Compressed Archive (that’s the 64-bit compressed package).
+As of writing, the file was named jdk-8u341-linux-x64.tar.gz.
+Move to Directory First, create a Java directory under /usr/local. 1 sudo mkdir …</description></item><item><title>Fedora Post-Install Setup</title><link>https://blog.yexca.net/en/archives/59/</link><pubDate>Wed, 24 Aug 2022 12:13:30 +0800</pubDate><guid>https://blog.yexca.net/en/archives/59/</guid><description>📢 This article was translated by gemini-2.5-flash Intro Here’s a list of things I install after setting up Fedora.
+Change Terminal Shortcut Open Settings &amp;gt; Keyboard, then find View and Customize Shortcuts at the bottom.
+Custom Shortcuts
+Name: Shell Terminal
+Command: gnome-terminal
+Shortcut: Custom
+Update System 1 sudo dnf update Change Screenshot Shortcut Still prefer Windows-style shortcuts.
+Under Screenshot, change Interactive Screenshot to Win+Shift+S.
+Change User …</description></item></channel></rss>
