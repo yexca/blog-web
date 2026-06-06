@@ -1,68 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SpringBoot on yexca'Blog</title><link>https://blog.yexca.net/en/tags/springboot/</link><description>Recent content in SpringBoot on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>yexca</copyright><lastBuildDate>Wed, 05 Feb 2025 16:52:48 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/en/tags/springboot/feed.xml" rel="self" type="application/rss+xml"/><item><title>Redis Distributed Caching</title><link>https://blog.yexca.net/en/archives/225/</link><pubDate>Tue, 28 Jan 2025 21:47:19 +0900</pubDate><guid>https://blog.yexca.net/en/archives/225/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>Redis Basics:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/157/"
@@ -70,466 +7,154 @@ color: #7b3f3f;
 https://blog.yexca.net/en/archives/157/
 &lt;/a>
 &lt;br>
-Redis Distributed Caching: This article&lt;/p></description></item><item><title>Spring Auto-Configuration and Starter Dependencies</title><link>https://blog.yexca.net/en/archives/223/</link><pubDate>Thu, 23 Jan 2025 15:06:36 +0900</pubDate><guid>https://blog.yexca.net/en/archives/223/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+Redis Distributed Caching: This article&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="introduction">Introduction
+&lt;/h2>&lt;p>&lt;del>So I wrote both articles at the same time but waited a year to post them, huh?&lt;/del>&lt;/p>
+&lt;p>Actually, I had three articles planned back then, but every time I sat down to finish them, I forgot what I wanted to say. A year just flew by&amp;hellip;&lt;/p>
+&lt;h2 id="problems">Problems
+&lt;/h2>&lt;p>A standalone Redis instance has several issues:&lt;/p></description></item><item><title>Spring Auto-Configuration and Starter Dependencies</title><link>https://blog.yexca.net/en/archives/223/</link><pubDate>Thu, 23 Jan 2025 15:06:36 +0900</pubDate><guid>https://blog.yexca.net/en/archives/223/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="configuration">Configuration
-&lt;/h2>&lt;p>You can configure things using YAML, YML, or properties files. Java system properties and command-line arguments also work.&lt;/p></description></item><item><title>Spring Transaction Management</title><link>https://blog.yexca.net/en/archives/222/</link><pubDate>Wed, 22 Jan 2025 13:30:38 +0900</pubDate><guid>https://blog.yexca.net/en/archives/222/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/h2>&lt;p>You can configure things using YAML, YML, or properties files. Java system properties and command-line arguments also work.&lt;/p>
+&lt;p>Priority: Command Line Args &amp;gt; Java System Properties &amp;gt; Properties Files &amp;gt; YML &amp;gt; YAML&lt;/p>
+&lt;p>For command line usage, first run the Maven package command, then execute from the command line:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">java -jar path_to_jar.jar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Java System Property, e.g., for port&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -Dserver.port&lt;span class="o">=&lt;/span>&lt;span class="m">9000&lt;/span> -jar path_to_jar.jar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Command Line Argument, e.g., for port&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -jar path_to_jar.jar --server.port&lt;span class="o">=&lt;/span>&lt;span class="m">9000&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;blockquote>
+&lt;p>When packaging a SpringBoot project, you need the &lt;code>spring-boot-maven-plugin&lt;/code>. (If you create a project from the official skeleton, this plugin is automatically included).&lt;/p></description></item><item><title>Spring Transaction Management</title><link>https://blog.yexca.net/en/archives/222/</link><pubDate>Wed, 22 Jan 2025 13:30:38 +0900</pubDate><guid>https://blog.yexca.net/en/archives/222/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>
 &lt;h2 id="transactions">Transactions
-&lt;/h2>&lt;p>A transaction is a set of operations that form an indivisible unit of work. These operations either all succeed together or all fail together.&lt;/p></description></item><item><title>Spring AOP (Aspect-Oriented Programming)</title><link>https://blog.yexca.net/en/archives/221/</link><pubDate>Tue, 21 Jan 2025 16:05:57 +0900</pubDate><guid>https://blog.yexca.net/en/archives/221/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/h2>&lt;p>A transaction is a set of operations that form an indivisible unit of work. These operations either all succeed together or all fail together.&lt;/p>
+&lt;p>Operations:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Start Transaction&lt;/strong>: Begin the set of operations. (start transaction / begin)&lt;/li>
+&lt;li>&lt;strong>Commit Transaction&lt;/strong>: Finalize the operations if all succeed. (commit)&lt;/li>
+&lt;li>&lt;strong>Rollback Transaction&lt;/strong>: Revert all operations if any step fails. (rollback)&lt;/li>
+&lt;/ul>
+&lt;p>Assume you need to delete a department and then delete all employees in that department:&lt;/p></description></item><item><title>Spring AOP (Aspect-Oriented Programming)</title><link>https://blog.yexca.net/en/archives/221/</link><pubDate>Tue, 21 Jan 2025 16:05:57 +0900</pubDate><guid>https://blog.yexca.net/en/archives/221/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>Aspect-Oriented Programming (AOP) is about programming for specific methods.&lt;/p></description></item><item><title>JWT Login Authentication</title><link>https://blog.yexca.net/en/archives/218/</link><pubDate>Thu, 16 Jan 2025 23:06:20 +0900</pubDate><guid>https://blog.yexca.net/en/archives/218/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>Aspect-Oriented Programming (AOP) is about programming for specific methods.&lt;/p>
+&lt;p>Dynamic proxy is the most common implementation for AOP. Spring AOP is an advanced Spring framework tech, primarily using the underlying dynamic proxy mechanism to program specific methods while managing bean objects.&lt;/p>
+&lt;h2 id="counting-method-execution-time">Counting Method Execution Time
+&lt;/h2>&lt;h3 id="importing-dependencies">Importing Dependencies
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;groupId&amp;gt;&lt;/span>org.springframework.boot&lt;span class="nt">&amp;lt;/groupId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;artifactId&amp;gt;&lt;/span>spring-boot-starter-aop&lt;span class="nt">&amp;lt;/artifactId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;h3 id="writing-aop-code">Writing AOP Code
+&lt;/h3>&lt;p>Write AOP code to program specific methods based on business needs.&lt;/p></description></item><item><title>JWT Login Authentication</title><link>https://blog.yexca.net/en/archives/218/</link><pubDate>Thu, 16 Jan 2025 23:06:20 +0900</pubDate><guid>https://blog.yexca.net/en/archives/218/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
 &lt;h2 id="session-technology">Session Technology
-&lt;/h2>&lt;p>Session: When a user opens a browser and accesses web server resources, a session is established. It ends when either side disconnects. A single session can include multiple requests and responses.&lt;/p></description></item><item><title>MyBatis Usage</title><link>https://blog.yexca.net/en/archives/216/</link><pubDate>Mon, 13 Jan 2025 21:06:03 +0900</pubDate><guid>https://blog.yexca.net/en/archives/216/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/h2>&lt;p>Session: When a user opens a browser and accesses web server resources, a session is established. It ends when either side disconnects. A single session can include multiple requests and responses.&lt;/p>
+&lt;p>Session Tracking: A method to maintain browser state. The server needs to identify if multiple requests come from the same browser to share data across these requests within the same session.&lt;/p></description></item><item><title>MyBatis Usage</title><link>https://blog.yexca.net/en/archives/216/</link><pubDate>Mon, 13 Jan 2025 21:06:03 +0900</pubDate><guid>https://blog.yexca.net/en/archives/216/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>MyBatis Series&lt;/strong>&lt;/p></description></item><item><title>MyBatis Installation and Getting Started</title><link>https://blog.yexca.net/en/archives/215/</link><pubDate>Sun, 12 Jan 2025 23:59:48 +0900</pubDate><guid>https://blog.yexca.net/en/archives/215/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;p>&lt;strong>MyBatis Series&lt;/strong>&lt;/p>
+&lt;p>MyBatis Installation and Getting Started:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/215"
+>
+https://blog.yexca.net/en/archives/215
+&lt;/a>
+&lt;br>
+MyBatis Usage: This article&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="delete">Delete
+&lt;/h2>&lt;p>Use &lt;code>#{}&lt;/code> as a placeholder, with the parameter name inside.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@Mapper&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">interface&lt;/span> &lt;span class="nc">EmpMapper&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Delete&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Delete&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;delete from mybatis.emp where id = #{id}&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">delete&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Integer&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>Testing:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@SpringBootTest&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">Mybatis02ApplicationTests&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Autowired&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">EmpMapper&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">empMapper&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Test&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">contextLoads&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">empMapper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">delete&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">17&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Usually, you don&amp;rsquo;t need a return value, but if you do, it returns the number of rows affected by the operation.&lt;/p></description></item><item><title>MyBatis Installation and Getting Started</title><link>https://blog.yexca.net/en/archives/215/</link><pubDate>Sun, 12 Jan 2025 23:59:48 +0900</pubDate><guid>https://blog.yexca.net/en/archives/215/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>
 &lt;blockquote>
-&lt;p>&lt;strong>MyBatis Series&lt;/strong>&lt;/p></description></item><item><title>Redis</title><link>https://blog.yexca.net/en/archives/157/</link><pubDate>Fri, 23 Feb 2024 16:40:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/157/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;p>&lt;strong>MyBatis Series&lt;/strong>&lt;/p>
+&lt;p>MyBatis Installation and Getting Started: This article&lt;br>
+MyBatis Usage:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/216"
+>
+https://blog.yexca.net/en/archives/216
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>MyBatis is a top-tier persistence framework designed to simplify JDBC development.&lt;/p>
+&lt;h2 id="installing-mysql-on-windows">Installing MySQL on Windows
+&lt;/h2>&lt;p>Download:
+&lt;a class="link" href="https://dev.mysql.com/downloads/mysql/"
+target="_blank" rel="noopener"
+>
+https://dev.mysql.com/downloads/mysql/
+&lt;/a>
+&lt;/p>
+&lt;p>Download the ZIP Archive.&lt;/p>
+&lt;p>Unzip it, then configure the environment variable &lt;code>MYSQL_HOME&lt;/code> and add &lt;code>%MYSQL_HOME%\bin&lt;/code> to your &lt;code>PATH&lt;/code>.&lt;/p>
+&lt;p>Open CMD with &lt;strong>Administrator privileges&lt;/strong> and type &lt;code>mysql&lt;/code> to verify the configuration.&lt;/p>
+&lt;h3 id="initialize-mysql">Initialize MySQL
+&lt;/h3>&lt;p>Run the following command:&lt;/p></description></item><item><title>Redis</title><link>https://blog.yexca.net/en/archives/157/</link><pubDate>Fri, 23 Feb 2024 16:40:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/157/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>Redis Basics: This article&lt;br>
 Redis Distributed Cache:
@@ -537,201 +162,85 @@ Redis Distributed Cache:
 >
 https://blog.yexca.net/en/archives/225/
 &lt;/a>
-&lt;/p></description></item><item><title>Three-Tier Architecture and Layered Decoupling</title><link>https://blog.yexca.net/en/archives/147/</link><pubDate>Fri, 19 Jan 2024 10:37:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/147/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/p>
+&lt;/blockquote>
+&lt;p>Redis is an in-memory key-value database and is one of the most widely used storage middleware in the IT industry.&lt;/p>
+&lt;ul>
+&lt;li>Official Website:
+&lt;a class="link" href="https://redis.io"
+target="_blank" rel="noopener"
+>
+https://redis.io
+&lt;/a>
+&lt;/li>
+&lt;li>Chinese Site:
+&lt;a class="link" href="https://www.redis.net.cn/"
+target="_blank" rel="noopener"
+>
+https://www.redis.net.cn/
+&lt;/a>
+&lt;/li>
+&lt;/ul>
+&lt;p>Since Redis is memory-based, it offers high read/write performance, making it ideal for storing hot data (products, news, info). It is an open-source high-performance key-value database developed in C. It supports rich value types and is often referred to as a structured NoSQL (Not Only SQL) database.&lt;/p></description></item><item><title>Three-Tier Architecture and Layered Decoupling</title><link>https://blog.yexca.net/en/archives/147/</link><pubDate>Fri, 19 Jan 2024 10:37:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/147/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="case-introduction">Case Introduction
-&lt;/h2>&lt;p>Get employee data, return a unified response, and render it on the page.&lt;/p></description></item><item><title>Spring Request and Response</title><link>https://blog.yexca.net/en/archives/144/</link><pubDate>Sun, 14 Jan 2024 16:47:28 +0800</pubDate><guid>https://blog.yexca.net/en/archives/144/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/h2>&lt;p>Get employee data, return a unified response, and render it on the page.&lt;/p>
+&lt;p>First, we need to bring in the &lt;code>dom4j&lt;/code> dependency to parse XML files.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;groupId&amp;gt;&lt;/span>org.dom4j&lt;span class="nt">&amp;lt;/groupId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;artifactId&amp;gt;&lt;/span>dom4j&lt;span class="nt">&amp;lt;/artifactId&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;version&amp;gt;&lt;/span>2.1.3&lt;span class="nt">&amp;lt;/version&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/dependency&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>When a browser sends a request, it first goes through the DispatcherServlet, which forwards it to the various *Controller programs for processing. After processing, the result is returned to the DispatcherServlet, and then sent back to the browser.&lt;/p></description></item><item><title>Intro to JavaWeb</title><link>https://blog.yexca.net/en/archives/142/</link><pubDate>Wed, 10 Jan 2024 17:53:18 +0800</pubDate><guid>https://blog.yexca.net/en/archives/142/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>&lt;p>Bring in the &lt;code>XMLParserUtils&lt;/code> utility class for XML parsing, the corresponding entity class &lt;code>Emp&lt;/code>, and the &lt;code>emp.xml&lt;/code> XML file.&lt;/p>
+&lt;p>Add static page files to &lt;code>resources/static&lt;/code>.&lt;/p></description></item><item><title>Spring Request and Response</title><link>https://blog.yexca.net/en/archives/144/</link><pubDate>Sun, 14 Jan 2024 16:47:28 +0800</pubDate><guid>https://blog.yexca.net/en/archives/144/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;p>When a browser sends a request, it first goes through the DispatcherServlet, which forwards it to the various *Controller programs for processing. After processing, the result is returned to the DispatcherServlet, and then sent back to the browser.&lt;/p>
+&lt;p>The DispatcherServlet is known as the core controller or front controller.&lt;/p>
+&lt;p>Browser request data is encapsulated into an &lt;code>HttpServletRequest&lt;/code> object, and response data into an &lt;code>HttpServletResponse&lt;/code> object.&lt;/p></description></item><item><title>Intro to JavaWeb</title><link>https://blog.yexca.net/en/archives/142/</link><pubDate>Wed, 10 Jan 2024 17:53:18 +0800</pubDate><guid>https://blog.yexca.net/en/archives/142/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>
 &lt;h2 id="springboot-getting-started-example">SpringBoot Getting Started Example
-&lt;/h2>&lt;p>Goal: Build a web application using SpringBoot where a browser request to &lt;code>/hello&lt;/code> returns the string &amp;ldquo;Hello Spring&amp;rdquo;.&lt;/p></description></item></channel></rss>
+&lt;/h2>&lt;p>Goal: Build a web application using SpringBoot where a browser request to &lt;code>/hello&lt;/code> returns the string &amp;ldquo;Hello Spring&amp;rdquo;.&lt;/p>
+&lt;p>First, create a SpringBoot project and select the web development dependencies.&lt;/p>
+&lt;p>Next, create a controller class. Create &lt;code>Controller/HelloController.java&lt;/code> in the same directory as your &lt;code>*Application.java&lt;/code> file.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@RestController&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">HelloController&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@RequestMapping&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/hello&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">hello&lt;/span>&lt;span class="p">(){&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;Hello Spring&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">s&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Run the &lt;code>*Application.java&lt;/code> class and visit
+&lt;a class="link" href="http://localhost:8080/hello"
+target="_blank" rel="noopener"
+>
+http://localhost:8080/hello
+&lt;/a>
+in your browser.&lt;/p></description></item></channel></rss>

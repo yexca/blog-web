@@ -1,202 +1,135 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Database on yexca'Blog</title><link>https://blog.yexca.net/en/tags/database/</link><description>Recent content in Database on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>yexca</copyright><lastBuildDate>Sun, 12 Feb 2023 08:15:00 +0800</lastBuildDate><atom:link href="https://blog.yexca.net/en/tags/database/feed.xml" rel="self" type="application/rss+xml"/><item><title>Database Study Seven: Database Control Functions</title><link>https://blog.yexca.net/en/archives/92/</link><pubDate>Sun, 12 Feb 2023 08:15:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/92/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p></description></item><item><title>Database Learning 6: Database Design</title><link>https://blog.yexca.net/en/archives/91/</link><pubDate>Sat, 11 Feb 2023 08:15:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/91/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
+&lt;p>Database Study One: Introduction to Databases:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/86"
+>
+https://blog.yexca.net/en/archives/86
+&lt;/a>
+&lt;br>
+Database Study Two: Relational Model:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/87"
+>
+https://blog.yexca.net/en/archives/87
+&lt;/a>
+&lt;br>
+Database Study Three: SQL Language:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/88"
+>
+https://blog.yexca.net/en/archives/88
+&lt;/a>
+&lt;br>
+Database Study Four: Relational Database Theory:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/89"
+>
+https://blog.yexca.net/en/archives/89
+&lt;/a>
+&lt;br>
+Database Study Five: Normal Forms:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/90"
+>
+https://blog.yexca.net/en/archives/90
+&lt;/a>
+&lt;br>
+Database Study Six: Database Design:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/91"
+>
+https://blog.yexca.net/en/archives/91
+&lt;/a>
+&lt;br>
+Database Study Seven: Database Control Functions: This Article&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="transaction-management">Transaction Management
+&lt;/h2>&lt;p>A transaction is a sequence of operations that are &amp;ldquo;all or nothing.&amp;rdquo;&lt;/p>
+&lt;p>Transactions and programs are distinct concepts. Typically, a program can include multiple transactions.&lt;/p></description></item><item><title>Database Learning 6: Database Design</title><link>https://blog.yexca.net/en/archives/91/</link><pubDate>Sat, 11 Feb 2023 08:15:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/91/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p></description></item><item><title>Database Study Five: Normal Forms</title><link>https://blog.yexca.net/en/archives/90/</link><pubDate>Fri, 10 Feb 2023 08:13:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/90/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
+&lt;p>Database Learning 1: Introduction to Databases:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/86"
+>
+https://blog.yexca.net/en/archives/86
+&lt;/a>
+&lt;br>
+Database Learning 2: Relational Model:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/87"
+>
+https://blog.yexca.net/en/archives/87
+&lt;/a>
+&lt;br>
+Database Learning 3: SQL Language:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/88"
+>
+https://blog.yexca.net/en/archives/88
+&lt;/a>
+&lt;br>
+Database Learning 4: Relational Database Theory:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/89"
+>
+https://blog.yexca.net/en/archives/89
+&lt;/a>
+&lt;br>
+Database Learning 5: Normalization:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/90"
+>
+https://blog.yexca.net/en/archives/90
+&lt;/a>
+&lt;br>
+Database Learning 6: Database Design: This article&lt;br>
+Database Learning 7: Database Control Functions:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/92"
+>
+https://blog.yexca.net/en/archives/92
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="database-design-strategies">Database Design Strategies
+&lt;/h2>&lt;p>Top-down and bottom-up; usually a combination of both is used.&lt;/p>
+&lt;h2 id="database-design-steps">Database Design Steps
+&lt;/h2>&lt;p>The &amp;ldquo;New Orleans Method&amp;rdquo; is currently the most recognized and authoritative method for database design. It divides the process into four main phases:&lt;/p></description></item><item><title>Database Study Five: Normal Forms</title><link>https://blog.yexca.net/en/archives/90/</link><pubDate>Fri, 10 Feb 2023 08:13:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/90/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p></description></item><item><title>Relational Database Theory: Database Learning Part 4</title><link>https://blog.yexca.net/en/archives/89/</link><pubDate>Thu, 09 Feb 2023 08:10:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/89/</guid><description>&lt;blockquote>
+&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
+&lt;p>Database Study One: Database Introduction:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/86"
+>
+https://blog.yexca.net/en/archives/86
+&lt;/a>
+&lt;br>
+Database Study Two: Relational Model:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/87"
+>
+https://blog.yexca.net/en/archives/87
+&lt;/a>
+&lt;br>
+Database Study Three: SQL Language:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/88"
+>
+https://blog.yexca.net/en/archives/88
+&lt;/a>
+&lt;br>
+Database Study Four: Relational Database Theory:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/89"
+>
+https://blog.yexca.net/en/archives/89
+&lt;/a>
+&lt;br>
+Database Study Five: Normal Forms: This Article&lt;br>
+Database Study Six: Database Design:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/91"
+>
+https://blog.yexca.net/en/archives/91
+&lt;/a>
+&lt;br>
+Database Study Seven: Database Control Functions:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/92"
+>
+https://blog.yexca.net/en/archives/92
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>Relations in a relational database must meet certain normalization requirements. Normal forms are used to measure different degrees of normalization. Currently, there are 6 main normal forms: 1NF, 2NF, 3NF, BCNF, 4NF, and 5NF.&lt;/p></description></item><item><title>Relational Database Theory: Database Learning Part 4</title><link>https://blog.yexca.net/en/archives/89/</link><pubDate>Thu, 09 Feb 2023 08:10:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/89/</guid><description>&lt;blockquote>
 &lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
 &lt;p>Database Learning 1: Introduction to Databases:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/86"
@@ -238,71 +171,9 @@ https://blog.yexca.net/en/archives/92
 &lt;/blockquote>
 &lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="relational-schema">Relational Schema
-&lt;/h2>&lt;p>A relational schema is formally defined as a 5-tuple (including the relation name):&lt;/p></description></item><item><title>Database Learning Part 3: SQL</title><link>https://blog.yexca.net/en/archives/88/</link><pubDate>Wed, 08 Feb 2023 08:00:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/88/</guid><description>&lt;blockquote>
+&lt;/h2>&lt;p>A relational schema is formally defined as a 5-tuple (including the relation name):&lt;/p>
+&lt;p>R&amp;lt;U, D, dom, F&amp;gt;&lt;/p></description></item><item><title>Database Learning Part 3: SQL</title><link>https://blog.yexca.net/en/archives/88/</link><pubDate>Wed, 08 Feb 2023 08:00:00 +0800</pubDate><guid>https://blog.yexca.net/en/archives/88/</guid><description>&lt;blockquote>
 &lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
 &lt;p>Database Learning 1: Introduction:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/86"
@@ -344,69 +215,6 @@ https://blog.yexca.net/en/archives/92
 &lt;/blockquote>
 &lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="sql-classification">SQL Classification
 &lt;/h2>&lt;ul>
 &lt;li>DDL (Data Definition Language)&lt;/li>
@@ -453,201 +261,51 @@ https://blog.yexca.net/en/archives/92
 &lt;/blockquote>
 &lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="basic-terms-in-the-relational-model">Basic Terms in the Relational Model
 &lt;/h2>&lt;p>A relational database system is a database system that supports the relational model. Here are some basic terms:&lt;/p></description></item><item><title>Database Learning 1: Introduction to Databases</title><link>https://blog.yexca.net/en/archives/86/</link><pubDate>Mon, 06 Feb 2023 19:57:35 +0800</pubDate><guid>https://blog.yexca.net/en/archives/86/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="introduction">Introduction
-&lt;/h2>&lt;p>My previous database notes were a bit of a mess, so I&amp;rsquo;m rewriting them while reviewing the material (though this might still be a bit disorganized).&lt;/p></description></item><item><title>SQL Syntax Details (SQL Server)</title><link>https://blog.yexca.net/en/archives/8/</link><pubDate>Mon, 08 Nov 2021 11:51:18 +0800</pubDate><guid>https://blog.yexca.net/en/archives/8/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/h2>&lt;p>My previous database notes were a bit of a mess, so I&amp;rsquo;m rewriting them while reviewing the material (though this might still be a bit disorganized).&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>SQL Series&lt;/strong>&lt;/p>
+&lt;p>Database Learning 1: Introduction to Databases: This article
+Database Learning 2: Relational Model:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/87"
+>
+https://blog.yexca.net/en/archives/87
+&lt;/a>
+&lt;br>
+Database Learning 3: SQL Language:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/88"
+>
+https://blog.yexca.net/en/archives/88
+&lt;/a>
+&lt;br>
+Database Learning 4: Relational Database Theory:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/89"
+>
+https://blog.yexca.net/en/archives/89
+&lt;/a>
+&lt;br>
+Database Learning 5: Normal Forms:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/90"
+>
+https://blog.yexca.net/en/archives/90
+&lt;/a>
+&lt;br>
+Database Learning 6: Database Design:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/91"
+>
+https://blog.yexca.net/en/archives/91
+&lt;/a>
+&lt;br>
+Database Learning 7: Database Control Functions:
+&lt;a class="link" href="https://blog.yexca.net/en/archives/92"
+>
+https://blog.yexca.net/en/archives/92
+&lt;/a>
+&lt;/p></description></item><item><title>SQL Syntax Details (SQL Server)</title><link>https://blog.yexca.net/en/archives/8/</link><pubDate>Mon, 08 Nov 2021 11:51:18 +0800</pubDate><guid>https://blog.yexca.net/en/archives/8/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>This article was written by
 &lt;a class="link" href="https://blog.hiyoung.icu/"
@@ -655,71 +313,26 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-&lt;/p></description></item><item><title>Issues Connecting Navicat to SQL Server</title><link>https://blog.yexca.net/en/archives/7/</link><pubDate>Sun, 07 Nov 2021 23:41:46 +0800</pubDate><guid>https://blog.yexca.net/en/archives/7/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="1-sql-order-by-keyword">1. SQL ORDER BY Keyword
+&lt;/h2>&lt;p>The &lt;code>ORDER BY&lt;/code> keyword is used to sort the result set by one or more columns.&lt;/p>
+&lt;p>By default, &lt;code>ORDER BY&lt;/code> sorts records in ascending order. To sort records in descending order, use the &lt;code>DESC&lt;/code> keyword.&lt;/p>
+&lt;h3 id="sql-order-by-syntax">SQL ORDER BY Syntax
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sql" data-lang="sql">&lt;span class="line">&lt;span class="cl">&lt;span class="k">SELECT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">column_name&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">column_name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">table_name&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">ORDER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">column_name1&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">column_name2&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">ASC&lt;/span>&lt;span class="o">|&lt;/span>&lt;span class="k">DESC&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>– &lt;code>ASC&lt;/code> stands for ascending, &lt;code>DESC&lt;/code> stands for descending.&lt;/p></description></item><item><title>Issues Connecting Navicat to SQL Server</title><link>https://blog.yexca.net/en/archives/7/</link><pubDate>Sun, 07 Nov 2021 23:41:46 +0800</pubDate><guid>https://blog.yexca.net/en/archives/7/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>
 &lt;blockquote>
 &lt;p>This article was written by
 &lt;a class="link" href="https://blog.hiyoung.icu/"
@@ -727,4 +340,15 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-&lt;/p></description></item></channel></rss>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>Adding a database in Navicat after installing SQL Server:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Connection Name&lt;/strong>: Use any name you like.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>SQL Server Configuration Manager&lt;/strong>: Open the manager and ensure that &lt;code>SQL Server (SQLEXPRESS)&lt;/code> is running. Navicat cannot connect if the service is stopped. You can see your host name by double-clicking the service.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Host&lt;/strong>: In Navicat&amp;rsquo;s host field, use the format: &lt;code>HostName\SQLEXPRESS&lt;/code>.&lt;/p></description></item></channel></rss>

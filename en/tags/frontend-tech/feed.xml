@@ -1,200 +1,143 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Frontend Tech on yexca'Blog</title><link>https://blog.yexca.net/en/tags/frontend-tech/</link><description>Recent content in Frontend Tech on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>yexca</copyright><lastBuildDate>Tue, 14 Oct 2025 20:58:25 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/en/tags/frontend-tech/feed.xml" rel="self" type="application/rss+xml"/><item><title>Vue 3: Get Elements, Components, and Cross-Component Data Transfer</title><link>https://blog.yexca.net/en/archives/259/</link><pubDate>Tue, 14 Oct 2025 20:58:25 +0900</pubDate><guid>https://blog.yexca.net/en/archives/259/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="getting-elements">Getting Elements
-&lt;/h2>&lt;p>You grab elements by defining a &lt;code>ref&lt;/code> object.&lt;/p></description></item><item><title>Learning Vue</title><link>https://blog.yexca.net/en/archives/196/</link><pubDate>Fri, 15 Nov 2024 20:48:29 +0800</pubDate><guid>https://blog.yexca.net/en/archives/196/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/h2>&lt;p>You grab elements by defining a &lt;code>ref&lt;/code> object.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-vue" data-lang="vue">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span> &lt;span class="na">setup&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">import&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">onMounted&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">ref&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="nx">from&lt;/span> &lt;span class="s1">&amp;#39;vue&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Define a ref object
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kr">const&lt;/span> &lt;span class="nx">inp&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">ref&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kr">const&lt;/span> &lt;span class="nx">clickFun&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">inp&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">value&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">focus&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">template&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">&amp;lt;!--&lt;/span> &lt;span class="nx">Bind&lt;/span> &lt;span class="nx">via&lt;/span> &lt;span class="nx">ref&lt;/span> &lt;span class="nx">attribute&lt;/span> &lt;span class="o">--&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">input&lt;/span> &lt;span class="na">ref&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;inp&amp;#34;&lt;/span> &lt;span class="na">type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;text&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;/&lt;/span>&lt;span class="nt">input&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">button&lt;/span> &lt;span class="nt">@click&lt;/span>&lt;span class="s">=&amp;#34;clickFun&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>&lt;span class="na">focus&lt;/span> &lt;span class="na">on&lt;/span> &lt;span class="na">input&lt;/span>&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">button&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">template&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>Of course, you can only get the element after the component mounts. So, if you need to use it right when the page loads, use the &lt;code>onMounted()&lt;/code> function.&lt;/p></description></item><item><title>Learning Vue</title><link>https://blog.yexca.net/en/archives/196/</link><pubDate>Fri, 15 Nov 2024 20:48:29 +0800</pubDate><guid>https://blog.yexca.net/en/archives/196/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-3-flash-preview
+&lt;/div>
 &lt;h2 id="vue-directives">Vue Directives
-&lt;/h2>&lt;p>Vue uses various directives—special tag attributes prefixed with &lt;code>v-&lt;/code>—to apply different functionalities to HTML tags.&lt;/p></description></item><item><title>HTML Learning Three - Web Layout</title><link>https://blog.yexca.net/en/archives/195/</link><pubDate>Sun, 10 Nov 2024 21:36:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/195/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/h2>&lt;p>Vue uses various directives—special tag attributes prefixed with &lt;code>v-&lt;/code>—to apply different functionalities to HTML tags.&lt;/p>
+&lt;h2 id="v-html">v-html
+&lt;/h2>&lt;p>Used to set an element&amp;rsquo;s &lt;code>innerHTML&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">meta&lt;/span> &lt;span class="na">charset&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;utf-8&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>v-html&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;app&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span> &lt;span class="na">v-html&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;link&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span> &lt;span class="na">src&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;js/vue.js&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">app&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">Vue&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">el&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;#app&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">data&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">link&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="s1">&amp;#39;&amp;lt;a href=&amp;#34;https://yexca.net/&amp;#34;&amp;gt;yexca&amp;lt;/a&amp;gt;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">script&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;h2 id="v-show-vs-v-if">v-show vs. v-if
+&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Feature&lt;/th>
+&lt;th>v-show&lt;/th>
+&lt;th>v-if&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Purpose&lt;/td>
+&lt;td>Toggles visibility&lt;/td>
+&lt;td>Toggles visibility (conditional rendering)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Syntax&lt;/td>
+&lt;td>v-show=&amp;ldquo;expression&amp;rdquo;&lt;/td>
+&lt;td>v-if=&amp;ldquo;expression&amp;rdquo;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Value&lt;/td>
+&lt;td>true shows, false hides&lt;/td>
+&lt;td>true shows, false hides&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Mechanism&lt;/td>
+&lt;td>Toggles &lt;code>style=&amp;quot;display:none;&amp;quot;&lt;/code>&lt;/td>
+&lt;td>Directly adds or removes elements from DOM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Scenario&lt;/td>
+&lt;td>Frequent toggling&lt;/td>
+&lt;td>Infrequent toggling&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="v-else-and-v-else-if">v-else and v-else-if
+&lt;/h2>&lt;p>Used to assist &lt;code>v-if&lt;/code> for conditional rendering. Must be placed immediately after a &lt;code>v-if&lt;/code> or &lt;code>v-else-if&lt;/code> element.&lt;/p></description></item><item><title>HTML Learning Three - Web Layout</title><link>https://blog.yexca.net/en/archives/195/</link><pubDate>Sun, 10 Nov 2024 21:36:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/195/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
 &lt;h2 id="intro">Intro
 &lt;/h2>&lt;p>HTML Learning One - Basics:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/146"
@@ -213,599 +156,305 @@ HTML Learning Three - Web Layout:
 >
 https://blog.yexca.net/en/archives/195
 &lt;/a>
-&lt;/p></description></item><item><title>ElementUI</title><link>https://blog.yexca.net/en/archives/174/</link><pubDate>Mon, 03 Jun 2024 18:04:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/174/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/p>
+&lt;p>Standard flow, also known as document flow, refers to the default arrangement rules for tags on a page. For example, block elements take up a full line, while inline elements can display multiple per line.&lt;/p>
+&lt;p>If you don&amp;rsquo;t want to use standard flow for layout, you can use floats or Flexbox.&lt;/p></description></item><item><title>ElementUI</title><link>https://blog.yexca.net/en/archives/174/</link><pubDate>Mon, 03 Jun 2024 18:04:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/174/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>ElementUI, built by the Ele.me team, is a desktop UI component library for developers, designers, and product managers, powered by Vue 2.0.&lt;/p></description></item><item><title>Simple Vue Project</title><link>https://blog.yexca.net/en/archives/173/</link><pubDate>Tue, 28 May 2024 16:22:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/173/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>ElementUI, built by the Ele.me team, is a desktop UI component library for developers, designers, and product managers, powered by Vue 2.0.&lt;/p>
+&lt;p>Components are the building blocks of a webpage, like links, buttons, images, tables, forms, and pagination.&lt;/p>
+&lt;p>Vue2.x Official Site:
+&lt;a class="link" href="https://element.eleme.io/#/zh-CN"
+target="_blank" rel="noopener"
+>
+International
+&lt;/a>
+&lt;a class="link" href="https://element.eleme.cn/#/zh-CN"
+target="_blank" rel="noopener"
+>
+Mainland China
+&lt;/a>
+&lt;/p>
+&lt;p>Vue3.x Official Site:
+&lt;a class="link" href="https://element-plus.org/zh-CN/#/zh-CN"
+target="_blank" rel="noopener"
+>
+https://element-plus.org/zh-CN/#/zh-CN
+&lt;/a>
+&lt;/p>
+&lt;h2 id="elementui-installation">ElementUI Installation
+&lt;/h2>&lt;p>Install the ElementUI library (in your current project directory) using this command:&lt;/p></description></item><item><title>Simple Vue Project</title><link>https://blog.yexca.net/en/archives/173/</link><pubDate>Tue, 28 May 2024 16:22:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/173/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>In early full-stack development, communication overhead was high, roles were fuzzy, and it was tough to manage or extend projects.&lt;/p></description></item><item><title>CSS Box Model</title><link>https://blog.yexca.net/en/archives/167/</link><pubDate>Sat, 13 Apr 2024 22:06:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/167/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>In early full-stack development, communication overhead was high, roles were fuzzy, and it was tough to manage or extend projects.&lt;/p>
+&lt;p>Today&amp;rsquo;s standard is frontend-backend separation, driven by API documentation.&lt;/p>
+&lt;h2 id="frontend-backend-separation">Frontend-Backend Separation
+&lt;/h2>&lt;p>Frontend sends parameters and parses response data based on API docs. Backend receives parameters and responds as per API docs.&lt;/p>
+&lt;p>Dev Workflow: Requirements Analysis -&amp;gt; API Definition (API Docs) -&amp;gt; Parallel Frontend/Backend Dev (following specs) -&amp;gt; Testing -&amp;gt; Frontend/Backend Integration Testing.&lt;/p></description></item><item><title>CSS Box Model</title><link>https://blog.yexca.net/en/archives/167/</link><pubDate>Sat, 13 Apr 2024 22:06:58 +0800</pubDate><guid>https://blog.yexca.net/en/archives/167/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="display-modes">Display Modes
-&lt;/h2>&lt;p>Display modes define how elements behave on a page. When laying out a web page, you pick the right display mode for your elements to position content effectively.&lt;/p></description></item><item><title>CSS Background Properties</title><link>https://blog.yexca.net/en/archives/166/</link><pubDate>Wed, 10 Apr 2024 16:21:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/166/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/h2>&lt;p>Display modes define how elements behave on a page. When laying out a web page, you pick the right display mode for your elements to position content effectively.&lt;/p>
+&lt;ul>
+&lt;li>Block-level Elements (e.g., div)
+&lt;ul>
+&lt;li>Occupies its own line&lt;/li>
+&lt;li>Default width is 100% of its parent&lt;/li>
+&lt;li>Height and width properties apply&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Inline Elements (e.g., span)
+&lt;ul>
+&lt;li>Can display multiple on a single line&lt;/li>
+&lt;li>Height and width properties do not apply&lt;/li>
+&lt;li>Dimensions are determined by content&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Inline-block Elements (e.g., img)
+&lt;ul>
+&lt;li>Can display multiple on a single line&lt;/li>
+&lt;li>Height and width properties apply&lt;/li>
+&lt;li>Dimensions can also be determined by content&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>You can change the display mode using the CSS &lt;code>display&lt;/code> property. Values include:&lt;/p></description></item><item><title>CSS Background Properties</title><link>https://blog.yexca.net/en/archives/166/</link><pubDate>Wed, 10 Apr 2024 16:21:51 +0800</pubDate><guid>https://blog.yexca.net/en/archives/166/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>Here are the background properties:&lt;/p></description></item><item><title>CSS Text Control Properties</title><link>https://blog.yexca.net/en/archives/165/</link><pubDate>Thu, 14 Mar 2024 21:07:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/165/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>Here are the background properties:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Description&lt;/th>
+&lt;th>Property&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Background Color&lt;/td>
+&lt;td>background-color&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Image&lt;/td>
+&lt;td>background-image&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Repeat&lt;/td>
+&lt;td>background-repeat&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Position&lt;/td>
+&lt;td>background-position&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Size&lt;/td>
+&lt;td>background-size&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Attachment&lt;/td>
+&lt;td>background-attachment&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Background Shorthand&lt;/td>
+&lt;td>background&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="background-image">Background Image
+&lt;/h2>&lt;p>Use background images in web pages for decorative visual effects.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-css" data-lang="css">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">div&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">width&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">500&lt;/span>&lt;span class="kt">px&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">height&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">300&lt;/span>&lt;span class="kt">px&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">background-image&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">url&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sx">./img/00.jpg&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>Here&amp;rsquo;s what text control properties can handle:&lt;/p></description></item><item><title>CSS's Three Main Features</title><link>https://blog.yexca.net/en/archives/164/</link><pubDate>Mon, 11 Mar 2024 16:38:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/164/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>&lt;h2 id="background-image-repeat">Background Image Repeat
+&lt;/h2>&lt;p>&lt;code>background-repeat&lt;/code> has four values:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Effect&lt;/th>
+&lt;th>No Repeat&lt;/th>
+&lt;th>Repeat (Default)&lt;/th>
+&lt;th>Horizontal Repeat&lt;/th>
+&lt;th>Vertical Repeat&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Value&lt;/td>
+&lt;td>no-repeat&lt;/td>
+&lt;td>repeat&lt;/td>
+&lt;td>repeat-x&lt;/td>
+&lt;td>repeat-y&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="background-position">Background Position
+&lt;/h2>&lt;p>&lt;code>background-position&lt;/code> takes values like &lt;code>horizontal position vertical position&lt;/code>. Positions can be keywords or coordinates.&lt;/p></description></item><item><title>CSS Text Control Properties</title><link>https://blog.yexca.net/en/archives/165/</link><pubDate>Thu, 14 Mar 2024 21:07:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/165/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>CSS&amp;rsquo;s Three Main Features: Inheritance, Cascading, Specificity&lt;/p></description></item><item><title>CSS Selectors</title><link>https://blog.yexca.net/en/archives/163/</link><pubDate>Sat, 02 Mar 2024 17:15:35 +0800</pubDate><guid>https://blog.yexca.net/en/archives/163/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;p>Here&amp;rsquo;s what text control properties can handle:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Name&lt;/th>
+&lt;th>Property&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Font Size&lt;/td>
+&lt;td>font-size&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Font Weight&lt;/td>
+&lt;td>font-weight&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Font Style&lt;/td>
+&lt;td>font-style&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Line Height&lt;/td>
+&lt;td>line-height&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Font Family&lt;/td>
+&lt;td>font-family&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Font Shorthand&lt;/td>
+&lt;td>font&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Text Indent&lt;/td>
+&lt;td>text-indent&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Text Align&lt;/td>
+&lt;td>text-align&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Text Decoration&lt;/td>
+&lt;td>text-decoration&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Color&lt;/td>
+&lt;td>color&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="font-size">Font Size
+&lt;/h2>&lt;p>The value is the text size, usually in &lt;code>px&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-css" data-lang="css">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">p&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">font-size&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">30&lt;/span>&lt;span class="kt">px&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;h2 id="font-weight">Font Weight
+&lt;/h2>&lt;p>The value can be a number or a keyword.&lt;/p></description></item><item><title>CSS's Three Main Features</title><link>https://blog.yexca.net/en/archives/164/</link><pubDate>Mon, 11 Mar 2024 16:38:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/164/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
+&lt;p>CSS&amp;rsquo;s Three Main Features: Inheritance, Cascading, Specificity&lt;/p>
+&lt;h2 id="inheritance">Inheritance
+&lt;/h2>&lt;p>Child elements inherently pick up text-related properties from their parents. If a child has its own styles, it won&amp;rsquo;t inherit those specific properties.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">style&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">body&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">font&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">30&lt;/span>&lt;span class="kt">px&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mf">0.5&lt;/span> &lt;span class="err">楷体&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">color&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kc">aqua&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">style&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>div&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">div&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>p&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">span&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>span&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">span&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">a&lt;/span> &lt;span class="na">href&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;#&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Color not inherited&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">a&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="cascading">Cascading
+&lt;/h2>&lt;p>When selector types are the same:&lt;/p></description></item><item><title>CSS Selectors</title><link>https://blog.yexca.net/en/archives/163/</link><pubDate>Sat, 02 Mar 2024 17:15:35 +0800</pubDate><guid>https://blog.yexca.net/en/archives/163/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
 &lt;h2 id="how-to-include-css">How to Include CSS
-&lt;/h2>&lt;p>There are three ways to include CSS. The first is internal stylesheets, typically used for learning only.&lt;/p></description></item><item><title>Understanding WeChat Mini Programs</title><link>https://blog.yexca.net/en/archives/151/</link><pubDate>Wed, 31 Jan 2024 16:50:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/151/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/h2>&lt;p>There are three ways to include CSS. The first is internal stylesheets, typically used for learning only.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&amp;lt;/&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">style&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c">/* Write CSS here */&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">style&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>The second is inline styles, usually paired with JavaScript.&lt;/p></description></item><item><title>Understanding WeChat Mini Programs</title><link>https://blog.yexca.net/en/archives/151/</link><pubDate>Wed, 31 Jan 2024 16:50:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/151/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
 &lt;p>Official Website:
 &lt;a class="link" href="https://mp.weixin.qq.com/cgi-bin/wx"
 target="_blank" rel="noopener"
 >
 https://mp.weixin.qq.com/cgi-bin/wx
 &lt;/a>
-&lt;/p></description></item><item><title>HTML Learning Part Two - Lists, Tables, and Forms</title><link>https://blog.yexca.net/en/archives/150/</link><pubDate>Mon, 29 Jan 2024 13:24:25 +0800</pubDate><guid>https://blog.yexca.net/en/archives/150/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/p>
+&lt;p>Before you dev a Mini Program, you gotta register one first. You can register Mini Programs with different entities, and the permissions will vary accordingly. For example, registering a Mini Program as an individual won&amp;rsquo;t get you payment access (but you can use a test account to play around).&lt;/p>
+&lt;p>Once registered, set up your info, grab your AppID and AppSecret, download the
+&lt;a class="link" href="https://developers.weixin.qq.com/miniprogram/dev/devtools/stable.html"
+target="_blank" rel="noopener"
+>
+developer tools
+&lt;/a>
+, log in, and create a project.&lt;/p></description></item><item><title>HTML Learning Part Two - Lists, Tables, and Forms</title><link>https://blog.yexca.net/en/archives/150/</link><pubDate>Mon, 29 Jan 2024 13:24:25 +0800</pubDate><guid>https://blog.yexca.net/en/archives/150/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="introduction">Introduction
 &lt;/h2>&lt;p>HTML Learning Part One - Basics:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/146"
@@ -824,71 +473,36 @@ HTML Learning Part Three - Web Layout:
 >
 https://blog.yexca.net/en/archives/195
 &lt;/a>
-&lt;/p></description></item><item><title>HTML Learning Part One - Basics</title><link>https://blog.yexca.net/en/archives/146/</link><pubDate>Thu, 18 Jan 2024 14:43:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/146/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/p>
+&lt;h2 id="lists">Lists
+&lt;/h2>&lt;p>Lists are categorized into unordered, ordered, and definition lists.&lt;/p>
+&lt;h3 id="unordered-lists">Unordered Lists
+&lt;/h3>&lt;p>unordered list -&amp;gt; list&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">ul&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Item One&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Item Two&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Item Three&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">li&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">ul&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>Output looks like this:&lt;/p>
+&lt;ul>
+&lt;li>第一项&lt;/li>
+&lt;li>第二项&lt;/li>
+&lt;li>第三项&lt;/li>
+&lt;/ul>
+&lt;h3 id="ordered-lists">Ordered Lists
+&lt;/h3>&lt;p>ordered list -&amp;gt; list&lt;/p></description></item><item><title>HTML Learning Part One - Basics</title><link>https://blog.yexca.net/en/archives/146/</link><pubDate>Thu, 18 Jan 2024 14:43:34 +0800</pubDate><guid>https://blog.yexca.net/en/archives/146/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
 &lt;h2 id="intro">Intro
 &lt;/h2>&lt;p>HTML Learning Part One - Basics:
 &lt;a class="link" href="https://blog.yexca.net/en/archives/146"
@@ -907,69 +521,37 @@ HTML Learning Part Three - Web Page Layout:
 >
 https://blog.yexca.net/en/archives/195
 &lt;/a>
-&lt;/p></description></item><item><title>Ajax and Axios</title><link>https://blog.yexca.net/en/archives/135/</link><pubDate>Thu, 21 Dec 2023 13:32:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/135/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/p>
+&lt;h2 id="basic-structure">Basic Structure
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Webpage Title&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Webpage Body
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>Asynchronous JavaScript And XML (AJAX). What it does:&lt;/p></description></item></channel></rss>
+&lt;/div>&lt;p>Usually generated by software. For example, in VS Code, create a new &lt;code>.html&lt;/code> file, type &lt;code>!&lt;/code> then hit &lt;code>TAB&lt;/code> to auto-generate.&lt;/p></description></item><item><title>Ajax and Axios</title><link>https://blog.yexca.net/en/archives/135/</link><pubDate>Thu, 21 Dec 2023 13:32:15 +0800</pubDate><guid>https://blog.yexca.net/en/archives/135/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> This article was translated by gemini-2.5-flash
+&lt;/div>
+&lt;p>Asynchronous JavaScript And XML (AJAX). What it does:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Data Exchange&lt;/strong>: Ajax lets you send requests to a server and get data back.&lt;/li>
+&lt;li>&lt;strong>Asynchronous Interaction&lt;/strong>: It&amp;rsquo;s a technique to exchange data with the server and update parts of a webpage without a full page reload.&lt;/li>
+&lt;/ul>
+&lt;p>Use cases: Search suggestions, checking username availability, etc.&lt;/p>
+&lt;h2 id="sync-vs-async">Sync vs. Async
+&lt;/h2>&lt;p>Sync means when you perform an operation on a webpage that requires a server request, the page becomes unresponsive while the server processes it. You can&amp;rsquo;t interact again until the server sends a response to the client.&lt;/p></description></item></channel></rss>

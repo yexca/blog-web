@@ -1,199 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>OpenWRT on yexca'Blog</title><link>https://blog.yexca.net/zh-tw/tags/openwrt/</link><description>Recent content in OpenWRT on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><copyright>yexca</copyright><lastBuildDate>Sat, 08 Nov 2025 20:50:23 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/zh-tw/tags/openwrt/feed.xml" rel="self" type="application/rss+xml"/><item><title>記錄 OpenWRT 通過深瀾網路認證的折騰過程</title><link>https://blog.yexca.net/zh-tw/archives/66/</link><pubDate>Mon, 05 Sep 2022 21:24:23 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/66/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash-lite 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="引言">引言
-&lt;/h2>&lt;p>記錄我使用 OpenWRT 路由器連接學校網路的折騰過程，雖然最後的結果挺 emm？但在这个過程中還是了解到不少東西&lt;/p></description></item><item><title>OpenWRT 無線中繼</title><link>https://blog.yexca.net/zh-tw/archives/49/</link><pubDate>Thu, 23 Jun 2022 14:50:21 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/49/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 Gemini-3-flash 翻譯
+&lt;/h2>&lt;p>記錄我使用 OpenWRT 路由器連接學校網路的折騰過程，雖然最後的結果挺 emm？但在这个過程中還是了解到不少東西&lt;/p>
+&lt;h2 id="起始">起始
+&lt;/h2>&lt;p>通過在瀏覽器搜尋 &lt;code>openwrt通過深瀾認證&lt;/code> 得到
+&lt;a class="link" href="https://www.right.com.cn/forum/thread-4054114-1-1.html"
+target="_blank" rel="noopener"
+>
+恩山無線論壇
+&lt;/a>
+帖子回覆下的一個開源專案：
+&lt;a class="link" href="https://github.com/coffeehat/BIT-srun-login-script"
+target="_blank" rel="noopener"
+>
+coffeehat/BIT-srun-login-script
+&lt;/a>
+，通過專案知道了有支援多平台 (包括 openwrt) 的 golang 版本，於是開始折騰&lt;/p></description></item><item><title>OpenWRT 無線中繼</title><link>https://blog.yexca.net/zh-tw/archives/49/</link><pubDate>Thu, 23 Jun 2022 14:50:21 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/49/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 Gemini-3-flash 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="引言">引言
-&lt;/h2>&lt;p>今天嘗試了一下之前試過的無線中繼，發現已經忘記怎麼做了，果然實作過的東西還是要寫篇文章記錄一下比較好。&lt;/p></description></item><item><title>FIR300M 路由器刷韌體 OpenWRT</title><link>https://blog.yexca.net/zh-tw/archives/22/</link><pubDate>Sun, 06 Feb 2022 20:44:10 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/22/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;/h2>&lt;p>今天嘗試了一下之前試過的無線中繼，發現已經忘記怎麼做了，果然實作過的東西還是要寫篇文章記錄一下比較好。&lt;/p>
+&lt;p>在本文中，將 OpenWRT 路由器連接的 Wi-Fi 稱為上層路由，OpenWRT 路由器稱為路由器。&lt;/p></description></item><item><title>FIR300M 路由器刷韌體 OpenWRT</title><link>https://blog.yexca.net/zh-tw/archives/22/</link><pubDate>Sun, 06 Feb 2022 20:44:10 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/22/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="前言-閒聊">前言 (閒聊)
 &lt;/h2>&lt;p>閒暇之餘，於是便想鑽研一下路由器當作網路閘道器（但事後才發現這台路由器的儲存空間太小，無法安裝太多外掛程式，簡直是白忙了一整個下午）&lt;/p></description></item></channel></rss>

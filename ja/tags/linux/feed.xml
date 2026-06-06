@@ -1,995 +1,56 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on yexca'Blog</title><link>https://blog.yexca.net/ja/tags/linux/</link><description>Recent content in Linux on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Fri, 26 Dec 2025 18:43:04 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/tags/linux/feed.xml" rel="self" type="application/rss+xml"/><item><title>Docker を使って一時的な Linux インタラクティブ環境を作る</title><link>https://blog.yexca.net/ja/archives/262/</link><pubDate>Fri, 26 Dec 2025 18:43:04 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/262/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong>　この記事は Gemini-2.5-pro によって翻訳されました　
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;p>Windows 環境で bash スクリプトを動かすのは、明らかにちょっとハードルが高いよね。Linux 環境であっても、別のディストリビューションに特化したスクリプトを動かすのは少し面倒だったりする。そんな時、Docker を使えばこの問題を解決できるし、ローカル環境をクリーンに保つこともできるんだ。&lt;/p></description></item><item><title>Fedora 起動時にスクリプトを自動実行する方法</title><link>https://blog.yexca.net/ja/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/149/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
-&lt;/h2>&lt;p>無限ループは絶対に中に入れないでね！！！今回は systemd を使った方法を紹介するよ。&lt;/p></description></item><item><title>Linux 学習インデックス</title><link>https://blog.yexca.net/ja/archives/129/</link><pubDate>Sat, 21 Oct 2023 14:18:15 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/129/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/h2>&lt;p>無限ループは絶対に中に入れないでね！！！今回は systemd を使った方法を紹介するよ。&lt;/p>
+&lt;h2 id="スクリプトを作成する">スクリプトを作成する
+&lt;/h2>&lt;p>このファイルに自分のスクリプトを書き込んでね。&lt;/p></description></item><item><title>Linux 学習インデックス</title><link>https://blog.yexca.net/ja/archives/129/</link><pubDate>Sat, 21 Oct 2023 14:18:15 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/129/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>この記事は 2022年12月に書いたものだけど、色んな理由で公開してなかったんだ。&lt;/p></description></item><item><title>Linux 学習 第12章 ディスクとファイルシステムの管理</title><link>https://blog.yexca.net/ja/archives/85/</link><pubDate>Tue, 03 Jan 2023 13:37:48 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/85/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;p>この記事は 2022年12月に書いたものだけど、色んな理由で公開してなかったんだ。&lt;/p>
+&lt;p>この一連の記事は、僕が『Linux システム管理、サーバー設定、セキュリティ、クラウドデータセンター』を読んだ時に書いた関連ノートだよ。&lt;/p></description></item><item><title>Linux 学習 第12章 ディスクとファイルシステムの管理</title><link>https://blog.yexca.net/ja/archives/85/</link><pubDate>Tue, 03 Jan 2023 13:37:48 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/85/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第12章-ディスクとファイルシステムの管理">第12章 ディスクとファイルシステムの管理
 &lt;/h2>&lt;h3 id="121-ディスクストレージについて知ろう">12.1 ディスクストレージについて知ろう
 &lt;/h3>&lt;p>ほとんどのモダンなOSで、データストレージの基本的な仕組みは同じだよ。ディスクは永続的なストレージとして使われて、RAM（Random Access Memory、ランダムアクセスメモリ）とスワップ領域は一時的なストレージとして使われるんだ。例えば、コマンドを実行するとき、そのコマンドはハードディスクからRAMにコピーされるんだ。そうすると、コンピューターのプロセッサ（CPU）がもっと速くコマンドにアクセスできるようになるからね。&lt;/p></description></item><item><title>Linux学習 第11章 ユーザーアカウントの管理</title><link>https://blog.yexca.net/ja/archives/84/</link><pubDate>Mon, 02 Jan 2023 12:29:03 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/84/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第11章-ユーザーアカウントの管理">第11章 ユーザーアカウントの管理
 &lt;/h2>&lt;p>ユーザーアカウントは、システムを利用する人間と、システム内で動いているプロセスの間の境界線を守るものなんだ。そしてグループっていうのは、システムの権限を一度に複数のユーザーへ割り当てるための方法だよ。&lt;/p></description></item><item><title>Linux学習 第10章 ソフトウェアの取得と管理</title><link>https://blog.yexca.net/ja/archives/83/</link><pubDate>Thu, 08 Dec 2022 16:35:57 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/83/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第十章-ソフトウェアの取得と管理">第十章 ソフトウェアの取得と管理
 &lt;/h2>&lt;h3 id="101-デスクトップでのソフトウェア管理">10.1 デスクトップでのソフトウェア管理
 &lt;/h3>&lt;p>ソフトウェアセンターやGUIを使って管理する方法だよ。&lt;/p></description></item><item><title>Linux学習 第8・9章 システム管理とLinuxのインストール</title><link>https://blog.yexca.net/ja/archives/82/</link><pubDate>Wed, 07 Dec 2022 16:29:05 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/82/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第8章-システム管理を学ぶ">第8章 システム管理を学ぶ
 &lt;/h2>&lt;h3 id="81-システム管理を理解する">8.1 システム管理を理解する
 &lt;/h3>&lt;ul>
 &lt;li>
-&lt;p>su コマンド &amp;mdash; rootユーザーとしてシェルを開く&lt;/p></description></item><item><title>Linux学習 第7章 簡単なシェルスクリプトを書いてみよう</title><link>https://blog.yexca.net/ja/archives/81/</link><pubDate>Mon, 05 Dec 2022 20:47:43 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/81/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;p>su コマンド &amp;mdash; rootユーザーとしてシェルを開く&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>sudo コマンド &amp;mdash; 一般ユーザーがこのコマンドを通して他のコマンドを実行するときに、root権限が与えられる&lt;/p></description></item><item><title>Linux学習 第7章 簡単なシェルスクリプトを書いてみよう</title><link>https://blog.yexca.net/ja/archives/81/</link><pubDate>Mon, 05 Dec 2022 20:47:43 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/81/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第7章-簡単なシェルスクリプトを書いてみよう">第7章 簡単なシェルスクリプトを書いてみよう
 &lt;/h2>&lt;p>もし何度も繰り返すタスクがあって、そのたびに大量のコマンドを打ち込まないといけないなら、シェルスクリプトを書いて一つのコマンドで全部済ませちゃうのがいいよ。&lt;/p></description></item><item><title>Linux 学習 第6章 実行中のプロセスを管理する</title><link>https://blog.yexca.net/ja/archives/79/</link><pubDate>Sat, 03 Dec 2022 15:07:03 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/79/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第6章-実行中のプロセスを管理する">第6章 実行中のプロセスを管理する
 &lt;/h2>&lt;p>Linuxって、マルチユーザーOSで、マルチタスクシステムでもあるんだ。マルチタスクってことは、複数のプログラムを同時に動かせるってこと。この動いてるプログラムのインスタンスのことを、通常「プロセス」って呼ぶんだよ。&lt;/p></description></item><item><title>Linux学習 第五章 テキストファイルを使ってみよう</title><link>https://blog.yexca.net/ja/archives/78/</link><pubDate>Sat, 19 Nov 2022 21:07:03 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/78/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第五章-テキストファイルを使ってみよう">第五章 テキストファイルを使ってみよう
 &lt;/h2>&lt;p>Linuxのほとんどの設定は、プレーンテキストファイルを編集することで行われるんだ。/etc ディレクトリのファイルを編集してローカルサービスを設定するのも、Ansible ディレクトリのファイルを編集してホストの構成を管理するのも、テキストファイルは今でもあらゆるタスクで使われているよ。&lt;/p></description></item><item><title>Linux学習 第4章 ファイルシステム内での移動</title><link>https://blog.yexca.net/ja/archives/75/</link><pubDate>Sun, 25 Sep 2022 20:35:02 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/75/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第4章-ファイルシステム内での移動">第4章 ファイルシステム内での移動
 &lt;/h2>&lt;p>Linuxのファイルシステムには、コンピュータ上のすべての情報が保存されてるんだ。&lt;/p></description></item><item><title>SSH 公開鍵ログイン</title><link>https://blog.yexca.net/ja/archives/70/</link><pubDate>Mon, 12 Sep 2022 19:24:25 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/70/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
 &lt;/h2>&lt;p>毎回サーバーに接続するたびにパスワードを打つのって、正直かなり面倒だよね &lt;del>(忘れちゃったからなんだけど&lt;/del>&lt;/p></description></item><item><title>Linux学習 第3章 shellを使う</title><link>https://blog.yexca.net/ja/archives/69/</link><pubDate>Mon, 12 Sep 2022 15:04:10 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/69/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="第3章-shellを使う">第3章 shellを使う
 &lt;/h2>&lt;p>この章で紹介する Linux shell は Bash shell と呼ばれるもので、正式名称は Bourne Again shell だよ。他にも、BSD UNIX ユーザーに人気の C shell (csh) や、UNIX System V ユーザーに普及している Korn shell (ksh) 、Ubuntu でデフォルトで起動する Dash shell (Bash より高速) 、改良版 C shell の Tcsh shell 、Bourne shell によく似た Ash shell などがあるんだ。&lt;/p></description></item><item><title>Linuxのbinディレクトリについて</title><link>https://blog.yexca.net/ja/archives/60/</link><pubDate>Wed, 31 Aug 2022 00:27:09 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/60/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
 &lt;/h2>&lt;p>ぶっちゃけ、コマンドファイルをどこに置くかは自分で決められるんだよね。つまり好きな場所に置いていいってこと。これらのディレクトリはただの約束事に過ぎないんだけど、やっぱりルールを守ったほうがいいよ。自分のPC、特にLinuxがめちゃくちゃになるのは誰も嫌でしょ？&lt;/p></description></item><item><title>Linuxでユーザーと管理者ユーザーを追加する方法</title><link>https://blog.yexca.net/ja/archives/41/</link><pubDate>Mon, 16 May 2022 15:29:21 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/41/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>この記事は
 &lt;a class="link" href="https://blog.hiyoung.xyz/"
@@ -997,71 +58,11 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-が書いたものだよ。&lt;/p></description></item><item><title>Linux 備忘録</title><link>https://blog.yexca.net/ja/archives/40/</link><pubDate>Sat, 30 Apr 2022 04:24:07 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/40/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+が書いたものだよ。&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="管理者ユーザーを追加する">&lt;strong>管理者ユーザーを追加する：&lt;/strong>
+&lt;/h2>&lt;p>&lt;strong>1、ユーザーを新しく作成する。ここでは temp_test というユーザーを作るよ。&lt;/strong>&lt;/p></description></item><item><title>Linux 備忘録</title><link>https://blog.yexca.net/ja/archives/40/</link><pubDate>Sat, 30 Apr 2022 04:24:07 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/40/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>この記事は
 &lt;a class="link" href="https://blog.hiyoung.xyz/"
@@ -1069,71 +70,18 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-が書いたよ。&lt;/p></description></item><item><title>Linuxを体系的に学ぶノート</title><link>https://blog.yexca.net/ja/archives/38/</link><pubDate>Tue, 19 Apr 2022 02:53:27 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/38/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+が書いたよ。&lt;/p>
+&lt;/blockquote>
+&lt;ul>
+&lt;li>Linuxは存在しないフォルダを自動で作ってくれないんだ。&lt;code>mv&lt;/code> コマンドを使うときは、移動先のフォルダがあるかどうか気をつけないと、ただのファイル名の変更になっちゃうよ。&lt;/li>
+&lt;li>ファイルのハードリンクを作るのは、実際にはそのファイルに別の名前を割り当てるようなもの（データ部分は変わらない）。C言語でそのファイルへのポインタを作るのと似てるね。&lt;/li>
+&lt;li>シンボリックリンクを作るのは、Windowsのショートカットみたいな感じかな。&lt;code>ls -li&lt;/code> コマンドを使うと、違いがはっきりわかるよ。ハードリンクは元のファイルとバイト数が同じだけど、シンボリックリンクは違うんだ。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/hiyoung3937/img_hiyoung@master/bolg/Liunx%e9%9a%8f%e6%89%8b%e7%ac%94%e8%ae%b0_1.5y3s10ifdko0.jpg"
+loading="lazy"
+alt="img"
+>&lt;/p></description></item><item><title>Linuxを体系的に学ぶノート</title><link>https://blog.yexca.net/ja/archives/38/</link><pubDate>Tue, 19 Apr 2022 02:53:27 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/38/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>この記事は
 &lt;a class="link" href="https://blog.hiyoung.xyz/"
@@ -1141,71 +89,35 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-によって執筆されたよ。&lt;/p></description></item><item><title>Linuxサーバー（ネットワーク関連）</title><link>https://blog.yexca.net/ja/archives/19/</link><pubDate>Fri, 14 Jan 2022 01:30:54 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/19/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+によって執筆されたよ。&lt;/p>
+&lt;p>元の記事:
+&lt;a class="link" href="https://blog.hiyoung.xyz/2022/08/01/84a03702e5a9/"
+target="_blank" rel="noopener"
+>
+https://blog.hiyoung.xyz/2022/08/01/84a03702e5a9/
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;p>（参考動画：
+&lt;a class="link" href="https://www.bilibili.com/video/BV1WY4y1H7d3?p=1"
+target="_blank" rel="noopener"
+>
+https://www.bilibili.com/video/BV1WY4y1H7d3?p=1
+&lt;/a>
+）&lt;/p>
+&lt;h2 id="一基礎編">一、基礎編
+&lt;/h2>&lt;h3 id="11-linuxファイルシステムのディレクトリ構造">1.1 Linuxファイルシステムのディレクトリ構造
+&lt;/h3>&lt;p>&lt;img src="https://www.runoob.com/wp-content/uploads/2014/06/d0c50-linux2bfile2bsystem2bhierarchy.jpg"
+loading="lazy"
+alt="Linuxファイルシステムのディレクトリ構造"
+>
+&lt;a class="link" href="https://www.runoob.com/linux/linux-system-contents.html"
+target="_blank" rel="noopener"
+>
+出典：菜鳥教程 (Runoob)
+&lt;/a>
+&lt;/p></description></item><item><title>Linuxサーバー（ネットワーク関連）</title><link>https://blog.yexca.net/ja/archives/19/</link><pubDate>Fri, 14 Jan 2022 01:30:54 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/19/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>この記事は
 &lt;a class="link" href="https://blog.hiyoung.xyz/"
@@ -1213,4 +125,14 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-が書いたんだ。&lt;/p></description></item></channel></rss>
+が書いたんだ。&lt;/p>
+&lt;/blockquote>
+&lt;p>背景知識：&lt;/p>
+&lt;p>Linuxの時刻についてざっくりと
+Linuxシステムには2つの時計があるんだ。1つはハードウェアクロック、つまりBIOS時間。もう1つはシステムクロックで、LinuxシステムのKernel（カーネル）時間のことだよ。
+Linuxシステムでプログラムが動くときに読み込む時間は、全部システムKernel（カーネル）時間なんだ。
+Linuxが起動するたびに、システムKernel（カーネル）はまずハードウェアクロックの設定を読み込むんだけど（このときのハードウェア時間が正確とは限らない）、その後、システムクロックはハードウェアとは関係なく動き続けるんだ。
+だから、Linuxの時間を永続的に変更して正確にしたいなら、ハードウェア時間を永続的に変更しないといけないんだ。そうしないと、Linuxを再起動するたびにシステム時間が元のハードウェア時間に戻っちゃうよ。
+Linuxの時刻関連コマンド
+システムKernel（カーネル）クロックに関するコマンドは &lt;code>timedatectl&lt;/code> か &lt;code>date&lt;/code> だね。
+ハードウェアBIOSクロックに関するコマンドは &lt;code>hwclock&lt;/code> か &lt;code>clock&lt;/code> だよ。&lt;/p></description></item></channel></rss>

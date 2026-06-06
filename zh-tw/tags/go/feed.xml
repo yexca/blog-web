@@ -1,725 +1,515 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on yexca'Blog</title><link>https://blog.yexca.net/zh-tw/tags/go/</link><description>Recent content in Go on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-tw</language><copyright>yexca</copyright><lastBuildDate>Sun, 19 Apr 2026 22:20:06 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/zh-tw/tags/go/feed.xml" rel="self" type="application/rss+xml"/><item><title>Hugo Module 管理</title><link>https://blog.yexca.net/zh-tw/archives/277/</link><pubDate>Sun, 19 Apr 2026 22:20:06 +0900</pubDate><guid>https://blog.yexca.net/zh-tw/archives/277/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>首先需要安裝 &lt;code>go&lt;/code> 環境&lt;/p></description></item><item><title>GoLang 後端入門</title><link>https://blog.yexca.net/zh-tw/archives/208/</link><pubDate>Sun, 22 Dec 2024 22:07:15 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/208/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;p>首先需要安裝 &lt;code>go&lt;/code> 環境&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt install golang
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>簡易 (非技術框架) 實作的 Go 後端&lt;/p></description></item><item><title>GoLang 通道</title><link>https://blog.yexca.net/zh-tw/archives/207/</link><pubDate>Sat, 21 Dec 2024 14:52:55 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/207/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;/div>&lt;p>然後初始化&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hugo mod init github.com/&amp;lt;your_user&amp;gt;/&amp;lt;your_project&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>在設定檔 &lt;code>hugo.yml&lt;/code> 匯入需要新增的模組&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">module&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">imports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">github.com/name/repo&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>更新設定&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">hugo mod get -u
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="module-顯示">module 顯示
+&lt;/h2>&lt;p>因為使用 go 的相依性，所以要看模組具體在哪使用命令&lt;/p></description></item><item><title>GoLang 後端入門</title><link>https://blog.yexca.net/zh-tw/archives/208/</link><pubDate>Sun, 22 Dec 2024 22:07:15 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/208/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;/div>
+&lt;p>簡易 (非技術框架) 實作的 Go 後端&lt;/p>
+&lt;p>眾所周知，後端的開發通常是面向介面的開發，也可以說是 CRUD 工程師。本文將使用 Go 語言描述如何從資料庫讀取資料，並回傳 JSON 格式的資料。&lt;/p></description></item><item><title>GoLang 通道</title><link>https://blog.yexca.net/zh-tw/archives/207/</link><pubDate>Sat, 21 Dec 2024 14:52:55 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/207/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;/div>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item><item><title>GoLang Go 程</title><link>https://blog.yexca.net/zh-tw/archives/206/</link><pubDate>Tue, 17 Dec 2024 21:16:31 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/206/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Go 協程:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道: 本文&lt;/p></description></item><item><title>GoLang Go 程</title><link>https://blog.yexca.net/zh-tw/archives/206/</link><pubDate>Tue, 17 Dec 2024 21:16:31 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/206/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p></description></item><item><title>GoLang 結構體標籤</title><link>https://blog.yexca.net/zh-tw/archives/205/</link><pubDate>Wed, 11 Dec 2024 18:31:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/205/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Go 程: 本文&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 結構體標籤</title><link>https://blog.yexca.net/zh-tw/archives/205/</link><pubDate>Wed, 11 Dec 2024 18:31:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/205/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p></description></item><item><title>GoLang 反射</title><link>https://blog.yexca.net/zh-tw/archives/204/</link><pubDate>Tue, 03 Dec 2024 14:07:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/204/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤: 本文&lt;br>
+GoLang (goroutine) Goroutine:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 反射</title><link>https://blog.yexca.net/zh-tw/archives/204/</link><pubDate>Tue, 03 Dec 2024 14:07:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/204/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p></description></item><item><title>GoLang 物件導向</title><link>https://blog.yexca.net/zh-tw/archives/162/</link><pubDate>Fri, 01 Mar 2024 15:35:38 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/162/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang Series&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射：本文&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Goroutine:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 物件導向</title><link>https://blog.yexca.net/zh-tw/archives/162/</link><pubDate>Fri, 01 Mar 2024 15:35:38 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/162/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item><item><title>GoLang 切片</title><link>https://blog.yexca.net/zh-tw/archives/160/</link><pubDate>Tue, 27 Feb 2024 20:00:00 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/160/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向: 本文&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Go 協程:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 切片</title><link>https://blog.yexca.net/zh-tw/archives/160/</link><pubDate>Tue, 27 Feb 2024 20:00:00 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/160/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item><item><title>GoLang 函式</title><link>https://blog.yexca.net/zh-tw/archives/156/</link><pubDate>Thu, 22 Feb 2024 04:47:28 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/156/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片: 本文&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Go 協程:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 函式</title><link>https://blog.yexca.net/zh-tw/archives/156/</link><pubDate>Thu, 22 Feb 2024 04:47:28 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/156/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item><item><title>GoLang 變數與常數</title><link>https://blog.yexca.net/zh-tw/archives/155/</link><pubDate>Tue, 20 Feb 2024 06:41:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/155/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式: 本文&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Goroutine:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>GoLang 變數與常數</title><link>https://blog.yexca.net/zh-tw/archives/155/</link><pubDate>Tue, 20 Feb 2024 06:41:18 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/155/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-3-flash-preview 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item><item><title>Hello GoLang</title><link>https://blog.yexca.net/zh-tw/archives/154/</link><pubDate>Mon, 19 Feb 2024 07:58:37 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/154/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/154"
+>
+https://blog.yexca.net/zh-tw/archives/154
+&lt;/a>
+&lt;br>
+GoLang (var and const) 變數與常數: 本文&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Goroutine:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item><item><title>Hello GoLang</title><link>https://blog.yexca.net/zh-tw/archives/154/</link><pubDate>Mon, 19 Feb 2024 07:58:37 +0800</pubDate><guid>https://blog.yexca.net/zh-tw/archives/154/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> 本文由 gemini-2.5-flash 翻譯
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
-&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p></description></item></channel></rss>
+&lt;p>&lt;strong>Golang 系列&lt;/strong>&lt;/p>
+&lt;p>Hello GoLang: 本文&lt;br>
+GoLang (var and const) 變數與常數:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/155"
+>
+https://blog.yexca.net/zh-tw/archives/155
+&lt;/a>
+&lt;br>
+GoLang (func) 函式:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/156"
+>
+https://blog.yexca.net/zh-tw/archives/156
+&lt;/a>
+&lt;br>
+GoLang (slice and map) 切片:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/160"
+>
+https://blog.yexca.net/zh-tw/archives/160
+&lt;/a>
+&lt;br>
+GoLang (OOP) 物件導向:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/162"
+>
+https://blog.yexca.net/zh-tw/archives/162
+&lt;/a>
+&lt;br>
+GoLang (reflect) 反射:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/204"
+>
+https://blog.yexca.net/zh-tw/archives/204
+&lt;/a>
+&lt;br>
+GoLang (struct tag) 結構體標籤:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/205"
+>
+https://blog.yexca.net/zh-tw/archives/205
+&lt;/a>
+&lt;br>
+GoLang (goroutine) Go 協程:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/206"
+>
+https://blog.yexca.net/zh-tw/archives/206
+&lt;/a>
+&lt;br>
+GoLang (channel) 通道:
+&lt;a class="link" href="https://blog.yexca.net/zh-tw/archives/207"
+>
+https://blog.yexca.net/zh-tw/archives/207
+&lt;/a>
+&lt;/p></description></item></channel></rss>

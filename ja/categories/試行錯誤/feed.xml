@@ -1,68 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>試行錯誤 on yexca'Blog</title><link>https://blog.yexca.net/ja/categories/%E8%A9%A6%E8%A1%8C%E9%8C%AF%E8%AA%A4/</link><description>Recent content in 試行錯誤 on yexca'Blog</description><generator>Hugo -- gohugo.io</generator><language>ja</language><copyright>yexca</copyright><lastBuildDate>Sat, 23 May 2026 17:50:02 +0900</lastBuildDate><atom:link href="https://blog.yexca.net/ja/categories/%E8%A9%A6%E8%A1%8C%E9%8C%AF%E8%AA%A4/feed.xml" rel="self" type="application/rss+xml"/><item><title>RoformerとApplioを使ったAIカバー曲の作り方</title><link>https://blog.yexca.net/ja/archives/280/</link><pubDate>Sat, 23 May 2026 03:00:06 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/280/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="音源を手に入れる">音源を手に入れる
 &lt;/h2>&lt;p>トレーニングには、本物の無劣化音源（つまり &lt;code>pcm_f32le&lt;/code> フォーマットの音声ファイル）を使うのがおすすめ。CDなどの物理アルバムを購入してインポートするのが一番だね。やり方は
 &lt;a class="link" href="https://www.bilibili.com/opus/925630344961458181"
@@ -72,534 +9,54 @@ https://www.bilibili.com/opus/925630344961458181
 &lt;/a>
 を参考にしてみて。ただし、flacには変換せずにそのままwav形式で出力しよう。&lt;/p></description></item><item><title>OneDrive の直リンクを取得する方法</title><link>https://blog.yexca.net/ja/archives/237/</link><pubDate>Sun, 02 Mar 2025 12:58:57 +0900</pubDate><guid>https://blog.yexca.net/ja/archives/237/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は Gemini-3-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
 &lt;/h2>&lt;p>最近、OneDrive で共有されたファイルをダウンロードしようとしたんだけど、IDM（Internet Download Manager）が自動でキャッチしてくれなかったんだ。おまけにブラウザのダウンロードは不安定ですぐ失敗しちゃうし……。そこで、なんとかして直リンクを取得する方法がないか調べてみたよ。&lt;/p></description></item><item><title>ローカルネットワークからの外部アクセス（ポートフォワーディング）</title><link>https://blog.yexca.net/ja/archives/199/</link><pubDate>Fri, 22 Nov 2024 22:05:34 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/199/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>前に書いたちょっとした記事なんだけど、システム作成日は2023.12.01だね。&lt;/p></description></item><item><title>CentOS 7 に Xfce をインストールする</title><link>https://blog.yexca.net/ja/archives/153/</link><pubDate>Sat, 17 Feb 2024 22:51:34 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/153/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;p>前に書いたちょっとした記事なんだけど、システム作成日は2023.12.01だね。&lt;/p>
+&lt;p>今見ると、前に書いた記事ってあんまり公開したくないなって思うんだけど、消すのももったいないし、色々考えた結果、やっぱり公開することにしたよ。これも俺が書いたものだしね。&lt;/p></description></item><item><title>CentOS 7 に Xfce をインストールする</title><link>https://blog.yexca.net/ja/archives/153/</link><pubDate>Sat, 17 Feb 2024 22:51:34 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/153/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
-&lt;p>&lt;del>これ、いつ書いた記事だっけ（&lt;/del>&lt;/p></description></item><item><title>Fedora 起動時にスクリプトを自動実行する方法</title><link>https://blog.yexca.net/ja/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/149/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;p>&lt;del>これ、いつ書いた記事だっけ（&lt;/del>&lt;/p>
+&lt;h2 id="xfce-グループがあるか確認する">Xfce グループがあるか確認する
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">yum grouplist
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
+&lt;/div>&lt;p>もしなかったら、追加の yum リポジトリをインストールする必要があるよ。&lt;/p></description></item><item><title>Fedora 起動時にスクリプトを自動実行する方法</title><link>https://blog.yexca.net/ja/archives/149/</link><pubDate>Sun, 28 Jan 2024 14:25:58 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/149/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/div>
 &lt;h2 id="はじめに">はじめに
-&lt;/h2>&lt;p>無限ループは絶対に中に入れないでね！！！今回は systemd を使った方法を紹介するよ。&lt;/p></description></item><item><title>NovelAI 描画 (WebUI)</title><link>https://blog.yexca.net/ja/archives/77/</link><pubDate>Sun, 30 Oct 2022 16:23:07 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/77/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
+&lt;/h2>&lt;p>無限ループは絶対に中に入れないでね！！！今回は systemd を使った方法を紹介するよ。&lt;/p>
+&lt;h2 id="スクリプトを作成する">スクリプトを作成する
+&lt;/h2>&lt;p>このファイルに自分のスクリプトを書き込んでね。&lt;/p></description></item><item><title>NovelAI 描画 (WebUI)</title><link>https://blog.yexca.net/ja/archives/77/</link><pubDate>Sun, 30 Oct 2022 16:23:07 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/77/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;p>Windows11 での導入方法だよ。他のシステム（Linux とか）は、
 &lt;a class="link" href="https://github.com/AUTOMATIC1111/stable-diffusion-webui#automatic-installation-on-linux"
 target="_blank" rel="noopener"
 >
 AUTOMATIC1111/stable-diffusion-webui: Stable Diffusion web UI
 &lt;/a>
-を参照してね。&lt;/p></description></item><item><title>WordPress のデータベースからプラグインを無効化する</title><link>https://blog.yexca.net/ja/archives/72/</link><pubDate>Thu, 15 Sep 2022 22:17:02 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/72/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong>この記事は gemini-2.5-flash-lite によって翻訳されました
+を参照してね。&lt;/p>
+&lt;h2 id="容量について">容量について
+&lt;/h2>&lt;p>プログラム：5.3GiB (モデル含まず)&lt;/p></description></item><item><title>WordPress のデータベースからプラグインを無効化する</title><link>https://blog.yexca.net/ja/archives/72/</link><pubDate>Thu, 15 Sep 2022 22:17:02 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/72/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong>この記事は gemini-2.5-flash-lite によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
-&lt;/h2>&lt;p>あるプラグインを有効にしたら、管理画面が 502 エラーになっちゃったんだ。&lt;/p></description></item><item><title>FedoraにKomgaをインストールしてみた記録</title><link>https://blog.yexca.net/ja/archives/71/</link><pubDate>Wed, 14 Sep 2022 18:47:16 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/71/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
+&lt;/h2>&lt;p>あるプラグインを有効にしたら、管理画面が 502 エラーになっちゃったんだ。&lt;/p>
+&lt;h2 id="データベースにアクセス">データベースにアクセス
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;code>wp_options&lt;/code> テーブルを選択して入るよ。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>active_plugins&lt;/code> っていう項目を探す。だいたい2ページ目あたりにあるはず。&lt;/p></description></item><item><title>FedoraにKomgaをインストールしてみた記録</title><link>https://blog.yexca.net/ja/archives/71/</link><pubDate>Wed, 14 Sep 2022 18:47:16 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/71/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
-&lt;/h2>&lt;p>ローカルネットワークでもっと快適に漫画を読むために、サーバーを立ててみることにしたよ。&lt;/p></description></item><item><title>PSの自動化スクリプトで画像をバッチ処理する</title><link>https://blog.yexca.net/ja/archives/48/</link><pubDate>Fri, 10 Jun 2022 00:54:44 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/48/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
+&lt;/h2>&lt;p>ローカルネットワークでもっと快適に漫画を読むために、サーバーを立ててみることにしたよ。&lt;/p>
+&lt;h2 id="ipの設定">IPの設定
+&lt;/h2>&lt;p>ルーターは OpenWRT システムを使っている場合の設定。&lt;/p></description></item><item><title>PSの自動化スクリプトで画像をバッチ処理する</title><link>https://blog.yexca.net/ja/archives/48/</link><pubDate>Fri, 10 Jun 2022 00:54:44 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/48/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;blockquote>
 &lt;p>この記事は
 &lt;a class="link" href="https://blog.hiyoung.icu/"
@@ -607,136 +64,44 @@ target="_blank" rel="noopener"
 >
 Hiyoung
 &lt;/a>
-が書いたものだよ&lt;/p></description></item><item><title>Beat Saber にカスタム楽曲を追加する方法</title><link>https://blog.yexca.net/ja/archives/31/</link><pubDate>Fri, 18 Mar 2022 17:46:00 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/31/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
+が書いたものだよ&lt;/p>
+&lt;p>元記事:
+&lt;a class="link" href="https://blog.hiyoung.icu/2022/08/18/5be9517606f2/"
+target="_blank" rel="noopener"
+>
+https://blog.hiyoung.icu/2022/08/18/5be9517606f2/
+&lt;/a>
+&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="psの自動化スクリプトで画像をバッチ処理する">PSの自動化スクリプトで画像をバッチ処理する
+&lt;/h2>&lt;ol>
+&lt;li>メニューバーの「ウィンドウ」-&amp;gt;「アクション」をクリック（ショートカットキーは Alt+F9）&lt;/li>
+&lt;li>タブの下にある「新規フォルダ」（新規グループ）をクリックして、「画像サイズ変更」と名前を付ける（名前は自由に変えてもOK）&lt;/li>
+&lt;li>次に隣の「新規アクションを作成」をクリックすると、下部の丸が赤くなるのがわかるよ
+&lt;img src="https://raw.githubusercontent.com/hiyoung3937/img_hiyoung/master/bolg/blog_%E4%BD%BF%E7%94%A8PS%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%9B%BE%E7%89%87_1.5x0zewo4yzc0.jpg"
+loading="lazy"
+alt="blog_使用PS自动化脚本批量处理图片_1"
+>&lt;/li>
+&lt;li>&lt;strong>「ファイル」、「開く」をクリック&lt;/strong>して、処理したい画像の中から1枚開く。画像サイズを変更し、「OK」をクリック。&lt;strong>次に「別名で保存」し、名前を付けて保存する&lt;/strong>。（「書き出し」は使わないでね。そうしないとアクションに記録されず、無限ループになっちゃうよ）&lt;/li>
+&lt;li>&lt;strong>「ファイル」、「自動処理」、「バッチ」をクリック&lt;/strong>&lt;/li>
+&lt;li>設定
+&lt;ol>
+&lt;li>実行するアクションセットとアクションを選ぶ&lt;/li>
+&lt;li>ソースで変更したい画像ファイルの場所を選ぶ&lt;/li>
+&lt;li>ターゲットで変更後の画像を保存する場所を選ぶ&lt;/li>
+&lt;li>**「アクションの‘開く’コマンドを上書き」&lt;strong>と&lt;/strong>「アクションの‘別名で保存’コマンドを上書き」**にチェックを入れる
+&lt;img src="https://raw.githubusercontent.com/hiyoung3937/img_hiyoung/master/bolg/blog_%E4%BD%BF%E7%94%A8PS%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%9B%BE%E7%89%87_2.2bh4ygmfs3i8.jpg"
+loading="lazy"
+alt="blog_使用PS自动化脚本批量处理图片_2"
+>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ol>
+&lt;hr>
+&lt;p>内容はインターネットを参考にしているよ&lt;/p></description></item><item><title>Beat Saber にカスタム楽曲を追加する方法</title><link>https://blog.yexca.net/ja/archives/31/</link><pubDate>Fri, 18 Mar 2022 17:46:00 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/31/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-2.5-flash-lite によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
 &lt;/h2>&lt;p>最近、Beat Saber を購入した（もちろん、アルゼンチンリージョンでね）。それで、カスタム楽曲を追加したいなと思って、Steam のコメント欄で、WGzeyu さんっていうすごい人がチュートリアルを出してるって知ったんだ。でも、俺の目的はシンプルだから、そのチュートリアルはちょっと詳細すぎるんだよね。だから、この記事で要点をまとめてみることにしたよ。&lt;/p></description></item><item><title>VS Code で QQ メッセージを送受信する</title><link>https://blog.yexca.net/ja/archives/24/</link><pubDate>Fri, 11 Feb 2022 21:47:56 +0800</pubDate><guid>https://blog.yexca.net/ja/archives/24/</guid><description>&lt;div class="notice ">&lt;strong>📢&lt;/strong> この記事は gemini-3-flash-preview によって翻訳されました
 &lt;/div>
-&lt;style lang="scss">
-.notice {
-padding: 0.75em 1em;
-margin: 1em 0;
-border-left: 4px solid;
-border-radius: 4px;
-background-color: var(--card-background-secondary);
-color: var(--card-text-color-main);
-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
--webkit-backdrop-filter: saturate(var(--glass-saturation)) blur(var(--glass-blur));
-&amp;.default {
-border-color: #ccc;
-}
-&amp;.info {
-border-color: #2196f3;
-color: #1a237e;
-}
-&amp;.warn {
-border-color: #ff9800;
-color: #e65100;
-}
-&amp;.danger {
-border-color: #f44336;
-color: #b71c1c;
-}
-}
-[data-scheme="dark"] {
-.notice {
-&amp;.default {
-border-color: #666;
-color: #eee;
-}
-&amp;.info {
-border-color: #90caf9;
-color: #e3f2fd;
-}
-&amp;.warn {
-border-color: #ffb74d;
-color: #fff3e0;
-}
-&amp;.danger {
-border-color: #ef5350;
-color: #ffebee;
-}
-}
-}
-[data-scheme="sepia"] {
-.notice {
-&amp;.info {
-border-color: #6a5acd;
-color: #3c2f2f;
-}
-&amp;.warn {
-border-color: #e9967a;
-color: #5c4033;
-}
-&amp;.danger {
-border-color: #cd5c5c;
-color: #7b3f3f;
-}
-}
-}
-&lt;/style>
 &lt;h2 id="はじめに">はじめに
 &lt;/h2>&lt;p>QQ はソフト自体が重すぎるし、権限も多すぎる。おまけに頻繁にフリーズして読み込めなくなるから、別の方法を探してたんだ。最初は Telegram で QQ メッセージを送受信しようとしたんだけど、設定がかなり複雑で不安定だったから断念。結局、VS Code を使うことにしたよ。&lt;/p></description></item></channel></rss>
